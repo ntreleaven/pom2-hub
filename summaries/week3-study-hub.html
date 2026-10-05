@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Puberty, Growth &amp; Reproductive Development Study Hub</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --paper: #f3f5f4;
+    --paper-raised: #ffffff;
+    --ink: #1b2321;
+    --ink-soft: #4b5651;
+    --ink-faint: #7c8a84;
+    --line: #d8ddda;
+    --line-soft: #e7eae8;
+    --amber: #a8641c;
+    --amber-ink: #7a4712;
+    --amber-wash: #f4e6d3;
+    --teal: #1f6e73;
+    --teal-ink: #17565a;
+    --teal-wash: #dcedee;
+    --good: #2f7a4f;
+    --good-wash: #dcf0e2;
+    --bad: #ae3f34;
+    --bad-wash: #f7ded9;
+    --shadow: 0 1px 2px rgba(27,35,33,0.06), 0 6px 20px -8px rgba(27,35,33,0.12);
+    --radius: 3px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12191a;
+      --paper-raised: #182123;
+      --ink: #e9edea;
+      --ink-soft: #b6c0bb;
+      --ink-faint: #7d8b85;
+      --line: #2c3937;
+      --line-soft: #223030;
+      --amber: #e0a860;
+      --amber-ink: #f0c592;
+      --amber-wash: #33291b;
+      --teal: #6fc2c6;
+      --teal-ink: #9adade;
+      --teal-wash: #16302f;
+      --good: #6fbf8f;
+      --good-wash: #1a3327;
+      --bad: #e2897c;
+      --bad-wash: #3a211d;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12191a;
+    --paper-raised: #182123;
+    --ink: #e9edea;
+    --ink-soft: #b6c0bb;
+    --ink-faint: #7d8b85;
+    --line: #2c3937;
+    --line-soft: #223030;
+    --amber: #e0a860;
+    --amber-ink: #f0c592;
+    --amber-wash: #33291b;
+    --teal: #6fc2c6;
+    --teal-ink: #9adade;
+    --teal-wash: #16302f;
+    --good: #6fbf8f;
+    --good-wash: #1a3327;
+    --bad: #e2897c;
+    --bad-wash: #3a211d;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  h1, h2, h3, h4 { font-family: 'Spectral', Georgia, serif; text-wrap: balance; margin: 0; }
+  a { color: var(--teal-ink); }
+  table { border-collapse: collapse; }
+
+  .shell { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 280px;
+    flex: none;
+    border-right: 1px solid var(--line);
+    background: var(--paper-raised);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 22px 18px 30px;
+  }
+  .sidebar-head { margin-bottom: 4px; }
+  .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--teal-ink);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .sidebar-head h1 { font-size: 21px; font-weight: 600; line-height: 1.25; }
+  .sidebar-head .sub { color: var(--ink-faint); font-size: 13px; margin-top: 6px; }
+
+  .progress-block { margin: 18px 0 20px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-soft); margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+  .progress-track { height: 6px; background: var(--line-soft); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--amber); width: 0%; transition: width .4s ease; }
+
+  .navlist { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-soft); padding-top: 10px; }
+  .navlist li { margin: 0; }
+  .navlist a {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    padding: 7px 6px;
+    border-radius: var(--radius);
+  }
+  .navlist a:hover { background: var(--line-soft); color: var(--ink); }
+  .navlist a.active { color: var(--ink); font-weight: 600; }
+  .navlist .num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-faint); flex: none; width: 16px; }
+  .navlist .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--line); flex: none; }
+  .navlist .dot.done { background: var(--good); }
+
+  .sidebar-foot { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--line-soft); font-size: 12px; color: var(--ink-faint); }
+  .sidebar-foot code { font-family: 'IBM Plex Mono', monospace; background: var(--line-soft); padding: 1px 5px; border-radius: 2px; }
+
+  main { flex: 1; min-width: 0; }
+  .topbar {
+    position: sticky; top: 0; z-index: 5;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 40px;
+    display: none;
+  }
+
+  .hero {
+    padding: 54px 48px 40px;
+    border-bottom: 1px solid var(--line);
+    max-width: 900px;
+  }
+  .hero .kicker { margin-bottom: 14px; }
+  .hero h1 { font-size: 40px; font-weight: 600; letter-spacing: -0.01em; }
+  .hero .dek { color: var(--ink-soft); font-size: 16.5px; margin-top: 14px; max-width: 62ch; }
+  .hero-meta { display: flex; gap: 26px; margin-top: 26px; flex-wrap: wrap; }
+  .hero-meta div { font-size: 13px; color: var(--ink-faint); }
+  .hero-meta strong { display: block; font-family: 'Spectral', serif; font-size: 20px; color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .content { padding: 8px 48px 90px; max-width: 900px; }
+
+  section.module {
+    padding: 46px 0;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 20px;
+  }
+  section.module:last-of-type { border-bottom: none; }
+
+  .module-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 6px; }
+  .module-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--amber); padding-top: 6px; flex: none; width: 24px; }
+  .module-head h2 { font-size: 25px; font-weight: 600; }
+  .module-meta { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 22px 40px; }
+  .tag { font-size: 11.5px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.03em; color: var(--ink-faint); border: 1px solid var(--line); padding: 3px 8px; border-radius: 99px; }
+  .tag.mcc { color: var(--teal-ink); border-color: var(--teal); background: var(--teal-wash); }
+
+  .module-body { margin-left: 40px; }
+  .module-body p { color: var(--ink-soft); margin: 0 0 14px; max-width: 68ch; }
+  .module-body h3 { font-size: 15px; font-weight: 600; margin: 22px 0 10px; color: var(--ink); }
+  .module-body ul, .module-body ol { margin: 0 0 14px; padding-left: 20px; color: var(--ink-soft); max-width: 66ch; }
+  .module-body li { margin-bottom: 6px; }
+  .module-body li strong { color: var(--ink); }
+  .callout {
+    background: var(--amber-wash);
+    border-left: 3px solid var(--amber);
+    padding: 12px 16px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 14px;
+    color: var(--ink);
+    margin: 16px 0;
+    max-width: 64ch;
+  }
+  .callout strong { color: var(--amber-ink); }
+
+  .data-table { width: 100%; margin: 10px 0 20px; font-size: 13.5px; overflow-x: auto; display: block; }
+  .data-table table { width: 100%; min-width: 480px; }
+  .data-table th, .data-table td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  .data-table th { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); font-weight: 500; }
+  .data-table td.num { font-variant-numeric: tabular-nums; }
+
+  .quiz {
+    margin-top: 26px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .quiz-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--line-soft);
+    background: var(--line-soft);
+  }
+  .quiz-head span { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+  .quiz-score { font-size: 12.5px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+  .quiz-body { padding: 18px; }
+  .q { margin-bottom: 20px; }
+  .q:last-child { margin-bottom: 0; }
+  .q-stem { font-size: 14.5px; color: var(--ink); margin-bottom: 10px; font-weight: 500; }
+  .q-opts { display: flex; flex-direction: column; gap: 7px; }
+  .opt {
+    text-align: left;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    padding: 9px 12px;
+    border-radius: var(--radius);
+    font-size: 13.5px;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    gap: 9px;
+  }
+  .opt:hover { border-color: var(--teal); }
+  .opt:focus-visible { outline: 2px solid var(--teal); outline-offset: 1px; }
+  .opt .letter { font-family: 'IBM Plex Mono', monospace; color: var(--ink-faint); flex: none; }
+  .opt.correct { background: var(--good-wash); border-color: var(--good); }
+  .opt.incorrect { background: var(--bad-wash); border-color: var(--bad); }
+  .opt[disabled] { cursor: default; }
+  .q-explain {
+    display: none;
+    margin-top: 9px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    background: var(--teal-wash);
+    border-left: 3px solid var(--teal);
+    padding: 9px 12px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .q-explain.shown { display: block; }
+  .q-explain strong { color: var(--teal-ink); }
+
+  .colophon {
+    max-width: 900px;
+    padding: 34px 48px 70px;
+    color: var(--ink-faint);
+    font-size: 12.5px;
+    border-top: 1px solid var(--line);
+  }
+  .colophon a { color: var(--ink-soft); }
+
+  .theme-toggle {
+    position: fixed; bottom: 18px; right: 18px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    color: var(--ink-soft);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10;
+  }
+
+  .mobile-nav-toggle { display: none; }
+
+  @media (max-width: 880px) {
+    .sidebar { position: fixed; left: -300px; top: 0; z-index: 20; transition: left .25s ease; box-shadow: var(--shadow); }
+    .sidebar.open { left: 0; }
+    .topbar { display: flex; align-items: center; gap: 12px; padding: 12px 20px; }
+    .mobile-nav-toggle {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: var(--radius);
+      border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace; font-size: 13px; cursor: pointer;
+    }
+    .topbar strong { font-family: 'Spectral', serif; font-size: 15px; }
+    .hero { padding: 30px 20px 28px; }
+    .hero h1 { font-size: 30px; }
+    .content { padding: 8px 20px 70px; }
+    .module-meta, .module-body { margin-left: 0; }
+    .module-head { gap: 10px; }
+    .colophon { padding: 26px 20px 60px; }
+  }
+</style>
+
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <span class="kicker">P2 &middot; Endocrinology &amp; Reproduction</span>
+      <h1>Week&nbsp;3 &mdash; Puberty, Growth &amp; Reproductive Development</h1>
+      <div class="sub">Sep 14&ndash;18, 2026</div>
+    </div>
+
+    <div class="progress-block">
+      <div class="progress-label"><span>Quiz progress</span><span id="progress-count">0 / 30</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+
+    <ul class="navlist" id="navlist"></ul>
+
+    <div class="sidebar-foot">
+      Built from the official Elentra learning objectives for 5260 &middot; PoM&nbsp;II. Content is written for review, not a substitute for the source modules &mdash; cross-check anything <code>flagged</code> against lecture.
+    </div>
+  </nav>
+
+  <main>
+    <div class="topbar">
+      <button class="mobile-nav-toggle" id="navToggle" aria-label="Toggle module list">&#9776;</button>
+      <strong>Week 3 &mdash; Puberty, Growth &amp; Reproductive Development</strong>
+    </div>
+
+    <header class="hero">
+      <span class="kicker">Study Hub</span>
+      <h1>Puberty, Growth &amp; Reproductive Development</h1>
+      <p class="dek">Ten modules spanning the HPO axis and puberty, disorders of growth and puberty, pituitary and adrenal disease, disorders of sexual differentiation and transgender medicine, and the embryology, anatomy, and pathology of the female reproductive tract &mdash; ending with PMOS/PCOS as the capstone that ties the whole week's physiology together. Read a section, then clear its quiz before moving on.</p>
+      <div class="hero-meta">
+        <div><strong>10</strong>modules</div>
+        <div><strong>30</strong>quiz questions</div>
+        <div><strong>~9h</strong>estimated content time</div>
+      </div>
+    </header>
+
+    <div class="content" id="content"></div>
+
+    <footer class="colophon">
+      Sources: content in every module &mdash; learning objectives, mechanisms, diagnostic pathways, drug tables, clinical cases, and concept-check logic &mdash; is drawn directly from the actual Elentra lesson content, slide decks, and video overviews for each Week 3 lecture (5260 &middot; Endocrinology &amp; Reproduction, Puberty/Growth/Adrenal/Pituitary/Reproductive Development) as of Sep 2026, then rewritten in my own words rather than copied verbatim, out of respect for your instructors' copyright. Quiz stems and explanations are also my own paraphrase, built to test the same concepts and numbers the lectures actually cover &mdash; not the course's original questions. If anything here doesn't match what a professor said in lecture, trust the lecture.
+    </footer>
+  </main>
+</div>
+
+<button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle color theme">&#9788;</button>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var stored = null;
+  try { stored = localStorage.getItem('endo-hub-theme'); } catch(e) {}
+  if (stored) root.setAttribute('data-theme', stored);
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var current = root.getAttribute('data-theme');
+    var next = current === 'dark' ? 'light' : (current === 'light' ? 'dark' : ((window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'light' : 'dark'));
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('endo-hub-theme', next); } catch(e) {}
+  });
+
+  document.getElementById('navToggle').addEventListener('click', function(){
+    document.getElementById('sidebar').classList.toggle('open');
+  });
+})();
+</script>
+
+<script>
+const MODULES = [{"id": "puberty-physiology", "title": "Physiologic Changes Leading to Puberty", "instructor": "Andrew Watson &amp; Erin Lovett", "duration": "~44 min", "tags": [{"label": "Foundation video", "cls": "mcc"}], "body": "\n<p>Puberty is the behavioural, physiologic, and anatomic transition of the gonads from the juvenile to the adult state. In girls, menarche signals the process is underway, but early cycles are commonly irregular and anovulatory &mdash; full reproductive capacity is not automatic at first bleed. In boys there's no single clean marker; spermarche (first sperm in ejaculate/urine) is hard to date and may initially be azoospermic. This module is foundational: Videos 3, 6, and 10 all assume you already have this HPO axis physiology.</p>\n<h3>The switch from inhibition to excitation</h3>\n<p>Before puberty, GnRH output is low because GABA (and neuropeptide Y) provide dominant tonic <strong>inhibition</strong> of the hypothalamic GnRH pulse generator, outweighing glutamate's <strong>excitatory</strong> drive. Puberty is fundamentally a shift in that balance toward excitation. The trigger sitting upstream of both is <strong>kisspeptin</strong> (the KISS1 gene product) acting on <strong>GPR54</strong> receptors on GnRH neurons &mdash; inactivating mutations in GPR54 cause failure to progress through puberty and hypogonadotropic hypogonadism, which is how the pathway was confirmed essential in humans. KNDy neurons (kisspeptin, neurokinin B, dynorphin) regulate kisspeptin release, and MKRN3 sits further upstream as an inhibitory brake &mdash; losing that brake causes precocious puberty (Video 3). Leptin, from adipose tissue, is permissive rather than the primary trigger, tracking the older \"critical weight\" observation that a threshold metabolic mass tends to precede the growth spurt and menarche, though the hypothesis remains imprecise for predicting any one individual.</p>\n<div class=\"callout\"><strong>Kisspeptin as ignition switch.</strong> GnRH neurons are the engine; GABA holds the parking brake; glutamate presses the accelerator; but it's kisspeptin-GPR54 signalling that actually turns the key at puberty onset and keeps the engine running through adult reproductive life.</div>\n<h3>Pubertal milestones</h3>\n<p>The girls' sequence &mdash; gonadarche (LH/FSH activate the gonad) &rarr; adrenarche (adrenal androgens rise, independent of gonadal status) &rarr; thelarche (estradiol-driven breast development) &rarr; growth spurt &rarr; pubarche (androgen-driven pubic/axillary hair, acne, body odour) &rarr; menarche &mdash; runs about 4&ndash;5 years start to finish. Mean age of menarche is 12.7 years; genetics explain an estimated 50&ndash;75% of the variation in normal timing. The HPO axis stays immature for 2+ years after menarche, so irregular early cycles are expected, not pathological.</p>\n<div class=\"data-table\"><table><thead><tr><th>Driver</th><th>Physical effects</th></tr></thead><tbody>\n<tr><td>Estrogen</td><td>Breast development, faster growth, vaginal discharge, menses, mood changes</td></tr>\n<tr><td>Androgen</td><td>Acne, oily skin/hair, body odour, pubic/axillary hair, clitoral/penile enlargement, voice deepening, faster growth, mood changes</td></tr>\n</tbody></table></div>\n<h3>The HPO axis and the menstrual cycle</h3>\n<p>A small FSH rise recruits a cohort of follicles; the one with the most FSH receptors becomes dominant. Rising estradiol from the growing cohort initially feeds back <strong>negatively</strong>, but as the dominant follicle's estradiol peaks it flips to <strong>positive</strong> feedback &mdash; the mid-cycle LH surge, a roughly ten-fold rise that triggers completion of the first meiotic division and ovulation about 36 hours later. The corpus luteum then secretes progesterone, which slows LH pulses through the luteal phase; without implantation it regresses, hormones fall, and menstruation follows. Endometrially, follicular-phase estradiol thickens the lining and thins/loosens cervical mucus; luteal-phase progesterone halts mitosis and matures the glands (secretory transformation); withdrawal sheds the functional layer while the basal layer regenerates the next cycle.</p>\n<div class=\"callout\"><strong>The LH surge is a feedback flip, not just a bigger dose.</strong> Estradiol spends most of the cycle suppressing the axis; at the very end of the follicular phase the same hormone briefly switches to driving it &mdash; that flip, not a gradual rise, is what fires ovulation.</div>\n<h3>Clinical correlates</h3>\n<p>Normal cycles run 21&ndash;35 days (only ~15% hit a textbook 28), with 3&ndash;10 days of flow and up to 80 mL of loss considered normal &mdash; the number that defines abnormal/heavy bleeding. Prostaglandins released as the endometrium sloughs drive myometrial contractions strong enough to exceed arterial pressure, causing transient ischemia and the pain of dysmenorrhea; NSAIDs work by blocking that prostaglandin synthesis, while tranexamic acid controls heavy bleeding by inhibiting clot breakdown rather than touching hormones or prostaglandins at all. PMS (30&ndash;40% of women) and its severe variant PMDD (3&ndash;8%) are thought to reflect heightened sensitivity to otherwise normal luteal-phase hormone swings, with serotonin and GABA implicated; ovulatory suppression (e.g. OCPs) and SSRIs are mainstay treatments. Menopause &mdash; 12 months of amenorrhea, average age 53 &mdash; is the endpoint of follicular depletion: as follicles run out, estrogen/progesterone fall and FSH climbs unopposed.</p>\n", "quiz": [{"stem": "A prepubertal child has low GnRH output despite an intact hypothalamus. What is the best explanation for this state?", "opts": ["Kisspeptin is being over-secreted", "GABAergic inhibition of the GnRH pulse generator dominates over glutamatergic excitation", "Estradiol is providing positive feedback", "MKRN3 has been lost, disinhibiting GnRH neurons"], "correct": 1, "explain": "Before puberty, tonic GABA/NPY inhibition of GnRH neurons outweighs glutamate's excitatory drive; puberty is the shift toward excitation, ultimately permitted by kisspeptin-GPR54 signalling. Losing MKRN3's inhibitory restraint or gaining kisspeptin drive would push toward earlier, not later, puberty."}, {"stem": "During the late follicular phase, estradiol's effect on GnRH/LH secretion switches from suppressive to stimulatory. What does this switch trigger?", "opts": ["Luteinization of the corpus luteum only", "The mid-cycle LH surge that completes meiosis I and triggers ovulation ~36 hours later", "Endometrial shedding", "A permanent rise in FSH for the rest of the cycle"], "correct": 1, "explain": "As the dominant follicle's estradiol peaks, feedback flips from negative to positive, producing the ~10-fold LH surge; this drives completion of the oocyte's first meiotic division and ovulation roughly 36 hours later. Luteinization and progesterone secretion follow, but the surge itself is what the feedback flip produces."}, {"stem": "Tranexamic acid reduces heavy menstrual bleeding through which mechanism?", "opts": ["Inhibiting prostaglandin synthesis", "Suppressing ovulation via hormonal feedback", "Inhibiting fibrinolysis (clot breakdown)", "Downregulating estrogen receptors in the endometrium"], "correct": 2, "explain": "Tranexamic acid is an antifibrinolytic that reduces blood loss by inhibiting clot breakdown, not by acting on hormones or prostaglandins - that prostaglandin-inhibition mechanism instead describes how NSAIDs treat dysmenorrhea."}]}, {"id": "disorders-of-growth", "title": "Disorders of Growth", "instructor": "Patricia Gallego", "duration": "~50 min", "tags": [], "body": "\n<p>Childhood growth runs through three phases with different drivers: a rapid infant phase driven mostly by nutrition; a slower but steadier childhood phase where GH becomes the primary factor (average 5&ndash;6 cm/year, and the longer this phase lasts the taller the eventual adult); and the pubertal growth spurt, from rising sex steroids amplifying GH pulse frequency and size.</p>\n<h3>Working up a short child</h3>\n<p>Four questions organize the evaluation. Genetic potential comes from mid-parental height (boys: [mother's height + father's height + 13 cm]/2; girls: subtract instead of add). Height-age is the age at which the child's height would sit at the 50th percentile. Growth velocity &mdash; the rate of climb, not the altitude &mdash; needs two accurate measurements a year apart; it is the single most useful number, since a child tracking steadily along a low percentile is very different from one crossing percentiles downward. Growth potential is read from bone age, a single left-wrist X-ray acting like a biological clock that can run ahead of or behind the calendar by about a year without being abnormal. Worrying signs: velocity under 4.5 cm/year between age 4 and puberty, percentile-crossing after 18 months of age and before puberty, or height more than 2 SD below mid-parental height.</p>\n<div class=\"callout\"><strong>Growth velocity is the rate of climb; a single height is the altitude.</strong> Two children can share the same height percentile today and be on completely different trajectories - only the rate of climb tells you which.</div>\n<h3>Normal variants vs. real causes</h3>\n<p>Short stature (&ge;2 SD below the mean) with a <em>normal</em> growth velocity is usually a normal variant: familial short stature (short parents, short child, on schedule, bone age matches chronologic age) or constitutional delay of growth and puberty (CDGP &mdash; delayed bone age, delayed puberty, family history of \"late bloomers,\" catches up eventually). Short stature with an <em>abnormal</em> velocity points to real disease: SGA/IUGR (most catch up by age 2; ~10% don't), undernutrition (mechanical, psychosocial, or GI malabsorption such as celiac disease), other chronic illness (renal, rheumatologic, cardiopulmonary, malignancy), genetic syndromes (Down, Prader-Willi, Noonan, Silver-Russell, SHOX mutations, Turner), and skeletal dysplasias (achondroplasia/hypochondroplasia from FGFR3 mutations; osteogenesis imperfecta from type I collagen mutations).</p>\n<h3>Endocrine causes - rare, but look \"chubby\" not thin</h3>\n<p>Primary endocrine growth failure is uncommon, but the discriminating clue is weight-for-height: these children tend to be relatively chubby, not wasted, unlike chronic-illness growth failure where weight loss precedes the height drop-off. GH deficiency (the most common endocrine cause, ~1:3500-4000) may be genetic (GHRH, GH-1, Pit-1, Prop-1, GH receptor/Laron syndrome), congenital-structural (often with multiple pituitary hormone deficiencies), or acquired (craniopharyngioma, cranial irradiation, head injury). Because GH is secreted pulsatilely, random levels are useless; diagnosis needs IGF-1/IGFBP-3 plus provocative testing (arginine, clonidine, glucagon, or insulin tolerance test), confirmed by height &lt;3rd percentile, velocity &lt;25th percentile, delayed bone age, and a blunted GH response (&lt;8 &micro;g/L) on two provocative tests. Treatment is daily-to-weekly subcutaneous recombinant GH, costing roughly US$10,000-30,000/year. A classic teaching case: a 12-year-old girl with decelerating growth, weight gain, dry skin, and brittle hair whose TSH of 467 confirms hypothyroidism as the cause - a reminder that thyroid status, glucocorticoid excess, and metabolic bone disease (rickets, pseudohypoparathyroidism) all belong on the endocrine differential too.</p>\n<h3>Turner syndrome</h3>\n<p>Absence of all or part of an X chromosome (45,X in 60%; mosaicism ~15%; structural X abnormalities ~10%), affecting 1 in 2,000-2,500 newborn girls. Short stature is the single most common feature (95-100%), averaging about 20 cm below background, with a mean final height of 144 cm; GH therapy started around age 4-6 adds roughly 5-7 cm over 8 years. Gonadal failure is complete in 90% (\"streak ovaries\") - thelarche in only 10-15%, menarche in just 1%, infertility in over 99% - while pubarche still occurs in 100% because adrenal androgen production doesn't depend on the ovaries. Dysmorphic features (neck webbing, short 4th metacarpals, cubitus valgus) and congenital anomalies (coarctation of the aorta, horseshoe kidney) round out the picture, alongside a screening list of autoimmune thyroid disease, celiac disease, T1DM, hearing loss, and learning/attention difficulties.</p>\n", "quiz": [{"stem": "A child's height sits at the 10th percentile at both ages 6 and 8, tracking the same percentile over that interval. What does this pattern of GROWTH VELOCITY, on its own, suggest?", "opts": ["Definite growth hormone deficiency requiring provocative testing", "A growth pattern consistent with a normal variant rather than a pathologic process", "Turner syndrome must be ruled out immediately with karyotype", "The child needs an urgent bone age X-ray to rule out precocious puberty"], "correct": 1, "explain": "Tracking steadily along a percentile (normal growth velocity) - rather than crossing percentiles downward - is reassuring and typical of a normal variant like familial short stature or CDGP, not a red flag for pathology on its own."}, {"stem": "Which feature best distinguishes an ENDOCRINE cause of short stature (like GH deficiency or hypothyroidism) from short stature due to chronic illness or undernutrition?", "opts": ["Endocrine causes always present with a normal bone age", "In endocrine causes the child tends to be relatively overweight for height, while chronic illness causes weight loss before growth falls off", "Endocrine causes never affect growth velocity", "Chronic illness causes a more acute growth deceleration than endocrine disease"], "correct": 1, "explain": "The classic discriminator is weight-for-height: endocrine causes of growth failure typically present as a relatively 'chubby' child for height, whereas chronic illness/undernutrition causes weight loss (or failure to gain) that precedes and is more gradual than the linear growth drop-off."}, {"stem": "In Turner syndrome, pubarche (pubic hair development) occurs in nearly 100% of affected girls despite ovarian failure being complete in 90%. Why?", "opts": ["Pubarche is driven by adrenal androgen production, which is independent of gonadal (ovarian) function", "Most girls with Turner syndrome have normally functioning ovaries", "Pubarche in Turner syndrome is caused by exogenous estrogen therapy", "Pubarche does not actually require any hormonal drive"], "correct": 0, "explain": "Pubarche reflects adrenarche - a rise in adrenal androgens that occurs independent of gonadal status - so it proceeds normally even when the ovaries have failed completely, unlike thelarche and menarche, which do depend on ovarian estrogen and are markedly reduced in Turner syndrome."}]}, {"id": "disorders-of-puberty", "title": "Disorders of Puberty", "instructor": "Patricia Gallego", "duration": "~54 min", "tags": [{"label": "Builds on Module 1", "cls": "mcc"}], "body": "\n<p>This module applies Module 1's HPO axis physiology clinically, and revisits Turner syndrome from Module 2. Puberty means secondary sexual development, a growth spurt, changed body composition, and psychosocial maturation together - driven by pulsatile GnRH activating pituitary LH/FSH, which drive gonadal androgen/estradiol production, which feeds back negatively on the axis.</p>\n<h3>Normal timing</h3>\n<p>In girls the sequence is thelarche (first sign) &rarr; growth spurt (Tanner II-III) &rarr; pubarche &rarr; menarche, with normal onset between ages 8-13 and menarche averaging 2.5 years after thelarche. In boys, testicular volume &gt;3 mL is the first sign, followed by penile growth, pubarche, a later growth spurt (Tanner III-IV, around testicular volume 10-12 mL), voice change, and facial hair, with normal onset between ages 9-14. Because boys start later, they accrue more prepubertal growth and end up taller; pubarche should never be used to mark puberty's onset in either sex, since it reflects adrenal, not gonadal, activity.</p>\n<h3>Delayed puberty</h3>\n<p>Defined as no pubertal signs by age 13 (girls) or 14 (boys). CDGP - a normal variant with delayed bone age and a strong family history - is the most common cause overall, especially in boys. True hypogonadism splits by where the defect sits: <strong>primary (hypergonadotropic)</strong> hypogonadism has a failing gonad, so LH/FSH run high while sex steroids stay low (Turner syndrome in girls; Klinefelter syndrome, 47,XXY, the most common cause of testicular failure, in boys). <strong>Secondary (hypogonadotropic)</strong> hypogonadism has a hypothalamic-pituitary problem, so LH/FSH and sex steroids are both low - causes include CNS tumours/trauma/radiation, Kallmann syndrome (isolated gonadotropin deficiency with anosmia), and functional causes like chronic illness, eating disorders/excessive exercise, or hyperprolactinemia.</p>\n<div class=\"data-table\"><table><thead><tr><th></th><th>LH/FSH</th><th>Sex steroids</th><th>Defect location</th></tr></thead><tbody>\n<tr><td>Primary (hypergonadotropic)</td><td class=\"num\">High</td><td class=\"num\">Low</td><td>Gonad itself</td></tr>\n<tr><td>Secondary (hypogonadotropic)</td><td class=\"num\">Low</td><td class=\"num\">Low</td><td>Hypothalamus/pituitary</td></tr>\n</tbody></table></div>\n<h3>Precocious puberty</h3>\n<p>Defined as onset before age 8 (girls) or 9 (boys). Benign variants - isolated premature thelarche (6 months-2 years, no growth acceleration) and isolated premature pubarche (ages 6-8, from a physiologic adrenal androgen rise, and a later risk marker for insulin resistance/PCOS) - progress slowly and aren't true precocious puberty. Pathological precocious puberty splits into <strong>central (CPP, GnRH-dependent)</strong>, where the whole HPG axis fires early (mostly idiopathic in girls; in boys usually not idiopathic and needs CNS workup), and <strong>peripheral (PPP, GnRH-independent)</strong>, where a rogue steroid source acts without the axis - ovarian cysts/tumours, McCune-Albright syndrome (precocious puberty plus polyostotic fibrous dysplasia plus caf&eacute;-au-lait spots, from a GNAS1 mutation), testicular Leydig cell tumours, or congenital adrenal hyperplasia (Module 6).</p>\n<div class=\"callout\"><strong>The alarm firing early vs. someone bypassing it.</strong> Central precocious puberty is the whole HPG alarm system going off ahead of schedule; peripheral precocious puberty is a rogue steroid source setting off the downstream effects without ever touching the alarm.</div>\n<h3>Diagnostic approach</h3>\n<p>Random LH &gt;0.3 mIU/L suggests central activation, but a low random LH doesn't rule it out because secretion is pulsatile - the GnRH stimulation test is the gold standard, with a peak LH &gt;5 mIU/L confirming CPP. In boys, bilaterally enlarged testes (&ge;4 mL) point to central causes (LH is driving both gonads), while virilization with small testes points to a peripheral androgen source. Treatment of CPP uses GnRH analogs: continuous (rather than pulsatile) receptor exposure down-regulates pituitary gonadotroph receptors, arresting puberty, preserving adult height potential, and supporting psychosocial well-being.</p>\n", "quiz": [{"stem": "A 12-year-old boy has bilateral testicular enlargement (5 mL) along with pubic hair and a growth spurt. This pattern of BILATERAL testicular enlargement most supports which mechanism?", "opts": ["A peripheral (GnRH-independent) source of androgen", "Central precocious puberty, since LH is driving both gonads together", "Klinefelter syndrome", "Isolated premature adrenarche"], "correct": 1, "explain": "Bilateral testicular enlargement reflects LH acting on both gonads together, which is the hallmark of central (GnRH-dependent) precocious puberty. A peripheral androgen source (e.g., an adrenal or testicular tumor) instead causes virilization signs WITHOUT testicular enlargement, since the gonads aren't being driven by LH."}, {"stem": "A girl has high LH and FSH but low estradiol. Where is the defect most likely located?", "opts": ["The hypothalamus", "The anterior pituitary", "The gonad itself", "There is no defect - this is a normal pattern"], "correct": 2, "explain": "High gonadotropins with low sex steroids is the primary (hypergonadotropic) hypogonadism pattern: the gonad has failed and can no longer provide the negative feedback that would normally keep LH/FSH in check, so they rise. A hypothalamic or pituitary defect would instead produce LOW LH/FSH (secondary hypogonadism)."}, {"stem": "Which is the most common overall cause of delayed puberty, particularly in boys?", "opts": ["Klinefelter syndrome", "Kallmann syndrome", "Constitutional delay of growth and puberty (CDGP)", "Turner syndrome"], "correct": 2, "explain": "CDGP - a normal variant with delayed bone age tracking height-age, a strong family history of 'late bloomers,' and eventual catch-up - is the single most common cause of delayed puberty overall, especially in boys. Klinefelter and Turner syndromes are genetic causes of primary hypogonadism but are less common than CDGP as a cause of delay."}]}, {"id": "pituitary-disease", "title": "Clinical Pituitary Gland Disease", "instructor": "Stan Van Uum", "duration": "~71 min", "tags": [{"label": "Cross-refs Module 5", "cls": "mcc"}], "body": "\n<p>Every pituitary problem gets worked up along two parallel tracks: mass effect (visual field defect, diplopia, headache, apoplexy) and hormonal effect (which axis is under- or over-active). This module walks that framework through three index cases.</p>\n<h3>Anterior pituitary insufficiency</h3>\n<p>A 53-year-old man with an incidental pituitary mass, headaches, blurred vision, weight loss, cold intolerance, decreased shaving, and low libido illustrates the pattern: his optic chiasm compression produced a <strong>bitemporal</strong> visual field defect (the crossing nasal retinal fibres are compressed from below by an expanding sellar mass), and each hormonal axis was affected to a different degree. His labs showed low cortisol with an inappropriately normal ACTH-driven response, low Free T4 with a TSH that failed to rise appropriately (TSH is an excellent screening test for <em>primary</em> thyroid disease but useless for secondary disease - Free T4 must be read directly), low testosterone with low LH/FSH, and low GH/IGF-1. Diagnosis often needs dynamic testing (insulin tolerance test: inducing hypoglycemia below 2.4 mmol/L should normally raise both cortisol and GH; failure to rise confirms deficiency). Treatment follows a strict sequence: replace cortisol <em>before</em> thyroid hormone, since starting levothyroxine first accelerates cortisol metabolism and can precipitate an adrenal crisis.</p>\n<h3>Cushing's disease</h3>\n<p>A 26-year-old woman with lifelong weight problems, progressive hirsutism unresponsive to spironolactone, easy bruising, pink striae, and proximal muscle weakness illustrates the two-stage diagnostic logic: first establish hypercortisolism, then localize its ACTH-dependence. Screening uses two of three tests - 24-hour urine free cortisol, 1 mg overnight dexamethasone suppression, and late-night salivary/plasma cortisol - since no single test is definitive and pseudo-Cushing states (obesity, PCOS, depression, alcoholism) cause false positives. A suppressed ACTH means an adrenal source; a normal-or-high ACTH means ACTH-dependent disease (pituitary \"Cushing's disease\" or ectopic secretion). This patient's failed suppression test and elevated ACTH pointed to a pituitary microadenoma, confirmed at surgery; post-operative steroid replacement is mandatory since the contralateral gland is suppressed and abrupt withdrawal risks adrenal crisis.</p>\n<div class=\"callout\"><strong>Untreated Cushing's disease carries under 50% five-year survival</strong>, mostly from cardiovascular complications - which is why the two-stage diagnostic algorithm exists: confirm cortisol excess, then find its source.</div>\n<h3>Prolactinoma / hyperprolactinemia</h3>\n<p>Dopamine is the principal tonic inhibitor of prolactin secretion, so anything that interrupts dopamine signalling raises prolactin - most often a prolactinoma (95% are microadenomas in women; macroadenomas predominate in men), but also dopamine-antagonist drugs, hypothyroidism, or stalk compression. The mechanism that matters clinically: prolactin inhibits GnRH, suppressing LH/FSH and therefore estrogen/testosterone - a secondary hypogonadism picture. A representative 28-year-old with 8 months of irregular periods and galactorrhea had prolactin 140 &micro;g/L (normal &lt;23), low-normal LH/FSH, and low estradiol - the classic pattern. Prolactin level tracks severity: mild elevation shortens the luteal phase; &gt;100 causes overt hypogonadism. Dopamine agonists (bromocriptine, cabergoline) are first-line treatment; surgery is reserved for those who don't respond or tolerate them.</p>\n", "quiz": [{"stem": "A patient with panhypopituitarism has a TSH of 4.1 (within the lab's 'normal' reference range) but a Free T4 well below normal. What does this combination indicate?", "opts": ["Primary hypothyroidism", "Secondary (pituitary/hypothalamic) hypothyroidism, since a diseased pituitary can't mount an appropriate TSH rise", "Normal thyroid function - the TSH is normal", "TSH-secreting pituitary adenoma"], "correct": 1, "explain": "TSH is a reliable screening test only for PRIMARY thyroid disease. In secondary (pituitary) disease, TSH can be 'inappropriately normal' despite a low Free T4, because the diseased pituitary cannot generate the compensatory TSH rise a healthy gland would. Free T4 must be interpreted directly rather than relying on TSH."}, {"stem": "In a patient with confirmed panhypopituitarism who needs both cortisol and thyroid hormone replacement, what is the correct sequencing principle?", "opts": ["Start levothyroxine first to correct the metabolic rate before addressing cortisol", "Start cortisol replacement before starting levothyroxine", "It doesn't matter which is started first", "Start both simultaneously at full dose"], "correct": 1, "explain": "Starting thyroid hormone before cortisol replacement can precipitate an adrenal crisis, because levothyroxine accelerates cortisol metabolism/clearance. Adrenal insufficiency must always be treated first in combined pituitary hormone deficiency."}, {"stem": "A patient with a prolactinoma has irregular periods and a low estradiol level. What is the mechanism connecting the elevated prolactin to the reproductive symptoms?", "opts": ["Prolactin directly destroys ovarian follicles", "Prolactin inhibits GnRH secretion, suppressing LH/FSH and therefore estrogen production", "Prolactin competes with estrogen for its receptor", "Prolactin causes primary ovarian failure"], "correct": 1, "explain": "Elevated prolactin inhibits hypothalamic GnRH secretion, which suppresses pituitary LH (and to some extent FSH) release; the resulting low/normal LH and FSH produce low estrogen - a secondary (hypogonadotropic) hypogonadism pattern, not direct ovarian damage."}]}, {"id": "adrenal-disease", "title": "Clinical Adrenal Gland Disease", "instructor": "Stan Van Uum", "duration": "~61 min", "tags": [{"label": "Cross-refs Modules 4 &amp; 6", "cls": "mcc"}], "body": "\n<p>The adrenal cortex has three zones, each with its own product: <strong>glomerulosa</strong> (mineralocorticoids/aldosterone), <strong>fasciculata</strong> (glucocorticoids/cortisol), and <strong>reticularis</strong> (androgens) - three floors of one factory. The cortex runs on the HPA stress axis (CRH &rarr; ACTH &rarr; cortisol, with cortisol feeding back negatively), secreting cortisol in a diurnal rhythm peaking in the morning.</p>\n<h3>Adrenal insufficiency</h3>\n<p><strong>Primary</strong> adrenal insufficiency (Addison's disease, 80-90% autoimmune in the West) is the factory itself failing - it can't make glucocorticoids <em>or</em> mineralocorticoids, so labs show low Na, high K, acidosis, high ACTH, and low aldosterone. <strong>Secondary</strong> adrenal insufficiency is the factory losing its manager's orders (a hypothalamic/pituitary problem) - aldosterone is preserved because it's mostly renin-angiotensin-driven rather than ACTH-driven, so the electrolyte picture is much milder. Screening uses an 6-9 AM cortisol: below 80 nmol/L is diagnostic, above 450 rules it out; the cosyntropin (ACTH) stimulation test (rise above 450 is normal) is highly sensitive for primary but less so for secondary disease. Acute adrenal crisis is treated with IV fluids and hydrocortisone 100 mg bolus then 50-100 mg every 6-8 hours; chronic maintenance uses daily hydrocortisone/prednisone plus fludrocortisone (usually unnecessary in secondary disease), with patients taught to triple their dose for 3 days during illness (\"rule of 3s\") and to carry an emergency injectable kit.</p>\n<h3>Primary hyperaldosteronism</h3>\n<p>Present in 5-10% of hypertensive patients - suspect it with resistant hypertension, unexplained hypokalemia, or an adrenal incidentaloma. Because aldosterone production becomes autonomous (no longer renin-dependent), renin is characteristically low while aldosterone is high, so the aldosterone-to-renin ratio (ARR) is the screening test; failure to suppress aldosterone on a saline infusion or fludrocortisone suppression test confirms autonomy, and CT plus adrenal vein sampling localizes a unilateral source for possible adrenalectomy.</p>\n<h3>Pheochromocytoma and the adrenal incidentaloma</h3>\n<p>Catecholamine-secreting tumours of the adrenal medulla (or extra-adrenal paraganglia) are rare but dangerous. Spells classically bring headache, palpitations, and sweating; fractionated plasma free metanephrines are the best initial test (sensitivity 99%). About 30-40% cluster with familial syndromes (MEN2, VHL, NF1, SDH mutations). The single most important safety rule: <strong>alpha-blockade must always precede beta-blockade</strong> - giving a beta-blocker first leaves alpha-adrenergic vasoconstriction unopposed and can trigger a hypertensive crisis; image-guided biopsy is contraindicated until pheochromocytoma is biochemically excluded. For any adrenal incidentaloma (found in 2-3% of adults over 50), the work-up must screen all three hormone classes - cortisol, aldosterone, and catecholamines - since roughly 5% each turn out to be a Cushing's or pheochromocytoma source.</p>\n<div class=\"callout\"><strong>Alpha before beta, always.</strong> In suspected pheochromocytoma, starting a beta-blocker before alpha-blockade is established removes the one brake holding blood pressure down and can precipitate a hypertensive crisis.</div>\n<h3>Cushing syndrome - the adrenal angle</h3>\n<p>Same screening logic as Module 4's pituitary discussion (two positive tests among 24-hour urine cortisol, overnight DST, and late-night cortisol), but here the point is that in an autonomous adrenal cortisol-secreting tumour, cortisol fails to suppress with dexamethasone because the tumour's secretion runs independent of the (already-suppressed) pituitary-adrenal axis - distinguishing it from ACTH-dependent (pituitary or ectopic) disease.</p>\n", "quiz": [{"stem": "A patient with adrenal insufficiency has low sodium and high potassium, but ANOTHER patient with adrenal insufficiency has near-normal electrolytes. What best explains the difference?", "opts": ["The first patient has secondary AI and the second has primary AI", "The first patient has primary AI (aldosterone deficient) and the second has secondary AI (aldosterone preserved, since it's largely renin-driven)", "Electrolytes are unrelated to the type of adrenal insufficiency", "The second patient does not actually have adrenal insufficiency"], "correct": 1, "explain": "Primary adrenal insufficiency knocks out both cortisol and aldosterone, producing the classic hyponatremia/hyperkalemia pattern. Secondary AI spares aldosterone (it's mainly renin-angiotensin driven, not ACTH-driven), so electrolytes stay comparatively preserved - the key discriminator between the two."}, {"stem": "In a patient with suspected pheochromocytoma who needs blood pressure control before surgery, what is the critical safety rule for starting medication?", "opts": ["Beta-blockade must be started before alpha-blockade", "Alpha-blockade must be started before beta-blockade", "Both should be started at the same time for fastest effect", "Neither is needed until after surgery"], "correct": 1, "explain": "Starting a beta-blocker before adequate alpha-blockade removes beta-2-mediated vasodilation while leaving alpha-mediated vasoconstriction unopposed, which can precipitate a hypertensive crisis. Alpha-blockade must always be established first."}, {"stem": "A patient has hypertension, hypokalemia, and a low plasma renin with a high aldosterone level. What does the LOW renin indicate?", "opts": ["Aldosterone production has become autonomous and is no longer renin-dependent", "The patient has secondary hyperaldosteronism from renal artery stenosis", "This pattern indicates adrenal insufficiency", "Renin and aldosterone are always low together and this is a normal finding"], "correct": 0, "explain": "In primary hyperaldosteronism, the adrenal gland secretes aldosterone autonomously rather than in response to the renin-angiotensin system, so renin is suppressed (low) while aldosterone stays high - the opposite pattern from secondary hyperaldosteronism, where renin would be elevated."}]}, {"id": "disorders-sexual-differentiation", "title": "Disorders of Sexual Differentiation", "instructor": "Robby Stein", "duration": "~40 min", "tags": [{"label": "Cross-refs Modules 5 &amp; 8", "cls": "mcc"}], "body": "\n<p>A Disorder of Sexual Development (DSD) is a phenotype abnormal enough to create uncertainty about sex assignment at birth - occurring in about 1 in 4,500 births, and characterized by a discrepancy among karyotype, gonadal histology, and internal/external genital morphology. Not every DSD presents with ambiguous genitalia at birth; some present later as abnormal pubertal development. Management is always multidisciplinary. (This module covers sexual <em>development</em>, not gender identity or orientation - see Module 7 for that.)</p>\n<h3>The newborn evaluation</h3>\n<p>Baby A.H., initially called male, was flagged at 4 days old: a 3 cm phallus, fused/rugated labio-scrotal folds, a single urogenital opening, and no palpable gonads. Communication with parents uses neutral anatomic terms - \"gonads,\" \"phallus,\" \"labio-scrotal folds\" - rather than presuming male or female language, while investigations (karyotype, pelvic/abdominal ultrasound) proceed.</p>\n<h3>Classification</h3>\n<p>46,XY DSD means testes are present but external genitalia are incompletely virilized - from disorders of testicular development, defects in testosterone biosynthesis or 5-alpha-reductase (impaired testosterone-to-DHT conversion, sparing temporal hair recession and acne since those need DHT specifically), deficient AMH action, or androgen insensitivity. 46,XX DSD means ovaries are present but genitalia are virilized - overwhelmingly due to congenital adrenal hyperplasia (CAH), with androgen-secreting tumours and transplacental maternal androgen exposure as rarer causes.</p>\n<h3>Congenital adrenal hyperplasia</h3>\n<p>Think of cortisol synthesis as an assembly line partially blocked partway down: 21-hydroxylase deficiency (about 95% of CAH, autosomal recessive, 1:10,000 births) backs precursors up into the androgen pathway, producing androgen excess alongside cortisol (and often aldosterone) deficiency, while lost cortisol feedback drives ACTH up and the adrenal cortex hyperplasies - the disease's namesake. Three clinical forms track residual enzyme activity: salt-wasting (&lt;1% activity, both glucocorticoid and mineralocorticoid deficient, 75% of cases, presenting with a salt-losing crisis at 1-3 weeks of age), simple virilizing (1-5% activity, cortisol deficient but no significant salt loss), and non-classic/late-onset (mild mutation, presenting later as premature pubarche or, at puberty, hirsutism/acne/oligomenorrhea that mimics PMOS/PCOS - Module 10's key differential). Diagnosis rests on a markedly elevated 17-hydroxyprogesterone. Affected girls show clitoral hypertrophy and labial fusion at birth; affected boys look normally male (just enlarged penis/pigmented scrotum) and are easily missed unless a salt-wasting crisis or newborn screening catches them. Lifelong management means glucocorticoid plus mineralocorticoid replacement, with stress dosing during illness exactly as in Module 5's adrenal insufficiency principles.</p>\n<div class=\"callout\"><strong>CAH as a blocked assembly line.</strong> When 21-hydroxylase can't finish the cortisol/aldosterone line, the precursors don't just disappear - they get shunted down the androgen branch instead, so the same enzyme block produces both a hormone deficiency and a hormone excess.</div>\n<h3>Gender assignment</h3>\n<p>ESPE/LWPES consensus: assignment doesn't require surgery, the evidence for specific interventions is limited, and only surgeons expert in complex genital reconstruction should be involved early. Outcome data guide counselling - 90% of virilized 46,XX CAH infants assigned female in infancy identify as female; 100% of complete androgen insensitivity infants assigned female identify as female; but in 5-alpha-reductase deficiency, endogenous virilization at puberty can override an infancy assignment, and outcomes are least predictable (25% report dissatisfaction) in incomplete androgen insensitivity or gonadal dysgenesis. Practical steps at birth: refer to a tertiary multidisciplinary centre, and delay naming/registering the birth until investigations are complete.</p>\n", "quiz": [{"stem": "A 46,XX infant with CAH shows genital virilization. What is the underlying hormonal mechanism?", "opts": ["Excess AMH production suppressing Mullerian duct development", "A steroidogenic enzyme block (usually 21-hydroxylase) shunts precursors into the androgen pathway while cortisol production falls", "Primary ovarian androgen-secreting tumor", "Deficient SRY gene expression"], "correct": 1, "explain": "In CAH, an enzyme block (most often 21-hydroxylase) prevents normal progression down the cortisol (and often aldosterone) pathway; the resulting precursor buildup gets shunted into the androgen synthesis pathway, producing virilization in a 46,XX fetus alongside cortisol deficiency and loss of ACTH feedback."}, {"stem": "Why are male infants with CAH more likely to be missed at birth than female infants with CAH?", "opts": ["Males never develop the salt-wasting form", "Male genitalia in CAH usually appear grossly normal (perhaps with penile enlargement/scrotal pigmentation), unlike the clitoral hypertrophy and labial fusion that flags females", "CAH does not affect males at all", "Males are always diagnosed prenatally"], "correct": 1, "explain": "Androgen excess doesn't produce an obviously abnormal genital exam in a 46,XY infant (who already makes androgens) the way it does in a 46,XX infant - so affected boys are easily missed unless a salt-wasting crisis occurs or newborn screening flags the diagnosis first."}, {"stem": "According to the outcome data discussed for gender assignment in DSD, which group shows the LEAST predictable long-term gender identity outcome regardless of assigned sex?", "opts": ["46,XX CAH infants assigned female", "Complete androgen insensitivity infants assigned female", "46,XY DSD with incomplete androgen insensitivity, androgen biosynthetic defects, or gonadal dysgenesis", "5-alpha-reductase deficiency infants assigned male at puberty"], "correct": 2, "explain": "46,XY DSD with incomplete androgen insensitivity, biosynthetic defects, or gonadal dysgenesis showed the least predictable outcomes, with about 25% reporting gender dissatisfaction regardless of which sex was assigned - contrasted with the much more predictable outcomes in CAH (90% female) and complete androgen insensitivity (100% female)."}]}, {"id": "transgender-medicine", "title": "Introduction to Transgender Medicine", "instructor": "Stan Van Uum &amp; Robby Stein", "duration": "~44 min", "tags": [], "body": "\n<p>Four terms that are often conflated but describe distinct axes: <strong>sex</strong> is biological status (chromosomes, gonads, genitalia - including DSD, Module 6); <strong>gender</strong> is the psychological attitudes/behaviours associated with being male or female; <strong>gender identity</strong> is a person's own articulation of their gender (cisgender, transgender, gender non-conforming); and <strong>sexual orientation</strong> - who someone is attracted to - is a separate axis entirely from gender identity. Gender dysphoria describes the distress of a body/assigned gender incongruent with one's gender identity. In Canada, 1 in 300 people 15+ identify as transgender or non-binary (2022 census); pediatric surveys put the adolescent figure at 1.2-4.1%.</p>\n<h3>The pediatric pathway</h3>\n<p>Assessment uses graduated, age-appropriate questions moving from general (\"have you ever felt you were born in the wrong body?\") to specific (persistence over time, gender-non-conforming play preferences, sources of distress). Mental health stakes are high but strongly modifiable: suicidality runs 2-3x general-population rates, with 47% of Ontario trans youth reporting suicidal ideation and 19% a prior attempt - but that risk swings from 4% with a supportive family to 60% without one, the single largest modifiable factor identified. Youth who receive appropriate multidisciplinary gender-affirming care (hormonal therapy, surgery when indicated, mental health support) have outcomes similar to the general population.</p>\n<div class=\"callout\"><strong>Family support is the single largest modifiable risk factor identified</strong> for suicidality in transgender youth (4% vs. 60%) - larger than any single clinical intervention discussed in this module.</div>\n<h3>A staged treatment ladder, by reversibility</h3>\n<p>Puberty blockers (fully reversible) \"pause\" puberty, buying time to assess persistence of gender identity without irreversible physical changes; they require Tanner stage 2 development, a long-standing history of dysphoria that worsened with puberty onset, and informed consent - and open a fertility-preservation conversation that should happen before hormones start, since preservation requires being off hormones with 1-2 normal cycles, a real practical barrier. Gender-affirming hormone therapy (partially reversible - testosterone or estrogen) typically starts around age 16 once persistence is confirmed. Surgery (irreversible) waits for legal age of majority plus at least a year living in the affirmed gender role, though \"top surgery\" may come somewhat earlier with a year of hormone therapy.</p>\n<div class=\"data-table\"><table><thead><tr><th>Regimen</th><th>Permanent benefits</th><th>Permanent risks</th></tr></thead><tbody>\n<tr><td>Testosterone (masculinizing)</td><td>Hair growth, height, bone mineral content, voice, clitoral enlargement</td><td>Male-pattern balding</td></tr>\n<tr><td>Estrogen (feminizing)</td><td>Breast development, bone mineral content</td><td>Breast cancer risk, decreased adult height</td></tr>\n</tbody></table></div>\n<h3>The adult endocrinologist's role</h3>\n<p>WPATH's four criteria for starting hormone therapy: persistent well-documented dysphoria; capacity for informed consent; legal age of majority (with a separate pediatric pathway below that); and reasonably well-controlled co-existing medical/mental health concerns. The endocrinologist supports diagnosis and treatment but isn't necessarily the one making a psychiatric diagnosis. Hormone therapy has two goals - reducing the birth-sex hormone's effects and replacing hormones consistent with gender identity, using the same principles as any hypogonadism replacement - with testosterone deliverable by injection (every 2-4 weeks, \"roller coaster\" fluctuation but easy compliance tracking), transdermal patch (daily, harder to verify compliance), or oral (2-3x daily, levels can't be monitored this route). Reproductive options must be discussed before hormones begin, and surgical referral in Ontario requires support from two health care providers.</p>\n", "quiz": [{"stem": "A clinician is trying to distinguish a patient's gender identity from their sexual orientation. Which statement correctly separates these two concepts?", "opts": ["Gender identity and sexual orientation are the same axis and cannot be separated", "Gender identity is an individual's own articulation of their gender; sexual orientation refers to the sex of those a person is attracted to - two distinct axes", "Sexual orientation determines a person's gender identity", "Gender identity only applies to transgender individuals"], "correct": 1, "explain": "Gender identity (cisgender, transgender, gender non-conforming, etc.) and sexual orientation (heterosexual, gay/lesbian, bisexual, etc.) are explicitly distinct axes - a person's gender identity does not determine or predict their sexual orientation."}, {"stem": "According to the data discussed on suicidality risk in transgender youth, what is the single largest modifiable factor identified?", "opts": ["Access to puberty blockers alone", "Family support - suicidal ideation/attempt rates differ dramatically between supportive (4%) and non-supportive (60%) families", "Age at which hormone therapy is started", "Geographic location"], "correct": 1, "explain": "The data cited showed a striking difference in suicide risk based on family support (4% with a supportive family vs. 60% without), identified as the single largest modifiable risk factor - larger than the effect size of any specific clinical intervention discussed."}, {"stem": "Why is fertility preservation counseling recommended to occur BEFORE starting puberty blockers or hormone therapy, rather than after?", "opts": ["Fertility preservation is only possible before any hormonal intervention and while adolescents are prepubertal", "Puberty blockers pause pubertal development, and hormone therapy causes changes that can affect fertility, while preservation itself requires being off hormones with normal menstrual cycles - a practical barrier best addressed proactively", "Fertility preservation is covered by insurance only before treatment begins", "There is no actual reason for the timing - it is arbitrary"], "correct": 1, "explain": "Fertility preservation (e.g., oocyte preservation) requires the adolescent to be off hormones with 1-2 normal menstrual cycles - a significant practical and sometimes traumatic barrier - so the discussion needs to happen proactively before puberty blockers or hormone therapy are started, when that option is still straightforward to access."}]}, {"id": "female-tract-development", "title": "Development of the Female Reproductive Tract", "instructor": "Charys Martin", "duration": "~39 min", "tags": [{"label": "Cross-refs Modules 6 &amp; 9", "cls": "mcc"}], "body": "\n<p>Genetic sex is fixed at fertilization, but phenotypic sex depends on a molecular switch: every embryo looks identical until primordial germ cells reach the gonadal ridge. The <strong>SRY</strong> gene on the Y chromosome produces testis-determining factor, a transcription factor that redirects development toward the male pathway. Without SRY, female anatomy develops by default - female is the default setting; male development requires an active instruction set (echoing Module 1's kisspeptin-as-ignition-switch framing, here applied to sex determination rather than pubertal timing). The urogenital system develops last of all body systems: an indifferent stage runs weeks 4-7, sexual distinction is visible by week 12, and ultrasound can routinely detect phenotypic sex by weeks 16-20.</p>\n<h3>The indifferent stage - two parallel duct systems</h3>\n<p>Primordial germ cells migrate from the yolk sac to the gonadal ridge during weeks 4-6; if they fail to arrive, the gonad simply doesn't develop, since these cells actively induce gonadal differentiation. Two paired duct systems form in both sexes initially, like two parallel construction projects where only one crew keeps working: the <strong>mesonephric (Wolffian)</strong> ducts, which become the male genital tract but degenerate in females; and the <strong>paramesonephric (M&uuml;llerian)</strong> ducts, which become the uterus and upper vagina in females but degenerate in males.</p>\n<h3>Female-specific development</h3>\n<p>Without testosterone, the mesonephric ducts regress in females, leaving only vestigial remnants along the broad ligament - the epo&ouml;phoron, paro&ouml;phoron, and <strong>Gartner's duct</strong> (which can occasionally form clinically relevant cysts). Without AMH, the paramesonephric ducts persist: cranially they become the fallopian tubes, and caudally they fuse into the uterovaginal primordium, forming the uterus, cervix, and upper third of the vagina. That primordium induces the urogenital sinus to form sinovaginal bulbs, which fuse and canalize into the lower two-thirds of the vagina, separated from the outside by the hymen until it ruptures perinatally.</p>\n<div class=\"data-table\"><table><thead><tr><th>Anomaly</th><th>Embryologic basis</th></tr></thead><tbody>\n<tr><td>Vaginal agenesis (uterus usually also absent)</td><td>Sinovaginal bulbs never form (no uterovaginal primordium to induce them)</td></tr>\n<tr><td>Vaginal atresia</td><td>Vaginal plate forms but fails to canalize</td></tr>\n<tr><td>Uterus didelphys</td><td>Failure of paramesonephric ducts to fuse caudally</td></tr>\n<tr><td>Septate uterus</td><td>Ducts fuse, but the septum fails to resorb</td></tr>\n<tr><td>Bicornuate / unicornuate uterus</td><td>Failure of fusion / failure of one duct to develop</td></tr>\n</tbody></table></div>\n<h3>Ovarian descent and external genitalia</h3>\n<p>The gubernaculum draws the ovaries retroperitoneally down from the lumbar region into the pelvis, but - unlike the testes - they never enter the inguinal canal, which is why the ovary's blood supply, innervation, and lymphatic drainage all still trace back to their original lumbar-level origin (directly relevant to Module 9's vascular/lymphatic discussion). The gubernaculum's adult derivatives are the ligament of the ovary (cranial portion) and the round ligament of the uterus (caudal portion). Externally, the indifferent genital tubercle, urethral folds, and labioscrotal swellings look identical in both sexes through week 7; under estrogen, the female pathway keeps the urethral folds and labioscrotal swellings <em>separated</em> (becoming labia minora and majora respectively) rather than fusing them, while the genital tubercle elongates only slightly into the clitoris.</p>\n", "quiz": [{"stem": "Failure of primordial germ cells to migrate to the gonadal ridge during weeks 4-6 has what consequence for gonadal development?", "opts": ["The gonad still develops normally since germ cells are not required", "The gonad fails to develop, since primordial germ cells have an essential inductive influence on gonadal differentiation", "Only the testis fails to develop; the ovary is unaffected", "This only affects external genitalia, not the gonad itself"], "correct": 1, "explain": "Primordial germ cells exert an essential inductive influence on the developing gonad - if they fail to reach the gonadal ridge, the gonad does not develop into either an ovary or a testis, regardless of chromosomal sex."}, {"stem": "A patient is found to have vaginal agenesis. Why is the uterus USUALLY also absent in this condition?", "opts": ["The uterus and vagina develop from entirely separate, unrelated tissues", "The developing uterus (uterovaginal primordium) is what induces the sinovaginal bulbs to form in the first place, so if that primordium is absent, the vaginal plate never forms", "This is a coincidental, unrelated finding", "Vaginal agenesis always occurs after normal uterine development is complete"], "correct": 1, "explain": "The uterovaginal primordium (fused paramesonephric ducts) induces the urogenital sinus to form sinovaginal bulbs, which become the vaginal plate. If the primordium that does the inducing is absent, the sinovaginal bulbs - and therefore the vagina - typically fail to form as well, which is why the uterus is usually also absent in vaginal agenesis."}, {"stem": "Why do the ovaries' blood supply and lymphatic drainage trace back to the lumbar/aortic region rather than the pelvis, unlike most other pelvic organs?", "opts": ["The ovaries migrate through the inguinal canal just like the testes", "The ovaries descend retroperitoneally from their original lumbar-region origin but, unlike the testes, never enter the inguinal canal, so their vessels retain their original lumbar course", "Ovarian blood supply is unrelated to embryologic origin", "The ovaries develop directly in the pelvis and never migrate"], "correct": 1, "explain": "The ovaries descend from the lumbar region retroperitoneally via gubernacular traction, but unlike the testes they stop in the pelvis rather than continuing through the inguinal canal - so their vessels, lymphatics, and innervation retain the lumbar-level course established by their site of origin."}]}, {"id": "female-pelvis-anatomy", "title": "Anatomy of the Female Pelvis and Perineum", "instructor": "Charys Martin", "duration": "~3h workshop", "tags": [{"label": "Cross-refs Module 8", "cls": "mcc"}], "body": "\n<p>The uterus (fundus, body, isthmus, cervix; perimetrium/myometrium/endometrium) sits between bladder and rectum, normally anteverted and anteflexed. The uterine tubes run infundibulum (fimbriated, draped over the ovary) &rarr; ampulla (usual fertilization site) &rarr; isthmus &rarr; intramural segment. Ovaries hang off the posterior broad ligament by the mesovarium, ligament of the ovary, and suspensory ligament (carrying the ovarian vessels) - reflecting their lumbar embryologic origin from Module 8. The vagina's fornices surround the cervix, with the posterior fornix sitting near the rectouterine pouch (of Douglas), the most dependent point of the peritoneal cavity supine - clinically important for fluid/blood collection and posterior colpotomy access.</p>\n<h3>Support structures</h3>\n<p>The round ligament (Module 8's caudal gubernaculum derivative) mainly maintains anteversion rather than providing real structural support. The <strong>cardinal (Mackenrodt's) ligaments</strong> are the major support of the cervix/upper vagina and carry the uterine artery and ureter together - \"water under the bridge,\" and exactly why the ureter is at risk during hysterectomy. The <strong>uterosacral ligaments</strong> anchor the cervix posteriorly to the sacrum. The <strong>levator ani</strong> group forms a muscular hammock suspending the pelvic viscera; the perineal body is the central fibromuscular anchor point between vagina and anus, critical during childbirth. When these supports weaken (childbirth, aging, chronic raised intra-abdominal pressure), the result is pelvic organ prolapse - cystocele, rectocele, uterine prolapse, or vault prolapse after hysterectomy.</p>\n<h3>Vessels, lymphatics, and nerves</h3>\n<p>The uterine artery (a branch of the internal iliac) crosses over the ureter to reach the uterus and anastomoses with the ovarian artery, which instead arises directly from the aorta near the renal arteries - again reflecting lumbar origin. Venous drainage is asymmetric: the right ovarian vein drains to the IVC, the left to the left renal vein (mirroring testicular drainage). Lymphatics follow embryologic origin too: the ovary to para-aortic nodes, the uterine body mainly to external iliac/para-aortic nodes, the cervix to external iliac/internal iliac/obturator nodes, and the vulva/lower vagina specifically to superficial inguinal nodes - clinically important in staging vulvar cancer. Autonomic (visceral) pain from pelvic organs is poorly localized and referred along embryologic lines, while the somatic <strong>pudendal nerve</strong> (S2-S4) gives well-localized sensory/motor innervation to the perineum and pelvic floor.</p>\n<h3>Perineal fascial layers - nested compartments</h3>\n<p>The urogenital triangle contains the vulva (labia, clitoris, vestibule, Bartholin's and Skene's glands) plus three nested fascial layers that determine where fluid tracks: Colles' fascia is continuous with Scarpa's fascia and attaches firmly to the ischiopubic rami, creating a closed compartment - so extravasated urine or blood from a straddle injury tracks anteriorly into the labia/abdominal wall but is contained, unable to spread posteriorly or into the thighs. The anal triangle holds the anal canal, the fat-filled ischioanal fossae (a site for abscess tracking), and the pudendal (Alcock's) canal carrying the pudendal neurovascular bundle.</p>\n<div class=\"callout\"><strong>Fascial layers as nested compartments.</strong> Colles' fascia's firm attachments are exactly why extravasated fluid from a straddle injury has a predictable, contained path - anterior into the labia and abdominal wall, never posterior into the anal triangle or thighs.</div>\n<h3>Clinical anchor: RLQ pain in a 20-year-old woman</h3>\n<p>The right ovary/tube, appendix/cecum, terminal ileum, right ureter, and right psoas all sit in the RLQ, which is exactly why the differential is broad (ovarian cyst/torsion, ectopic pregnancy, appendicitis, ureteric colic). Ovarian/tubal visceral pain travels with the ovarian vessels back to T10-T11 (their embryologic lumbar level), so it's classically felt periumbilically or in the flank rather than precisely in the RLQ - the same is true of early appendiceal pain (T10) before somatic parietal peritoneal irritation sharpens and localizes it to the RLQ. This visceral-versus-somatic distinction is exactly why gynecologic and GI pain in this region can be so hard to tell apart on history and exam alone.</p>\n", "quiz": [{"stem": "During a hysterectomy, the ureter is at particular risk of injury within which ligament, where it passes directly beneath the uterine artery?", "opts": ["The round ligament", "The broad ligament's mesosalpinx", "The cardinal (Mackenrodt's) ligament", "The uterosacral ligament"], "correct": 2, "explain": "The cardinal ligament carries both the uterine artery and the ureter, with the ureter passing beneath the artery ('water under the bridge') - making this the classic site of ureteric injury during hysterectomy, when the uterine artery is clamped and divided."}, {"stem": "A 20-year-old woman has early ovarian pathology causing pain that is felt periumbilically rather than precisely over the right ovary. What explains this poor localization?", "opts": ["The ovary has no nerve supply at all", "Visceral afferents from the ovary travel with the ovarian vessels back to spinal levels (T10-T11) reflecting the ovary's embryologic lumbar origin, rather than its adult pelvic position", "The pain is actually somatic, not visceral", "This pattern only occurs in appendicitis, not ovarian disease"], "correct": 1, "explain": "Visceral pain from the ovary is carried by autonomic afferents that travel back to the spinal levels matching the ovary's embryologic origin near the developing kidney (T10-T11), not its adult pelvic location - so it is classically felt periumbilically/in the flank rather than precisely over the ovary, mirroring early appendiceal pain for the same embryologic reason."}, {"stem": "A patient sustains a straddle injury with urethral disruption. Extravasated urine is found tracking into the labia and lower abdominal wall, but NOT into the thighs or posteriorly into the anal triangle. What anatomical feature explains this specific pattern?", "opts": ["The pudendal canal directs all fluid anteriorly", "Colles' (superficial perineal) fascia is continuous with Scarpa's fascia and attaches firmly to the ischiopubic rami, creating a closed compartment that channels fluid anteriorly but contains it there", "The levator ani actively pumps fluid anteriorly", "This pattern is coincidental and has no anatomical basis"], "correct": 1, "explain": "Colles' fascia's firm attachment to the ischiopubic rami and the posterior edge of the perineal membrane creates a closed compartment continuous with Scarpa's fascia of the abdominal wall - so extravasated fluid is channeled anteriorly into the labia/abdominal wall but cannot spread posteriorly into the anal triangle or laterally into the thighs."}]}, {"id": "pmos-pcos", "title": "Polyendocrine Metabolic Ovarian Syndrome (PMOS/PCOS)", "instructor": "Hiba Hashmi", "duration": "e-learning module", "tags": [{"label": "Capstone", "cls": "mcc"}], "body": "\n<p>\"PMOS\" is this course's preferred term for what's more widely known as PCOS - the renaming reflects that the disorder is fundamentally polyendocrine and metabolic (ovarian, adrenal, and insulin signalling all involved), not simply a disease of \"polycystic ovaries.\" This is Week 3's capstone: it disrupts the normal HPO axis physiology from Module 1, its childhood precursor (premature adrenarche/pubarche) was flagged as a PCOS risk marker in Module 3, and non-classic CAH from Module 6 is its key mimic to exclude.</p>\n<h3>Diagnosis - the Rotterdam \"2 of 3\" checklist</h3>\n<p>A patient needs only two of three boxes ticked, not all three: (1) clinical/biochemical hyperandrogenism (hirsutism, acne, or elevated androgens); (2) ovulatory dysfunction (oligo/amenorrhea); (3) polycystic ovarian morphology on ultrasound. Ovarian morphology is only one of the three legs and is neither necessary nor sufficient alone.</p>\n<h3>Excluding the mimics</h3>\n<p>PMOS is a diagnosis of exclusion. Non-classic CAH (Module 6) mimics it closely with hirsutism/acne/oligomenorrhea - screen with 17-hydroxyprogesterone. Thyroid disease and hyperprolactinemia (Module 4) both cause menstrual irregularity independent of androgen status - screen with TSH and prolactin. Cushing's syndrome (Modules 4-5) overlaps substantially via hirsutism, central weight gain, and insulin resistance - screen when clinically suspected with an overnight dexamethasone suppression test, 24-hour urine cortisol, or late-night salivary cortisol. Rapid-onset or severe virilization instead suggests an androgen-secreting tumour and needs imaging rather than the standard panel. Total/free testosterone and DHEA-S quantify androgen excess and its likely source; pelvic ultrasound covers the third Rotterdam criterion; and once PMOS is confirmed, metabolic screening (fasting glucose/insulin or OGTT, lipids) becomes a standard, ongoing part of management, not just workup.</p>\n<div class=\"callout\"><strong>The 2-of-3 checklist.</strong> Like a form that only needs two of three boxes ticked, PMOS diagnosis doesn't require every criterion - hyperandrogenism plus ovulatory dysfunction, without classic ovarian morphology on ultrasound, still meets the Rotterdam definition once mimics are excluded.</div>\n<h3>Treatment, matched to the patient's goal</h3>\n<p>Lifestyle change (diet/exercise) is first-line - even 5-10% weight loss meaningfully improves ovulation, insulin sensitivity, and hyperandrogenic symptoms. Beyond that, no single medication covers every goal: combined oral contraceptives are first-line for cycle regulation and hyperandrogenism (estrogen raises SHBG, lowering free androgen, while providing regular withdrawal bleeds that protect the endometrium); metformin targets insulin resistance specifically; anti-androgens like spironolactone address hirsutism/acne not controlled by COCs alone; and ovulation induction agents (letrozole, clomiphene) are reserved for patients actively trying to conceive. Treatment selection follows the patient's stated priority - contraception, hirsutism, metabolic risk, or fertility.</p>\n<h3>Downstream implications</h3>\n<p>Three domains deserve ongoing attention beyond the initial diagnosis. <strong>Fertility</strong>: chronic anovulation is a leading infertility cause, managed with ovulation induction when pregnancy is desired. <strong>Metabolic risk</strong>: PMOS carries substantial insulin resistance independent of weight (though worse with obesity), raising lifetime risk of metabolic syndrome and type 2 diabetes. <strong>Endometrial risk</strong>: chronic anovulation means unopposed estrogen exposure without the cyclical progesterone-driven shedding that normally resets the endometrium each cycle (Module 1) - fertilizer without pruning - raising long-term endometrial hyperplasia/carcinoma risk, which is why patients not pursuing pregnancy still need regular withdrawal bleeding or endometrial protection. A fourth, often under-recognized domain runs through all three: body-image distress and elevated anxiety/depression rates deserve active screening alongside the reproductive and metabolic issues.</p>\n", "quiz": [{"stem": "A patient has hirsutism and oligomenorrhea but a NORMAL pelvic ultrasound (no polycystic ovarian morphology). Can she still meet Rotterdam criteria for PMOS/PCOS?", "opts": ["No - polycystic ovarian morphology on ultrasound is mandatory for diagnosis", "Yes - the Rotterdam criteria require only 2 of 3 features (hyperandrogenism, ovulatory dysfunction, ovarian morphology), and she already has 2", "No - only ovulatory dysfunction alone is ever sufficient", "Yes, but only if she also has an elevated 17-OHP"], "correct": 1, "explain": "The Rotterdam criteria require only 2 of the 3 features - hyperandrogenism, ovulatory dysfunction, and polycystic ovarian morphology - not all three. This patient already has hyperandrogenism (hirsutism) and ovulatory dysfunction (oligomenorrhea), which is sufficient once mimicking conditions have been excluded."}, {"stem": "Why do patients with PMOS/PCOS who are not trying to conceive still need regular withdrawal bleeding or another form of endometrial protection?", "opts": ["To prevent osteoporosis", "Chronic anovulation exposes the endometrium to unopposed estrogen without the cyclical progesterone-driven shedding that normally resets it, raising long-term endometrial hyperplasia/carcinoma risk", "To improve fertility even when pregnancy is not desired", "Withdrawal bleeding has no medical purpose in PMOS, only a psychological one"], "correct": 1, "explain": "Chronic anovulation means the endometrium is continually stimulated by estrogen without the periodic progesterone-driven secretory transformation and shedding that normally occurs each cycle - this 'unopposed estrogen' state raises long-term risk of endometrial hyperplasia and carcinoma, which is why regular withdrawal bleeding or another form of endometrial protection matters even for patients not seeking pregnancy."}, {"stem": "A patient with suspected PMOS has a markedly elevated 17-hydroxyprogesterone. What does this finding suggest, and why does it matter?", "opts": ["It confirms PMOS/PCOS directly and no further workup is needed", "It suggests non-classic congenital adrenal hyperplasia, a key condition that must be excluded before a PMOS diagnosis is made", "It indicates an androgen-secreting ovarian tumor", "It is an expected, unrelated finding in all PMOS patients"], "correct": 1, "explain": "17-hydroxyprogesterone screens specifically for non-classic (late-onset) CAH from 21-hydroxylase deficiency, which mimics PMOS closely (hirsutism, acne, oligomenorrhea) but has a different underlying mechanism (adrenal enzyme block) and different treatment implications - PMOS is a diagnosis of exclusion, so this mimic must be ruled out first."}]}];
+
+(function(){
+  var navlist = document.getElementById('navlist');
+  var content = document.getElementById('content');
+  var totalQ = 0;
+  MODULES.forEach(function(m){ totalQ += m.quiz.length; });
+  document.getElementById('progress-count').textContent = '0 / ' + totalQ;
+
+  var STORE_KEY = 'endo-hub-wk3-answers-v1';
+  var answered = {};
+  try {
+    var raw = localStorage.getItem(STORE_KEY);
+    if (raw) answered = JSON.parse(raw);
+  } catch(e) {}
+
+  function saveAnswered(){
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(answered)); } catch(e) {}
+  }
+
+  function correctCount(){
+    var n = 0;
+    Object.keys(answered).forEach(function(k){ if (answered[k] === 'correct') n++; });
+    return n;
+  }
+
+  function updateProgress(){
+    var c = correctCount();
+    document.getElementById('progress-count').textContent = c + ' / ' + totalQ;
+    document.getElementById('progress-fill').style.width = (totalQ ? (100 * c / totalQ) : 0) + '%';
+  }
+
+  function moduleAnsweredCount(m){
+    var n = 0;
+    m.quiz.forEach(function(q, i){
+      var key = m.id + '-' + i;
+      if (answered[key]) n++;
+    });
+    return n;
+  }
+
+  function markDot(m){
+    var dot = document.querySelector('.navlist a[href="#' + m.id + '"] .dot');
+    if (!dot) return;
+    var done = moduleAnsweredCount(m) === m.quiz.length && m.quiz.length > 0;
+    dot.classList.toggle('done', done);
+  }
+
+  // Build nav
+  MODULES.forEach(function(m, idx){
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + m.id;
+    a.innerHTML = '<span class="num">' + String(idx+1).padStart(2,'0') + '</span><span class="dot"></span><span>' + m.title + '</span>';
+    li.appendChild(a);
+    navlist.appendChild(li);
+  });
+
+  function renderQuiz(m){
+    var wrap = document.createElement('div');
+    wrap.className = 'quiz';
+
+    var head = document.createElement('div');
+    head.className = 'quiz-head';
+    head.innerHTML = '<span>Check yourself</span><span class="quiz-score" id="score-' + m.id + '"></span>';
+    wrap.appendChild(head);
+
+    var scoreEl = head.querySelector('.quiz-score');
+
+    var body = document.createElement('div');
+    body.className = 'quiz-body';
+
+    function updateModuleScore(){
+      var n = moduleAnsweredCount(m);
+      scoreEl.textContent = n + ' / ' + m.quiz.length + ' answered';
+    }
+
+    m.quiz.forEach(function(q, i){
+      var key = m.id + '-' + i;
+      var qd = document.createElement('div');
+      qd.className = 'q';
+      var stem = document.createElement('div');
+      stem.className = 'q-stem';
+      stem.textContent = (i+1) + '. ' + q.stem;
+      qd.appendChild(stem);
+
+      var opts = document.createElement('div');
+      opts.className = 'q-opts';
+
+      var explain = document.createElement('div');
+      explain.className = 'q-explain';
+      explain.innerHTML = '<strong>' + (q.explain.split(' ')[0]) + '</strong> ' + q.explain;
+
+      var alreadyAnswered = !!answered[key];
+
+      q.opts.forEach(function(optText, oi){
+        var btn = document.createElement('button');
+        btn.className = 'opt';
+        btn.innerHTML = '<span class="letter">' + String.fromCharCode(65+oi) + '</span><span>' + optText + '</span>';
+        if (alreadyAnswered) {
+          btn.disabled = true;
+          if (oi === q.correct) btn.classList.add('correct');
+          if (answered[key] === 'incorrect-' + oi) btn.classList.add('incorrect');
+        }
+        btn.addEventListener('click', function(){
+          if (btn.disabled) return;
+          var allOpts = opts.querySelectorAll('.opt');
+          allOpts.forEach(function(o){ o.disabled = true; });
+          if (oi === q.correct) {
+            btn.classList.add('correct');
+            answered[key] = 'correct';
+          } else {
+            btn.classList.add('incorrect');
+            allOpts[q.correct].classList.add('correct');
+            answered[key] = 'incorrect-' + oi;
+          }
+          explain.classList.add('shown');
+          saveAnswered();
+          updateProgress();
+          updateModuleScore();
+          markDot(m);
+        });
+        opts.appendChild(btn);
+      });
+
+      qd.appendChild(opts);
+      qd.appendChild(explain);
+      if (alreadyAnswered) explain.classList.add('shown');
+      body.appendChild(qd);
+    });
+
+    wrap.appendChild(body);
+    updateModuleScore();
+    return wrap;
+  }
+
+  MODULES.forEach(function(m, idx){
+    var sec = document.createElement('section');
+    sec.className = 'module';
+    sec.id = m.id;
+
+    var head = document.createElement('div');
+    head.className = 'module-head';
+    head.innerHTML = '<span class="module-num">' + String(idx+1).padStart(2,'0') + '</span><h2>' + m.title + '</h2>';
+    sec.appendChild(head);
+
+    var meta = document.createElement('div');
+    meta.className = 'module-meta';
+    var tagsHtml = '<span class="tag">' + m.instructor + '</span><span class="tag">' + m.duration + '</span>';
+    (m.tags || []).forEach(function(t){ tagsHtml += '<span class="tag ' + t.cls + '">' + t.label + '</span>'; });
+    meta.innerHTML = tagsHtml;
+    sec.appendChild(meta);
+
+    var bodyDiv = document.createElement('div');
+    bodyDiv.className = 'module-body';
+    bodyDiv.innerHTML = m.body;
+    sec.appendChild(bodyDiv);
+
+    var quizWrap = document.createElement('div');
+    quizWrap.className = 'module-body';
+    quizWrap.appendChild(renderQuiz(m));
+    sec.appendChild(quizWrap);
+
+    content.appendChild(sec);
+    markDot(m);
+  });
+
+  updateProgress();
+
+  // Active-link tracking on scroll
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.module'));
+  var links = Array.prototype.slice.call(document.querySelectorAll('.navlist a'));
+  function onScroll(){
+    var pos = window.scrollY + 120;
+    var current = sections[0];
+    sections.forEach(function(s){ if (s.offsetTop <= pos) current = s; });
+    links.forEach(function(l){ l.classList.toggle('active', l.getAttribute('href') === '#' + current.id); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Close mobile nav on link click
+  links.forEach(function(l){
+    l.addEventListener('click', function(){
+      document.getElementById('sidebar').classList.remove('open');
+    });
+  });
+})();
+</script>

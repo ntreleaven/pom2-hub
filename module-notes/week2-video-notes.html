@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 2 Video Notes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper: #f2f0e8;
+    --paper-raised: #fbfaf5;
+    --ink: #1e2a2e;
+    --ink-soft: #55625f;
+    --hairline: #d6d1c2;
+    --accent: #2c5f5a;
+    --accent-soft: #dce8e4;
+    --accent-ink: #163634;
+    --amber: #b5792c;
+    --amber-soft: #f3e6d2;
+    --good: #2f6b3e;
+    --good-soft: #dfeee1;
+    --shadow: 0 1px 2px rgba(30,42,46,.06), 0 8px 24px -12px rgba(30,42,46,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #171d1e; --paper-raised: #1f2729; --ink: #e9eae4; --ink-soft: #a5afab;
+      --hairline: #333e3f; --accent: #7bbbb0; --accent-soft: #223634; --accent-ink: #cdeae4;
+      --amber: #e0b06b; --amber-soft: #3a2f1a; --good: #7fc98d; --good-soft: #1e3324;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #171d1e; --paper-raised: #1f2729; --ink: #e9eae4; --ink-soft: #a5afab;
+    --hairline: #333e3f; --accent: #7bbbb0; --accent-soft: #223634; --accent-ink: #cdeae4;
+    --amber: #e0b06b; --amber-soft: #3a2f1a; --good: #7fc98d; --good-soft: #1e3324;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Public Sans', system-ui, sans-serif; -webkit-font-smoothing:antialiased; }
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  h1,h2,h3{ font-family:'Fraunces', Georgia, serif; text-wrap:balance; margin:0; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+  button{ font-family:inherit; cursor:pointer; }
+  textarea{ font-family:inherit; }
+
+  .shell{ max-width:900px; margin:0 auto; padding:0 24px 96px; }
+  .topbar{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:28px 24px 20px; max-width:900px; margin:0 auto; border-bottom:1px solid var(--hairline); }
+  .brand .kicker{ font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:600; }
+  .brand h1{ font-size:1.5rem; font-weight:600; margin-top:2px; }
+  .topstat{ text-align:right; font-family:'JetBrains Mono', monospace; font-size:.78rem; color:var(--ink-soft); }
+
+  .intro{ padding:28px 0 8px; max-width:620px; }
+  .intro p{ margin:8px 0 0; color:var(--ink-soft); line-height:1.55; font-size:.95rem; }
+
+  .group-heading{ display:flex; align-items:center; gap:12px; margin:32px 0 14px; }
+  .group-heading h2{ font-size:1.02rem; font-weight:600; white-space:nowrap; }
+  .group-heading .rule{ height:1px; background:var(--hairline); flex:1; }
+
+  .list{ display:flex; flex-direction:column; gap:10px; }
+  .row{
+    display:flex; align-items:center; gap:14px; text-align:left; width:100%;
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; box-shadow:var(--shadow); transition:border-color .12s ease, transform .12s ease;
+  }
+  .row:hover{ border-color:var(--accent); transform:translateY(-1px); }
+  .row .num{ font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--ink-soft); width:28px; flex-shrink:0; }
+  .row .body{ flex:1; min-width:0; }
+  .row h3{ font-size:1rem; font-weight:500; line-height:1.3; }
+  .row .meta{ font-size:.76rem; color:var(--ink-soft); margin-top:3px; font-family:'JetBrains Mono',monospace; }
+  .row .status{ flex-shrink:0; }
+  .pill{ font-family:'JetBrains Mono',monospace; font-size:.66rem; font-weight:600; padding:3px 9px; border-radius:99px; white-space:nowrap; }
+  .pill.empty{ background:var(--hairline); color:var(--ink-soft); }
+  .pill.started{ background:var(--amber-soft); color:var(--amber); }
+  .pill.done{ background:var(--good-soft); color:var(--good); }
+
+  .detail-header{ display:flex; align-items:center; gap:14px; padding:26px 0 4px; flex-wrap:wrap; }
+  .back-btn{ background:none; border:1px solid var(--hairline); border-radius:8px; padding:7px 12px; font-size:.82rem; color:var(--ink-soft); }
+  .back-btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .detail-title .kicker{ font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; font-weight:600; }
+  .detail-title h2{ font-size:1.3rem; font-weight:600; margin-top:2px; }
+  .runtime{ font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--ink-soft); }
+  .connects{ margin:14px 0 0; padding:10px 14px; background:var(--accent-soft); border-left:3px solid var(--accent); border-radius:6px; font-size:.85rem; color:var(--accent-ink); }
+
+  .obj-card{ margin-top:22px; background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow); }
+  .obj-card h3{ font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); font-weight:600; margin-bottom:10px; }
+  .obj{ display:flex; align-items:flex-start; gap:10px; padding:6px 0; font-size:.9rem; line-height:1.4; }
+  .obj input{ margin-top:3px; flex-shrink:0; width:16px; height:16px; accent-color:var(--accent); }
+  .obj label.checked{ color:var(--ink-soft); text-decoration:line-through; text-decoration-color:var(--hairline); }
+
+  .section-card{ margin-top:16px; background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow); }
+  .section-card .sh{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
+  .section-card h3{ font-size:1.02rem; font-weight:600; }
+  .section-card .tag{ font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--amber); background:var(--amber-soft); padding:2px 8px; border-radius:99px; white-space:nowrap; }
+  .section-card .hint{ font-size:.85rem; color:var(--ink-soft); margin:2px 0 10px; line-height:1.4; }
+  .section-card textarea{
+    width:100%; min-height:76px; resize:vertical; border:1px solid var(--hairline); border-radius:8px;
+    background:var(--paper); color:var(--ink); padding:10px 12px; font-size:.9rem; line-height:1.5;
+  }
+  .section-card textarea:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .section-card textarea::placeholder{ color:var(--ink-soft); opacity:.6; }
+
+  .detail-actions{ display:flex; gap:10px; justify-content:space-between; align-items:center; margin-top:24px; flex-wrap:wrap; }
+  .save-note{ font-size:.76rem; color:var(--ink-soft); font-family:'JetBrains Mono',monospace; }
+  .btn{ border:1px solid var(--hairline); background:var(--paper-raised); color:var(--ink); border-radius:8px; padding:10px 16px; font-size:.86rem; font-weight:500; }
+  .btn.primary{ background:var(--accent); color:var(--paper-raised); border-color:var(--accent); font-weight:600; }
+  .btn:hover{ border-color:var(--accent); }
+
+  [hidden]{ display:none !important; }
+  footer{ max-width:900px; margin:56px auto 0; padding:20px 24px 0; color:var(--ink-soft); font-size:.78rem; border-top:1px solid var(--hairline); }
+
+  @media print{
+    .topbar .topstat, .back-btn, .detail-actions, footer, #dashboard{ display:none !important; }
+    body{ background:#fff; color:#000; }
+    .section-card, .obj-card{ box-shadow:none; border:1px solid #ccc; break-inside:avoid; }
+    textarea{ border:1px solid #999 !important; }
+  }
+  @media (max-width:560px){
+    .topbar{ flex-direction:column; align-items:flex-start; gap:6px; }
+    .topstat{ text-align:left; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">P2 · Week 2 · Endocrinology &amp; Reproduction</span>
+    <h1>Video Notes</h1>
+  </div>
+  <div class="topstat">12 videos · fill in as you watch</div>
+</div>
+
+<main class="shell">
+
+  <section id="dashboard">
+    <div class="intro">
+      <p>An outline for each Video Overview, built from its own structure — same section order the video actually follows. Watch, pause at each heading, and jot the point before moving on. Notes save automatically in this browser.</p>
+    </div>
+    <div id="groups"></div>
+  </section>
+
+  <section id="detail" hidden>
+    <div class="detail-header">
+      <button class="back-btn" id="backBtn">&larr; All videos</button>
+      <div class="detail-title">
+        <div class="kicker" id="detKicker"></div>
+        <h2 id="detTitle"></h2>
+      </div>
+      <span class="runtime" id="detRuntime"></span>
+    </div>
+    <div class="connects" id="detConnects" hidden></div>
+
+    <div class="obj-card">
+      <h3>Learning objectives</h3>
+      <div id="objList"></div>
+    </div>
+
+    <div id="sectionList"></div>
+
+    <div class="detail-actions">
+      <span class="save-note" id="saveNote">Notes save automatically</span>
+      <div style="display:flex; gap:10px;">
+        <button class="btn" id="printBtn">Print this outline</button>
+        <button class="btn primary" id="nextBtn">Next video &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Week 2 study material · P2 Endocrinology &amp; Reproduction · for personal review use</footer>
+
+<script id="data" type="application/json">[{"id": "v1", "num": 1, "title": "Thyroid & Parathyroid Physiology", "group": "Thyroid & Parathyroid", "runtime": "6-9 min", "connects": "", "objectives": ["Define the role of thyroglobulin in thyroid function", "Describe synthesis and transport of thyroid hormones", "Explain thyroid hormone regulation and the role of pituitary TSH", "List physiological processes requiring calcium", "Describe the function and regulation of parathyroid hormone", "Describe vitamin D biosynthesis and its role in calcium metabolism"], "sections": [{"h": "Thyroid physiology", "tag": "iodine trap analogy", "p": "Iodine trap, thyroglobulin, hormone synthesis, transport, regulation by TSH"}, {"h": "Parathyroid & calcium physiology", "tag": "PTH's three target organs", "p": "Calcium's roles in the body, PTH regulation, vitamin D activation pathway"}, {"h": "Rapid-fire recap checklist", "tag": "", "p": "Run back through the learning objectives above \u2014 can you answer each one cold?"}]}, {"id": "v2", "num": 2, "title": "Hypothyroidism & Thyrotoxicosis", "group": "Thyroid & Parathyroid", "runtime": "7-10 min", "connects": "Builds on Video 1's physiology", "objectives": ["Describe how and when to screen for and confirm thyroid dysfunction", "Develop an initial workup/management plan for thyrotoxicosis", "Propose a treatment and monitoring plan for hypothyroidism"], "sections": [{"h": "Diagnostic framework", "tag": "the 6-pattern table \u2014 highest yield", "p": "TSH-first screening logic; the 6 TSH/FT4/FT3 patterns"}, {"h": "Thyrotoxicosis", "tag": "red-flag presentation", "p": "Differential, workup, treatment"}, {"h": "Hypothyroidism", "tag": "red-flag presentation", "p": "Differential, workup, treatment"}, {"h": "Take-home summaries", "tag": "", "p": "Write both closing summaries in your own words"}]}, {"id": "v3", "num": 3, "title": "Thyroid Masses \u2014 Diagnostic Approach", "group": "Thyroid & Parathyroid", "runtime": "7-9 min", "connects": "Sets up Video 4 (what the biopsy shows)", "objectives": ["Evaluate a thyroid nodule for risk of malignancy", "Justify when to refer for surgical consultation", "Propose follow-up for benign or successfully treated neoplasms"], "sections": [{"h": "Stability check", "tag": "", "p": "First step of the algorithm"}, {"h": "Differential", "tag": "mnemonic: VITAMIN C&D", "p": "Causes of a neck mass"}, {"h": "Risk factors", "tag": "", "p": "History features raising malignancy suspicion"}, {"h": "Clinical \u2192 Biochem \u2192 Imaging \u2192 FNAB sequence", "tag": "least invasive first", "p": "The stepwise workup order"}, {"h": "Bethesda system", "tag": "", "p": "FNA cytology categories"}, {"h": "Risk-adapted management", "tag": "worked cases: Akio, Kiaria", "p": "How risk level changes the plan"}]}, {"id": "v4", "num": 4, "title": "Thyroid Gland Pathology", "group": "Thyroid & Parathyroid", "runtime": "8-10 min", "connects": "Direct sequel to Video 3", "objectives": ["Describe how the pathology report drives diagnosis, staging, prognosis, management", "Distinguish benign/hyperplastic entities (MNG, Graves', Hashimoto's)", "Classify follicular-cell-derived neoplasms from adenoma through carcinoma types", "Explain why follicular lesions can't be called benign vs malignant on FNA alone", "Describe staging including the age-55 cutoff"], "sections": [{"h": "Normal histology", "tag": "", "p": "Baseline microscopic appearance"}, {"h": "Benign / hyperplastic entities", "tag": "", "p": "Multinodular hyperplasia, Graves', Hashimoto's"}, {"h": "Neoplasms, most \u2192 least differentiated", "tag": "follicular adenoma vs carcinoma \u2014 can't tell on FNA", "p": "Follicular adenoma \u2192 follicular ca \u2192 papillary ca \u2192 anaplastic ca \u2192 medullary ca"}, {"h": "Staging & pathology report elements", "tag": "age-55 cutoff", "p": "What the report tells you"}, {"h": "One-page summary", "tag": "", "p": "Framing case: 42F, FLUS/FNA, hemithyroidectomy \u2014 recap it end to end"}]}, {"id": "v5", "num": 5, "title": "Hyper- & Hypoparathyroidism", "group": "Thyroid & Parathyroid", "runtime": "8-10 min", "connects": "Clinical companion to Video 1's physiology", "objectives": ["Explain the differential diagnosis of hypercalcemia and hyperparathyroidism etiologies", "Describe the clinical presentation of primary hyperparathyroidism", "Explain the differential diagnosis of hypocalcemia and hypoparathyroidism etiologies", "Describe the clinical presentation of primary hypoparathyroidism", "Describe acute and chronic treatment for both, by etiology"], "sections": [{"h": "Calcium physiology & lab-value recap", "tag": "albumin-correction formula \u2014 work the example", "p": ""}, {"h": "Hypercalcemia", "tag": "PTH-mediated vs PTH-independent", "p": "Presentation, causes, featured case, acute + surgical treatment"}, {"h": "Hypocalcemia", "tag": "PTH-deficient vs PTH-resistant vs vitamin-D-deficient", "p": "Presentation, patterns, acute + chronic treatment"}, {"h": "Concept check", "tag": "loop vs thiazide diuretics", "p": "Which raises and which lowers calcium, and why"}]}, {"id": "v6", "num": 6, "title": "Calcium Homeostasis Drugs", "group": "Thyroid & Parathyroid", "runtime": "8-10 min", "connects": "Pairs with Video 8 (Osteoporosis)", "objectives": ["List forms of vitamin D and their metabolism/pharmacology", "Describe vitamin D's physiological/pharmacological actions and therapeutic uses", "Describe adverse effects of therapeutic vitamin D", "Explain mechanism and pharmacology of major antiresorptive/anabolic drug classes", "Describe adverse effects and contraindications of each class", "Compare and contrast the classes' advantages and disadvantages"], "sections": [{"h": "Vitamin D forms & pharmacology", "tag": "", "p": "Metabolism, uses, adverse effects"}, {"h": "Antiresorptive vs anabolic framework", "tag": "", "p": "The organizing split for everything that follows"}, {"h": "Bisphosphonates", "tag": "vs denosumab \u2014 reversibility & renal dependence", "p": "Mechanism, key pharmacology, adverse effects"}, {"h": "Denosumab", "tag": "vs bisphosphonates \u2014 reversibility & renal dependence", "p": "Mechanism, key pharmacology, adverse effects"}, {"h": "Teriparatide", "tag": "anabolic", "p": "Mechanism, key pharmacology, adverse effects"}, {"h": "Romosozumab", "tag": "anabolic", "p": "Mechanism, key pharmacology, adverse effects"}]}, {"id": "v7", "num": 7, "title": "Metabolic Bone Disease", "group": "Bone", "runtime": "8-10 min", "connects": "Three unrelated diseases \u2014 don't expect them to connect", "objectives": ["Describe the clinical presentation and management of osteomalacia", "Describe the clinical presentation and management of Paget's disease", "Describe the clinical presentation and management of osteogenesis imperfecta"], "sections": [{"h": "Osteomalacia", "tag": "pseudofractures \u2014 vs osteoporotic fractures", "p": "Pathophysiology \u2192 clinical features \u2192 investigations \u2192 treatment"}, {"h": "Paget's disease", "tag": "markedly high ALP, normal Ca/phosphate", "p": "Pathophysiology \u2192 clinical features \u2192 investigations \u2192 treatment"}, {"h": "Osteogenesis imperfecta", "tag": "Type 1 collagen gene mutation, blue sclerae", "p": "Pathophysiology \u2192 clinical features \u2192 investigations \u2192 treatment"}]}, {"id": "v8", "num": 8, "title": "Osteoporosis", "group": "Bone", "runtime": "9-11 min", "connects": "Applies Video 6's drug classes clinically", "objectives": ["Describe the definition, epidemiology, and treatment gap of osteoporosis", "Describe lifestyle and pharmacologic treatment options, indications, benefits, risks"], "sections": [{"h": "Definition, epidemiology, treatment gap", "tag": "", "p": ""}, {"h": "Lifestyle treatment", "tag": "", "p": ""}, {"h": "Pharmacologic therapy by class", "tag": "organized by fracture-site evidence", "p": ""}, {"h": "Sequencing rule", "tag": "anabolic THEN antiresorptive \u2014 high yield", "p": "Why the order matters"}, {"h": "ONJ / AFF risk", "tag": "", "p": "Which drugs, and when to worry"}, {"h": "Two worked clinical cases", "tag": "", "p": "Walk through the reasoning for each"}]}, {"id": "v9", "num": 9, "title": "Embryology & Histology of the Female Reproductive Tract", "group": "Reproduction", "runtime": "10-12 min (2 parts)", "connects": "Sets up the histologic correlates used in Video 11", "objectives": ["Describe fertilization, implantation, and week 1 with clinical correlates", "Describe embryogenesis weeks 2-4 and clinical applications", "Reflect on teratogens affecting embryogenesis", "Identify structures and histology of vulva, vagina, uterus, cervix, tube, ovary", "Define the cervical transformation zone and its clinical importance", "Describe uterine/ovarian changes across the menstrual cycle"], "sections": [{"h": "Part 1 \u2014 Early embryogenesis", "tag": "the Rule of Twos \u2014 high yield", "p": "Fertilization through week 4"}, {"h": "Teratogens & critical periods", "tag": "", "p": "Timeline of vulnerable windows by organ system"}, {"h": "Part 2 \u2014 Histology: vulva, vagina, cervix", "tag": "transformation zone", "p": ""}, {"h": "Histology: uterus & endometrium", "tag": "", "p": ""}, {"h": "Histology: fallopian tube & ovary", "tag": "", "p": "Oocyte \u2192 primordial \u2192 primary \u2192 secondary \u2192 mature follicle"}, {"h": "Menstrual cycle histologic correlates", "tag": "connects back to Part 1's implantation biology", "p": "Proliferative / secretory / menstrual endometrium"}]}, {"id": "v10", "num": 10, "title": "The Hypothalamic-Pituitary-Gonadal (HPG) Axis", "group": "Reproduction", "runtime": "8-10 min", "connects": "Mechanistic prerequisite for Video 11", "objectives": ["Identify the hormones/proteins in the HPG axis feedback loop", "Label factors in positive vs negative feedback in this axis"], "sections": [{"h": "Axis overview & hypothalamic anatomy", "tag": "median eminence \u2014 no blood-brain barrier", "p": ""}, {"h": "GnRH biology & the pulse generator", "tag": "kisspeptin \u2014 strongest positive regulator", "p": ""}, {"h": "Gonadotropins: LH & FSH", "tag": "shared alpha, distinct beta subunit", "p": "Structure and signaling"}, {"h": "Gonadal steroid synthesis & transport", "tag": "cholesterol\u2192pregnenolone \u2014 rate-limiting step", "p": ""}, {"h": "GnRH analogue pharmacology", "tag": "agonist vs antagonist \u2014 no initial surge", "p": "Prostate cancer, fertility treatment"}, {"h": "Take-home points", "tag": "", "p": ""}]}, {"id": "v11", "num": 11, "title": "Approach to the Menstrual Cycle", "group": "Reproduction", "runtime": "7-9 min", "connects": "Direct application of Video 10's axis", "objectives": ["Identify the hormones/proteins in the HPO axis feedback loop through the cycle", "Label factors in positive vs negative feedback in this cycle"], "sections": [{"h": "Definitions", "tag": "", "p": "Menstruation vs the menstrual cycle"}, {"h": "GnRH pulsatility evidence", "tag": "Kallmann's syndrome case + rhesus monkey experiment", "p": ""}, {"h": "Follicular phase", "tag": "negative feedback", "p": ""}, {"h": "Estrogen threshold & the surge", "tag": "the single most testable concept \u2014 the feedback SWITCH", "p": "Negative \u2192 positive feedback flip"}, {"h": "Luteal phase", "tag": "", "p": "Corpus luteum, hCG rescue if pregnancy occurs"}, {"h": "Follicular waves", "tag": "what really happens, not the textbook version", "p": ""}, {"h": "Take-home points", "tag": "", "p": ""}]}, {"id": "v12", "num": 12, "title": "Testicular & Ovarian Function", "group": "Reproduction", "runtime": "8-10 min", "connects": "Capstone \u2014 ties Videos 10 and 11 to the cellular level", "objectives": ["Explain mitosis vs meiosis as the basis of gamete formation", "Describe the male and female reproductive system", "Explain how hormones affect gamete production", "Describe folliculogenesis", "Explain the supporting cells for gamete production in both sexes"], "sections": [{"h": "Meiosis vs mitosis", "tag": "", "p": "Basis of gamete formation"}, {"h": "Male system \u2014 Sertoli & Leydig cells", "tag": "Sertoli\u2248granulosa, Leydig\u2248theca", "p": "Testicular architecture, supporting cells"}, {"h": "Female system \u2014 granulosa & theca cells", "tag": "the LH/FSH receptor switch \u2014 callback to Video 11", "p": "Folliculogenesis, supporting cells"}, {"h": "Downstream hormone effects", "tag": "", "p": "Estrogen and progesterone on reproductive and non-reproductive tissue"}, {"h": "Integration / closing synthesis", "tag": "", "p": "How Videos 10, 11, and 12 fit together as one system"}]}]</script>
+<script>
+(function(){
+  "use strict";
+  var MODULES = JSON.parse(document.getElementById('data').textContent);
+  var store = {
+    get: function(){ try{ return JSON.parse(localStorage.getItem('wk2VideoNotes-v1')) || {}; }catch(e){ return {}; } },
+    set: function(v){ try{ localStorage.setItem('wk2VideoNotes-v1', JSON.stringify(v)); }catch(e){} }
+  };
+  var data = store.get();
+
+  var dashboard = document.getElementById('dashboard');
+  var detail = document.getElementById('detail');
+  var groupsEl = document.getElementById('groups');
+  var currentIdx = -1;
+  var saveTimer = null;
+
+  function moduleState(m){
+    var d = data[m.id] || {};
+    var notesFilled = (m.sections || []).filter(function(s,i){ return d['note'+i] && d['note'+i].trim().length; }).length;
+    var objChecked = (m.objectives || []).filter(function(o,i){ return d['obj'+i]; }).length;
+    if(notesFilled === 0 && objChecked === 0) return 'empty';
+    if(notesFilled === (m.sections||[]).length && objChecked === (m.objectives||[]).length) return 'done';
+    return 'started';
+  }
+
+  function renderDashboard(){
+    groupsEl.innerHTML = '';
+    var groups = [];
+    MODULES.forEach(function(m){
+      var g = groups.filter(function(x){ return x.name===m.group; })[0];
+      if(!g){ g = {name:m.group, mods:[]}; groups.push(g); }
+      g.mods.push(m);
+    });
+    groups.forEach(function(g){
+      var h = document.createElement('div');
+      h.className = 'group-heading';
+      h.innerHTML = '<h2>'+g.name+'</h2><div class="rule"></div>';
+      groupsEl.appendChild(h);
+
+      var list = document.createElement('div');
+      list.className = 'list';
+      g.mods.forEach(function(m){
+        var idx = MODULES.indexOf(m);
+        var st = moduleState(m);
+        var row = document.createElement('button');
+        row.className = 'row';
+        var pillLabel = st==='done' ? 'Notes complete' : st==='started' ? 'In progress' : 'Not started';
+        row.innerHTML =
+          '<span class="num">'+String(m.num).padStart(2,'0')+'</span>'+
+          '<span class="body"><h3>'+m.title+'</h3><span class="meta">'+m.runtime+' · '+m.sections.length+' sections</span></span>'+
+          '<span class="status"><span class="pill '+st+'">'+pillLabel+'</span></span>';
+        row.addEventListener('click', function(){ openModule(idx); });
+        list.appendChild(row);
+      });
+      groupsEl.appendChild(list);
+    });
+  }
+
+  function openModule(idx){
+    currentIdx = idx;
+    var m = MODULES[idx];
+    var d = data[m.id] || (data[m.id] = {});
+    dashboard.hidden = true; detail.hidden = false;
+
+    document.getElementById('detKicker').textContent = 'Video '+m.num+' of 12';
+    document.getElementById('detTitle').textContent = m.title;
+    document.getElementById('detRuntime').textContent = m.runtime;
+    var connEl = document.getElementById('detConnects');
+    if(m.connects){ connEl.hidden = false; connEl.textContent = m.connects; }
+    else { connEl.hidden = true; }
+
+    var objList = document.getElementById('objList');
+    objList.innerHTML = '';
+    m.objectives.forEach(function(o, i){
+      var row = document.createElement('div');
+      row.className = 'obj';
+      var checked = !!d['obj'+i];
+      row.innerHTML = '<input type="checkbox" id="obj_'+i+'" '+(checked?'checked':'')+'><label for="obj_'+i+'"'+(checked?' class="checked"':'')+'>'+o+'</label>';
+      var cb = row.querySelector('input');
+      var lbl = row.querySelector('label');
+      cb.addEventListener('change', function(){
+        d['obj'+i] = cb.checked;
+        lbl.classList.toggle('checked', cb.checked);
+        persist();
+      });
+      objList.appendChild(row);
+    });
+
+    var sectionList = document.getElementById('sectionList');
+    sectionList.innerHTML = '';
+    m.sections.forEach(function(s, i){
+      var card = document.createElement('div');
+      card.className = 'section-card';
+      var tagHtml = s.tag ? '<span class="tag">'+s.tag+'</span>' : '';
+      var hintHtml = s.p ? '<div class="hint">'+s.p+'</div>' : '';
+      card.innerHTML =
+        '<div class="sh"><h3>'+(i+1)+'. '+s.h+'</h3>'+tagHtml+'</div>'+
+        hintHtml+
+        '<textarea placeholder="Notes on this section...">'+(d['note'+i]||'')+'</textarea>';
+      var ta = card.querySelector('textarea');
+      ta.addEventListener('input', function(){
+        d['note'+i] = ta.value;
+        persist();
+      });
+      sectionList.appendChild(card);
+    });
+
+    document.getElementById('nextBtn').textContent = (idx === MODULES.length-1) ? 'Back to all videos' : 'Next video →';
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  function persist(){
+    store.set(data);
+    var note = document.getElementById('saveNote');
+    note.textContent = 'Saved';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ note.textContent = 'Notes save automatically'; }, 1200);
+  }
+
+  document.getElementById('backBtn').addEventListener('click', function(){
+    detail.hidden = true; dashboard.hidden = false;
+    renderDashboard();
+    window.scrollTo({top:0, behavior:'instant'});
+  });
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    if(currentIdx === MODULES.length-1){
+      detail.hidden = true; dashboard.hidden = false;
+      renderDashboard();
+      window.scrollTo({top:0, behavior:'instant'});
+    } else {
+      openModule(currentIdx+1);
+    }
+  });
+  document.getElementById('printBtn').addEventListener('click', function(){ window.print(); });
+
+  renderDashboard();
+})();
+</script>

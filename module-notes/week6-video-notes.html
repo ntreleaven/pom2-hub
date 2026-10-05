@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 6 Video Notes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper: #f2f0e8;
+    --paper-raised: #fbfaf5;
+    --ink: #1e2a2e;
+    --ink-soft: #55625f;
+    --hairline: #d6d1c2;
+    --accent: #2c5f5a;
+    --accent-soft: #dce8e4;
+    --accent-ink: #163634;
+    --amber: #b5792c;
+    --amber-soft: #f3e6d2;
+    --good: #2f6b3e;
+    --good-soft: #dfeee1;
+    --shadow: 0 1px 2px rgba(30,42,46,.06), 0 8px 24px -12px rgba(30,42,46,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #171d1e; --paper-raised: #1f2729; --ink: #e9eae4; --ink-soft: #a5afab;
+      --hairline: #333e3f; --accent: #7bbbb0; --accent-soft: #223634; --accent-ink: #cdeae4;
+      --amber: #e0b06b; --amber-soft: #3a2f1a; --good: #7fc98d; --good-soft: #1e3324;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #171d1e; --paper-raised: #1f2729; --ink: #e9eae4; --ink-soft: #a5afab;
+    --hairline: #333e3f; --accent: #7bbbb0; --accent-soft: #223634; --accent-ink: #cdeae4;
+    --amber: #e0b06b; --amber-soft: #3a2f1a; --good: #7fc98d; --good-soft: #1e3324;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Public Sans', system-ui, sans-serif; -webkit-font-smoothing:antialiased; }
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  h1,h2,h3{ font-family:'Fraunces', Georgia, serif; text-wrap:balance; margin:0; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+  button{ font-family:inherit; cursor:pointer; }
+  textarea{ font-family:inherit; }
+
+  .shell{ max-width:900px; margin:0 auto; padding:0 24px 96px; }
+  .topbar{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:28px 24px 20px; max-width:900px; margin:0 auto; border-bottom:1px solid var(--hairline); }
+  .brand .kicker{ font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:600; }
+  .brand h1{ font-size:1.5rem; font-weight:600; margin-top:2px; }
+  .topstat{ text-align:right; font-family:'JetBrains Mono', monospace; font-size:.78rem; color:var(--ink-soft); }
+
+  .intro{ padding:28px 0 8px; max-width:620px; }
+  .intro p{ margin:8px 0 0; color:var(--ink-soft); line-height:1.55; font-size:.95rem; }
+
+  .group-heading{ display:flex; align-items:center; gap:12px; margin:32px 0 14px; }
+  .group-heading h2{ font-size:1.02rem; font-weight:600; white-space:nowrap; }
+  .group-heading .rule{ height:1px; background:var(--hairline); flex:1; }
+
+  .list{ display:flex; flex-direction:column; gap:10px; }
+  .row{
+    display:flex; align-items:center; gap:14px; text-align:left; width:100%;
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; box-shadow:var(--shadow); transition:border-color .12s ease, transform .12s ease;
+  }
+  .row:hover{ border-color:var(--accent); transform:translateY(-1px); }
+  .row .num{ font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--ink-soft); width:28px; flex-shrink:0; }
+  .row .body{ flex:1; min-width:0; }
+  .row h3{ font-size:1rem; font-weight:500; line-height:1.3; }
+  .row .meta{ font-size:.76rem; color:var(--ink-soft); margin-top:3px; font-family:'JetBrains Mono',monospace; }
+  .row .status{ flex-shrink:0; }
+  .pill{ font-family:'JetBrains Mono',monospace; font-size:.66rem; font-weight:600; padding:3px 9px; border-radius:99px; white-space:nowrap; }
+  .pill.empty{ background:var(--hairline); color:var(--ink-soft); }
+  .pill.started{ background:var(--amber-soft); color:var(--amber); }
+  .pill.done{ background:var(--good-soft); color:var(--good); }
+
+  .detail-header{ display:flex; align-items:center; gap:14px; padding:26px 0 4px; flex-wrap:wrap; }
+  .back-btn{ background:none; border:1px solid var(--hairline); border-radius:8px; padding:7px 12px; font-size:.82rem; color:var(--ink-soft); }
+  .back-btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .detail-title .kicker{ font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; font-weight:600; }
+  .detail-title h2{ font-size:1.3rem; font-weight:600; margin-top:2px; }
+  .runtime{ font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--ink-soft); }
+  .connects{ margin:14px 0 0; padding:10px 14px; background:var(--accent-soft); border-left:3px solid var(--accent); border-radius:6px; font-size:.85rem; color:var(--accent-ink); }
+
+  .obj-card{ margin-top:22px; background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow); }
+  .obj-card h3{ font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); font-weight:600; margin-bottom:10px; }
+  .obj{ display:flex; align-items:flex-start; gap:10px; padding:6px 0; font-size:.9rem; line-height:1.4; }
+  .obj input{ margin-top:3px; flex-shrink:0; width:16px; height:16px; accent-color:var(--accent); }
+  .obj label.checked{ color:var(--ink-soft); text-decoration:line-through; text-decoration-color:var(--hairline); }
+
+  .section-card{ margin-top:16px; background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow); }
+  .section-card .sh{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
+  .section-card h3{ font-size:1.02rem; font-weight:600; }
+  .section-card .tag{ font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--amber); background:var(--amber-soft); padding:2px 8px; border-radius:99px; white-space:nowrap; }
+  .section-card .hint{ font-size:.85rem; color:var(--ink-soft); margin:2px 0 10px; line-height:1.4; }
+  .section-card textarea{
+    width:100%; min-height:76px; resize:vertical; border:1px solid var(--hairline); border-radius:8px;
+    background:var(--paper); color:var(--ink); padding:10px 12px; font-size:.9rem; line-height:1.5;
+  }
+  .section-card textarea:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .section-card textarea::placeholder{ color:var(--ink-soft); opacity:.6; }
+
+  .detail-actions{ display:flex; gap:10px; justify-content:space-between; align-items:center; margin-top:24px; flex-wrap:wrap; }
+  .save-note{ font-size:.76rem; color:var(--ink-soft); font-family:'JetBrains Mono',monospace; }
+  .btn{ border:1px solid var(--hairline); background:var(--paper-raised); color:var(--ink); border-radius:8px; padding:10px 16px; font-size:.86rem; font-weight:500; }
+  .btn.primary{ background:var(--accent); color:var(--paper-raised); border-color:var(--accent); font-weight:600; }
+  .btn:hover{ border-color:var(--accent); }
+
+  [hidden]{ display:none !important; }
+  footer{ max-width:900px; margin:56px auto 0; padding:20px 24px 0; color:var(--ink-soft); font-size:.78rem; border-top:1px solid var(--hairline); }
+
+  @media print{
+    .topbar .topstat, .back-btn, .detail-actions, footer, #dashboard{ display:none !important; }
+    body{ background:#fff; color:#000; }
+    .section-card, .obj-card{ box-shadow:none; border:1px solid #ccc; break-inside:avoid; }
+    textarea{ border:1px solid #999 !important; }
+  }
+  @media (max-width:560px){
+    .topbar{ flex-direction:column; align-items:flex-start; gap:6px; }
+    .topstat{ text-align:left; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">P2 &middot; Week 6 &middot; Pregnancy &amp; Obstetrics</span>
+    <h1>Video Notes</h1>
+  </div>
+  <div class="topstat">9 videos &middot; fill in as you watch</div>
+</div>
+
+<main class="shell">
+
+  <section id="dashboard">
+    <div class="intro">
+      <p>An outline for each Video Overview, built from its own structure — same section order the video actually follows. Watch, pause at each heading, and jot the point before moving on. Notes save automatically in this browser.</p>
+    </div>
+    <div id="groups"></div>
+  </section>
+
+  <section id="detail" hidden>
+    <div class="detail-header">
+      <button class="back-btn" id="backBtn">&larr; All videos</button>
+      <div class="detail-title">
+        <div class="kicker" id="detKicker"></div>
+        <h2 id="detTitle"></h2>
+      </div>
+      <span class="runtime" id="detRuntime"></span>
+    </div>
+    <div class="connects" id="detConnects" hidden></div>
+
+    <div class="obj-card">
+      <h3>Learning objectives</h3>
+      <div id="objList"></div>
+    </div>
+
+    <div id="sectionList"></div>
+
+    <div class="detail-actions">
+      <span class="save-note" id="saveNote">Notes save automatically</span>
+      <div style="display:flex; gap:10px;">
+        <button class="btn" id="printBtn">Print this outline</button>
+        <button class="btn primary" id="nextBtn">Next video &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Week 6 study material &middot; P2 Pregnancy &amp; Obstetrics Block &middot; for personal review use</footer>
+
+<script id="data" type="application/json">[
+ {
+  "id": "antepartum-hemorrhage",
+  "num": 1,
+  "title": "Antepartum Hemorrhage / Abnormal Placentation",
+  "group": "Antepartum & Fetal Complications",
+  "runtime": "8-10 min",
+  "connects": "",
+  "objectives": [
+   "Build a differential for second- and third-trimester vaginal bleeding, including non-obstetric causes",
+   "Distinguish placental abruption from placenta previa by pain, bleeding pattern, and risk factors",
+   "Describe vasa previa and explain why bleeding there is fetal, not maternal",
+   "Outline the maternal and fetal workup for antepartum hemorrhage",
+   "Apply management principles based on gestational age and bleeding severity"
+  ],
+  "sections": [
+   {"h":"Where Bleeding in Pregnancy Can Come From","tag":"non-obstetric vs obstetric sources","p":"Hemorrhoids, UTIs, cervical lesions, and bloody show all mimic true obstetric bleeding"},
+   {"h":"Placental Abruption","tag":"painful bleeding, tender/rigid uterus","p":"Revealed vs concealed separation changes the presentation"},
+   {"h":"Placenta Previa","tag":"painless bleeding, sentinel bleed","p":"Marginal vs complete previa determines route of delivery"},
+   {"h":"Vasa Previa","tag":"fetal blood, not maternal","p":"Velamentous cord insertion vs succenturiate lobe"},
+   {"h":"Putting It Together: Working Up Obstetrical Hemorrhage","tag":"maternal + fetal assessment in parallel","p":"Bloodwork, Kleihauer-Betke test, Apt test"},
+   {"h":"Management Principles","tag":"gestational age drives the plan","p":"Admit and monitor vs active delivery"}
+  ]
+ },
+ {
+  "id": "approach-small-fetus",
+  "num": 2,
+  "title": "Approach to the Small Fetus",
+  "group": "Antepartum & Fetal Complications",
+  "runtime": "7-9 min",
+  "connects": "",
+  "objectives": [
+   "Explain how fetal weight is estimated and plotted against gestational-age norms",
+   "Distinguish small for gestational age (SGA) from intrauterine growth restriction (IUGR)",
+   "Categorize maternal, fetal, and placental causes of IUGR",
+   "Describe the investigation of suspected IUGR, including Doppler findings",
+   "Apply gestational-age-based principles for timing delivery in IUGR"
+  ],
+  "sections": [
+   {"h":"How We Measure and Define Fetal Growth","tag":"Hadlock formula, percentiles","p":"10th-90th percentile is normal; birth-weight cutoffs are separate from percentile cutoffs"},
+   {"h":"SGA vs IUGR","tag":"size label vs pathological label","p":"A fetus can be growth-restricted without dropping below the 10th percentile"},
+   {"h":"How IUGR Gets Identified","tag":"symphysis-fundal height lag","p":"Most cases are caught by risk-factor-based surveillance, not SFH"},
+   {"h":"Causes of IUGR","tag":"maternal / fetal / placental","p":"Placental causes often overlap with the other two categories"},
+   {"h":"Investigating IUGR","tag":"umbilical artery Doppler","p":"Doppler severity: reduced → absent → reversed end-diastolic flow"},
+   {"h":"Managing IUGR","tag":"severity, gestational age, reversibility","p":"Delivery is the only definitive treatment"}
+  ]
+ },
+ {
+  "id": "approach-preterm-labour",
+  "num": 3,
+  "title": "Approach to Preterm Labour",
+  "group": "Antepartum & Fetal Complications",
+  "runtime": "12-15 min",
+  "connects": "Builds on the antepartum hemorrhage and small-fetus frameworks — the same patient population is often at risk for all three",
+  "objectives": [
+   "Distinguish threatened from true preterm labour",
+   "Describe the consequences of prematurity that drive urgency of management",
+   "List risk factors that raise a patient's risk of preterm birth",
+   "Outline the four interventions used in threatened/preterm labour: tocolysis, steroids, magnesium, antibiotics",
+   "Describe PPROM and how its risks differ from preterm labour itself",
+   "Apply management priorities as delivery becomes imminent"
+  ],
+  "sections": [
+   {"h":"Definitions: Threatened vs Actual Preterm Labour","tag":"TPTL vs true preterm labour","p":"Cervical change is what separates the two"},
+   {"h":"Why This Matters: Consequences of Prematurity","tag":"RDS, IVH, NEC, ROP, sepsis","p":"Risk climbs steeply with earlier gestational age"},
+   {"h":"What Drives Preterm Labour","tag":"often idiopathic","p":"Stress-axis activation, infection/inflammation, decidual hemorrhage, overdistension"},
+   {"h":"Risk Factors to Screen For","tag":"prior spontaneous preterm birth = strongest predictor","p":""},
+   {"h":"Working Up the Patient: History, Exam, Bedside Assessment","tag":"case: Jennifer, 29+2 weeks","p":"Cervical exam determines true vs threatened labour"},
+   {"h":"Initial Management of Threatened/Preterm Labour","tag":"hydration → tocolysis → steroids","p":"Tocolysis buys ~48 hours for transfer and steroid administration"},
+   {"h":"Preterm Prelabour Rupture of Membranes (PPROM)","tag":"nitrazine + fern test","p":"Antibiotics prolong the latency period"},
+   {"h":"Management When Delivery Becomes Imminent","tag":"magnesium for neuroprotection","p":"Plus GBS prophylaxis if indicated"},
+   {"h":"Case Wrap-Up and Key Takeaways","tag":"","p":"Layered framework: recognize, risk-stratify, work up, rule out reversible causes, then treat"}
+  ]
+ },
+ {
+  "id": "process-labour-birth",
+  "num": 4,
+  "title": "Process of Labour and Birth",
+  "group": "Labour & Delivery",
+  "runtime": "10-13 min",
+  "connects": "",
+  "objectives": [
+   "Describe the hormonal changes that trigger labour",
+   "Define dilation, effacement, and station and how each is assessed",
+   "Distinguish the latent and active phases of the first stage of labour",
+   "List the cardinal movements of labour in order",
+   "Compare intermittent auscultation and continuous fetal monitoring, and interpret tracing categories",
+   "Describe the third and fourth stages of labour and the signs of placental separation"
+  ],
+  "sections": [
+   {"h":"What Triggers Labour, and Getting the Body Ready","tag":"progesterone withdrawal, oxytocin receptors","p":"Braxton Hicks vs true labour"},
+   {"h":"The Cervix: What We're Actually Assessing","tag":"dilation, effacement, station","p":"Station is measured relative to the ischial spines"},
+   {"h":"The First Stage of Labour","tag":"latent (0-4cm) vs active (4-10cm)","p":"Friedman curves as a benchmark, not a hard rule"},
+   {"h":"Determining Fetal Position: Leopold's Maneuvers","tag":"four palpations","p":"~99% of fetuses are longitudinal, mostly cephalic"},
+   {"h":"Monitoring the Fetus During Labour","tag":"normal / atypical / abnormal tracings","p":"Intrauterine resuscitation bundle for concerning tracings"},
+   {"h":"The Second Stage and the Cardinal Movements of Labour","tag":"engagement → descent → flexion → internal rotation → extension → external rotation → expulsion","p":"Pelvis shape affects how easily these can happen"},
+   {"h":"The Third and Fourth Stages: Delivering the Placenta and What Comes After","tag":"active management of third stage","p":"Fourth stage is the highest-risk window for postpartum hemorrhage"}
+  ]
+ },
+ {
+  "id": "abnormal-labour",
+  "num": 5,
+  "title": "Abnormal Labour",
+  "group": "Labour & Delivery",
+  "runtime": "10-13 min",
+  "connects": "Picks up right where Process of Labour and Birth leaves off — same first/second-stage framework, now applied to what happens when it stalls",
+  "objectives": [
+   "Define labour dystocia and distinguish it from shoulder dystocia",
+   "Apply the four P's framework (power, passage, passenger, psyche) to abnormal labour",
+   "Identify which of the four P's are modifiable",
+   "List indications and contraindications for induction of labour",
+   "Interpret the Bishop score and its role in predicting induction success",
+   "Distinguish induction from augmentation of labour"
+  ],
+  "sections": [
+   {"h":"What Is Labour Dystocia?","tag":"failure to progress vs failure to descend","p":"Not the same problem as shoulder dystocia"},
+   {"h":"The Four P's: A Framework for Abnormal Labour","tag":"power, passage, passenger, psyche","p":""},
+   {"h":"Power: The Modifiable Factor","tag":"ARM, oxytocin, coaching, analgesia","p":""},
+   {"h":"Passage and Passenger: The Largely Fixed Factors","tag":"cephalopelvic disproportion","p":"External cephalic version and manual rotation are the limited exceptions"},
+   {"h":"Psyche: Support in Labour","tag":"continuous labour support","p":"Improves outcomes independent of pain-control choice"},
+   {"h":"Induction of Labour: Why and When","tag":"ARRIVE trial","p":"Indications vs contraindications"},
+   {"h":"Preinduction Assessment and the Bishop Score","tag":"Bishop <6 = unfavourable","p":"Predicts induction success"},
+   {"h":"Methods of Cervical Ripening and Inducing Labour","tag":"prostaglandins vs Foley catheter","p":"Then ARM, then oxytocin if still needed"},
+   {"h":"Augmentation of Labour","tag":"same tools, different starting point","p":"ARM plus titrated oxytocin"}
+  ]
+ },
+ {
+  "id": "hemorrhagic-shock",
+  "num": 6,
+  "title": "Hemorrhagic Shock",
+  "group": "Labour & Delivery",
+  "runtime": "6-8 min",
+  "connects": "",
+  "objectives": [
+   "Define hypovolemic and hemorrhagic shock",
+   "Recognize the clinical constellation of shock at the bedside",
+   "Stage hemorrhagic shock by estimated blood loss",
+   "Explain why pregnancy can mask the early signs of shock",
+   "Outline initial management steps for a patient in hypovolemic shock",
+   "Describe the lethal triad and how to prevent it"
+  ],
+  "sections": [
+   {"h":"What Shock Actually Is","tag":"cellular oxygen mismatch","p":"Hemorrhagic vs nonhemorrhagic hypovolemic shock"},
+   {"h":"Recognizing Shock at the Bedside","tag":"a constellation, not one number","p":"Low BP, tachycardia, oliguria, altered mental status, acidosis, elevated lactate"},
+   {"h":"Staging Hemorrhagic Shock by Blood Loss","tag":"four classes","p":"Blood pressure is one of the last things to drop"},
+   {"h":"Why Pregnancy Hides Shock Longer","tag":"young, healthy, expanded blood volume","p":"Don't be falsely reassured by normal-looking vitals"},
+   {"h":"Initial Management of Hypovolemic Shock","tag":"ABCs, 2 large IVs, crystalloid, Foley","p":"Identify and treat the source while resuscitating"},
+   {"h":"Preventing the Lethal Triad","tag":"acidosis + hypothermia + coagulopathy","p":"Limiting ongoing blood loss prevents all three"}
+  ]
+ },
+ {
+  "id": "lactation",
+  "num": 7,
+  "title": "Lactation",
+  "group": "Postpartum & Newborn Care",
+  "runtime": "9-11 min",
+  "connects": "",
+  "objectives": [
+   "Describe the hormonal control of lactation: mammogenesis, lactogenesis, galactokinesis, galactopoiesis",
+   "Explain the shift from endocrine to autocrine control of milk supply",
+   "List the benefits of breastfeeding for infant, mother, and society",
+   "Build a differential for nipple and breast pain, including engorgement, plugged ducts, and mastitis",
+   "Recognize causes of low milk supply, split into production vs extraction problems",
+   "List the true contraindications to breastfeeding"
+  ],
+  "sections": [
+   {"h":"Breast Anatomy — The Quick Version","tag":"alveoli → lactiferous ducts → sinuses","p":"Pictures the branching system a blocked duct backs up behind"},
+   {"h":"Physiology of Lactation — Hormonal Control","tag":"prolactin, oxytocin, milk removal","p":"Progesterone withdrawal at delivery is the trigger"},
+   {"h":"Breast Milk and Colostrum","tag":"colostrum = immunity + nutrition","p":"Exclusive breastfeeding for ~6 months per WHO guidance"},
+   {"h":"Benefits of Breastfeeding","tag":"infant / mother / society","p":""},
+   {"h":"Getting Started — Feeding Technique and Access","tag":"good latch checklist","p":"Follow hunger cues rather than a strict schedule"},
+   {"h":"Common Breastfeeding Problems and Management","tag":"engorgement, plugged ducts, mastitis, thrush","p":"Cloxacillin for mastitis; keep nursing through it"},
+   {"h":"Maternal Lifestyle, Medications, and Contraindications","tag":"10% rule for medications","p":"Short list of true contraindications"},
+   {"h":"Milk Storage and Ending Lactation","tag":"rule of 6s","p":"Gradual weaning preferred; cabergoline to suppress if needed"}
+  ]
+ },
+ {
+  "id": "postpartum-care",
+  "num": 8,
+  "title": "Postpartum Care",
+  "group": "Postpartum & Newborn Care",
+  "runtime": "10-13 min",
+  "connects": "Lactation is the breast-specific half of this same six-week recovery window",
+  "objectives": [
+   "Describe normal involution, lochia progression, and other body-system changes postpartum",
+   "Apply maternal and newborn discharge-readiness criteria",
+   "Recognize delayed postpartum hemorrhage and its differential",
+   "Identify risk factors and sources of puerperal infection and postpartum thromboembolism",
+   "Differentiate baby blues, postpartum depression, and postpartum psychosis",
+   "Counsel on postpartum contraception timing and options"
+  ],
+  "sections": [
+   {"h":"Normal Uterine and Reproductive Tract Changes","tag":"involution, lochia rubra → serosa → alba","p":""},
+   {"h":"Other Body Systems Readjusting","tag":"urinary, bladder, cardiovascular, weight","p":"Low-estrogen state persists until cycling resumes"},
+   {"h":"Discharge Planning and Routine Assessment","tag":"maternal + neonatal checklists","p":"Preeclampsia, PPH, and fever are hard stops to discharge"},
+   {"h":"Perineal, Bowel, and Breast Care","tag":"sitz baths, stool softeners","p":"Avoid rectal meds with 3rd/4th-degree tears"},
+   {"h":"Postpartum Hemorrhage","tag":"delayed PPH after 24h","p":"Endometritis, retained products, or an infected tear"},
+   {"h":"Puerperal Infection and Thromboembolism","tag":"fever ≥38°C on 2 of first 10 days","p":"VTE risk is highest in the postpartum period"},
+   {"h":"Sleep Disturbance and Postpartum Mood Disorders","tag":"blues → depression → psychosis","p":"MSIGECAPS checklist; Edinburgh Postnatal Depression Scale"},
+   {"h":"Contraception, Pelvic Floor Health, and Follow-Up","tag":"counseling starts ~6 weeks","p":"No estrogen-containing methods before 21 days postpartum"}
+  ]
+ },
+ {
+  "id": "approach-neonatal-care",
+  "num": 9,
+  "title": "Approach to Neonatal Care",
+  "group": "Postpartum & Newborn Care",
+  "runtime": "15-18 min",
+  "connects": "Completes the postpartum picture — the baby's side of the same six-week window covered in Postpartum Care and Lactation",
+  "objectives": [
+   "Apply the Apgar score and describe what it does and doesn't tell you",
+   "Describe the components of the newborn exam and growth/gestational-age assessment",
+   "Explain newborn thermoregulation and the four mechanisms of heat loss",
+   "Identify neonates at risk for hypoglycemia and apply screening/management thresholds",
+   "Trace the bilirubin pathway and build a differential for hyperbilirubinemia",
+   "Recognize red flags for pathologic jaundice and the risk of kernicterus"
+  ],
+  "sections": [
+   {"h":"Apgar Score","tag":"color, heart rate, reflex, tone, breathing","p":"A rapid physiologic check, not a diagnostic tool"},
+   {"h":"The Full Newborn Exam","tag":"within 24 hours of birth","p":"~3% of babies have a major structural malformation"},
+   {"h":"Growth and Gestational Age Assessment","tag":"Ballard score","p":"Growth curves risk-stratify problems like hypoglycemia"},
+   {"h":"Thermoregulation","tag":"conduction, convection, evaporation, radiation","p":"Newborns cannot shiver to generate heat"},
+   {"h":"Energy Metabolism and Hypoglycemia Physiology","tag":"glycogenolysis → gluconeogenesis","p":"Fat is the largest energy reserve by term"},
+   {"h":"Hypoglycemia: Who's at Risk and How We Screen","tag":"inadequate substrate vs excess use","p":"Signs overlap heavily with sepsis"},
+   {"h":"Hypoglycemia: Thresholds and Management","tag":"\"2.6, no more sticks\"","p":"Keep the baby pink, warm, and sweet"},
+   {"h":"Bilirubin Physiology","tag":"heme → biliverdin → unconjugated → conjugated","p":"Enterohepatic circulation drives the physiologic rise"},
+   {"h":"Causes and Risk Factors for Hyperbilirubinemia","tag":"physiologic/breastfeeding jaundice most common","p":"Always rule out hemolysis, sepsis, birth trauma"},
+   {"h":"Red Flags and the Danger of Kernicterus","tag":"jaundice in first 24h = always pathologic","p":"Acute bilirubin encephalopathy can progress to kernicterus"},
+   {"h":"Working Up and Treating Jaundice","tag":"total/direct bilirubin, DAT/Coombs","p":"Phototherapy at 460-490nm wavelength"},
+   {"h":"Global Perspectives on Neonatal Care","tag":"~44% of under-5 deaths are neonatal","p":"Helping Babies Breathe: simple interventions save lives"},
+   {"h":"Take-Home Messages","tag":"","p":"Pink, warm, sweet; systematic respiratory-distress approach; keep sepsis on the differential"}
+  ]
+ }
+]</script>
+<script>
+(function(){
+  "use strict";
+  var MODULES = JSON.parse(document.getElementById('data').textContent);
+  var store = {
+    get: function(){ try{ return JSON.parse(localStorage.getItem('wk6VideoNotes-v1')) || {}; }catch(e){ return {}; } },
+    set: function(v){ try{ localStorage.setItem('wk6VideoNotes-v1', JSON.stringify(v)); }catch(e){} }
+  };
+  var data = store.get();
+
+  var dashboard = document.getElementById('dashboard');
+  var detail = document.getElementById('detail');
+  var groupsEl = document.getElementById('groups');
+  var currentIdx = -1;
+  var saveTimer = null;
+
+  function moduleState(m){
+    var d = data[m.id] || {};
+    var notesFilled = (m.sections || []).filter(function(s,i){ return d['note'+i] && d['note'+i].trim().length; }).length;
+    var objChecked = (m.objectives || []).filter(function(o,i){ return d['obj'+i]; }).length;
+    if(notesFilled === 0 && objChecked === 0) return 'empty';
+    if(notesFilled === (m.sections||[]).length && objChecked === (m.objectives||[]).length) return 'done';
+    return 'started';
+  }
+
+  function renderDashboard(){
+    groupsEl.innerHTML = '';
+    var groups = [];
+    MODULES.forEach(function(m){
+      var g = groups.filter(function(x){ return x.name===m.group; })[0];
+      if(!g){ g = {name:m.group, mods:[]}; groups.push(g); }
+      g.mods.push(m);
+    });
+    groups.forEach(function(g){
+      var h = document.createElement('div');
+      h.className = 'group-heading';
+      h.innerHTML = '<h2>'+g.name+'</h2><div class="rule"></div>';
+      groupsEl.appendChild(h);
+
+      var list = document.createElement('div');
+      list.className = 'list';
+      g.mods.forEach(function(m){
+        var idx = MODULES.indexOf(m);
+        var st = moduleState(m);
+        var row = document.createElement('button');
+        row.className = 'row';
+        var pillLabel = st==='done' ? 'Notes complete' : st==='started' ? 'In progress' : 'Not started';
+        row.innerHTML =
+          '<span class="num">'+String(m.num).padStart(2,'0')+'</span>'+
+          '<span class="body"><h3>'+m.title+'</h3><span class="meta">'+m.runtime+' · '+m.sections.length+' sections</span></span>'+
+          '<span class="status"><span class="pill '+st+'">'+pillLabel+'</span></span>';
+        row.addEventListener('click', function(){ openModule(idx); });
+        list.appendChild(row);
+      });
+      groupsEl.appendChild(list);
+    });
+  }
+
+  function openModule(idx){
+    currentIdx = idx;
+    var m = MODULES[idx];
+    var d = data[m.id] || (data[m.id] = {});
+    dashboard.hidden = true; detail.hidden = false;
+
+    document.getElementById('detKicker').textContent = 'Video '+m.num+' of 9';
+    document.getElementById('detTitle').textContent = m.title;
+    document.getElementById('detRuntime').textContent = m.runtime;
+    var connEl = document.getElementById('detConnects');
+    if(m.connects){ connEl.hidden = false; connEl.textContent = m.connects; }
+    else { connEl.hidden = true; }
+
+    var objList = document.getElementById('objList');
+    objList.innerHTML = '';
+    m.objectives.forEach(function(o, i){
+      var row = document.createElement('div');
+      row.className = 'obj';
+      var checked = !!d['obj'+i];
+      row.innerHTML = '<input type="checkbox" id="obj_'+i+'" '+(checked?'checked':'')+'><label for="obj_'+i+'"'+(checked?' class="checked"':'')+'>'+o+'</label>';
+      var cb = row.querySelector('input');
+      var lbl = row.querySelector('label');
+      cb.addEventListener('change', function(){
+        d['obj'+i] = cb.checked;
+        lbl.classList.toggle('checked', cb.checked);
+        persist();
+      });
+      objList.appendChild(row);
+    });
+
+    var sectionList = document.getElementById('sectionList');
+    sectionList.innerHTML = '';
+    m.sections.forEach(function(s, i){
+      var card = document.createElement('div');
+      card.className = 'section-card';
+      var tagHtml = s.tag ? '<span class="tag">'+s.tag+'</span>' : '';
+      var hintHtml = s.p ? '<div class="hint">'+s.p+'</div>' : '';
+      card.innerHTML =
+        '<div class="sh"><h3>'+(i+1)+'. '+s.h+'</h3>'+tagHtml+'</div>'+
+        hintHtml +
+        '<textarea placeholder="Notes on this section...">'+(d['note'+i]||'')+'</textarea>';
+      var ta = card.querySelector('textarea');
+      ta.addEventListener('input', function(){
+        d['note'+i] = ta.value;
+        persist();
+      });
+      sectionList.appendChild(card);
+    });
+
+    document.getElementById('nextBtn').textContent = (idx === MODULES.length-1) ? 'Back to all videos' : 'Next video →';
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  function persist(){
+    store.set(data);
+    var note = document.getElementById('saveNote');
+    note.textContent = 'Saved';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ note.textContent = 'Notes save automatically'; }, 1200);
+  }
+
+  document.getElementById('backBtn').addEventListener('click', function(){
+    detail.hidden = true; dashboard.hidden = false;
+    renderDashboard();
+    window.scrollTo({top:0, behavior:'instant'});
+  });
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    if(currentIdx === MODULES.length-1){
+      detail.hidden = true; dashboard.hidden = false;
+      renderDashboard();
+      window.scrollTo({top:0, behavior:'instant'});
+    } else {
+      openModule(currentIdx+1);
+    }
+  });
+  document.getElementById('printBtn').addEventListener('click', function(){ window.print(); });
+
+  renderDashboard();
+})();
+</script>

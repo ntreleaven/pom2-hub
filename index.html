@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PoM 2 Study Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+  /* Layout: a single reading column of week "binders", newest week first; a sticky week rail on top; docs open in a slide-over reader. */
+  :root {
+    --paper: #f2f0e8;
+    --raised: #fbfaf5;
+    --ink: #1e2a2e;
+    --ink-soft: #55625f;
+    --line: #d6d1c2;
+    --accent: #2c5f5a;
+    --accent-soft: #dce8e4;
+    --accent-ink: #163634;
+    --amber: #b5792c;
+    --amber-soft: #f3e6d2;
+    --good: #2f6b3e;
+    --good-soft: #dfeee1;
+    --shadow: 0 1px 2px rgba(30,42,46,.06), 0 8px 24px -12px rgba(30,42,46,.18);
+    --display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --body: 'Public Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #171d1e; --raised: #1f2729; --ink: #e9eae4; --ink-soft: #a5afab; --line: #333e3f;
+      --accent: #7bbbb0; --accent-soft: #223634; --accent-ink: #cdeae4;
+      --amber: #e0b06b; --amber-soft: #3a2f1a; --good: #7fc98d; --good-soft: #1e3324;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #171d1e; --raised: #1f2729; --ink: #e9eae4; --ink-soft: #a5afab; --line: #333e3f;
+    --accent: #7bbbb0; --accent-soft: #223634; --accent-ink: #cdeae4;
+    --amber: #e0b06b; --amber-soft: #3a2f1a; --good: #7fc98d; --good-soft: #1e3324;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--body); font-size: 15px; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding-inline: 20px; }
+  h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+
+  /* masthead */
+  header.mast { padding-block: 36px 20px; display: grid; gap: 14px; }
+  .kicker { font-family: var(--mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  header.mast h1 { font-size: clamp(2rem, 5vw, 2.9rem); font-weight: 600; line-height: 1.05; }
+  .lede { color: var(--ink-soft); max-width: 62ch; margin: 0; }
+  .stats { display: flex; flex-wrap: wrap; gap: 8px 22px; font-family: var(--mono); font-size: .78rem; color: var(--ink-soft); }
+  .stats b { color: var(--ink); font-weight: 600; }
+
+  /* sticky rail */
+  .rail {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .rail .wrap { display: flex; gap: 10px; align-items: center; padding-block: 10px; flex-wrap: wrap; }
+  .weeks { display: flex; gap: 6px; flex-wrap: wrap; }
+  .weeks a {
+    font-family: var(--mono); font-size: .76rem; font-weight: 600; text-decoration: none;
+    padding: 5px 10px; border-radius: 99px; border: 1px solid var(--line); color: var(--ink-soft); background: var(--raised);
+  }
+  .weeks a:hover { border-color: var(--accent); color: var(--accent); }
+  .search { flex: 1; min-width: 160px; display: flex; }
+  .search input {
+    width: 100%; font: inherit; font-size: .9rem; color: var(--ink); background: var(--raised);
+    border: 1px solid var(--line); border-radius: 8px; padding: 7px 11px;
+  }
+  .search input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  /* week sections */
+  main { padding-block: 8px 56px; display: grid; gap: 34px; }
+  section.week { display: grid; gap: 14px; scroll-margin-top: 70px; }
+  .week-head { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; align-items: baseline; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
+  .wk-num { font-family: var(--display); font-size: 2.4rem; font-weight: 700; line-height: 1; color: var(--accent); grid-row: span 2; font-variant-numeric: tabular-nums; }
+  .week-head h2 { font-size: 1.35rem; font-weight: 600; }
+  .week-head .sub { font-family: var(--mono); font-size: .74rem; color: var(--ink-soft); }
+
+  .lead-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .tool {
+    display: grid; gap: 8px; align-content: start; text-decoration: none;
+    background: var(--raised); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px;
+    box-shadow: var(--shadow); transition: border-color .15s, transform .15s; min-width: 0;
+  }
+  .tool:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .tool .t { font-family: var(--display); font-weight: 600; font-size: 1.05rem; line-height: 1.25; }
+  .tool .d { font-size: .84rem; color: var(--ink-soft); }
+  .chip { justify-self: start; font-family: var(--mono); font-size: .66rem; font-weight: 600; letter-spacing: .04em; padding: 3px 8px; border-radius: 99px; text-transform: uppercase; }
+  .c-hub { background: var(--accent-soft); color: var(--accent-ink); }
+  .c-quiz { background: var(--amber-soft); color: var(--amber); }
+  .c-notes { background: var(--good-soft); color: var(--good); }
+
+  .docs { display: grid; gap: 0; background: var(--raised); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .doc {
+    display: grid; grid-template-columns: 74px 1fr auto; gap: 12px; align-items: center;
+    padding: 10px 14px; border-top: 1px solid var(--line); min-width: 0;
+  }
+  .doc:first-child { border-top: 0; }
+  .doc .kind { font-family: var(--mono); font-size: .68rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+  .doc .name { min-width: 0; }
+  .doc .name button, .doc .name a {
+    all: unset; cursor: pointer; font-weight: 500; color: var(--ink); text-decoration: underline;
+    text-decoration-color: var(--line); text-underline-offset: 3px;
+  }
+  .doc .name button:hover, .doc .name a:hover { text-decoration-color: var(--accent); color: var(--accent); }
+  .doc .name button:focus-visible, .doc .name a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .doc .extra { font-family: var(--mono); font-size: .72rem; display: flex; gap: 10px; }
+  .doc .extra a { color: var(--accent); text-decoration: none; }
+  .doc .extra a:hover { text-decoration: underline; }
+
+  details.group { background: var(--raised); border: 1px solid var(--line); border-radius: 12px; }
+  details.group > summary {
+    cursor: pointer; padding: 11px 14px; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 10px;
+  }
+  details.group > summary::-webkit-details-marker { display: none; }
+  details.group > summary::after { content: '+'; font-family: var(--mono); color: var(--ink-soft); }
+  details.group[open] > summary::after { content: '−'; }
+  details.group > summary .n { font-family: var(--mono); font-size: .74rem; font-weight: 500; color: var(--ink-soft); margin-left: auto; }
+  details.group .docs { border: 0; border-top: 1px solid var(--line); border-radius: 0 0 12px 12px; }
+
+  .checklist { list-style: none; margin: 0; padding: 4px 14px 12px; display: grid; gap: 2px; border-top: 1px solid var(--line); }
+  .checklist li { display: grid; grid-template-columns: 20px 1fr; gap: 8px; font-size: .9rem; padding: 3px 0; }
+  .checklist li .mk { font-family: var(--mono); color: var(--good); font-weight: 600; }
+  .checklist li.todo .mk { color: var(--ink-soft); }
+  .checklist li.todo span:last-child { color: var(--ink-soft); }
+  .bar { height: 5px; border-radius: 99px; background: var(--line); overflow: hidden; width: 80px; align-self: center; }
+  .bar i { display: block; height: 100%; background: var(--good); }
+
+  .empty { color: var(--ink-soft); font-size: .9rem; }
+  footer { border-top: 1px solid var(--line); padding-block: 18px 32px; color: var(--ink-soft); font-size: .84rem; display: grid; gap: 6px; }
+
+  /* reader */
+  .reader {
+    position: fixed; inset: 0; z-index: 20; display: grid; grid-template-columns: 1fr min(820px, 100%);
+  }
+  .reader .scrim { background: rgba(10,15,16,.45); }
+  .reader .panel {
+    background: var(--paper); border-left: 1px solid var(--line); display: grid; grid-template-rows: auto 1fr; min-width: 0; height: 100%;
+  }
+  .reader .bar-top {
+    display: flex; gap: 10px; align-items: center; justify-content: space-between;
+    padding: calc(12px + env(safe-area-inset-top, 0px)) 18px 12px; border-bottom: 1px solid var(--line); background: var(--raised);
+  }
+  .reader .bar-top h3 { font-size: 1.05rem; font-weight: 600; min-width: 0; overflow-wrap: anywhere; }
+  .reader .bar-top button {
+    font: inherit; font-size: .85rem; cursor: pointer; background: var(--raised); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; flex-shrink: 0;
+  }
+  .reader .bar-top button:hover { border-color: var(--accent); color: var(--accent); }
+  .reader .content { overflow-y: auto; padding: 22px 22px calc(40px + env(safe-area-inset-bottom, 0px)); }
+  .prose { max-width: 68ch; margin: 0 auto; font-size: .97rem; line-height: 1.6; overflow-wrap: anywhere; }
+  .prose h1, .prose h2, .prose h3, .prose h4 { font-family: var(--display); margin: 1.4em 0 .5em; line-height: 1.25; }
+  .prose h1 { font-size: 1.5rem; } .prose h2 { font-size: 1.25rem; } .prose h3 { font-size: 1.1rem; }
+  .prose p { margin: .6em 0; }
+  .prose ul, .prose ol { padding-left: 1.4em; }
+  .prose img { max-width: 100%; height: auto; border-radius: 6px; }
+  .prose table { border-collapse: collapse; font-size: .9rem; }
+  .prose .tbl { overflow-x: auto; margin: 1em 0; }
+  .prose th, .prose td { border: 1px solid var(--line); padding: 6px 8px; vertical-align: top; text-align: left; }
+  .prose code { font-family: var(--mono); font-size: .85em; background: var(--accent-soft); padding: 1px 4px; border-radius: 4px; }
+  .prose hr { border: 0; border-top: 1px solid var(--line); margin: 1.5em 0; }
+  .prose a { color: var(--accent); }
+  .reader.wide { grid-template-columns: 0 100%; }
+  .reader.wide .scrim { display: none; }
+  .reader.wide .panel { border-left: 0; }
+  .reader.wide .prose { max-width: 900px; }
+  .reader.frame .content { padding: 0; overflow: hidden; }
+  .reader.frame .prose { max-width: none; height: 100%; }
+  .reader iframe { display: block; width: 100%; height: 100%; border: 0; background: var(--paper); }
+  .pdfpage { display: block; max-width: 100%; margin: 0 auto 14px; background: #fff; box-shadow: var(--shadow); border-radius: 4px; }
+  .tool { font: inherit; color: inherit; text-align: left; cursor: pointer; width: 100%; }
+  .doc .extra button { all: unset; cursor: pointer; color: var(--accent); }
+  .doc .extra button:hover { text-decoration: underline; }
+  .doc .extra button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .loading { color: var(--ink-soft); font-family: var(--mono); font-size: .85rem; }
+  @media (max-width: 640px) {
+    .reader { grid-template-columns: 0 100%; }
+    .doc { grid-template-columns: 1fr auto; }
+    .doc .kind { grid-column: 1 / -1; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<header class="mast wrap">
+  <span class="kicker">Principles of Medicine 2 · Schulich · Class of 2029</span>
+  <h1>PoM 2 Study Hub</h1>
+  <p class="lede">Every study hub, case bank, video outline and video script from the block, filed by week. Each one opens in its own tab, and quiz scores and notes save in your browser.</p>
+  <div class="stats" id="stats"></div>
+</header>
+
+<nav class="rail" aria-label="Weeks">
+  <div class="wrap">
+    <div class="weeks" id="weekNav"></div>
+    <label class="search"><input id="q" type="search" placeholder="Filter, e.g. thyroid, PCOS, quiz" aria-label="Filter materials"></label>
+  </div>
+</nav>
+
+<main class="wrap" id="weeks"></main>
+
+<footer class="wrap">
+    <span>The module checklist is a snapshot of the “Weekly Modules – PoM2” sheet from Oct 5, 2026.</span>
+</footer>
+
+<div class="reader" id="reader" hidden>
+  <div class="scrim" id="scrim"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="readerTitle">
+    <div class="bar-top">
+      <h3 id="readerTitle"></h3>
+      <button id="closeReader" type="button">← Back to hub</button>
+    </div>
+    <div class="content"><div class="prose" id="readerBody"></div></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  // kind: hub | quiz | notes (open as pages); md | docx (open in reader); pdf (opens in tab)
+  var WEEKS = [
+    { n: 7, title: "Musculoskeletal Medicine", items: [
+      { kind: "hub", t: "MSK Study Hub", f: "summaries/week7-study-hub.html", d: "Intro anatomy, back and neck pain, spine radiology, proximal upper limb." },
+      { kind: "quiz", t: "Week 7 Case Bank", f: "quizzes/week7-case-bank.html", d: "30 vignettes across 5 modules." },
+      { kind: "notes", t: "Week 7 Video Notes", f: "module-notes/week7-video-notes.html", d: "Fill-in outlines for 5 videos." },
+      { group: "Video scripts", items: [
+        { kind: "md", t: "Intro to MSK Anatomy", f: "scripts/week7/01-intro-msk-anatomy.html" },
+        { kind: "md", t: "Mechanical Back and Neck Pain", f: "scripts/week7/02-mechanical-back-neck-pain.html" },
+        { kind: "md", t: "Non-Mechanical Back and Neck Pain", f: "scripts/week7/03-non-mechanical-back-neck-pain.html" },
+        { kind: "md", t: "Axial Spine Radiology", f: "scripts/week7/04-axial-spine-radiology.html" },
+        { kind: "md", t: "Osteology and Joints of the Proximal Upper Extremity", f: "scripts/week7/05-osteology-joints-proximal-upper-extremity.html" }
+      ]}
+    ]},
+    { n: 6, title: "Pregnancy & Obstetrics", sheet: 5, items: [
+      { kind: "hub", t: "Pregnancy & Obstetrics Study Hub", f: "summaries/week6-study-hub.html", d: "APH, small fetus, preterm labour, labour, shock, postpartum, neonate." },
+      { kind: "quiz", t: "Week 6 Case Bank", f: "quizzes/week6-case-bank.html", d: "Case-based questions by module." },
+      { kind: "notes", t: "Week 6 Video Notes", f: "module-notes/week6-video-notes.html", d: "Fill-in outlines for 9 videos." }
+    ]},
+    { n: 5, title: "Gynecologic, Breast & Early Pregnancy Care", sheet: 4, items: [
+      { kind: "hub", t: "Gyn, Breast & Early Pregnancy Study Hub", f: "summaries/week5-study-hub.html", d: "PMB, pelvic mass, menopause, breast, first-trimester care." },
+      { kind: "quiz", t: "Week 5 Case Bank", f: "quizzes/week5-reproduction-quiz.html", d: "Case-based questions by module." },
+      { kind: "notes", t: "Week 5 Video Notes", f: "module-notes/week5-video-notes.html", d: "Fill-in outlines for 16 videos." }
+    ]},
+    { n: 4, title: "Gynecology, Contraception & STIs", sheet: 3, items: [
+      { kind: "quiz", t: "Week 4 Case Bank", f: "quizzes/week4-reproduction-quiz.html", d: "Case-based questions by module." },
+      { kind: "notes", t: "Week 4 Video Notes", f: "module-notes/week4-video-notes.html", d: "Fill-in outlines for 16 videos." },
+      { group: "Video scripts", items: [
+        { kind: "md", t: "Contraception", f: "scripts/week4-video/01-contraception.html" },
+        { kind: "md", t: "Fertilization and Infertility", f: "scripts/week4-video/02-fertilization-infertility.html" },
+        { kind: "md", t: "Drugs Used in Gynecology", f: "scripts/week4-video/03-drugs-used-in-gynecology.html" },
+        { kind: "md", t: "Abortion in Canada", f: "scripts/week4-video/04-abortion-in-canada.html" },
+        { kind: "md", t: "Early Pregnancy Complications", f: "scripts/week4-video/05-early-pregnancy-complications.html" },
+        { kind: "md", t: "Approach to STI", f: "scripts/week4-video/06-approach-to-sti.html" },
+        { kind: "md", t: "Public Health and STIs", f: "scripts/week4-video/07-public-health-and-stis.html" },
+        { kind: "md", t: "Cervical Cancer Screening", f: "scripts/week4-video/08-cervical-cancer-screening.html" },
+        { kind: "md", t: "Vaginal Discharge", f: "scripts/week4-video/09-vaginal-discharge.html" },
+        { kind: "md", t: "Abnormal Uterine Bleeding", f: "scripts/week4-video/10-abnormal-uterine-bleeding.html" },
+        { kind: "md", t: "Vulvar Lesions and Vulvar Cancer", f: "scripts/week4-video/11-vulvar-lesions-and-cancer.html" },
+        { kind: "md", t: "Approach to Pathology of AUB and Pelvic Pain", f: "scripts/week4-video/12-pathology-aub-pelvic-pain.html" },
+        { kind: "md", t: "Endometriosis", f: "scripts/week4-video/13-endometriosis.html" },
+        { kind: "md", t: "Chronic Pelvic Pain", f: "scripts/week4-video/14-chronic-pelvic-pain.html" },
+        { kind: "md", t: "Acute Pelvic Pain", f: "scripts/week4-video/15-acute-pelvic-pain.html" },
+        { kind: "md", t: "Genetic Screening for Pregnancy in Canada", f: "scripts/week4-video/16-genetic-screening-pregnancy.html" }
+      ]}
+    ]},
+    { n: 3, title: "Puberty, Growth & Reproductive Development", sheet: 2, items: [
+      { kind: "hub", t: "Puberty, Growth & Development Study Hub", f: "summaries/week3-study-hub.html", d: "Puberty, growth, pituitary, adrenal, DSD, PCOS." },
+      { kind: "quiz", t: "Week 3 Case Bank", f: "quizzes/week3-case-bank-quiz.html", d: "Case-based questions by module." },
+      { kind: "notes", t: "Week 3 Video Notes", f: "module-notes/week3-video-notes.html", d: "Fill-in outlines for 10 videos." }
+    ]},
+    { n: 2, title: "Thyroid, Parathyroid & Bone", sheet: 1, items: [
+      { kind: "hub", t: "Thyroid, Parathyroid & Bone Study Hub", f: "summaries/week2-study-hub.html", d: "Thyroid, calcium, bone, HPG axis, menstrual cycle." },
+      { kind: "quiz", t: "Week 2 Case Bank", f: "quizzes/week2-case-bank-quiz.html", d: "Case-based questions by module." },
+      { kind: "notes", t: "Week 2 Video Notes", f: "module-notes/week2-video-notes.html", d: "Fill-in outlines for 12 videos." }
+    ]},
+    { n: 1, title: "Diabetes & Obesity", sheet: 0, items: [
+      { kind: "hub", t: "Diabetes & Obesity Study Hub", f: "summaries/week1-study-hub.html", d: "12 modules, 38 quiz questions." },
+      { kind: "quiz", t: "Week 1 Case Bank", f: "quizzes/week1-case-bank-quiz.html", d: "Case-based questions by module." }
+    ]}
+  ];
+
+  var CHIP = { hub: ["Study hub", "c-hub"], quiz: ["Case bank", "c-quiz"], notes: ["Video notes", "c-notes"] };
+  var sheet = null; // [{title, done}] per sheet column
+
+  function el(tag, attrs, kids) {
+    var e = document.createElement(tag);
+    if (attrs) Object.keys(attrs).forEach(function (k) {
+      if (k === "text") e.textContent = attrs[k];
+      else if (k === "class") e.className = attrs[k];
+      else e.setAttribute(k, attrs[k]);
+    });
+    (kids || []).forEach(function (c) { if (c) e.appendChild(c); });
+    return e;
+  }
+
+  function docRow(it) {
+    var name = el("a", { href: it.f, target: "_blank", rel: "noopener", text: it.t });
+    var extra = el("span", { class: "extra" });
+    if (it.pdf) {
+      var pb = el("button", { type: "button", text: "Original PDF" });
+      pb.addEventListener("click", function () { openReader({ kind: "pdf", t: it.t + " (PDF)", f: it.pdf }); });
+      extra.appendChild(pb);
+    }
+    var row = el("div", { class: "doc" }, [
+      el("span", { class: "kind", text: it.label || (it.kind === "md" ? "Script" : it.kind) }),
+      el("span", { class: "name" }, [name]),
+      extra
+    ]);
+    row.dataset.search = (it.t + " " + (it.label || "") + " " + it.f).toLowerCase();
+    return row;
+  }
+
+  function render() {
+    var root = document.getElementById("weeks");
+    var nav = document.getElementById("weekNav");
+    var q = (document.getElementById("q").value || "").trim().toLowerCase();
+    root.innerHTML = ""; nav.innerHTML = "";
+    var total = 0;
+
+    WEEKS.slice().reverse().forEach(function (w) {
+      nav.appendChild(el("a", { href: "#w" + w.n, text: "W" + w.n }));
+    });
+
+    WEEKS.forEach(function (w) {
+      var weekMatch = q && (("week " + w.n + " " + w.title).toLowerCase().indexOf(q) !== -1);
+      var keep = function (s) { return !q || weekMatch || s.indexOf(q) !== -1; };
+
+      var tools = el("div", { class: "lead-row" });
+      var docs = el("div", { class: "docs" });
+      var groups = [];
+      var shown = 0;
+
+      w.items.forEach(function (it) {
+        if (it.group) {
+          var gd = el("div", { class: "docs" });
+          var n = 0;
+          it.items.forEach(function (s) { var r = docRow(s); total++; if (keep(r.dataset.search)) { gd.appendChild(r); n++; } });
+          if (n) {
+            var det = el("details", { class: "group" }, [
+              el("summary", {}, [el("span", { text: it.group }), el("span", { class: "n", text: n + " scripts" })]),
+              gd
+            ]);
+            if (q) det.open = true;
+            groups.push(det); shown += n;
+          }
+          return;
+        }
+        total++;
+        if (CHIP[it.kind]) {
+          var s = (it.t + " " + it.d + " " + CHIP[it.kind][0]).toLowerCase();
+          if (!keep(s)) return;
+          var card = el("a", { class: "tool", href: it.f, target: "_blank", rel: "noopener" }, [
+            el("span", { class: "chip " + CHIP[it.kind][1], text: CHIP[it.kind][0] }),
+            el("span", { class: "t", text: it.t }),
+            el("span", { class: "d", text: it.d })
+          ]);
+          tools.appendChild(card);
+          shown++;
+        } else {
+          var r = docRow(it);
+          if (!keep(r.dataset.search)) return;
+          docs.appendChild(r); shown++;
+        }
+      });
+
+      // module checklist from the sheet
+      var mods = sheet && w.sheet != null ? sheet[w.sheet] : null;
+      var checklist = null;
+      if (mods && mods.length) {
+        var list = mods.filter(function (m) { return keep(m.title.toLowerCase()); });
+        if (list.length) {
+          var done = mods.filter(function (m) { return m.done; }).length;
+          var bar = el("span", { class: "bar" }, [el("i", { style: "width:" + Math.round(100 * done / mods.length) + "%" })]);
+          var ul = el("ul", { class: "checklist" });
+          list.forEach(function (m) {
+            ul.appendChild(el("li", { class: m.done ? "" : "todo" }, [el("span", { class: "mk", text: m.done ? "✓" : "○" }), el("span", { text: m.title })]));
+          });
+          checklist = el("details", { class: "group" }, [
+            el("summary", {}, [el("span", { text: "Module checklist" }), el("span", { class: "n", text: done + " / " + mods.length + " done" }), bar]),
+            ul
+          ]);
+          if (q) checklist.open = true;
+          shown += list.length;
+        }
+      }
+
+      if (q && !shown) return;
+
+      var sec = el("section", { class: "week", id: "w" + w.n }, [
+        el("div", { class: "week-head" }, [
+          el("span", { class: "wk-num", text: String(w.n).padStart(2, "0") }),
+          el("h2", { text: w.title }),
+          el("span", { class: "sub", text: "Week " + w.n + " · " + countLabel(w) })
+        ])
+      ]);
+      if (tools.children.length) sec.appendChild(tools);
+      if (docs.children.length) sec.appendChild(docs);
+      groups.forEach(function (g) { sec.appendChild(g); });
+      if (checklist) sec.appendChild(checklist);
+      root.appendChild(sec);
+    });
+
+    if (!root.children.length) root.appendChild(el("p", { class: "empty", text: "Nothing matches “" + q + "”. Try a topic like thyroid or a type like quiz." }));
+
+    document.getElementById("stats").innerHTML = "";
+    var counts = { hub: 0, quiz: 0, notes: 0, doc: 0 };
+    WEEKS.forEach(function (w) { w.items.forEach(function (it) {
+      if (it.group) counts.doc += it.items.length; else if (counts[it.kind] != null) counts[it.kind]++; else counts.doc++;
+    }); });
+    [["7", "weeks"], [counts.hub, "study hubs"], [counts.quiz, "case banks"], [counts.notes, "video outlines"], [counts.doc, "docs & scripts"]].forEach(function (p) {
+      var s = el("span"); s.appendChild(el("b", { text: String(p[0]) })); s.appendChild(document.createTextNode(" " + p[1]));
+      document.getElementById("stats").appendChild(s);
+    });
+  }
+
+  function countLabel(w) {
+    var n = 0; w.items.forEach(function (it) { n += it.group ? it.items.length : 1; });
+    return n + " items";
+  }
+
+  // ---- reader ----
+  var reader = document.getElementById("reader");
+  var body = document.getElementById("readerBody");
+  var lastFocus = null;
+
+  function openReader(it) {
+    lastFocus = document.activeElement;
+    document.getElementById("readerTitle").textContent = it.t;
+    body.innerHTML = '<p class="loading">Loading…</p>';
+    reader.hidden = false;
+    document.body.style.overflow = "hidden";
+    document.getElementById("closeReader").focus();
+    var framed = CHIP[it.kind] || it.kind === "page";
+    reader.classList.toggle("frame", !!framed);
+    reader.classList.toggle("wide", !!framed || it.kind === "pdf");
+    if (framed) {
+      body.innerHTML = "";
+      body.appendChild(el("iframe", { src: it.f, title: it.t }));
+      return;
+    }
+    if (it.kind === "pdf") return openPdf(it);
+    fetch(it.f).then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); }).then(function (md) {
+      if (window.marked) body.innerHTML = window.marked.parse(md);
+      else { body.innerHTML = ""; body.appendChild(el("pre", { style: "white-space:pre-wrap", text: md })); }
+      tidy();
+    }).catch(function () {
+      body.innerHTML = '<p class="empty">This doc didn’t load. Check your connection and open it again.</p>';
+    });
+  }
+
+  function loadScript(src) {
+    return new Promise(function (ok, bad) {
+      var s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = bad; document.head.appendChild(s);
+    });
+  }
+
+  var PDFJS = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
+  function openPdf(it) {
+    var ready = window.pdfjsLib ? Promise.resolve() : loadScript(PDFJS + "pdf.min.js");
+    ready.then(function () {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS + "pdf.worker.min.js";
+      return fetch(it.f).then(function (r) { return r.arrayBuffer(); });
+    }).then(function (buf) {
+      return window.pdfjsLib.getDocument({ data: buf }).promise;
+    }).then(function (pdf) {
+      body.innerHTML = "";
+      var width = Math.min(body.clientWidth || 760, 900);
+      var chain = Promise.resolve();
+      for (var i = 1; i <= pdf.numPages; i++) (function (n) {
+        chain = chain.then(function () { return pdf.getPage(n); }).then(function (page) {
+          var base = page.getViewport({ scale: 1 });
+          var scale = width / base.width, dpr = window.devicePixelRatio || 1;
+          var vp = page.getViewport({ scale: scale * dpr });
+          var c = el("canvas", { class: "pdfpage" });
+          c.width = vp.width; c.height = vp.height; c.style.width = (vp.width / dpr) + "px";
+          body.appendChild(c);
+          return page.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise;
+        });
+      })(i);
+      return chain;
+    }).catch(function () {
+      body.innerHTML = '<p class="empty">This PDF didn’t load. Check your connection and open it again. It’s also in the GitHub repo.</p>';
+    });
+  }
+
+  function tidy() {
+    body.querySelectorAll("table").forEach(function (t) {
+      var w = el("div", { class: "tbl" }); t.parentNode.insertBefore(w, t); w.appendChild(t);
+    });
+    body.querySelectorAll("a[href]").forEach(function (a) { a.target = "_blank"; a.rel = "noopener"; });
+    body.parentNode.scrollTop = 0;
+  }
+
+  function closeReader() {
+    reader.hidden = true;
+    document.body.style.overflow = "";
+    body.innerHTML = "";
+    if (lastFocus) lastFocus.focus();
+  }
+  document.getElementById("closeReader").addEventListener("click", closeReader);
+  document.getElementById("scrim").addEventListener("click", closeReader);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !reader.hidden) closeReader(); });
+
+  // ---- sheet checklist ----
+  function parseCSV(text) {
+    var rows = [], row = [], cell = "", inQ = false;
+    for (var i = 0; i < text.length; i++) {
+      var c = text[i];
+      if (inQ) { if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else inQ = false; } else cell += c; }
+      else if (c === '"') inQ = true;
+      else if (c === ",") { row.push(cell); cell = ""; }
+      else if (c === "\n") { row.push(cell.replace(/\r$/, "")); rows.push(row); row = []; cell = ""; }
+      else cell += c;
+    }
+    row.push(cell); rows.push(row);
+    return rows;
+  }
+
+  fetch("schedule/weekly-modules.csv").then(function (r) { return r.text(); }).then(function (t) {
+    var rows = parseCSV(t);
+    var cols = [[], [], [], [], [], []];
+    for (var i = 1; i < rows.length; i++) {
+      var r = rows[i];
+      if (/progress/i.test(r.join(""))) break;
+      for (var c = 0; c < 6; c++) {
+        var title = (r[c * 2] || "").trim();
+        if (title) cols[c].push({ title: title, done: /true/i.test(r[c * 2 + 1] || "") });
+      }
+    }
+    sheet = cols;
+    render();
+  }).catch(function () {});
+
+  var qi = document.getElementById("q");
+  try { var saved = sessionStorage.getItem("pom2hub-q"); if (saved) qi.value = saved; } catch (e) {}
+  qi.addEventListener("input", function () {
+    try { sessionStorage.setItem("pom2hub-q", qi.value); } catch (e) {}
+    render();
+  });
+
+  render();
+})();
+</script>

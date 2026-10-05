@@ -1,0 +1,978 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 5 Video Notes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper: #f2f0e8;
+    --paper-raised: #fbfaf5;
+    --ink: #1e2a2e;
+    --ink-soft: #55625f;
+    --hairline: #d6d1c2;
+    --accent: #2c5f5a;
+    --accent-soft: #dce8e4;
+    --accent-ink: #163634;
+    --amber: #b5792c;
+    --amber-soft: #f3e6d2;
+    --good: #2f6b3e;
+    --good-soft: #dfeee1;
+    --shadow: 0 1px 2px rgba(30,42,46,.06), 0 8px 24px -12px rgba(30,42,46,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #171d1e; --paper-raised: #1f2729; --ink: #e9eae4; --ink-soft: #a5afab;
+      --hairline: #333e3f; --accent: #7bbbb0; --accent-soft: #223634; --accent-ink: #cdeae4;
+      --amber: #e0b06b; --amber-soft: #3a2f1a; --good: #7fc98d; --good-soft: #1e3324;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #171d1e; --paper-raised: #1f2729; --ink: #e9eae4; --ink-soft: #a5afab;
+    --hairline: #333e3f; --accent: #7bbbb0; --accent-soft: #223634; --accent-ink: #cdeae4;
+    --amber: #e0b06b; --amber-soft: #3a2f1a; --good: #7fc98d; --good-soft: #1e3324;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Public Sans', system-ui, sans-serif; -webkit-font-smoothing:antialiased; }
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  h1,h2,h3{ font-family:'Fraunces', Georgia, serif; text-wrap:balance; margin:0; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+  button{ font-family:inherit; cursor:pointer; }
+  textarea{ font-family:inherit; }
+
+  .shell{ max-width:900px; margin:0 auto; padding:0 24px 96px; }
+  .topbar{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:28px 24px 20px; max-width:900px; margin:0 auto; border-bottom:1px solid var(--hairline); }
+  .brand .kicker{ font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:600; }
+  .brand h1{ font-size:1.5rem; font-weight:600; margin-top:2px; }
+  .topstat{ text-align:right; font-family:'JetBrains Mono', monospace; font-size:.78rem; color:var(--ink-soft); }
+
+  .intro{ padding:28px 0 8px; max-width:620px; }
+  .intro p{ margin:8px 0 0; color:var(--ink-soft); line-height:1.55; font-size:.95rem; }
+
+  .group-heading{ display:flex; align-items:center; gap:12px; margin:32px 0 14px; }
+  .group-heading h2{ font-size:1.02rem; font-weight:600; white-space:nowrap; }
+  .group-heading .rule{ height:1px; background:var(--hairline); flex:1; }
+
+  .list{ display:flex; flex-direction:column; gap:10px; }
+  .row{
+    display:flex; align-items:center; gap:14px; text-align:left; width:100%;
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; box-shadow:var(--shadow); transition:border-color .12s ease, transform .12s ease;
+  }
+  .row:hover{ border-color:var(--accent); transform:translateY(-1px); }
+  .row .num{ font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--ink-soft); width:28px; flex-shrink:0; }
+  .row .body{ flex:1; min-width:0; }
+  .row h3{ font-size:1rem; font-weight:500; line-height:1.3; }
+  .row .meta{ font-size:.76rem; color:var(--ink-soft); margin-top:3px; font-family:'JetBrains Mono',monospace; }
+  .row .status{ flex-shrink:0; }
+  .pill{ font-family:'JetBrains Mono',monospace; font-size:.66rem; font-weight:600; padding:3px 9px; border-radius:99px; white-space:nowrap; }
+  .pill.empty{ background:var(--hairline); color:var(--ink-soft); }
+  .pill.started{ background:var(--amber-soft); color:var(--amber); }
+  .pill.done{ background:var(--good-soft); color:var(--good); }
+
+  .detail-header{ display:flex; align-items:center; gap:14px; padding:26px 0 4px; flex-wrap:wrap; }
+  .back-btn{ background:none; border:1px solid var(--hairline); border-radius:8px; padding:7px 12px; font-size:.82rem; color:var(--ink-soft); }
+  .back-btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .detail-title .kicker{ font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; font-weight:600; }
+  .detail-title h2{ font-size:1.3rem; font-weight:600; margin-top:2px; }
+  .runtime{ font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--ink-soft); }
+  .connects{ margin:14px 0 0; padding:10px 14px; background:var(--accent-soft); border-left:3px solid var(--accent); border-radius:6px; font-size:.85rem; color:var(--accent-ink); }
+
+  .obj-card{ margin-top:22px; background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow); }
+  .obj-card h3{ font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); font-weight:600; margin-bottom:10px; }
+  .obj{ display:flex; align-items:flex-start; gap:10px; padding:6px 0; font-size:.9rem; line-height:1.4; }
+  .obj input{ margin-top:3px; flex-shrink:0; width:16px; height:16px; accent-color:var(--accent); }
+  .obj label.checked{ color:var(--ink-soft); text-decoration:line-through; text-decoration-color:var(--hairline); }
+
+  .section-card{ margin-top:16px; background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow); }
+  .section-card .sh{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
+  .section-card h3{ font-size:1.02rem; font-weight:600; }
+  .section-card .tag{ font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--amber); background:var(--amber-soft); padding:2px 8px; border-radius:99px; white-space:nowrap; }
+  .section-card .hint{ font-size:.85rem; color:var(--ink-soft); margin:2px 0 10px; line-height:1.4; }
+  .section-card textarea{
+    width:100%; min-height:76px; resize:vertical; border:1px solid var(--hairline); border-radius:8px;
+    background:var(--paper); color:var(--ink); padding:10px 12px; font-size:.9rem; line-height:1.5;
+  }
+  .section-card textarea:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .section-card textarea::placeholder{ color:var(--ink-soft); opacity:.6; }
+
+  .detail-actions{ display:flex; gap:10px; justify-content:space-between; align-items:center; margin-top:24px; flex-wrap:wrap; }
+  .save-note{ font-size:.76rem; color:var(--ink-soft); font-family:'JetBrains Mono',monospace; }
+  .btn{ border:1px solid var(--hairline); background:var(--paper-raised); color:var(--ink); border-radius:8px; padding:10px 16px; font-size:.86rem; font-weight:500; }
+  .btn.primary{ background:var(--accent); color:var(--paper-raised); border-color:var(--accent); font-weight:600; }
+  .btn:hover{ border-color:var(--accent); }
+
+  [hidden]{ display:none !important; }
+  footer{ max-width:900px; margin:56px auto 0; padding:20px 24px 0; color:var(--ink-soft); font-size:.78rem; border-top:1px solid var(--hairline); }
+
+  @media print{
+    .topbar .topstat, .back-btn, .detail-actions, footer, #dashboard{ display:none !important; }
+    body{ background:#fff; color:#000; }
+    .section-card, .obj-card{ box-shadow:none; border:1px solid #ccc; break-inside:avoid; }
+    textarea{ border:1px solid #999 !important; }
+  }
+  @media (max-width:560px){
+    .topbar{ flex-direction:column; align-items:flex-start; gap:6px; }
+    .topstat{ text-align:left; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">P2 · Week 5 · Reproduction</span>
+    <h1>Video Notes</h1>
+  </div>
+  <div class="topstat">16 videos · fill in as you watch</div>
+</div>
+
+<main class="shell">
+
+  <section id="dashboard">
+    <div class="intro">
+      <p>An outline for each Video Overview, built from its own structure — same section order the video actually follows. Watch, pause at each heading, and jot the point before moving on. Notes save automatically in this browser.</p>
+    </div>
+    <div id="groups"></div>
+  </section>
+
+  <section id="detail" hidden>
+    <div class="detail-header">
+      <button class="back-btn" id="backBtn">&larr; All videos</button>
+      <div class="detail-title">
+        <div class="kicker" id="detKicker"></div>
+        <h2 id="detTitle"></h2>
+      </div>
+      <span class="runtime" id="detRuntime"></span>
+    </div>
+    <div class="connects" id="detConnects" hidden></div>
+
+    <div class="obj-card">
+      <h3>Learning objectives</h3>
+      <div id="objList"></div>
+    </div>
+
+    <div id="sectionList"></div>
+
+    <div class="detail-actions">
+      <span class="save-note" id="saveNote">Notes save automatically</span>
+      <div style="display:flex; gap:10px;">
+        <button class="btn" id="printBtn">Print this outline</button>
+        <button class="btn primary" id="nextBtn">Next video &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Week 5 study material · P2 Reproduction Block · for personal review use</footer>
+
+<script id="data" type="application/json">[
+ {
+  "id": "postmenopausal-bleeding",
+  "num": 1,
+  "title": "Post-menopausal Woman Presenting with Bleeding",
+  "group": "Gynecologic Pathology & Menopause",
+  "runtime": "10-12 min",
+  "connects": "",
+  "objectives": [
+   "Define postmenopausal bleeding (PMB) and explain why it always warrants investigation",
+   "Outline the diagnostic pathway for a patient presenting with PMB",
+   "List the causes of PMB from benign to malignant",
+   "Describe pathology-guided management for each cause",
+   "Contrast endometrial and cervical cancer in this context",
+   "Explain rising Canadian incidence of endometrial cancer"
+  ],
+  "sections": [
+   {
+    "h": "Defining PMB",
+    "tag": "cancer until proven otherwise",
+    "p": "Any bleeding ≥12 months after the final menstrual period"
+   },
+   {
+    "h": "Diagnostic pathway",
+    "tag": "TVUS → endometrial biopsy",
+    "p": "Endometrial thickness threshold drives next step"
+   },
+   {
+    "h": "Causes across the spectrum",
+    "tag": "atrophy is most common",
+    "p": "Atrophy, polyps, hyperplasia, carcinoma"
+   },
+   {
+    "h": "Vaginal atrophy & endometrial hyperplasia",
+    "tag": "atypical vs non-atypical",
+    "p": "Atypia is what predicts progression to cancer"
+   },
+   {
+    "h": "Endometrial carcinoma",
+    "tag": "type I (estrogen-driven) vs type II",
+    "p": "Types, risk factors, staging, spread pattern"
+   },
+   {
+    "h": "Contrast with cervical cancer",
+    "tag": "",
+    "p": "Different screening logic, different risk drivers"
+   },
+   {
+    "h": "Why incidence is rising in Canada",
+    "tag": "obesity-linked unopposed estrogen",
+    "p": "Population-level drivers of type I endometrial cancer"
+   }
+  ]
+ },
+ {
+  "id": "pelvic-mass",
+  "num": 2,
+  "title": "Approach to and Pathology of a Pelvic Mass",
+  "group": "Gynecologic Pathology & Menopause",
+  "runtime": "10-12 min",
+  "connects": "Shares the ovarian neoplasm framework used in PMB workups",
+  "objectives": [
+   "Distinguish benign from malignant features of a pelvic mass",
+   "Classify ovarian neoplasms by cell of origin",
+   "List benign and malignant examples of each ovarian tumor category",
+   "Describe patterns of spread and why ovarian cancer carries high mortality",
+   "Identify tumors that metastasize to the ovary",
+   "Recognize germ cell tumor serum markers"
+  ],
+  "sections": [
+   {
+    "h": "Benign vs malignant features",
+    "tag": "cystic/unilocular vs solid/septated",
+    "p": "Imaging and exam clues that shift the differential"
+   },
+   {
+    "h": "Ovarian neoplasm classification",
+    "tag": "epithelial / germ cell / sex cord-stromal",
+    "p": "Organized by cell of origin, not just histology"
+   },
+   {
+    "h": "Benign and malignant examples by type",
+    "tag": "serous/mucinous, teratoma, granulosa cell",
+    "p": ""
+   },
+   {
+    "h": "Patterns of spread & mortality",
+    "tag": "transcoelomic seeding",
+    "p": "Why ovarian cancer is usually caught late"
+   },
+   {
+    "h": "Metastases to the ovary",
+    "tag": "Krukenberg tumor",
+    "p": "Signet-ring cells, usually from a GI primary"
+   },
+   {
+    "h": "Germ cell tumor markers",
+    "tag": "AFP, beta-hCG, LDH, CA-125",
+    "p": "Classic presentation and outcomes"
+   }
+  ]
+ },
+ {
+  "id": "clinical-approach-menopause",
+  "num": 3,
+  "title": "Clinical Approach to Menopause",
+  "group": "Gynecologic Pathology & Menopause",
+  "runtime": "10-11 min",
+  "connects": "",
+  "objectives": [
+   "Define menopause and perimenopause",
+   "Describe the physiology of the menopausal transition",
+   "List symptoms of menopause by body system",
+   "Counsel on nutrition and exercise",
+   "Describe non-hormonal management strategies",
+   "Apply evidence-based benefits and risks of MHT"
+  ],
+  "sections": [
+   {
+    "h": "Definitions",
+    "tag": "12 months amenorrhea",
+    "p": "Menopause vs the perimenopausal transition"
+   },
+   {
+    "h": "Physiology",
+    "tag": "FSH rises as estrogen falls",
+    "p": "Loss of negative feedback on the pituitary"
+   },
+   {
+    "h": "Symptoms by system",
+    "tag": "vasomotor, urogenital, mood, bone",
+    "p": ""
+   },
+   {
+    "h": "Nutrition & exercise",
+    "tag": "calcium, vitamin D, weight-bearing exercise",
+    "p": "Bone and cardiovascular protection"
+   },
+   {
+    "h": "Non-hormonal strategies",
+    "tag": "SSRIs/SNRIs for vasomotor symptoms",
+    "p": ""
+   },
+   {
+    "h": "MHT: benefits & risks",
+    "tag": "timing hypothesis",
+    "p": "Evidence-based counseling on hormone therapy"
+   }
+  ]
+ },
+ {
+  "id": "dilation-curettage",
+  "num": 4,
+  "title": "Dilation and Curettage",
+  "group": "Gynecologic Procedures",
+  "runtime": "5-6 min",
+  "connects": "",
+  "objectives": [
+   "Define D&C",
+   "Distinguish diagnostic from therapeutic indications",
+   "List indications for D&C",
+   "Recognize risks and complications"
+  ],
+  "sections": [
+   {
+    "h": "What D&C is",
+    "tag": "",
+    "p": "Mechanical dilation of the cervix plus endometrial sampling/evacuation"
+   },
+   {
+    "h": "Diagnostic vs therapeutic purpose",
+    "tag": "",
+    "p": "Tissue sampling vs removing retained products"
+   },
+   {
+    "h": "Indications",
+    "tag": "AUB, incomplete miscarriage, molar pregnancy",
+    "p": ""
+   },
+   {
+    "h": "Risks & complications",
+    "tag": "Asherman syndrome",
+    "p": "Perforation, infection, intrauterine adhesions"
+   }
+  ]
+ },
+ {
+  "id": "hysterectomy-approaches",
+  "num": 5,
+  "title": "Hysterectomy Approaches",
+  "group": "Gynecologic Procedures",
+  "runtime": "5-6 min",
+  "connects": "Pairs with Dilation and Curettage — same procedural toolkit",
+  "objectives": [
+   "List indications for hysterectomy",
+   "Classify hysterectomy by extent of resection",
+   "Classify hysterectomy by surgical approach",
+   "Identify factors influencing approach choice"
+  ],
+  "sections": [
+   {
+    "h": "Indications",
+    "tag": "fibroids, AUB, malignancy, prolapse",
+    "p": ""
+   },
+   {
+    "h": "Extent of resection",
+    "tag": "subtotal / total / radical",
+    "p": "How much tissue is removed and why"
+   },
+   {
+    "h": "Surgical approach",
+    "tag": "abdominal / vaginal / laparoscopic / robotic",
+    "p": ""
+   },
+   {
+    "h": "Choosing an approach",
+    "tag": "",
+    "p": "Uterine size, prior surgery, surgeon expertise, patient factors"
+   }
+  ]
+ },
+ {
+  "id": "pathology-breast",
+  "num": 6,
+  "title": "Pathology of the Breast",
+  "group": "Breast Health",
+  "runtime": "11-13 min",
+  "connects": "",
+  "objectives": [
+   "Describe the ductal-lobular anatomy of the breast",
+   "Identify benign breast lesions",
+   "List breast cancer risk factors",
+   "Classify breast cancer pathologically",
+   "Interpret prognostic and predictive markers"
+  ],
+  "sections": [
+   {
+    "h": "Ductal-lobular framework",
+    "tag": "",
+    "p": "The anatomical map every breast lesion is described against"
+   },
+   {
+    "h": "Benign lesions",
+    "tag": "fibrocystic change, fibroadenoma, papilloma, fat necrosis",
+    "p": "Proliferative lesions with and without atypia"
+   },
+   {
+    "h": "Breast cancer risk factors",
+    "tag": "",
+    "p": "Hormonal exposure, family history, prior atypia"
+   },
+   {
+    "h": "Pathological classification",
+    "tag": "in situ vs invasive, ductal vs lobular",
+    "p": "Molecular subtypes"
+   },
+   {
+    "h": "Prognostic & predictive markers",
+    "tag": "ER / PR / HER2 / triple-negative / Ki-67",
+    "p": "What drives treatment selection"
+   }
+  ]
+ },
+ {
+  "id": "common-breast-problems",
+  "num": 7,
+  "title": "Approach to Common Breast Problems",
+  "group": "Breast Health",
+  "runtime": "8-9 min",
+  "connects": "Applies the pathology framework from the prior video to real presentations",
+  "objectives": [
+   "Recognize common presenting breast symptoms",
+   "Approach history, exam, and investigations by age",
+   "Select treatment strategies by cause",
+   "Distinguish benign from red-flag features",
+   "Apply screening recommendations for women over 50"
+  ],
+  "sections": [
+   {
+    "h": "Common presenting symptoms",
+    "tag": "pain, lump, discharge",
+    "p": ""
+   },
+   {
+    "h": "Approach by age",
+    "tag": "",
+    "p": "Pre-menopausal vs post-menopausal differential"
+   },
+   {
+    "h": "Treatment by cause",
+    "tag": "",
+    "p": "Reassurance through referral"
+   },
+   {
+    "h": "Red flag features",
+    "tag": "skin dimpling, fixed mass, bloody discharge",
+    "p": "What separates benign from concerning"
+   },
+   {
+    "h": "Screening after 50",
+    "tag": "mammography",
+    "p": "Canadian screening recommendations"
+   }
+  ]
+ },
+ {
+  "id": "ob-care-providers",
+  "num": 8,
+  "title": "OB Care Providers",
+  "group": "Obstetric Care Foundations",
+  "runtime": "5-6 min",
+  "connects": "",
+  "objectives": [
+   "Contrast scope of practice across obstetric care providers",
+   "Identify factors guiding provider choice"
+  ],
+  "sections": [
+   {
+    "h": "Provider scope",
+    "tag": "midwife / FP / obstetrician / MFM",
+    "p": "Escalating scope for escalating risk"
+   },
+   {
+    "h": "Choosing a provider",
+    "tag": "",
+    "p": "Risk factors, patient preference, geographic access"
+   }
+  ]
+ },
+ {
+  "id": "teratogenesis",
+  "num": 9,
+  "title": "Teratogenesis",
+  "group": "Obstetric Care Foundations",
+  "runtime": "8-9 min",
+  "connects": "",
+  "objectives": [
+   "Define a teratogen",
+   "Describe critical periods of susceptibility",
+   "Categorize types of teratogens with examples",
+   "Apply counseling principles for teratogen exposure"
+  ],
+  "sections": [
+   {
+    "h": "Defining a teratogen",
+    "tag": "",
+    "p": "Any agent that disrupts normal fetal development"
+   },
+   {
+    "h": "Critical periods",
+    "tag": "all-or-none → embryonic → fetal",
+    "p": "Why timing of exposure matters as much as the agent"
+   },
+   {
+    "h": "Categories of teratogens",
+    "tag": "medications, infections, chemical/environmental, maternal disease",
+    "p": ""
+   },
+   {
+    "h": "Counseling principles",
+    "tag": "",
+    "p": "Framing risk for a worried patient"
+   }
+  ]
+ },
+ {
+  "id": "first-trimester-bleeding-ultrasound",
+  "num": 10,
+  "title": "Approach to First Trimester Bleeding — Ultrasound",
+  "group": "Early Pregnancy Complications",
+  "runtime": "6-8 min",
+  "connects": "Sets up the pathology detail in the next video",
+  "objectives": [
+   "Explain why beta-hCG and ultrasound are interpreted together",
+   "Describe the normal beta-hCG doubling curve",
+   "Recall the ultrasound landmark timeline",
+   "Apply the discriminatory zone concept"
+  ],
+  "sections": [
+   {
+    "h": "Why hCG + ultrasound together",
+    "tag": "",
+    "p": "Neither test alone answers the viability question"
+   },
+   {
+    "h": "Normal hCG doubling curve",
+    "tag": "~48-72h doubling",
+    "p": ""
+   },
+   {
+    "h": "Ultrasound landmark timeline",
+    "tag": "gestational sac → yolk sac → fetal pole + cardiac activity",
+    "p": ""
+   },
+   {
+    "h": "Discriminatory zone",
+    "tag": "",
+    "p": "The hCG level above which a normal IUP should be visible"
+   }
+  ]
+ },
+ {
+  "id": "pathology-first-trimester-bleeding",
+  "num": 11,
+  "title": "Pathology of First Trimester Bleeding",
+  "group": "Early Pregnancy Complications",
+  "runtime": "10-12 min",
+  "connects": "Builds directly on the ultrasound-and-hCG framework from the prior video",
+  "objectives": [
+   "Describe placental implantation and development",
+   "Build a differential for first-trimester bleeding",
+   "Define spontaneous and recurrent abortion, with microscopic findings",
+   "Describe ectopic gestation risk factors and pathology",
+   "Classify gestational trophoblastic disease",
+   "Identify the most common metastatic site of choriocarcinoma"
+  ],
+  "sections": [
+   {
+    "h": "Placental implantation & development",
+    "tag": "",
+    "p": "The normal process bleeding disorders deviate from"
+   },
+   {
+    "h": "Differential diagnosis",
+    "tag": "",
+    "p": "Implantation bleeding, miscarriage, ectopic, molar pregnancy"
+   },
+   {
+    "h": "Spontaneous & recurrent abortion",
+    "tag": "",
+    "p": "Definitions, types, microscopic findings"
+   },
+   {
+    "h": "Ectopic gestation",
+    "tag": "ampulla = most common site",
+    "p": "Risk factors, gross and microscopic findings"
+   },
+   {
+    "h": "Gestational trophoblastic disease",
+    "tag": "complete vs partial mole genetics",
+    "p": "Three types, presentation"
+   },
+   {
+    "h": "Choriocarcinoma",
+    "tag": "lungs = most common metastatic site",
+    "p": "Gross and microscopic findings"
+   }
+  ]
+ },
+ {
+  "id": "first-trimester-care",
+  "num": 12,
+  "title": "Care for Pregnancy in the First Trimester",
+  "group": "Early Pregnancy Complications",
+  "runtime": "7-9 min",
+  "connects": "Establishes the normal baseline that Teratogenesis, first-trimester ultrasound, and antenatal care all build on",
+  "objectives": [
+   "Define GTPAL",
+   "Describe how to diagnose pregnancy and set an EDB",
+   "List symptoms of pregnancy in the first 12 weeks",
+   "Describe uterine size and growth over the first 12 weeks",
+   "List the standard first-trimester test panel"
+  ],
+  "sections": [
+   {
+    "h": "GTPAL",
+    "tag": "a five-digit obstetric history",
+    "p": "Gravida, Term, Preterm, Abortions, Living"
+   },
+   {
+    "h": "Diagnosing pregnancy & setting the EDB",
+    "tag": "Naegele's rule",
+    "p": "Beta-hCG plus LMP-based or ultrasound dating"
+   },
+   {
+    "h": "Symptoms in the first 12 weeks",
+    "tag": "",
+    "p": "Amenorrhea, breast tenderness, nausea, fatigue"
+   },
+   {
+    "h": "Uterine size & growth",
+    "tag": "palpable at ~12 weeks",
+    "p": "Pelvic organ until it rises above the symphysis"
+   },
+   {
+    "h": "Standard first-trimester panel",
+    "tag": "",
+    "p": "Blood type/Rh, CBC, rubella, HBsAg, HIV, syphilis, urinalysis, Pap"
+   }
+  ]
+ },
+ {
+  "id": "approach-sexual-health",
+  "num": 13,
+  "title": "Approach to Sexual Health",
+  "group": "Obstetric Care Foundations",
+  "runtime": "6-8 min",
+  "connects": "",
+  "objectives": [
+   "Describe an approach to sexuality as a family physician",
+   "Describe ways to inquire about sexual function and practices",
+   "List ways to make an office a safe space for these discussions",
+   "Contrast sexual function and response for heterosexual cis-men and cis-women",
+   "Define various sexual preferences"
+  ],
+  "sections": [
+   {
+    "h": "Why sexual health belongs in routine care",
+    "tag": "",
+    "p": "Proactive, non-judgmental, normalized as routine history"
+   },
+   {
+    "h": "Inquiry techniques",
+    "tag": "",
+    "p": "Open-ended, direct, non-assuming language"
+   },
+   {
+    "h": "Creating a safe office space",
+    "tag": "",
+    "p": "Inclusive intake forms, confidentiality, patient's own language"
+   },
+   {
+    "h": "Contrasting sexual response",
+    "tag": "responsive vs spontaneous desire",
+    "p": "Cis-men vs cis-women patterns"
+   },
+   {
+    "h": "Defining sexual preferences",
+    "tag": "",
+    "p": "Orientation vs gender identity are distinct concepts"
+   }
+  ]
+ },
+ {
+  "id": "topics-antenatal-care",
+  "num": 14,
+  "title": "Topics of Antenatal Care",
+  "group": "Antenatal Care & Surveillance",
+  "runtime": "7-9 min",
+  "connects": "Picks up where first-trimester care leaves off, extending into the second half of pregnancy",
+  "objectives": [
+   "Describe factors important for ongoing pregnancy care",
+   "List times for antibody testing in pregnancy",
+   "Describe prophylaxis options (vaccines and therapies) in pregnancy",
+   "Describe timing of perceiving fetal movement and how it changes",
+   "Explain what is done at a prenatal visit after 20 weeks",
+   "Describe nutritional requirements for pregnancy"
+  ],
+  "sections": [
+   {
+    "h": "Factors in ongoing care",
+    "tag": "",
+    "p": "Visit schedule, maternal screening, fetal surveillance"
+   },
+   {
+    "h": "Antibody testing timing",
+    "tag": "28-week Rh re-screen",
+    "p": "Anti-D prophylaxis for Rh-negative patients"
+   },
+   {
+    "h": "Prophylaxis: vaccines & therapies",
+    "tag": "flu, Tdap, folic acid",
+    "p": "Live vaccines are contraindicated"
+   },
+   {
+    "h": "Fetal movement",
+    "tag": "18-20wk primigravida, 16-18wk multigravida",
+    "p": "Quickening timing and kick counts"
+   },
+   {
+    "h": "The post-20-week visit",
+    "tag": "BP, urine dip, fundal height, FHR",
+    "p": ""
+   },
+   {
+    "h": "Nutritional requirements",
+    "tag": "iron, calcium, vitamin D, folic acid",
+    "p": "Plus foods counseled against"
+   }
+  ]
+ },
+ {
+  "id": "second-trimester-ultrasound",
+  "num": 15,
+  "title": "Second Trimester Ultrasound",
+  "group": "Antenatal Care & Surveillance",
+  "runtime": "6-8 min",
+  "connects": "Distinguishes the anatomy scan from the first-trimester dating ultrasound",
+  "objectives": [
+   "Review indications and results of appropriate ultrasound in pregnancy"
+  ],
+  "sections": [
+   {
+    "h": "Purpose & timing",
+    "tag": "18-22 week anatomy scan",
+    "p": "A structural home inspection at the ideal window to act on findings"
+   },
+   {
+    "h": "What's assessed",
+    "tag": "",
+    "p": "Anatomy survey, growth biometry, placental location, amniotic fluid"
+   },
+   {
+    "h": "Other indications later in pregnancy",
+    "tag": "",
+    "p": "Size-dates discrepancy, decreased movement, suspected growth restriction"
+   },
+   {
+    "h": "Interpreting results",
+    "tag": "MFM referral",
+    "p": "What triggers escalation to specialist care"
+   }
+  ]
+ },
+ {
+  "id": "hypertension-pregnancy",
+  "num": 16,
+  "title": "Hypertension in Pregnancy",
+  "group": "Antenatal Care & Surveillance",
+  "runtime": "10-12 min",
+  "connects": "Capstone — the blood-pressure screening explained here is what every antenatal visit after 20 weeks is checking for",
+  "objectives": [
+   "Define pre-gestational, gestational and pregnancy-induced hypertension",
+   "Describe the role and interaction of pregnancy with each",
+   "Recall which antihypertensives are contraindicated in pregnancy",
+   "List complications associated with hypertension in pregnancy",
+   "Explain the management of pregnancy-induced hypertension",
+   "Define HELLP syndrome and eclampsia",
+   "List treatments for eclampsia",
+   "Develop a treatment plan for women with hypertension in pregnancy"
+  ],
+  "sections": [
+   {
+    "h": "Three categories by timing",
+    "tag": "chronic / gestational / preeclampsia",
+    "p": "Distinguished by onset before or after 20 weeks and by end-organ involvement"
+   },
+   {
+    "h": "Interaction with pregnancy physiology",
+    "tag": "abnormal placentation",
+    "p": "Delivery of the placenta is the only definitive cure"
+   },
+   {
+    "h": "Contraindicated antihypertensives",
+    "tag": "ACEi/ARB contraindicated",
+    "p": "Labetalol, nifedipine, methyldopa are pregnancy-safe"
+   },
+   {
+    "h": "Complications",
+    "tag": "",
+    "p": "Maternal and fetal risks of hypertensive disease"
+   },
+   {
+    "h": "Managing gestational hypertension",
+    "tag": "",
+    "p": "Surveillance, medication threshold, timing of delivery"
+   },
+   {
+    "h": "HELLP & eclampsia",
+    "tag": "one fire, different rooms",
+    "p": "Definitions along a shared disease spectrum"
+   },
+   {
+    "h": "Treating eclampsia",
+    "tag": "magnesium sulfate first-line",
+    "p": "Seizure control, BP control, expedited delivery"
+   }
+  ]
+ }
+]</script>
+<script>
+(function(){
+  "use strict";
+  var MODULES = JSON.parse(document.getElementById('data').textContent);
+  var store = {
+    get: function(){ try{ return JSON.parse(localStorage.getItem('wk5VideoNotes-v1')) || {}; }catch(e){ return {}; } },
+    set: function(v){ try{ localStorage.setItem('wk5VideoNotes-v1', JSON.stringify(v)); }catch(e){} }
+  };
+  var data = store.get();
+
+  var dashboard = document.getElementById('dashboard');
+  var detail = document.getElementById('detail');
+  var groupsEl = document.getElementById('groups');
+  var currentIdx = -1;
+  var saveTimer = null;
+
+  function moduleState(m){ 
+    var d = data[m.id] || {};
+    var notesFilled = (m.sections || []).filter(function(s,i){ return d['note'+i] && d['note'+i].trim().length; }).length;
+    var objChecked = (m.objectives || []).filter(function(o,i){ return d['obj'+i]; }).length;
+    if(notesFilled === 0 && objChecked === 0) return 'empty';
+    if(notesFilled === (m.sections||[]).length && objChecked === (m.objectives||[]).length) return 'done';
+    return 'started';
+  }
+
+  function renderDashboard(){
+    groupsEl.innerHTML = '';
+    var groups = [];
+    MODULES.forEach(function(m){
+      var g = groups.filter(function(x){ return x.name===m.group; })[0];
+      if(!g){ g = {name:m.group, mods:[]}; groups.push(g); }
+      g.mods.push(m);
+    });
+    groups.forEach(function(g){
+      var h = document.createElement('div');
+      h.className = 'group-heading';
+      h.innerHTML = '<h2>'+g.name+'</h2><div class="rule"></div>';
+      groupsEl.appendChild(h);
+
+      var list = document.createElement('div');
+      list.className = 'list';
+      g.mods.forEach(function(m){
+        var idx = MODULES.indexOf(m);
+        var st = moduleState(m);
+        var row = document.createElement('button');
+        row.className = 'row';
+        var pillLabel = st==='done' ? 'Notes complete' : st==='started' ? 'In progress' : 'Not started';
+        row.innerHTML =
+          '<span class="num">'+String(m.num).padStart(2,'0')+'</span>'+
+          '<span class="body"><h3>'+m.title+'</h3><span class="meta">'+m.runtime+' · '+m.sections.length+' sections</span></span>'+
+          '<span class="status"><span class="pill '+st+'">'+pillLabel+'</span></span>';
+        row.addEventListener('click', function(){ openModule(idx); });
+        list.appendChild(row);
+      });
+      groupsEl.appendChild(list);
+    });
+  }
+
+  function openModule(idx){
+    currentIdx = idx;
+    var m = MODULES[idx];
+    var d = data[m.id] || (data[m.id] = {});
+    dashboard.hidden = true; detail.hidden = false;
+
+    document.getElementById('detKicker').textContent = 'Video '+m.num+' of 16';
+    document.getElementById('detTitle').textContent = m.title;
+    document.getElementById('detRuntime').textContent = m.runtime;
+    var connEl = document.getElementById('detConnects');
+    if(m.connects){ connEl.hidden = false; connEl.textContent = m.connects; }
+    else { connEl.hidden = true; }
+
+    var objList = document.getElementById('objList');
+    objList.innerHTML = '';
+    m.objectives.forEach(function(o, i){
+      var row = document.createElement('div');
+      row.className = 'obj';
+      var checked = !!d['obj'+i];
+      row.innerHTML = '<input type="checkbox" id="obj_'+i+'" '+(checked?'checked':'')+'><label for="obj_'+i+'"'+(checked?' class="checked"':'')+'>'+o+'</label>';
+      var cb = row.querySelector('input');
+      var lbl = row.querySelector('label');
+      cb.addEventListener('change', function(){
+        d['obj'+i] = cb.checked;
+        lbl.classList.toggle('checked', cb.checked);
+        persist();
+      });
+      objList.appendChild(row);
+    });
+
+    var sectionList = document.getElementById('sectionList');
+    sectionList.innerHTML = '';
+    m.sections.forEach(function(s, i){
+      var card = document.createElement('div');
+      card.className = 'section-card';
+      var tagHtml = s.tag ? '<span class="tag">'+s.tag+'</span>' : '';
+      var hintHtml = s.p ? '<div class="hint">'+s.p+'</div>' : '';
+      card.innerHTML =
+        '<div class="sh"><h3>'+(i+1)+'. '+s.h+'</h3>'+tagHtml+'</div>'+
+        hintHtml+
+        '<textarea placeholder="Notes on this section...">'+(d['note'+i]||'')+'</textarea>';
+      var ta = card.querySelector('textarea');
+      ta.addEventListener('input', function(){
+        d['note'+i] = ta.value;
+        persist();
+      });
+      sectionList.appendChild(card);
+    });
+
+    document.getElementById('nextBtn').textContent = (idx === MODULES.length-1) ? 'Back to all videos' : 'Next video →';
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  function persist(){
+    store.set(data);
+    var note = document.getElementById('saveNote');
+    note.textContent = 'Saved';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ note.textContent = 'Notes save automatically'; }, 1200);
+  }
+
+  document.getElementById('backBtn').addEventListener('click', function(){
+    detail.hidden = true; dashboard.hidden = false;
+    renderDashboard();
+    window.scrollTo({top:0, behavior:'instant'});
+  });
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    if(currentIdx === MODULES.length-1){
+      detail.hidden = true; dashboard.hidden = false;
+      renderDashboard();
+      window.scrollTo({top:0, behavior:'instant'});
+    } else {
+      openModule(currentIdx+1);
+    }
+  });
+  document.getElementById('printBtn').addEventListener('click', function(){ window.print(); });
+
+  renderDashboard();
+})();
+</script>

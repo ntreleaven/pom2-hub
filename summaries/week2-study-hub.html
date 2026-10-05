@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thyroid, Parathyroid &amp; Bone Study Hub</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --paper: #f3f5f4;
+    --paper-raised: #ffffff;
+    --ink: #1b2321;
+    --ink-soft: #4b5651;
+    --ink-faint: #7c8a84;
+    --line: #d8ddda;
+    --line-soft: #e7eae8;
+    --amber: #a8641c;
+    --amber-ink: #7a4712;
+    --amber-wash: #f4e6d3;
+    --teal: #1f6e73;
+    --teal-ink: #17565a;
+    --teal-wash: #dcedee;
+    --good: #2f7a4f;
+    --good-wash: #dcf0e2;
+    --bad: #ae3f34;
+    --bad-wash: #f7ded9;
+    --shadow: 0 1px 2px rgba(27,35,33,0.06), 0 6px 20px -8px rgba(27,35,33,0.12);
+    --radius: 3px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12191a;
+      --paper-raised: #182123;
+      --ink: #e9edea;
+      --ink-soft: #b6c0bb;
+      --ink-faint: #7d8b85;
+      --line: #2c3937;
+      --line-soft: #223030;
+      --amber: #e0a860;
+      --amber-ink: #f0c592;
+      --amber-wash: #33291b;
+      --teal: #6fc2c6;
+      --teal-ink: #9adade;
+      --teal-wash: #16302f;
+      --good: #6fbf8f;
+      --good-wash: #1a3327;
+      --bad: #e2897c;
+      --bad-wash: #3a211d;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12191a;
+    --paper-raised: #182123;
+    --ink: #e9edea;
+    --ink-soft: #b6c0bb;
+    --ink-faint: #7d8b85;
+    --line: #2c3937;
+    --line-soft: #223030;
+    --amber: #e0a860;
+    --amber-ink: #f0c592;
+    --amber-wash: #33291b;
+    --teal: #6fc2c6;
+    --teal-ink: #9adade;
+    --teal-wash: #16302f;
+    --good: #6fbf8f;
+    --good-wash: #1a3327;
+    --bad: #e2897c;
+    --bad-wash: #3a211d;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  h1, h2, h3, h4 { font-family: 'Spectral', Georgia, serif; text-wrap: balance; margin: 0; }
+  a { color: var(--teal-ink); }
+  table { border-collapse: collapse; }
+
+  .shell { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 280px;
+    flex: none;
+    border-right: 1px solid var(--line);
+    background: var(--paper-raised);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 22px 18px 30px;
+  }
+  .sidebar-head { margin-bottom: 4px; }
+  .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--teal-ink);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .sidebar-head h1 { font-size: 21px; font-weight: 600; line-height: 1.25; }
+  .sidebar-head .sub { color: var(--ink-faint); font-size: 13px; margin-top: 6px; }
+
+  .progress-block { margin: 18px 0 20px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-soft); margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+  .progress-track { height: 6px; background: var(--line-soft); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--amber); width: 0%; transition: width .4s ease; }
+
+  .navlist { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-soft); padding-top: 10px; }
+  .navlist li { margin: 0; }
+  .navlist a {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    padding: 7px 6px;
+    border-radius: var(--radius);
+  }
+  .navlist a:hover { background: var(--line-soft); color: var(--ink); }
+  .navlist a.active { color: var(--ink); font-weight: 600; }
+  .navlist .num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-faint); flex: none; width: 16px; }
+  .navlist .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--line); flex: none; }
+  .navlist .dot.done { background: var(--good); }
+
+  .sidebar-foot { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--line-soft); font-size: 12px; color: var(--ink-faint); }
+  .sidebar-foot code { font-family: 'IBM Plex Mono', monospace; background: var(--line-soft); padding: 1px 5px; border-radius: 2px; }
+
+  main { flex: 1; min-width: 0; }
+  .topbar {
+    position: sticky; top: 0; z-index: 5;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 40px;
+    display: none;
+  }
+
+  .hero {
+    padding: 54px 48px 40px;
+    border-bottom: 1px solid var(--line);
+    max-width: 900px;
+  }
+  .hero .kicker { margin-bottom: 14px; }
+  .hero h1 { font-size: 40px; font-weight: 600; letter-spacing: -0.01em; }
+  .hero .dek { color: var(--ink-soft); font-size: 16.5px; margin-top: 14px; max-width: 62ch; }
+  .hero-meta { display: flex; gap: 26px; margin-top: 26px; flex-wrap: wrap; }
+  .hero-meta div { font-size: 13px; color: var(--ink-faint); }
+  .hero-meta strong { display: block; font-family: 'Spectral', serif; font-size: 20px; color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .content { padding: 8px 48px 90px; max-width: 900px; }
+
+  section.module {
+    padding: 46px 0;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 20px;
+  }
+  section.module:last-of-type { border-bottom: none; }
+
+  .module-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 6px; }
+  .module-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--amber); padding-top: 6px; flex: none; width: 24px; }
+  .module-head h2 { font-size: 25px; font-weight: 600; }
+  .module-meta { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 22px 40px; }
+  .tag { font-size: 11.5px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.03em; color: var(--ink-faint); border: 1px solid var(--line); padding: 3px 8px; border-radius: 99px; }
+  .tag.mcc { color: var(--teal-ink); border-color: var(--teal); background: var(--teal-wash); }
+
+  .module-body { margin-left: 40px; }
+  .module-body p { color: var(--ink-soft); margin: 0 0 14px; max-width: 68ch; }
+  .module-body h3 { font-size: 15px; font-weight: 600; margin: 22px 0 10px; color: var(--ink); }
+  .module-body ul, .module-body ol { margin: 0 0 14px; padding-left: 20px; color: var(--ink-soft); max-width: 66ch; }
+  .module-body li { margin-bottom: 6px; }
+  .module-body li strong { color: var(--ink); }
+  .callout {
+    background: var(--amber-wash);
+    border-left: 3px solid var(--amber);
+    padding: 12px 16px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 14px;
+    color: var(--ink);
+    margin: 16px 0;
+    max-width: 64ch;
+  }
+  .callout strong { color: var(--amber-ink); }
+
+  .data-table { width: 100%; margin: 10px 0 20px; font-size: 13.5px; overflow-x: auto; display: block; }
+  .data-table table { width: 100%; min-width: 480px; }
+  .data-table th, .data-table td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  .data-table th { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); font-weight: 500; }
+  .data-table td.num { font-variant-numeric: tabular-nums; }
+
+  .quiz {
+    margin-top: 26px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .quiz-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--line-soft);
+    background: var(--line-soft);
+  }
+  .quiz-head span { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+  .quiz-score { font-size: 12.5px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+  .quiz-body { padding: 18px; }
+  .q { margin-bottom: 20px; }
+  .q:last-child { margin-bottom: 0; }
+  .q-stem { font-size: 14.5px; color: var(--ink); margin-bottom: 10px; font-weight: 500; }
+  .q-opts { display: flex; flex-direction: column; gap: 7px; }
+  .opt {
+    text-align: left;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    padding: 9px 12px;
+    border-radius: var(--radius);
+    font-size: 13.5px;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    gap: 9px;
+  }
+  .opt:hover { border-color: var(--teal); }
+  .opt:focus-visible { outline: 2px solid var(--teal); outline-offset: 1px; }
+  .opt .letter { font-family: 'IBM Plex Mono', monospace; color: var(--ink-faint); flex: none; }
+  .opt.correct { background: var(--good-wash); border-color: var(--good); }
+  .opt.incorrect { background: var(--bad-wash); border-color: var(--bad); }
+  .opt[disabled] { cursor: default; }
+  .q-explain {
+    display: none;
+    margin-top: 9px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    background: var(--teal-wash);
+    border-left: 3px solid var(--teal);
+    padding: 9px 12px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .q-explain.shown { display: block; }
+  .q-explain strong { color: var(--teal-ink); }
+
+  .colophon {
+    max-width: 900px;
+    padding: 34px 48px 70px;
+    color: var(--ink-faint);
+    font-size: 12.5px;
+    border-top: 1px solid var(--line);
+  }
+  .colophon a { color: var(--ink-soft); }
+
+  .theme-toggle {
+    position: fixed; bottom: 18px; right: 18px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    color: var(--ink-soft);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10;
+  }
+
+  .mobile-nav-toggle { display: none; }
+
+  @media (max-width: 880px) {
+    .sidebar { position: fixed; left: -300px; top: 0; z-index: 20; transition: left .25s ease; box-shadow: var(--shadow); }
+    .sidebar.open { left: 0; }
+    .topbar { display: flex; align-items: center; gap: 12px; padding: 12px 20px; }
+    .mobile-nav-toggle {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: var(--radius);
+      border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace; font-size: 13px; cursor: pointer;
+    }
+    .topbar strong { font-family: 'Spectral', serif; font-size: 15px; }
+    .hero { padding: 30px 20px 28px; }
+    .hero h1 { font-size: 30px; }
+    .content { padding: 8px 20px 70px; }
+    .module-meta, .module-body { margin-left: 0; }
+    .module-head { gap: 10px; }
+    .colophon { padding: 26px 20px 60px; }
+  }
+</style>
+
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <span class="kicker">P2 &middot; Endocrinology</span>
+      <h1>Week&nbsp;2 &mdash; Thyroid, Parathyroid &amp; Bone</h1>
+      <div class="sub">Sep 7&ndash;11, 2026</div>
+    </div>
+
+    <div class="progress-block">
+      <div class="progress-label"><span>Quiz progress</span><span id="progress-count">0 / 24</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+
+    <ul class="navlist" id="navlist"></ul>
+
+    <div class="sidebar-foot">
+      Built from the official Elentra learning objectives for 5260 &middot; PoM&nbsp;II. Content is written for review, not a substitute for the source modules &mdash; cross-check anything <code>flagged</code> against lecture.
+    </div>
+  </nav>
+
+  <main>
+    <div class="topbar">
+      <button class="mobile-nav-toggle" id="navToggle" aria-label="Toggle module list">&#9776;</button>
+      <strong>Week 2 &mdash; Thyroid, Parathyroid &amp; Bone</strong>
+    </div>
+
+    <header class="hero">
+      <span class="kicker">Study Hub</span>
+      <h1>Thyroid, Parathyroid &amp; Bone</h1>
+      <p class="dek">Eight modules on the calcium-and-metabolism axis: how the thyroid follicle makes hormone and how it fails, how a neck nodule gets worked up and read out on pathology, how the parathyroids keep serum calcium in a tight band, and what happens to bone when any of these systems go wrong &mdash; from vitamin D deficiency to Paget's disease to the osteoporosis treatment gap. Read a section, then clear its quiz before moving on.</p>
+      <div class="hero-meta">
+        <div><strong>8</strong>modules</div>
+        <div><strong>24</strong>quiz questions</div>
+        <div><strong>~7h</strong>estimated content time</div>
+      </div>
+    </header>
+
+    <div class="content" id="content"></div>
+
+    <footer class="colophon">
+      Sources: content in every module &mdash; learning objectives, mechanisms, diagnostic pathways, drug tables, clinical cases, and concept-check logic &mdash; is drawn directly from the actual Elentra lesson content and slide decks for each Week 2 lecture (5260 &middot; Endocrinology &amp; Reproduction, Thyroid/Parathyroid/Bone) as of Sep 2026, then rewritten in my own words rather than copied verbatim, out of respect for your instructors' copyright. Quiz stems and explanations are also my own paraphrase, built to test the same concepts and numbers the lectures actually cover &mdash; not the course's original questions. If anything here doesn't match what a professor said in lecture, trust the lecture.
+    </footer>
+  </main>
+</div>
+
+<button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle color theme">&#9788;</button>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var stored = null;
+  try { stored = localStorage.getItem('endo-hub-theme'); } catch(e) {}
+  if (stored) root.setAttribute('data-theme', stored);
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var current = root.getAttribute('data-theme');
+    var next = current === 'dark' ? 'light' : (current === 'light' ? 'dark' : ((window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'light' : 'dark'));
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('endo-hub-theme', next); } catch(e) {}
+  });
+
+  document.getElementById('navToggle').addEventListener('click', function(){
+    document.getElementById('sidebar').classList.toggle('open');
+  });
+})();
+</script>
+
+<script>
+const MODULES = [
+{
+  id: 'thyroid-parathyroid-physiology',
+  title: 'Thyroid &amp; Parathyroid Physiology',
+  instructor: 'Daniel Hardy',
+  duration: '~50 min',
+  tags: [{label:'MCC: Ca2+ balance', cls:'mcc'}],
+  body: `
+    <p>Two glands, one theme: both spend their whole existence maintaining a tightly bounded internal variable &mdash; metabolic rate for the thyroid, serum calcium for the parathyroids &mdash; using a feedback loop that fails in predictable ways.</p>
+    <h3>Making thyroid hormone</h3>
+    <p>The thyroid follicle is built around <strong>thyroglobulin (Tg)</strong>, a huge glycoprotein studded with tyrosine residues that the gland stores in bulk as colloid. Getting hormone out of it takes three coordinated steps. First, the <strong>sodium-iodide symporter (NIS)</strong> on the basal membrane drags iodide into the follicular cell against its gradient, riding the Na+ gradient; a second transporter, <strong>pendrin</strong>, then pushes it across the apical membrane into the colloid. Second, <strong>thyroid peroxidase (TPO)</strong> at the apical surface oxidizes that iodide and attaches it to tyrosines on Tg &mdash; iodination and coupling happen in the same step, producing iodinated Tg sitting in storage as colloid. Third, on demand, the cell takes colloid back up by pinocytosis and proteolyzes the iodinated Tg in lysosomes, releasing the two active hormones: <strong>T4 (thyroxine)</strong> and <strong>T3 (triiodothyronine)</strong>.</p>
+    <p><strong>TSH</strong> from the pituitary drives essentially every step of this &mdash; NIS activity, Tg synthesis, TPO activity, and iodination itself &mdash; so a TSH problem shows up as a whole-pathway problem, not a single broken step.</p>
+    <div class="data-table"><table><thead><tr><th>Hormone</th><th>% secreted</th><th>Free fraction</th><th>Relative potency</th><th>Half-life</th></tr></thead><tbody>
+      <tr><td>T4</td><td class="num">90%</td><td class="num">0.1%</td><td class="num">1&times;</td><td class="num">~7 days</td></tr>
+      <tr><td>T3</td><td class="num">10%</td><td class="num">1%</td><td class="num">10&times;</td><td class="num">~1 day</td></tr>
+    </tbody></table></div>
+    <p>T4 is the abundant secreted form but T3 is the active one at ten times the potency &mdash; peripheral, cell-specific <strong>deiodinases (D1&ndash;D4)</strong> convert T4 to T3 where it's needed. Because T3/T4 are lipophilic amino-acid derivatives, almost all of both circulate bound to carrier proteins &mdash; <strong>TBG</strong> (highest affinity, carries ~75%), <strong>transthyretin/TTR</strong>, and <strong>albumin</strong> &mdash; which buffers their half-life; unbound protein would clear far faster.</p>
+    <h3>What thyroid hormone actually does</h3>
+    <p>In development, T3/T4 are permissive for growth hormone action and required for neural maturation &mdash; maternal/fetal deficiency causes growth failure and, if uncorrected, cretinism. In the mature body, thyroid hormone is a general accelerant: it increases mitochondrial mass and activity, basal metabolic rate, heat production, and O2 demand; it upregulates Na+/K+-ATPase and cardiac beta-adrenergic receptors (raising heart rate and stroke volume); and it drives lipolysis, glycogenolysis, and gluconeogenesis.</p>
+    <div class="callout"><strong>Iodine is the rate-limiting raw material.</strong> Diets low in iodine (historically much of inland North America) caused endemic goiter &mdash; low hormone output removes negative feedback, TSH rises, and the gland hypertrophies trying to compensate.</p></div>
+    <h3>Calcium: why the body defends it so tightly</h3>
+    <p>Calcium is a signaling ion (exocytosis, transcription), a membrane-potential regulator (excitability of nerve and muscle), a requirement for both contraction and relaxation of muscle, and an enzyme cofactor (troponin-C, calmodulin) &mdash; which is why plasma calcium is defended within a narrow range even though it's a tiny fraction (~1%) of total body calcium; the other 99% sits in bone as a structural and metabolic reservoir.</p>
+    <p>Three organs run the calcium economy: the <strong>intestine</strong> absorbs it, the <strong>kidney</strong> reabsorbs ~98% of the ~10 g filtered daily (with the distal convoluted tubule specifically upregulated by PTH), and <strong>bone</strong> constantly remodels &mdash; osteoblasts build, osteoclasts resorb, osteocytes sense mechanical strain and coordinate the two. Roughly 15&ndash;18% of trabecular bone is being remodeled at any moment, turning the skeleton over on a multi-year cycle; aging tips that balance toward resorption, which is the root of osteoporosis.</p>
+    <h3>Parathyroid hormone and vitamin D</h3>
+    <p>The four parathyroid glands sit behind the thyroid; their chief cells carry a <strong>calcium-sensing receptor</strong> that continuously reads serum Ca2+ and throttles PTH secretion &mdash; rising calcium shuts PTH off. PTH's receptor (shared with PTHrP, the mechanism behind some malignancy-associated hypercalcemia) signals through both Gs (cAMP/PKA) and Gq (PLC/IP3), and PTH raises plasma calcium two ways: directly, by increasing distal tubule calcium reabsorption, and indirectly, by inducing renal <strong>1-alpha-hydroxylase</strong>, which converts 25-hydroxyvitamin D to <strong>calcitriol</strong> (1,25-(OH)&#8322;D&#8323;, ~1000&times; more active than its precursor). Calcitriol then increases intestinal calcium absorption and, depending on calcium status, either promotes resorption (when calcium is low) or mineralization (when calcium is high).</p>
+    <div class="data-table"><table><thead><tr><th>Pattern</th><th>Serum Ca2+</th><th>Typical cause</th></tr></thead><tbody>
+      <tr><td>Primary hyperparathyroidism</td><td>High</td><td>~80% parathyroid adenoma; PTH drives Ca2+ up directly</td></tr>
+      <tr><td>Secondary hyperparathyroidism</td><td>Low&ndash;normal</td><td>CKD, vitamin D deficiency, or PTH/vitamin D resistance &mdash; PTH rises appropriately but can't normalize a chronically low-calcium state</td></tr>
+    </tbody></table></div>
+    <p>The absence versus presence of hypercalcemia is the single fastest way to tell primary from secondary hyperparathyroidism apart. Hypoparathyroidism, by contrast, is usually iatrogenic (post-thyroidectomy) and causes hypocalcemia &mdash; numbness, cramps, and in severe cases tetany and seizures.</p>
+  `,
+  quiz: [
+    {stem: "Which apical-membrane protein moves iodide from the follicular cell into the colloid, immediately upstream of TPO-mediated iodination?", opts: ["Sodium-iodide symporter (NIS)", "Pendrin", "Thyroglobulin", "Deiodinase D2"], correct: 1, explain: "Pendrin exports iodide across the apical membrane into colloid; NIS is the basal transporter that first brings iodide into the cell from blood. Both are needed, but pendrin is the one immediately adjacent to TPO-mediated iodination of thyroglobulin."},
+    {stem: "T4 is secreted in far greater quantity than T3, yet T3 is considered the biologically active hormone. Why?", opts: ["T4 cannot bind the thyroid hormone receptor at all", "Peripheral deiodinases convert T4 to T3, and T3 has roughly 10x the receptor potency", "T3 has a much longer half-life than T4", "T4 is entirely protein-bound and never reaches tissue"], correct: 1, explain: "Cell-specific deiodinases (D1-D4) convert the abundant, longer-half-life T4 into the more potent T3 at the tissue level; T3's half-life (~1 day) is actually shorter than T4's (~7 days), and it's the conversion plus higher relative potency that makes T3 the active form."},
+    {stem: "A patient has chronic kidney disease with a persistently low-normal serum calcium and a markedly elevated PTH. This pattern best fits which diagnosis?", opts: ["Primary hyperparathyroidism", "Secondary hyperparathyroidism", "Familial hypocalciuric hypercalcemia", "Primary hypoparathyroidism"], correct: 1, explain: "Secondary hyperparathyroidism is the appropriate physiologic PTH response to a chronically low-normal calcium state (here driven by CKD impairing calcitriol production) - the hallmark that distinguishes it from primary hyperparathyroidism is that hypercalcemia is absent."}
+  ]
+},
+{
+  id: 'hypothyroidism-thyrotoxicosis',
+  title: 'Hypothyroidism &amp; Thyrotoxicosis',
+  instructor: 'Deric Morrison',
+  duration: '~65 min',
+  tags: [{label:'MCC: screen &amp; confirm', cls:'mcc'}],
+  body: `
+    <p>Thyroid dysfunction is common &mdash; hypothyroidism affects up to 2% overtly and 10% subclinically; thyrotoxicosis up to 1.5% &mdash; and both are diagnosed the same disciplined way: screen with TSH, confirm with free hormone, then hunt for etiology.</p>
+    <h3>Reading thyroid function tests</h3>
+    <div class="data-table"><table><thead><tr><th>Pattern</th><th>TSH</th><th>FT4 / FT3</th></tr></thead><tbody>
+      <tr><td>Thyrotoxicosis</td><td class="num">&darr;</td><td class="num">&uarr;</td></tr>
+      <tr><td>Primary hypothyroid</td><td class="num">&uarr;</td><td class="num">&darr;</td></tr>
+      <tr><td>Subclinical hyper</td><td class="num">&darr;</td><td class="num">normal</td></tr>
+      <tr><td>Subclinical hypo</td><td class="num">&uarr;</td><td class="num">normal</td></tr>
+      <tr><td>Central hyper (rare)</td><td class="num">normal/&uarr;</td><td class="num">&uarr;</td></tr>
+      <tr><td>Central hypo</td><td class="num">normal/&darr;</td><td class="num">&darr;</td></tr>
+    </tbody></table></div>
+    <p>If TSH is normal, testing generally stops there. Central hypothyroidism is the trap: TSH can look normal or even low despite genuinely low thyroid hormone, because the pituitary itself isn't sensing correctly &mdash; suspect it with other pituitary deficiencies or a known sellar mass, and add FT4 directly.</p>
+    <h3>Thyrotoxicosis: three mechanisms, one lab clue</h3>
+    <p>Everything that raises T3/T4 falls into one of three buckets, and radioactive iodine uptake (RAIU) separates them cleanly.</p>
+    <div class="data-table"><table><thead><tr><th>Mechanism</th><th>Examples</th><th>RAIU</th></tr></thead><tbody>
+      <tr><td>Increased synthesis</td><td>Graves' disease, toxic multinodular goiter, toxic adenoma</td><td class="num">High</td></tr>
+      <tr><td>Leakage of preformed hormone</td><td>Subacute/postpartum thyroiditis</td><td class="num">Low</td></tr>
+      <tr><td>Exogenous</td><td>Levothyroxine overtreatment, factitious ingestion</td><td class="num">Low</td></tr>
+    </tbody></table></div>
+    <p><strong>Graves' disease</strong> is by far the most common cause &mdash; TSH-receptor-stimulating antibodies drive both hormone output and gland hyperplasia. It's suspected from demographics (female, 30&ndash;50), family history of autoimmune disease, acute onset, a symmetric goiter, and orbitopathy. <strong>Graves' orbitopathy</strong> (proptosis, periorbital edema, diplopia, and in severe cases visual loss &mdash; an ocular emergency) comes from glycosaminoglycan and adipocyte accumulation in the retro-orbital space; smoking is the major modifiable risk factor and worsens it. A TSH-receptor antibody (TRAb) test is sensitive and specific for Graves' but isn't OHIP-covered; RAIU scan remains the best single etiology test when the diagnosis isn't obvious clinically.</p>
+    <h3>Treating thyrotoxicosis</h3>
+    <p>Supportive care (beta blockers for tachycardia/tremor, NSAIDs or steroids for painful subacute thyroiditis) applies broadly. For synthesis-driven causes, three options reduce hormone production: <strong>antithyroid drugs</strong> (methimazole preferred over PTU outside pregnancy/thyroid storm; ~4&ndash;6 weeks to euthyroidism; rare risks of agranulocytosis and teratogenicity), <strong>radioactive iodine ablation</strong> (a permanent cure but high risk of resulting hypothyroidism, contraindicated in pregnancy, and can worsen Graves' eye disease in smokers), and <strong>surgery</strong> (reserved for large symptomatic goiters, suspected malignancy, or refractory thyroid storm).</p>
+    <h3>Hypothyroidism</h3>
+    <p>Hashimoto's thyroiditis (autoimmune destruction) is by far the dominant cause; drug-induced (lithium, amiodarone), post-surgical/post-RAI, and central causes round out the differential. Presentation is classically cold intolerance, weight gain despite poor appetite, fatigue, and constipation, but symptoms are nonspecific enough that TSH screening is driven by a broader list of triggers: dyslipidemia, anemia, hyponatremia, personal/family autoimmune history, Down or Turner syndrome, prior thyroid disease or neck radiation, certain drugs, and pregnancy.</p>
+    <div class="callout"><strong>Myxedema coma</strong> is the rare but urgent endpoint of untreated hypothyroidism &mdash; obtundation, hypothermia, hypotension, bradycardia, hyponatremia, and hypoventilation.</div>
+    <p>Treatment is straightforward once diagnosed: <strong>levothyroxine (T4)</strong>, once daily, roughly 1.5 mcg/kg/day, titrated to a normal TSH and rechecked every 4&ndash;6 weeks (its own half-life is about a week, so changes take time to show up). It should be taken at least an hour before or two hours after food, and separated from calcium, iron, magnesium, and multivitamins by at least four hours &mdash; bedtime dosing works well for many patients once that separation is built in.</p>
+    <p><strong>Subclinical disease</strong> in both directions is common and usually watched rather than treated: subclinical hypothyroidism is treated mainly if TSH &gt;10, anti-TPO is positive, or in pregnancy; subclinical hyperthyroidism is treated more readily in older patients (atrial fibrillation and bone-loss risk) and simply monitored in younger ones with borderline-low TSH.</p>
+  `,
+  quiz: [
+    {stem: "A patient has a low TSH with normal FT4 and FT3. How should this pattern be described and generally managed?", opts: ["Overt hyperthyroidism - treat immediately", "Subclinical hyperthyroidism - treat if older/lower TSH, monitor if younger/borderline", "Central hypothyroidism - add FT4 testing urgently", "A lab error that should be ignored"], correct: 1, explain: "Low TSH with normal free hormones is subclinical hyperthyroidism. It carries real risks (atrial fibrillation, bone loss), so management leans toward treating older patients or those with a lower TSH, while younger patients with borderline-low TSH are often just monitored."},
+    {stem: "Which single test best distinguishes Graves' disease, toxic multinodular goiter/adenoma, and thyroiditis as causes of thyrotoxicosis?", opts: ["Anti-TPO antibody", "Radioactive iodine uptake and scan (RAIU)", "Serum calcitonin", "Thyroglobulin level"], correct: 1, explain: "RAIU separates thyrotoxicosis by mechanism: diffusely high in Graves', patchy/nodular high uptake in toxic MNG, a single hot nodule in toxic adenoma, and LOW/absent uptake in thyroiditis (since it reflects hormone leakage rather than new synthesis)."},
+    {stem: "A patient starting levothyroxine also takes a daily multivitamin with calcium. What's the correct instruction?", opts: ["Take them together for better absorption", "Separate levothyroxine from the multivitamin by at least 4 hours, and from food by 1-2 hours", "Levothyroxine should only ever be taken at bedtime", "No separation is needed with levothyroxine"], correct: 1, explain: "Calcium, iron, magnesium, and multivitamins can impair levothyroxine absorption, so they should be separated by at least 4 hours; levothyroxine itself should be taken roughly an hour before or two hours after eating, though the specific time of day is flexible as long as that separation holds."}
+  ]
+},
+{
+  id: 'thyroid-masses',
+  title: 'Thyroid Nodule Workup',
+  instructor: 'D. Morrison &amp; M. Weir',
+  duration: '~45 min',
+  tags: [{label:'MCC: exclude malignancy', cls:'mcc'}],
+  body: `
+    <p>Thyroid nodules are common &mdash; roughly a 10% lifetime probability &mdash; and the overwhelming majority are benign. The clinical job isn't diagnosing every nodule; it's running a diagnostic pathway that reliably catches the minority that are malignant, without over-investigating the rest.</p>
+    <h3>Framing case</h3>
+    <p>A 42-year-old woman with no risk factors notices a slowly enlarging neck lump over six months causing mild dysphagia. Exam finds a solitary, firm-but-not-hard 2&ndash;3 cm nodule with no adenopathy and no thyrotoxic signs. TSH is normal; ultrasound shows a 3.2 cm nodule, TI-RADS 3; FNA returns FLUS (follicular lesion of undetermined significance). She chooses hemithyroidectomy after discussing the options.</p>
+    <h3>First: is this urgent?</h3>
+    <p>Rapid growth, progressive dysphagia, stridor, a large fixed firm mass, or diffuse enlargement with thyrotoxicosis all push a nodule out of the routine pathway and into urgent assessment.</p>
+    <h3>The differential, and the stratification sequence</h3>
+    <p>Not every neck mass is thyroid &mdash; parathyroid, lymph node, and soft tissue all belong on the differential too. Within the thyroid itself, causes range from very common (hyperplasia, cyst, Hashimoto's, adenoma) through life/QoL-threatening (differentiated and poorly differentiated carcinoma) to urgent (anaplastic carcinoma, lymphoma). Risk factors that raise suspicion for malignancy: younger age (especially children), male sex, a first-degree relative with thyroid cancer, and prior neck radiation; dysphagia, hoarseness, stridor, rapid growth, and a firm/fixed mass or suspicious nodes are the worrying symptoms and signs.</p>
+    <p>The workup runs in a fixed order: <strong>clinical &rarr; biochemistry (TSH only) &rarr; imaging &rarr; FNAB &rarr; management.</strong> If TSH is low, get a radioactive iodine scan first &mdash; a "hot" nodule is functioning and therefore benign (treat the hyperthyroidism); a "cold" nodule is indeterminate and needs further workup. If TSH is normal or high, go straight to ultrasound with <strong>TI-RADS</strong> risk stratification: low risk needs no biopsy, indeterminate needs FNAB or watchful monitoring, high risk needs FNAB.</p>
+    <h3>Sampling: why FNA, not core biopsy</h3>
+    <p>Fine needle aspiration (22-gauge or smaller) is minimally invasive, fast, inexpensive, and safe, though it takes expertise to interpret. Needle core biopsy uses a much larger bore needle and carries a real risk of tumour seeding and hematoma in a vascular organ like the thyroid, so it's essentially not used there (its main home is breast lesions). Incisional biopsy isn't done on the thyroid either &mdash; if tissue-level assessment is needed, that's a surgical lobectomy or thyroidectomy, not an open biopsy.</p>
+    <h3>Reading the report: the Bethesda system</h3>
+    <div class="data-table"><table><thead><tr><th>Category</th><th>Meaning</th><th>Risk of malignancy</th></tr></thead><tbody>
+      <tr><td>I</td><td>Non-diagnostic</td><td>Indeterminate &mdash; repeat</td></tr>
+      <tr><td>II</td><td>Benign</td><td>Low</td></tr>
+      <tr><td>III</td><td>Atypia of undetermined significance</td><td>Indeterminate</td></tr>
+      <tr><td>IV</td><td>Follicular neoplasm</td><td>Indeterminate</td></tr>
+      <tr><td>V</td><td>Suspicious for malignancy</td><td>High</td></tr>
+      <tr><td>VI</td><td>Malignant</td><td>High</td></tr>
+    </tbody></table></div>
+    <p>A report has three parts &mdash; adequacy, diagnosis, and observations &mdash; and always gets read alongside the clinical picture and the ultrasound TIRADS score, not in isolation.</p>
+    <h3>Risk-adapted management</h3>
+    <p>Low-risk ultrasound with benign cytology gets clinical follow-up alone. Moderate-risk ultrasound with benign cytology gets surveillance +/- repeat biopsy. Indeterminate or insufficient cytology gets repeat biopsy. Surgery is reserved for high-risk ultrasound even with benign cytology, any malignant cytology, some indeterminate results, or a benign nodule that's symptomatic.</p>
+    <div class="callout"><strong>Choosing Wisely, applied here:</strong> use the least invasive test first, order only what changes management, and don't order tests for the learning experience or to match a preceptor's presumed preference &mdash; a framework this pathway is a direct application of.</div>
+  `,
+  quiz: [
+    {stem: "Akio has a 2 cm enlarging thyroid nodule, a normal TSH, and a father with thyroid cancer. What's the appropriate next test?", opts: ["CT scan of the neck", "Ultrasound of the thyroid", "Needle core biopsy", "Radioactive iodine uptake scan"], correct: 1, explain: "With a normal TSH, ultrasound with TI-RADS risk stratification is the next step - it's the least invasive, most cost-effective way to characterize the nodule and decide whether biopsy is needed. RAIU is reserved for a low-TSH (hyperthyroid) picture; CT can't sample tissue; core biopsy isn't used on the thyroid."},
+    {stem: "A thyroid FNAB comes back Bethesda category V (suspicious for malignancy). What does this mean for risk of malignancy and next steps?", opts: ["Low risk - routine follow-up only", "Indeterminate - repeat the biopsy in 3-6 months", "High risk - surgery is generally indicated", "Non-diagnostic - the sample must be repeated"], correct: 2, explain: "Bethesda V and VI both carry a high risk of malignancy and generally warrant surgery. Bethesda I is non-diagnostic (repeat), II is benign (low risk), and III/IV are indeterminate categories that may prompt repeat biopsy or molecular testing rather than immediate surgery."},
+    {stem: "Why is fine needle aspiration preferred over needle core biopsy for a solid thyroid nodule?", opts: ["FNAB provides a more precise histologic architecture", "The thyroid is highly vascular, and the large-bore core needle carries meaningful risk of tumour seeding and hematoma", "Core biopsy cannot be interpreted by pathologists", "FNAB is only used when cancer is already confirmed"], correct: 1, explain: "The thyroid's vascularity makes large-bore needle core biopsy risky (seeding, hematoma), so FNA - a much finer needle sampling cells rather than tissue - is preferred first-line, even though it requires more expertise to interpret and can't always distinguish follicular adenoma from carcinoma on its own."}
+  ]
+},
+{
+  id: 'thyroid-pathology',
+  title: 'Thyroid Gland Pathology',
+  instructor: 'Bret Wehrli',
+  duration: '~50 min',
+  tags: [{label:'Surgical pathology', cls:'mcc'}],
+  body: `
+    <p>Whatever the clinical workup suggests, the surgical pathology report is what actually settles the diagnosis, stages the disease, and drives everything downstream. This module is the histology behind the clinical nodule pathway.</p>
+    <h3>Non-neoplastic causes of a nodular thyroid</h3>
+    <p><strong>Multinodular hyperplasia (multinodular goiter)</strong> is common (up to a quarter of women) and usually sporadic or iodine-deficiency-driven: hyperplastic follicular cells of varying functional activity produce nodules of different sizes, net euthyroid, with no cellular atypia &mdash; just colloid-rich follicles, hemorrhage, fibrosis, and calcification from chronic degeneration. Surgery is considered for symptoms, worrisome imaging/FNA, growth over time, or cosmetic concern.</p>
+    <p><strong>Graves' disease</strong> is diffuse toxic hyperplasia &mdash; TSH-receptor-stimulating antibodies drive both hormone secretion and cell proliferation across the whole gland, producing a diffusely hyperplastic thyroid with papillary infoldings but no atypia. <strong>Hashimoto thyroiditis</strong> is the opposite mechanism &mdash; autoimmune-mediated destruction, with diffuse chronic inflammation, fibrosis, and a distinctive cell change: follicular cells under inflammatory stress become <strong>Hurthle cells</strong> (abundant pink cytoplasm, enlarged nuclei) &mdash; same cell, different appearance, driven by metaplasia rather than a separate cell population. The gland may transiently enlarge (sometimes prompting surgery for a dominant nodule) before eventually becoming small and fibrotic as destruction progresses.</p>
+    <h3>Neoplasms: the follicular-cell-derived spectrum</h3>
+    <p><strong>Follicular adenoma</strong>: benign, encapsulated, with a pushing (non-invasive) border, no capsular or lymphovascular invasion, and no nuclear atypia. Cured by hemithyroidectomy alone. <strong>Follicular carcinoma</strong> looks essentially identical under the microscope &mdash; same lack of nuclear atypia &mdash; but shows invasion through the capsule and/or into vessels. That's the critical, and clinically frustrating, point: <strong>FNA cytology cannot distinguish follicular adenoma from follicular carcinoma</strong>, because the distinguishing feature (invasion) can only be assessed on the full excised specimen, not on aspirated cells. This is exactly why Bethesda category IV ("follicular neoplasm") is inherently indeterminate.</p>
+    <p><strong>Papillary thyroid carcinoma (PTC)</strong> is the most common thyroid malignancy by a wide margin (85&ndash;90% of thyroid cancers) and, unlike follicular lesions, <em>can</em> be diagnosed on FNA alone &mdash; because its diagnostic feature is nuclear (enlarged, elongated, grooved nuclei with clearing and inclusions), not architectural invasion. It's often multifocal and spreads via lymphatics to regional nodes, which can be the presenting finding, yet still carries an excellent prognosis (~93% at 10 years) for most patients.</p>
+    <div class="data-table"><table><thead><tr><th>Tumour</th><th>Diagnosable on FNA?</th><th>Behaviour</th></tr></thead><tbody>
+      <tr><td>Follicular adenoma</td><td>No (needs excision)</td><td>Benign</td></tr>
+      <tr><td>Follicular carcinoma</td><td>No (needs excision)</td><td>Hematogenous spread</td></tr>
+      <tr><td>Papillary carcinoma</td><td>Yes (nuclear features)</td><td>Lymphatic spread, good prognosis</td></tr>
+      <tr><td>Anaplastic carcinoma</td><td>Aggressive sheets, no follicles</td><td>Rapid, often lethal</td></tr>
+      <tr><td>Medullary carcinoma</td><td>C-cell derived, amyloid stroma</td><td>Frequent metastasis</td></tr>
+    </tbody></table></div>
+    <p><strong>Anaplastic (undifferentiated) carcinoma</strong> represents dedifferentiation from a well-differentiated cancer, presents as a rapidly expanding mass in older patients, is often unresectable due to local infiltration, generally doesn't take up radioactive iodine, and is tested for BRAF given the possibility of targeted inhibitor therapy. <strong>Medullary thyroid carcinoma</strong> arises from calcitonin-producing C-cells rather than follicular cells &mdash; 75% sporadic, 25% associated with MEN 2A/2B via RET point mutations (distinct from the RET-PTC translocations seen in papillary carcinoma) &mdash; and is followed with serum calcitonin.</p>
+    <h3>What the pathology report determines</h3>
+    <p>Tumour type, size, encapsulation, capsular/lymphatic/vascular invasion, extrathyroidal extension, and nodal status together decide whether more surgery is needed, whether radioactive iodine or external radiation is indicated, and overall prognosis. Staging (AJCC/TNM) is notably age-stratified for differentiated thyroid cancer: patients under 55 are capped at Stage I or II regardless of local extent, while 55-and-older patients are staged by the full set of anatomic factors up to Stage IVB.</p>
+  `,
+  quiz: [
+    {stem: "Why can't FNA cytology reliably distinguish a follicular adenoma from a follicular carcinoma?", opts: ["Follicular carcinoma always shows nuclear atypia that FNA can detect", "The distinguishing feature is capsular/vascular invasion, which can only be assessed on the full excised specimen", "FNA needles cannot reach follicular lesions", "Follicular carcinoma never involves follicular cells"], correct: 1, explain: "Follicular adenoma and carcinoma look nearly identical at the cellular level - no nuclear atypia in either. The only distinguishing feature is invasion through the capsule or into vessels, which requires examining the whole excised nodule's architecture, not aspirated cells alone."},
+    {stem: "What histologic feature is characteristic of Hashimoto thyroiditis, representing metaplasia of follicular cells under chronic inflammatory stress?", opts: ["Papillary fibrovascular cores", "Hurthle cells", "Amyloid deposition", "Psammoma bodies"], correct: 1, explain: "Hurthle cells are follicular cells that acquire abundant pink (oncocytic) cytoplasm and enlarged nuclei under chronic inflammatory stress - the same cell type as normal follicular cells, just metaplastic. Amyloid deposition is a feature of medullary carcinoma, not Hashimoto's."},
+    {stem: "A patient's sister just had a hemithyroidectomy showing papillary thyroid carcinoma. What is the most accurate thing to tell her about prognosis, without more pathology detail?", opts: ["It's benign, so there's nothing to worry about", "It's malignant, but papillary thyroid carcinoma generally carries a very good prognosis", "It's an aggressive cancer with a poor prognosis", "Prognosis can't be discussed until a completion thyroidectomy is done"], correct: 1, explain: "Papillary carcinoma is malignant, not benign - but it is the most common and generally most indolent thyroid cancer type, with roughly 93% 10-year survival. Specific management details (completion surgery, RAI) depend on the full pathology report, but the general prognosis statement doesn't require it."}
+  ]
+},
+{
+  id: 'parathyroid-disorders',
+  title: 'Hyper- &amp; Hypoparathyroidism',
+  instructor: 'Tayyab Khan',
+  duration: '~55 min',
+  tags: [{label:'MCC: hyper/hypocalcemia ddx', cls:'mcc'}],
+  body: `
+    <p>Calcium disorders are read through PTH: is the parathyroid driving the abnormal calcium (PTH-mediated), or is something else driving it while the parathyroid tries, and fails, to compensate (PTH-independent or PTH-resistant)?</p>
+    <h3>Correcting calcium for albumin</h3>
+    <p>~40% of serum calcium is protein-bound, so a low albumin makes total calcium look falsely low. Correction: <strong>corrected Ca = measured Ca + 0.02 &times; (normal albumin &minus; patient albumin)</strong>. Worked example: measured Ca 2.6 mmol/L, albumin 20 g/L (normal ~40) &rarr; corrected Ca = 2.6 + 0.02&times;20 = <strong>3.0 mmol/L</strong> &mdash; a clinically important difference from the raw number.</p>
+    <h3>Hypercalcemia</h3>
+    <p>Classic teaching mnemonic: <strong>"stones, bones, groans, and psychiatric overtones"</strong> &mdash; nephrolithiasis and polyuria; bone pain and fractures; GI distress, pancreatitis, constipation; confusion, depression, apathy. Etiology splits into PTH-mediated (primary hyperparathyroidism, familial hypocalciuric hypercalcemia, tertiary hyperparathyroidism in CKD) and PTH-independent (malignancy &mdash; either bony metastases or PTHrP/cytokine-mediated humoral effects &mdash; vitamin D excess, granulomatous disease, immobilization, milk-alkali syndrome, thiazides). Over 90% of cases trace to either hyperparathyroidism or malignancy.</p>
+    <h3>Case: distinguishing primary hyperparathyroidism from FHH</h3>
+    <p>A 65-year-old woman being assessed for osteoporosis has fractures at 52 and 61, Ca 2.73 mmol/L, phosphate 0.69 mmol/L (low, consistent with PTH's phosphaturic effect), PTH 14 pmol/L (elevated), and 25-OH-D 70 nmol/L &mdash; classic primary hyperparathyroidism. The key distinguishing test from familial hypocalciuric hypercalcemia is the <strong>24-hour urine fractional excretion of calcium</strong>: below 0.01 suggests FHH (an inactivating calcium-sensing-receptor mutation that resets the whole system to tolerate higher calcium); above 0.02 suggests primary hyperparathyroidism. About 20% of FHH cases fall in the 0.01&ndash;0.02 gray zone, and the patient needs to be off thiazides for 3 months with normal magnesium and adequate vitamin D before the number can be trusted.</p>
+    <h3>Treatment</h3>
+    <p>Acute hypercalcemia (corrected Ca &gt;3 mmol/L) usually needs admission: volume repletion (typical deficit 4&ndash;6 L normal saline), then forced diuresis with saline plus furosemide once rehydrated, IV bisphosphonate (zoledronate), calcitonin, and &mdash; specifically for myeloma or vitamin D intoxication &mdash; prednisone. For primary hyperparathyroidism itself, mild/asymptomatic disease over age 50 can often be watched or managed medically (bisphosphonates, denosumab, cinacalcet) with hydration and avoidance of thiazides/lithium; surgery is for symptomatic disease or when calcium is &gt;0.25 mmol/L above normal, BMD T-score &le; &minus;2.5, a vertebral fracture, reduced creatinine clearance, high urinary calcium with stone risk, nephrolithiasis, or age under 50.</p>
+    <h3>Hypocalcemia</h3>
+    <p>Three patterns by phosphate and PTH: <strong>PTH-deficient</strong> (low Ca, high phosphate, low PTH &mdash; true hypoparathyroidism, 75% post-surgical); <strong>PTH-resistant</strong> (low Ca, high phosphate, but HIGH PTH &mdash; pseudohypoparathyroidism, an inherited end-organ resistance; type 1a carries the Albright hereditary osteodystrophy phenotype of short stature, round facies, and short metacarpals); and <strong>vitamin-D-deficient</strong> (low Ca, low phosphate &mdash; the most common pattern overall, from malabsorption, renal or liver failure, certain drugs, or lack of sun exposure).</p>
+    <p>Symptoms scale with severity: mild disease shows <strong>Chvostek's and Trousseau's signs</strong>; severe acute disease causes tetany (perioral paresthesias, carpopedal spasm, laryngeal spasm, seizures); chronic disease brings anxiety, brain fog, and cataracts. Acute treatment (reserved for corrected Ca &lt;1.9 mmol/L with neurologic symptoms, or cardiac symptoms with prolonged QT) is IV calcium gluconate bolus followed by continuous infusion, with cardiac monitoring and correction of any coexisting hypomagnesemia (PTH secretion and action are magnesium-dependent). Chronic treatment combines calcitriol, elemental calcium, and sometimes thiazides (which reduce urinary calcium loss) or recombinant human PTH.</p>
+  `,
+  quiz: [
+    {stem: "A patient has a measured serum calcium of 2.3 mmol/L and an albumin of 30 g/L (normal albumin assumed 40). What is the corrected calcium?", opts: ["2.1 mmol/L", "2.3 mmol/L (no correction needed)", "2.5 mmol/L", "2.7 mmol/L"], correct: 2, explain: "Corrected Ca = measured Ca + 0.02 x (normal albumin - patient albumin) = 2.3 + 0.02 x (40-30) = 2.3 + 0.2 = 2.5 mmol/L. A low albumin makes total calcium look falsely low, so correcting it here raises the value."},
+    {stem: "What 24-hour urine measurement best distinguishes primary hyperparathyroidism from familial hypocalciuric hypercalcemia (FHH)?", opts: ["Urine sodium", "Fractional excretion of calcium", "Urine creatinine alone", "Urine phosphate"], correct: 1, explain: "Fractional excretion of calcium below 0.01 suggests FHH (calcium is being conserved despite high serum calcium, due to a calcium-sensing receptor mutation), while above 0.02 suggests primary hyperparathyroidism, where urinary calcium loss is higher despite PTH's calcium-conserving renal effect."},
+    {stem: "Which pattern of phosphate and PTH is seen in pseudohypoparathyroidism?", opts: ["Low calcium, low phosphate, low PTH", "Low calcium, high phosphate, low PTH", "Low calcium, high phosphate, HIGH PTH", "High calcium, low phosphate, high PTH"], correct: 2, explain: "Pseudohypoparathyroidism is PTH resistance at the end organ - the parathyroid glands sense low calcium and appropriately raise PTH, but target tissues don't respond, so calcium stays low and phosphate stays high (mimicking hypoparathyroidism biochemically) despite an elevated, not low, PTH level."}
+  ]
+},
+{
+  id: 'calcium-drugs',
+  title: 'Drugs Affecting Calcium Homeostasis',
+  instructor: 'Fabiana Caetano Crowley',
+  duration: '~50 min',
+  tags: [{label:'Pharmacology', cls:'mcc'}],
+  body: `
+    <p>Everything that targets calcium and bone works on one of two sides of the same coin: slowing osteoclast-driven resorption (antiresorptive), or actively stimulating osteoblast-driven formation (anabolic). Vitamin D sits slightly apart, acting as substrate and signal for the whole system.</p>
+    <h3>Vitamin D: forms and uses</h3>
+    <div class="data-table"><table><thead><tr><th>Form</th><th>Source / metabolism</th><th>Notes</th></tr></thead><tbody>
+      <tr><td>Ergocalciferol (D2)</td><td>Plant-derived; hepatic + renal metabolism</td><td>Vegan-compatible option</td></tr>
+      <tr><td>Cholecalciferol (D3)</td><td>Animal-derived; hepatic + renal metabolism</td><td>Most common supplement form</td></tr>
+      <tr><td>Calcifediol, 25-(OH)D3</td><td>Renal metabolism; major circulating form</td><td>Half-life ~19 days; used in CKD stage 3-4 with low 25-OH-D</td></tr>
+      <tr><td>Calcitriol, 1,25-(OH)2D3</td><td>Most active form</td><td>Fast onset and clearance; used when rapid effect is needed; suppresses PTH</td></tr>
+    </tbody></table></div>
+    <p>Vitamin D increases intestinal calcium and phosphate absorption and renal reabsorption of both; in bone, its effect flips with calcium status &mdash; resorption when calcium is low, formation when calcium is adequate. It's used for nutritional rickets, metabolic rickets/osteomalacia, hypoparathyroidism, and osteoporosis prevention/treatment &mdash; though calcium and vitamin D alone, without an antiresorptive or anabolic agent, do <em>not</em> meaningfully improve bone mineral density on their own. Overuse causes hypercalcemia: acutely nausea, vomiting, and weakness; chronically renal impairment, soft-tissue calcification, and hypertension.</p>
+    <h3>Antiresorptive drugs</h3>
+    <p><strong>Bisphosphonates</strong> bind avidly to bone mineral, get taken up by osteoclasts, inhibit the mevalonate pathway, and drive osteoclast apoptosis &mdash; slowing resorption. They're poorly orally absorbed (must be taken empty-stomach, upright), renally cleared, and accumulate both in renal impairment and in bone itself for a prolonged period after stopping. Generally well tolerated (GI upset, transient flu-like symptoms with IV dosing, bone/joint pain), but carry the two signature rare risks of the whole antiresorptive class: <strong>osteonecrosis of the jaw (ONJ)</strong> and <strong>atypical femoral fracture (AFF)</strong>, both more common with higher potency and longer duration.</p>
+    <p><strong>Denosumab</strong> is a monoclonal antibody against RANKL, the ligand that normally activates osteoclast differentiation and survival through the RANK receptor. It matches bisphosphonate efficacy, works independent of renal function, and &mdash; unlike bisphosphonates &mdash; its effect on bone is fully <strong>reversible</strong>, which cuts both ways: stopping it without a follow-up antiresorptive causes rapid rebound bone loss and a cluster of vertebral fractures. Its ONJ risk appears higher than bisphosphonates' while on therapy, but falls again after stopping (bisphosphonates stay retained in bone and don't have that same off-ramp).</p>
+    <h3>Anabolic (bone-forming) drugs</h3>
+    <p><strong>Teriparatide</strong> is recombinant PTH(1-34). Continuous PTH exposure is catabolic, but <em>intermittent</em> daily dosing flips the effect to net anabolic &mdash; inhibiting resorption while stimulating osteoblast-driven formation. It's not associated with ONJ, but carries hypercalcemia/hypercalciuria risk and an osteosarcoma signal in rat studies that caps its use (contraindicated in CrCl &lt;30, hypercalcemia, and other metabolic bone disease).</p>
+    <p><strong>Romosozumab</strong> is a monoclonal antibody against sclerostin, a natural inhibitor of bone formation &mdash; blocking it both increases formation and decreases resorption, a dual mechanism unique among these drugs. Monthly subcutaneous dosing; risks include ONJ, AFF, and a boxed cardiovascular warning (MI, stroke, death), making it contraindicated within a year of either.</p>
+    <div class="callout"><strong>Sequencing matters.</strong> Anabolic agents (teriparatide, romosozumab) are typically front-loaded in very high-risk patients and must be followed by an antiresorptive to lock in the bone gained &mdash; starting with an antiresorptive first blunts the anabolic response if you switch to one later.</div>
+  `,
+  quiz: [
+    {stem: "Why does stopping denosumab without transitioning to another antiresorptive agent carry particular risk?", opts: ["Denosumab causes permanent, irreversible suppression of osteoclasts", "Its effect is fully reversible, so stopping it causes rapid rebound bone loss and clustered vertebral fractures", "It has no effect on bone once stopped, so no monitoring is needed", "Denosumab must always be followed by teriparatide specifically"], correct: 1, explain: "Unlike bisphosphonates, which stay retained in bone for a long time after stopping, denosumab's antiresorptive effect is fully reversible - so abrupt discontinuation removes RANKL suppression quickly and can trigger a rebound surge of osteoclast activity and vertebral fractures unless another antiresorptive (typically a bisphosphonate) follows promptly."},
+    {stem: "How does intermittent dosing of teriparatide (recombinant PTH 1-34) produce a net anabolic, rather than catabolic, effect on bone?", opts: ["It permanently blocks the PTH receptor", "Continuous PTH exposure is catabolic, but intermittent daily dosing shifts the balance toward osteoblast-driven bone formation", "It only affects intestinal calcium absorption, not bone directly", "It works by inhibiting RANKL, the same mechanism as denosumab"], correct: 1, explain: "The key pharmacologic point about teriparatide is that dosing pattern determines effect: sustained/continuous PTH signaling favors resorption, while pulsatile, once-daily dosing favors osteoblast activity and net bone formation - the opposite of denosumab's RANKL-inhibition mechanism."},
+    {stem: "A postmenopausal woman with severe osteoporosis is started on romosozumab. Which contraindication is most specific to this drug, distinguishing it from bisphosphonates and denosumab?", opts: ["Osteonecrosis of the jaw risk", "A boxed warning for cardiovascular events (MI, stroke) within the past year", "Atypical femoral fracture risk", "Renal impairment"], correct: 1, explain: "ONJ and AFF risk are shared across the potent antiresorptive-acting drugs (bisphosphonates, denosumab, romosozumab). What's specific to romosozumab is its boxed cardiovascular warning - it's contraindicated in patients with an MI or stroke within the preceding year."}
+  ]
+},
+{
+  id: 'metabolic-bone-disease',
+  title: 'Metabolic Bone Disease',
+  instructor: 'Tayyab Khan',
+  duration: '~45 min',
+  tags: [{label:'Osteomalacia &middot; Paget&rsquo;s &middot; OI', cls:'mcc'}],
+  body: `
+    <p>Three distinct bone diseases, each a different kind of remodeling failure: a mineralization defect, a localized remodeling disorder, and a structural collagen defect.</p>
+    <h3>Osteomalacia</h3>
+    <p>A defect in mineralizing bone matrix &mdash; called rickets in children, osteomalacia in adults. The classic cause is vitamin D deficiency (often from malabsorption, e.g. celiac disease), which produces bones that are structurally weak and fracture easily, frequently mistaken for osteoporosis. A distinguishing clinical feature is prominent proximal muscle weakness that can drive falls. Labs show low calcium and phosphate with a high alkaline phosphatase and low urinary calcium; imaging shows <strong>pseudofractures</strong> (healed microfracture lines) rather than the fragility fractures of osteoporosis. Treatment is directed at cause plus vitamin D repletion &mdash; if 25-OH-D is &lt;30 nmol/L, 50,000 IU ergocalciferol weekly for 12 weeks then 800&ndash;2000 IU maintenance; if 30&ndash;75 nmol/L, 800&ndash;2000 IU daily, rechecked in 3 months.</p>
+    <h3>Paget's disease</h3>
+    <p>A localized disorder of bone remodeling: excessive osteoclastic resorption triggers a compensatory osteoblastic response that lays down new bone that is structurally abnormal and fragile. Common (up to 10% of people over 80) and often asymptomatic, picked up incidentally via imaging or an isolated high alkaline phosphatase. When symptomatic: deep bone pain (pelvis, femur, tibia), deformity (bowed tibia, kyphosis), skull involvement (headache, enlarging hat size, deafness from nerve compression), and warmth over the bone from increased local vascularity.</p>
+    <div class="callout"><strong>Watch for transformation.</strong> Osteosarcoma complicates 1&ndash;3% of Paget's cases &mdash; suspect it with new, disproportionate bone pain, a new lytic lesion, and a rising alkaline phosphatase on top of previously stable disease.</div>
+    <p>Other complications: fractures, hypercalcemia with immobility, cranial nerve or spinal cord compression, high-output heart failure from the increased vascularity, and secondary osteoarthritis. Treatment is analgesia plus bisphosphonates (zoledronate is typically preferred) or calcitonin. Even asymptomatic patients are treated if disease involves the skull, long bones, spine, or a joint-adjacent site; if surgery is planned at a pagetic site; or if Paget's coexists with heart failure.</p>
+    <h3>Osteogenesis imperfecta (OI)</h3>
+    <p>A genetic collagen disorder &mdash; incidence 1 in 15,000&ndash;20,000 births, mostly from COL1A1/COL1A2 mutations (85&ndash;90% of cases), with at least 16 recognized subtypes and counting. Clinical features go well beyond fragility fractures: short stature, long-bone bowing, basilar skull deformity, blue sclerae, hearing loss, dentinogenesis imperfecta, aortic root dilatation and valvular insufficiency, Wormian (extra sutural) bones, and pectus deformity.</p>
+    <p>Because OI is multisystem, monitoring is lifelong and broad: growth and head circumference, hearing testing, BMD, ECG, and echocardiogram every two years, neurologic exam as indicated, skeletal radiographs every 1&ndash;2 years, and yearly spirometry. IV bisphosphonates are the mainstay for the bone disease itself, indicated for long-bone deformity, vertebral compression fractures, or more than 3 fractures/year. Prognosis is subtype-dependent &mdash; Type 1 has a normal lifespan, Type 2 is perinatally lethal.</p>
+  `,
+  quiz: [
+    {stem: "A young woman with celiac disease presents with falls, proximal muscle weakness, and X-ray findings of pseudofractures. What is the most likely diagnosis?", opts: ["Paget's disease", "Osteomalacia from vitamin D deficiency (malabsorption)", "Osteogenesis imperfecta", "Atypical femoral fracture from bisphosphonate use"], correct: 1, explain: "Malabsorption (celiac disease), proximal muscle weakness, and pseudofractures on imaging together point specifically to osteomalacia from vitamin D deficiency - pseudofractures are a classic, distinguishing radiologic finding, different from ordinary fragility fractures of osteoporosis."},
+    {stem: "A patient with known Paget's disease of the femur develops new, severe, disproportionate bone pain, a new lytic lesion, and a rising alkaline phosphatase after years of stable disease. What complication should be suspected?", opts: ["Simple disease progression - no action needed", "Osteosarcoma", "Osteomalacia", "Atypical femoral fracture"], correct: 1, explain: "Osteosarcoma complicates 1-3% of Paget's disease cases, and the classic red flags are new disproportionate pain, a new lytic lesion, and a rising ALP superimposed on previously stable disease - this combination should prompt urgent further workup, not be assumed to be routine progression."},
+    {stem: "What is the mainstay pharmacologic treatment for the bone disease component of osteogenesis imperfecta, once fracture frequency crosses the treatment threshold?", opts: ["Teriparatide", "IV bisphosphonates", "Denosumab", "Romosozumab"], correct: 1, explain: "IV bisphosphonates are the mainstay of OI bone disease management, indicated for long-bone deformity, vertebral compression fractures, or more than 3 fractures per year. Teriparatide is generally avoided in growing patients/OI due to osteosarcoma risk concerns."}
+  ]
+},
+{
+  id: 'osteoporosis',
+  title: 'Osteoporosis',
+  instructor: 'Tayyab Khan',
+  duration: '~50 min',
+  tags: [{label:'MCC: treatment gap', cls:'mcc'}],
+  body: `
+    <p>Osteoporosis is diagnosed by any one of three routes: a <strong>fragility fracture</strong> (from a fall from standing height or less), a <strong>BMD T-score of &minus;2.5 or lower</strong> at the lumbar spine, femoral neck, total hip, or 1/3 radius, or a <strong>high estimated fracture risk</strong> on a validated tool even without a T-score that low.</p>
+    <h3>The scale of the problem &mdash; and the treatment gap</h3>
+    <p>Osteoporotic fractures are, combined, more common each year than heart attack, stroke, and breast cancer combined. The framing used in this module: <strong>"a fracture is to osteoporosis what a heart attack is to cardiovascular disease"</strong> &mdash; the fracture is the acute, morbid, sometimes fatal event that the underlying chronic disease produces. And yet, unlike a post-MI patient who's reliably started on a statin, roughly <strong>80% of patients are not started on osteoporosis treatment after a fragility fracture</strong>, with only about 15&ndash;20% appropriately treated. Untreated, a first fragility fracture markedly raises the risk of a second, and hip fracture specifically carries substantial excess mortality in the following year.</p>
+    <h3>Lifestyle measures</h3>
+    <div class="data-table"><table><thead><tr><th>Age group</th><th>Calcium (elemental)</th><th>Vitamin D</th></tr></thead><tbody>
+      <tr><td>19&ndash;50 years</td><td class="num">1000 mg/day</td><td class="num">400&ndash;1000 IU/day</td></tr>
+      <tr><td>Over 50</td><td class="num">1200 mg/day</td><td class="num">800&ndash;2000 IU/day</td></tr>
+    </tbody></table></div>
+    <p>Diet is the preferred source where possible, supplements filling the gap. Fall prevention (home safety, lighting, balance/strength training, vision correction, minimizing sedating medications) and general measures (weight-bearing exercise, smoking cessation, alcohol moderation) reduce fracture risk independent of any drug.</p>
+    <h3>Pharmacologic therapy, by fracture site</h3>
+    <div class="data-table"><table><thead><tr><th>Class</th><th>Mechanism</th><th>Vertebral</th><th>Hip</th><th>Non-vertebral</th></tr></thead><tbody>
+      <tr><td>Bisphosphonates</td><td>Antiresorptive</td><td class="num">&#10003;</td><td class="num">&#10003;</td><td class="num">&#10003;</td></tr>
+      <tr><td>Denosumab</td><td>Antiresorptive (RANKL)</td><td class="num">&#10003;</td><td class="num">&#10003;</td><td class="num">&#10003;</td></tr>
+      <tr><td>Romosozumab</td><td>Anabolic + antiresorptive</td><td class="num">&#10003;</td><td class="num">&#10003;</td><td class="num">&#10003;</td></tr>
+      <tr><td>HRT/estrogen</td><td>Antiresorptive</td><td class="num">&#10003;</td><td class="num">&#10003;</td><td class="num">&#10003;</td></tr>
+      <tr><td>Teriparatide</td><td>Anabolic</td><td class="num">&#10003;</td><td class="num">&mdash;</td><td class="num">&#10003;</td></tr>
+      <tr><td>Raloxifene (SERM)</td><td>Antiresorptive</td><td class="num">&#10003;</td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr>
+    </tbody></table></div>
+    <p>Raloxifene is notable for reducing vertebral fracture risk only, with the side benefit of reduced breast cancer risk, but it raises VTE risk and can worsen hot flashes. HRT covers all three sites but carries competing risks (VTE, breast cancer, cardiovascular risk depending on age/timing) that generally confine it to younger postmenopausal women who also need menopausal symptom control. Anabolic agents (teriparatide, romosozumab) are typically used first in very high-risk patients and must be followed by an antiresorptive to preserve the gains &mdash; sequencing the other way around blunts the anabolic response.</p>
+    <h3>Shared risks: ONJ and atypical femoral fracture</h3>
+    <p>Both are rare complications of potent, prolonged antiresorptive therapy. ONJ risk rises with invasive dental work, poor oral hygiene, and higher cumulative dose &mdash; good dental care before and during therapy is the main preventive step. AFF presents as a transverse or short oblique subtrochanteric/diaphyseal fracture, sometimes with preceding thigh pain, and can be bilateral; risk rises with duration of therapy, which is why "drug holidays" are considered after prolonged bisphosphonate use in lower-risk patients.</p>
+    <h3>Worked cases</h3>
+    <p><strong>Mrs. Davidson</strong>, on denosumab, presents with a new hip fracture &mdash; the key teaching point isn't just "treatment failure," it's checking whether a dose was missed or delayed, since denosumab's reversibility means any gap in dosing can trigger rebound bone loss and new fractures; if it's being stopped for any reason, a bisphosphonate should follow promptly. <strong>Mrs. Smith</strong>, on long-term alendronate, develops an atypical femoral fracture (transverse subtrochanteric pattern, possibly with preceding thigh pain) &mdash; management means stopping the bisphosphonate, orthopedic care, evaluating the contralateral femur (AFF can be bilateral), and considering a non-bisphosphonate agent such as teriparatide going forward.</p>
+  `,
+  quiz: [
+    {stem: "Approximately what proportion of patients in Canada are started on osteoporosis treatment within a year of a hip fracture?", opts: ["About 80%", "About 50%", "About 15-20%", "Essentially 100%, per current guidelines"], correct: 2, explain: "Despite hip fracture being one of the most morbid fragility fracture types, only about 15-20% of patients are appropriately treated afterward - illustrating the substantial secondary-prevention treatment gap this module emphasizes, analogous to a heart attack survivor not being started on a statin."},
+    {stem: "A patient on denosumab for osteoporosis presents with a new vertebral fracture shortly after missing a scheduled dose. What is the most likely explanation?", opts: ["Denosumab has permanently stopped working and should never be restarted", "Missing the dose caused rebound bone loss from denosumab's reversible mechanism", "This is unrelated to denosumab and purely coincidental", "Denosumab causes fractures directly as a drug side effect"], correct: 1, explain: "Denosumab's antiresorptive effect is fully reversible, so a missed or delayed dose removes RANKL suppression and can trigger a rapid rebound surge in osteoclast activity, often presenting as new vertebral fractures - a distinctive risk not shared with bisphosphonates, which stay retained in bone."},
+    {stem: "Which osteoporosis drug class is proven to reduce vertebral fracture risk but NOT hip or non-vertebral fracture risk?", opts: ["Bisphosphonates", "Denosumab", "Raloxifene (a SERM)", "Romosozumab"], correct: 2, explain: "Raloxifene's fracture-risk evidence is limited to the vertebral site - it has not been shown to reduce hip or non-vertebral fracture risk, unlike bisphosphonates, denosumab, romosozumab, and HRT, which all cover all three sites."}
+  ]
+}
+];
+
+(function(){
+  var navlist = document.getElementById('navlist');
+  var content = document.getElementById('content');
+  var totalQ = 0;
+  MODULES.forEach(function(m){ totalQ += m.quiz.length; });
+  document.getElementById('progress-count').textContent = '0 / ' + totalQ;
+
+  var STORE_KEY = 'endo-hub-wk2-answers-v1';
+  var answered = {};
+  try {
+    var raw = localStorage.getItem(STORE_KEY);
+    if (raw) answered = JSON.parse(raw);
+  } catch(e) {}
+
+  function saveAnswered(){
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(answered)); } catch(e) {}
+  }
+
+  function correctCount(){
+    var n = 0;
+    Object.keys(answered).forEach(function(k){ if (answered[k] === 'correct') n++; });
+    return n;
+  }
+
+  function updateProgress(){
+    var c = correctCount();
+    document.getElementById('progress-count').textContent = c + ' / ' + totalQ;
+    document.getElementById('progress-fill').style.width = (totalQ ? (100 * c / totalQ) : 0) + '%';
+  }
+
+  function moduleAnsweredCount(m){
+    var n = 0;
+    m.quiz.forEach(function(q, i){
+      var key = m.id + '-' + i;
+      if (answered[key]) n++;
+    });
+    return n;
+  }
+
+  function markDot(m){
+    var dot = document.querySelector('.navlist a[href="#' + m.id + '"] .dot');
+    if (!dot) return;
+    var done = moduleAnsweredCount(m) === m.quiz.length && m.quiz.length > 0;
+    dot.classList.toggle('done', done);
+  }
+
+  // Build nav
+  MODULES.forEach(function(m, idx){
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + m.id;
+    a.innerHTML = '<span class="num">' + String(idx+1).padStart(2,'0') + '</span><span class="dot"></span><span>' + m.title + '</span>';
+    li.appendChild(a);
+    navlist.appendChild(li);
+  });
+
+  function renderQuiz(m){
+    var wrap = document.createElement('div');
+    wrap.className = 'quiz';
+
+    var head = document.createElement('div');
+    head.className = 'quiz-head';
+    head.innerHTML = '<span>Check yourself</span><span class="quiz-score" id="score-' + m.id + '"></span>';
+    wrap.appendChild(head);
+
+    var scoreEl = head.querySelector('.quiz-score');
+
+    var body = document.createElement('div');
+    body.className = 'quiz-body';
+
+    function updateModuleScore(){
+      var n = moduleAnsweredCount(m);
+      scoreEl.textContent = n + ' / ' + m.quiz.length + ' answered';
+    }
+
+    m.quiz.forEach(function(q, i){
+      var key = m.id + '-' + i;
+      var qd = document.createElement('div');
+      qd.className = 'q';
+      var stem = document.createElement('div');
+      stem.className = 'q-stem';
+      stem.textContent = (i+1) + '. ' + q.stem;
+      qd.appendChild(stem);
+
+      var opts = document.createElement('div');
+      opts.className = 'q-opts';
+
+      var explain = document.createElement('div');
+      explain.className = 'q-explain';
+      explain.innerHTML = '<strong>' + (q.explain.split(' ')[0]) + '</strong> ' + q.explain;
+
+      var alreadyAnswered = !!answered[key];
+
+      q.opts.forEach(function(optText, oi){
+        var btn = document.createElement('button');
+        btn.className = 'opt';
+        btn.innerHTML = '<span class="letter">' + String.fromCharCode(65+oi) + '</span><span>' + optText + '</span>';
+        if (alreadyAnswered) {
+          btn.disabled = true;
+          if (oi === q.correct) btn.classList.add('correct');
+          if (answered[key] === 'incorrect-' + oi) btn.classList.add('incorrect');
+        }
+        btn.addEventListener('click', function(){
+          if (btn.disabled) return;
+          var allOpts = opts.querySelectorAll('.opt');
+          allOpts.forEach(function(o){ o.disabled = true; });
+          if (oi === q.correct) {
+            btn.classList.add('correct');
+            answered[key] = 'correct';
+          } else {
+            btn.classList.add('incorrect');
+            allOpts[q.correct].classList.add('correct');
+            answered[key] = 'incorrect-' + oi;
+          }
+          explain.classList.add('shown');
+          saveAnswered();
+          updateProgress();
+          updateModuleScore();
+          markDot(m);
+        });
+        opts.appendChild(btn);
+      });
+
+      qd.appendChild(opts);
+      qd.appendChild(explain);
+      if (alreadyAnswered) explain.classList.add('shown');
+      body.appendChild(qd);
+    });
+
+    wrap.appendChild(body);
+    updateModuleScore();
+    return wrap;
+  }
+
+  MODULES.forEach(function(m, idx){
+    var sec = document.createElement('section');
+    sec.className = 'module';
+    sec.id = m.id;
+
+    var head = document.createElement('div');
+    head.className = 'module-head';
+    head.innerHTML = '<span class="module-num">' + String(idx+1).padStart(2,'0') + '</span><h2>' + m.title + '</h2>';
+    sec.appendChild(head);
+
+    var meta = document.createElement('div');
+    meta.className = 'module-meta';
+    var tagsHtml = '<span class="tag">' + m.instructor + '</span><span class="tag">' + m.duration + '</span>';
+    (m.tags || []).forEach(function(t){ tagsHtml += '<span class="tag ' + t.cls + '">' + t.label + '</span>'; });
+    meta.innerHTML = tagsHtml;
+    sec.appendChild(meta);
+
+    var bodyDiv = document.createElement('div');
+    bodyDiv.className = 'module-body';
+    bodyDiv.innerHTML = m.body;
+    sec.appendChild(bodyDiv);
+
+    var quizWrap = document.createElement('div');
+    quizWrap.className = 'module-body';
+    quizWrap.appendChild(renderQuiz(m));
+    sec.appendChild(quizWrap);
+
+    content.appendChild(sec);
+    markDot(m);
+  });
+
+  updateProgress();
+
+  // Active-link tracking on scroll
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.module'));
+  var links = Array.prototype.slice.call(document.querySelectorAll('.navlist a'));
+  function onScroll(){
+    var pos = window.scrollY + 120;
+    var current = sections[0];
+    sections.forEach(function(s){ if (s.offsetTop <= pos) current = s; });
+    links.forEach(function(l){ l.classList.toggle('active', l.getAttribute('href') === '#' + current.id); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Close mobile nav on link click
+  links.forEach(function(l){
+    l.addEventListener('click', function(){
+      document.getElementById('sidebar').classList.remove('open');
+    });
+  });
+})();
+</script>

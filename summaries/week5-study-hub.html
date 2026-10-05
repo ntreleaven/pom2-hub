@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gynecologic, Breast &amp; Early Pregnancy Care Study Hub</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --paper: #f3f5f4;
+    --paper-raised: #ffffff;
+    --ink: #1b2321;
+    --ink-soft: #4b5651;
+    --ink-faint: #7c8a84;
+    --line: #d8ddda;
+    --line-soft: #e7eae8;
+    --amber: #a8641c;
+    --amber-ink: #7a4712;
+    --amber-wash: #f4e6d3;
+    --teal: #1f6e73;
+    --teal-ink: #17565a;
+    --teal-wash: #dcedee;
+    --good: #2f7a4f;
+    --good-wash: #dcf0e2;
+    --bad: #ae3f34;
+    --bad-wash: #f7ded9;
+    --shadow: 0 1px 2px rgba(27,35,33,0.06), 0 6px 20px -8px rgba(27,35,33,0.12);
+    --radius: 3px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12191a;
+      --paper-raised: #182123;
+      --ink: #e9edea;
+      --ink-soft: #b6c0bb;
+      --ink-faint: #7d8b85;
+      --line: #2c3937;
+      --line-soft: #223030;
+      --amber: #e0a860;
+      --amber-ink: #f0c592;
+      --amber-wash: #33291b;
+      --teal: #6fc2c6;
+      --teal-ink: #9adade;
+      --teal-wash: #16302f;
+      --good: #6fbf8f;
+      --good-wash: #1a3327;
+      --bad: #e2897c;
+      --bad-wash: #3a211d;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12191a;
+    --paper-raised: #182123;
+    --ink: #e9edea;
+    --ink-soft: #b6c0bb;
+    --ink-faint: #7d8b85;
+    --line: #2c3937;
+    --line-soft: #223030;
+    --amber: #e0a860;
+    --amber-ink: #f0c592;
+    --amber-wash: #33291b;
+    --teal: #6fc2c6;
+    --teal-ink: #9adade;
+    --teal-wash: #16302f;
+    --good: #6fbf8f;
+    --good-wash: #1a3327;
+    --bad: #e2897c;
+    --bad-wash: #3a211d;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  h1, h2, h3, h4 { font-family: 'Spectral', Georgia, serif; text-wrap: balance; margin: 0; }
+  a { color: var(--teal-ink); }
+  table { border-collapse: collapse; }
+
+  .shell { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 280px;
+    flex: none;
+    border-right: 1px solid var(--line);
+    background: var(--paper-raised);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 22px 18px 30px;
+  }
+  .sidebar-head { margin-bottom: 4px; }
+  .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--teal-ink);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .sidebar-head h1 { font-size: 21px; font-weight: 600; line-height: 1.25; }
+  .sidebar-head .sub { color: var(--ink-faint); font-size: 13px; margin-top: 6px; }
+
+  .progress-block { margin: 18px 0 20px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-soft); margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+  .progress-track { height: 6px; background: var(--line-soft); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--amber); width: 0%; transition: width .4s ease; }
+
+  .navlist { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-soft); padding-top: 10px; }
+  .navlist li { margin: 0; }
+  .navlist a {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    padding: 7px 6px;
+    border-radius: var(--radius);
+  }
+  .navlist a:hover { background: var(--line-soft); color: var(--ink); }
+  .navlist a.active { color: var(--ink); font-weight: 600; }
+  .navlist .num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-faint); flex: none; width: 16px; }
+  .navlist .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--line); flex: none; }
+  .navlist .dot.done { background: var(--good); }
+
+  .sidebar-foot { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--line-soft); font-size: 12px; color: var(--ink-faint); }
+  .sidebar-foot code { font-family: 'IBM Plex Mono', monospace; background: var(--line-soft); padding: 1px 5px; border-radius: 2px; }
+
+  main { flex: 1; min-width: 0; }
+  .topbar {
+    position: sticky; top: 0; z-index: 5;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 40px;
+    display: none;
+  }
+
+  .hero {
+    padding: 54px 48px 40px;
+    border-bottom: 1px solid var(--line);
+    max-width: 900px;
+  }
+  .hero .kicker { margin-bottom: 14px; }
+  .hero h1 { font-size: 40px; font-weight: 600; letter-spacing: -0.01em; }
+  .hero .dek { color: var(--ink-soft); font-size: 16.5px; margin-top: 14px; max-width: 62ch; }
+  .hero-meta { display: flex; gap: 26px; margin-top: 26px; flex-wrap: wrap; }
+  .hero-meta div { font-size: 13px; color: var(--ink-faint); }
+  .hero-meta strong { display: block; font-family: 'Spectral', serif; font-size: 20px; color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .content { padding: 8px 48px 90px; max-width: 900px; }
+
+  section.module {
+    padding: 46px 0;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 20px;
+  }
+  section.module:last-of-type { border-bottom: none; }
+
+  .module-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 6px; }
+  .module-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--amber); padding-top: 6px; flex: none; width: 24px; }
+  .module-head h2 { font-size: 25px; font-weight: 600; }
+  .module-meta { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 22px 40px; }
+  .tag { font-size: 11.5px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.03em; color: var(--ink-faint); border: 1px solid var(--line); padding: 3px 8px; border-radius: 99px; }
+  .tag.mcc { color: var(--teal-ink); border-color: var(--teal); background: var(--teal-wash); }
+
+  .module-body { margin-left: 40px; }
+  .module-body p { color: var(--ink-soft); margin: 0 0 14px; max-width: 68ch; }
+  .module-body h3 { font-size: 15px; font-weight: 600; margin: 22px 0 10px; color: var(--ink); }
+  .module-body ul, .module-body ol { margin: 0 0 14px; padding-left: 20px; color: var(--ink-soft); max-width: 66ch; }
+  .module-body li { margin-bottom: 6px; }
+  .module-body li strong { color: var(--ink); }
+  .callout {
+    background: var(--amber-wash);
+    border-left: 3px solid var(--amber);
+    padding: 12px 16px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 14px;
+    color: var(--ink);
+    margin: 16px 0;
+    max-width: 64ch;
+  }
+  .callout strong { color: var(--amber-ink); }
+
+  .data-table { width: 100%; margin: 10px 0 20px; font-size: 13.5px; overflow-x: auto; display: block; }
+  .data-table table { width: 100%; min-width: 480px; }
+  .data-table th, .data-table td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  .data-table th { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); font-weight: 500; }
+  .data-table td.num { font-variant-numeric: tabular-nums; }
+
+  .quiz {
+    margin-top: 26px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .quiz-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--line-soft);
+    background: var(--line-soft);
+  }
+  .quiz-head span { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+  .quiz-score { font-size: 12.5px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+  .quiz-body { padding: 18px; }
+  .q { margin-bottom: 20px; }
+  .q:last-child { margin-bottom: 0; }
+  .q-stem { font-size: 14.5px; color: var(--ink); margin-bottom: 10px; font-weight: 500; }
+  .q-opts { display: flex; flex-direction: column; gap: 7px; }
+  .opt {
+    text-align: left;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    padding: 9px 12px;
+    border-radius: var(--radius);
+    font-size: 13.5px;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    gap: 9px;
+  }
+  .opt:hover { border-color: var(--teal); }
+  .opt:focus-visible { outline: 2px solid var(--teal); outline-offset: 1px; }
+  .opt .letter { font-family: 'IBM Plex Mono', monospace; color: var(--ink-faint); flex: none; }
+  .opt.correct { background: var(--good-wash); border-color: var(--good); }
+  .opt.incorrect { background: var(--bad-wash); border-color: var(--bad); }
+  .opt[disabled] { cursor: default; }
+  .q-explain {
+    display: none;
+    margin-top: 9px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    background: var(--teal-wash);
+    border-left: 3px solid var(--teal);
+    padding: 9px 12px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .q-explain.shown { display: block; }
+  .q-explain strong { color: var(--teal-ink); }
+
+  .colophon {
+    max-width: 900px;
+    padding: 34px 48px 70px;
+    color: var(--ink-faint);
+    font-size: 12.5px;
+    border-top: 1px solid var(--line);
+  }
+  .colophon a { color: var(--ink-soft); }
+
+  .theme-toggle {
+    position: fixed; bottom: 18px; right: 18px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    color: var(--ink-soft);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10;
+  }
+
+  .mobile-nav-toggle { display: none; }
+
+  @media (max-width: 880px) {
+    .sidebar { position: fixed; left: -300px; top: 0; z-index: 20; transition: left .25s ease; box-shadow: var(--shadow); }
+    .sidebar.open { left: 0; }
+    .topbar { display: flex; align-items: center; gap: 12px; padding: 12px 20px; }
+    .mobile-nav-toggle {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: var(--radius);
+      border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace; font-size: 13px; cursor: pointer;
+    }
+    .topbar strong { font-family: 'Spectral', serif; font-size: 15px; }
+    .hero { padding: 30px 20px 28px; }
+    .hero h1 { font-size: 30px; }
+    .content { padding: 8px 20px 70px; }
+    .module-meta, .module-body { margin-left: 0; }
+    .module-head { gap: 10px; }
+    .colophon { padding: 26px 20px 60px; }
+  }
+</style>
+
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <span class="kicker">P2 &middot; Reproduction</span>
+      <h1>Week&nbsp;5 &mdash; Gynecologic Pathology, Breast &amp; Early Pregnancy Care</h1>
+      <div class="sub">Sep 28&ndash;Oct 2, 2026</div>
+    </div>
+
+    <div class="progress-block">
+      <div class="progress-label"><span>Quiz progress</span><span id="progress-count">0 / 48</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+
+    <ul class="navlist" id="navlist"></ul>
+
+    <div class="sidebar-foot">
+      Built from the official Elentra learning objectives for 5260 &middot; PoM&nbsp;II. Content is written for review, not a substitute for the source modules &mdash; cross-check anything <code>flagged</code> against lecture.
+    </div>
+  </nav>
+
+  <main>
+    <div class="topbar">
+      <button class="mobile-nav-toggle" id="navToggle" aria-label="Toggle module list">&#9776;</button>
+      <strong>Week 5 &mdash; Gynecologic Pathology, Breast &amp; Early Pregnancy Care</strong>
+    </div>
+
+    <header class="hero">
+      <span class="kicker">Study Hub</span>
+      <h1>Gynecologic Pathology, Breast &amp; Early Pregnancy Care</h1>
+      <p class="dek">Sixteen modules spanning gynecologic pathology and menopause, gynecologic procedures, breast health, and the foundations of obstetric and early pregnancy care &mdash; ending with hypertensive disorders of pregnancy as the capstone that ties surveillance, medication safety, and delivery timing together. Read a section, then clear its quiz before moving on.</p>
+      <div class="hero-meta">
+        <div><strong>16</strong>modules</div>
+        <div><strong>48</strong>quiz questions</div>
+        <div><strong>~3.5h</strong>estimated content time</div>
+      </div>
+    </header>
+
+    <div class="content" id="content"></div>
+
+    <footer class="colophon">
+      Sources: content in every module &mdash; learning objectives, mechanisms, diagnostic pathways, drug tables, clinical cases, and concept-check logic &mdash; is drawn directly from the actual Elentra lesson content, slide decks, and video overviews for each Week 5 lecture (5260 &middot; Reproduction, Gynecologic Pathology/Breast/Early Pregnancy Care) as of Sep 2026, then rewritten in my own words rather than copied verbatim, out of respect for your instructors' copyright. Quiz stems and explanations are also my own paraphrase, built to test the same concepts and numbers the lectures actually cover &mdash; not the course's original questions. If anything here doesn't match what a professor said in lecture, trust the lecture.
+    </footer>
+  </main>
+</div>
+
+<button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle color theme">&#9788;</button>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var stored = null;
+  try { stored = localStorage.getItem('endo-hub-theme'); } catch(e) {}
+  if (stored) root.setAttribute('data-theme', stored);
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var current = root.getAttribute('data-theme');
+    var next = current === 'dark' ? 'light' : (current === 'light' ? 'dark' : ((window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'light' : 'dark'));
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('endo-hub-theme', next); } catch(e) {}
+  });
+
+  document.getElementById('navToggle').addEventListener('click', function(){
+    document.getElementById('sidebar').classList.toggle('open');
+  });
+})();
+</script>
+
+<script>
+const MODULES = [{"id": "postmenopausal-bleeding", "title": "Post-menopausal Woman Presenting with Bleeding", "instructor": "Joanna Walsh", "duration": "~15 min", "tags": [{"label": "Foundation video", "cls": "mcc"}], "body": "
+<p>Postmenopausal bleeding (PMB) is any bleeding occurring &ge;12 months after the final menstrual period, and it is treated as <strong>endometrial cancer until proven otherwise</strong> &mdash; roughly 90% of endometrial cancer presents this way, though the majority of PMB itself still turns out to be benign. The job of this module is the diagnostic pathway that sorts the two apart.</p>
+<h3>The diagnostic pathway</h3>
+<p>Every case starts with a transvaginal ultrasound measuring endometrial thickness. A thin, uniform endometrial stripe (below the standard threshold) carries a very low likelihood of malignancy and can often be observed; a thickened or irregular stripe moves straight to endometrial biopsy, usually an office pipelle sample, with hysteroscopy and dilation &amp; curettage (D&amp;C, cross-reference Video 4) reserved for non-diagnostic or technically difficult sampling.</p>
+<div class=\"callout\"><strong>Threshold, not a diagnosis.</strong> Endometrial thickness on ultrasound is a triage tool that decides who needs tissue sampling &mdash; it is not itself a diagnosis, and a thin stripe does not fully rule out cancer in a patient with persistent or recurrent bleeding.</div>
+<h3>Causes across the spectrum</h3>
+<p>Vaginal/endometrial atrophy from low estrogen is the single most common cause of PMB and is a diagnosis of exclusion. Endometrial hyperplasia is classified as atypical or non-atypical &mdash; atypia is what predicts progression toward carcinoma and changes management from hormonal therapy toward hysterectomy. Endometrial carcinoma itself is split into type I (estrogen-driven, endometrioid, generally lower grade) and type II (not estrogen-driven, e.g. serous or clear cell, higher grade, worse prognosis), with staging and spread pattern differing accordingly.</p>
+<h3>Contrast with cervical cancer</h3>
+<p>Cervical cancer is caught primarily through population screening (Pap/HPV testing, cross-reference Video 8's screening logic in a different week) rather than a bleeding-triggered workup, and its major risk driver is persistent high-risk HPV infection rather than unopposed estrogen exposure.</p>
+<h3>Why incidence is rising in Canada</h3>
+<p>Endometrial cancer incidence has been climbing, driven largely by rising obesity rates: peripheral aromatization of androgens to estrogen in adipose tissue creates chronic unopposed estrogen exposure, the same mechanism that drives type I endometrial cancer risk more broadly.</p>
+", "quiz": [{"stem": "A 63-year-old woman with one episode of spotting 3 years after menopause has a transvaginal ultrasound showing a thin, uniform endometrial stripe. What is the most appropriate next step?", "opts": ["Reassurance and observation, with re-evaluation if bleeding recurs", "Immediate hysterectomy", "Start combined hormone therapy", "Refer directly for whole-pelvis radiation"], "correct": 0, "explain": "A thin, uniform stripe carries a low likelihood of malignancy, so an isolated episode can be observed rather than triggering immediate surgery or empiric hormone therapy; recurrent or persistent bleeding still warrants biopsy."}, {"stem": "Which feature of endometrial hyperplasia most changes management from hormonal therapy toward hysterectomy?", "opts": ["The patient's age at menopause", "The presence of cytologic atypia", "Whether the patient has ever been pregnant", "The thickness of the endometrial stripe alone"], "correct": 1, "explain": "Atypia, not stripe thickness or reproductive history, is what predicts progression to carcinoma and is the key branch point pushing management toward definitive surgery rather than hormonal treatment."}, {"stem": "Why is endometrial cancer incidence rising in Canada?", "opts": ["Falling rates of HPV vaccination", "Wider use of combined oral contraceptives", "Increased obesity driving peripheral aromatization to estrogen", "Declining rates of cervical screening"], "correct": 2, "explain": "Adipose tissue aromatizes androgens to estrogen, producing chronic unopposed estrogen exposure as obesity prevalence rises &mdash; the same mechanism underlying type I endometrial cancer risk generally; the other options relate to cervical, not endometrial, cancer trends."}]}, {"id": "pelvic-mass", "title": "Approach to and Pathology of a Pelvic Mass", "instructor": "Christopher Armstrong", "duration": "~15 min", "tags": [{"label": "Cross-refs Module 1", "cls": "mcc"}], "body": "
+<p>A pelvic mass is worked up along two parallel tracks: imaging features that suggest benign versus malignant behaviour, and a pathology classification of ovarian neoplasms by their cell of origin, since that classification predicts natural history, spread, and which serum markers to order.</p>
+<h3>Benign vs malignant features</h3>
+<p>Simple, unilocular, thin-walled cystic masses with no solid components or internal blood flow favour a benign process; solid components, thick irregular septations, papillary projections, ascites, and increased internal vascularity on Doppler all shift suspicion toward malignancy.</p>
+<h3>Classification by cell of origin</h3>
+<p>Ovarian neoplasms are organized into three lineages. <strong>Epithelial</strong> tumours (the most common overall) include benign serous/mucinous cystadenomas and malignant serous/mucinous/endometrioid carcinomas. <strong>Germ cell</strong> tumours include the benign mature cystic teratoma (dermoid) and malignant dysgerminoma, yolk sac tumour, and immature teratoma. <strong>Sex cord-stromal</strong> tumours include benign fibromas/thecomas and malignant granulosa cell tumours, which are notable for hormone production (estrogen), sometimes causing postmenopausal bleeding (cross-reference Module 1).</p>
+<div class=\"callout\"><strong>Organize by origin, not just by name.</strong> Cell-of-origin classification is what tells you which serum marker to check and what natural history to expect &mdash; a germ cell tumour in a young woman behaves, and is monitored, completely differently from an epithelial tumour in a postmenopausal woman.</div>
+<h3>Spread pattern and mortality</h3>
+<p>Epithelial ovarian cancer spreads early by transcoelomic seeding across the peritoneal surface rather than primarily by lymphatic or hematogenous routes, and because early-stage disease is often asymptomatic, most cases present at an advanced stage &mdash; the main driver of ovarian cancer's disproportionately high mortality relative to its incidence.</p>
+<h3>Metastases to the ovary and germ cell markers</h3>
+<p>The ovary can also be a site of metastasis rather than a primary tumour: a Krukenberg tumour is a metastasis (classically from a gastric primary) showing signet-ring cells on histology. For germ cell tumours, serum markers guide diagnosis and monitoring: AFP (yolk sac tumour), beta-hCG (choriocarcinoma elements), LDH (dysgerminoma), while CA-125 is the nonspecific marker more associated with epithelial tumours.</p>
+", "quiz": [{"stem": "A pelvic ultrasound shows a mass with thick irregular septations, papillary projections, and increased internal Doppler flow. What does this pattern suggest?", "opts": ["A simple functional cyst", "A Krukenberg tumour specifically", "Endometrial hyperplasia", "Features favouring malignancy"], "correct": 3, "explain": "Solid components, irregular thick septations, papillary projections, and increased vascularity are the classic sonographic features that shift suspicion from benign toward malignant, regardless of the specific histologic subtype."}, {"stem": "A granulosa cell tumour is unusual among ovarian neoplasms because it can directly cause which of the following?", "opts": ["Postmenopausal bleeding, via estrogen production", "Gastric metastasis", "Elevated AFP specifically", "Transcoelomic seeding at an unusually early stage"], "correct": 0, "explain": "Granulosa cell tumours are hormonally active and can produce estrogen, which can stimulate the endometrium and cause postmenopausal bleeding &mdash; a sex cord-stromal feature not shared by most epithelial or germ cell tumours."}, {"stem": "A Krukenberg tumour is best described as which of the following?", "opts": ["A primary epithelial ovarian carcinoma", "A metastasis to the ovary, classically from a gastric primary, showing signet-ring cells", "A benign germ cell tumour", "A hormonally silent sex cord-stromal tumour"], "correct": 1, "explain": "A Krukenberg tumour is a metastatic deposit in the ovary, not a primary ovarian neoplasm, and its signet-ring cell morphology on histology is the classic clue pointing back to a gastric (or other GI) primary."}]}, {"id": "clinical-approach-menopause", "title": "Clinical Approach to Menopause", "instructor": "Stephanie Moltner", "duration": "~15 min", "tags": [], "body": "
+<p>Menopause is defined retrospectively as 12 consecutive months of amenorrhea; the years of irregular cycles and fluctuating hormones leading up to it are the perimenopausal transition. The physiology underlying both is loss of ovarian follicular activity: as estradiol production falls, the pituitary loses negative feedback and FSH rises &mdash; an elevated FSH is the physiologic signature of the transition.</p>
+<h3>Symptoms by system</h3>
+<p>Vasomotor symptoms (hot flashes, night sweats) are the most recognized complaint; genitourinary symptoms (vaginal dryness, dyspareunia, urinary urgency) reflect the same estrogen withdrawal seen in vaginal atrophy (cross-reference Module 1); mood changes and sleep disruption are common; and the long-term systemic consequence is accelerated bone loss, since estrogen normally restrains osteoclast activity.</p>
+<div class=\"callout\"><strong>One physiologic switch, many symptoms.</strong> Nearly every symptom of menopause traces back to the same event &mdash; falling estradiol &mdash; expressed differently depending on the tissue: vasomotor centres, vaginal/urethral mucosa, mood circuitry, and bone remodelling.</div>
+<h3>Nutrition, exercise, and non-hormonal strategies</h3>
+<p>Adequate calcium and vitamin D intake plus regular weight-bearing exercise are first-line for bone and cardiovascular protection at any point in the transition. For patients who cannot or prefer not to use hormone therapy, SSRIs/SNRIs and other non-hormonal agents can meaningfully reduce vasomotor symptom frequency and severity.</p>
+<h3>Menopausal hormone therapy (MHT)</h3>
+<p>MHT remains the most effective treatment for vasomotor symptoms and also treats genitourinary symptoms and protects bone density. The evidence-based approach weighs these benefits against risk, which is shaped heavily by timing: starting MHT closer to menopause onset in an otherwise healthy patient carries a more favourable risk profile than starting it many years after menopause, and the decision should always be individualized to symptom severity, personal risk factors, and patient preference.</p>
+", "quiz": [{"stem": "What physiologic change defines the onset of the perimenopausal transition?", "opts": ["A sudden drop to undetectable estradiol", "A rise in progesterone alone", "Declining ovarian follicular activity with a compensatory rise in FSH", "Loss of GnRH pulsatility"], "correct": 2, "explain": "As follicular activity and estradiol production decline, the pituitary loses negative feedback and FSH rises &mdash; this rising FSH against falling estradiol is the physiologic signature of the transition, not a single abrupt hormonal drop."}, {"stem": "A patient wants to manage vasomotor symptoms but prefers not to use hormone therapy. Which option is appropriate first-line?", "opts": ["High-dose vitamin A", "Testosterone therapy", "Tranexamic acid", "An SSRI or SNRI"], "correct": 3, "explain": "SSRIs/SNRIs are established non-hormonal options that reduce vasomotor symptom frequency and severity, making them a reasonable first-line choice for patients avoiding hormone therapy; the other agents do not target vasomotor symptoms this way."}, {"stem": "How does timing affect the risk-benefit profile of starting menopausal hormone therapy?", "opts": ["Starting closer to menopause onset carries a more favourable risk profile than starting many years later", "Timing makes no difference to risk", "MHT is safest when started more than a decade after menopause", "Risk is determined only by the patient's age at first period"], "correct": 0, "explain": "Evidence-based counselling emphasizes that initiating MHT nearer to the onset of menopause in an otherwise healthy patient is associated with a more favourable balance of benefits to risks than delayed initiation."}]}, {"id": "dilation-curettage", "title": "Dilation and Curettage", "instructor": "Stephanie Black", "duration": "~10 min", "tags": [], "body": "
+<p>Dilation and curettage (D&amp;C) is a procedure that mechanically dilates the cervix and then samples or evacuates the endometrial cavity, either with a curette or suction device. It can be diagnostic &mdash; obtaining endometrial tissue for pathology when office sampling has failed or is non-diagnostic (cross-reference Module 1's PMB pathway) &mdash; or therapeutic, such as evacuating retained products of conception after an incomplete miscarriage or a molar pregnancy.</p>
+<div class=\"callout\"><strong>Same procedure, two purposes.</strong> Whether a D&amp;C counts as diagnostic or therapeutic depends entirely on the indication, not on the technique itself &mdash; the same instruments serve both a tissue-sampling goal and an evacuation goal.</div>
+<h3>Indications</h3>
+<p>Common indications include abnormal uterine bleeding not adequately characterized by office biopsy, incomplete or missed miscarriage, and evacuation of a molar pregnancy (gestational trophoblastic disease).</p>
+<h3>Risks and complications</h3>
+<p>Uterine perforation and infection are the immediate procedural risks. The longer-term complication to know is Asherman syndrome &mdash; intrauterine adhesions from endometrial scarring, particularly after aggressive or repeated curettage &mdash; which can impair future fertility and menstrual flow.</p>
+", "quiz": [{"stem": "A D&amp;C is being performed to evacuate retained products of conception after an incomplete miscarriage. How is this use best classified?", "opts": ["Diagnostic", "Therapeutic", "Neither diagnostic nor therapeutic", "Purely prophylactic"], "correct": 1, "explain": "Evacuating retained tissue treats the problem directly rather than sampling for a diagnosis, making this a therapeutic rather than diagnostic use of the same procedure."}, {"stem": "Which long-term complication of D&amp;C is specifically associated with intrauterine adhesions and can impair future fertility?", "opts": ["Endometrial hyperplasia", "Krukenberg tumour", "Asherman syndrome", "HELLP syndrome"], "correct": 2, "explain": "Asherman syndrome results from endometrial scarring and intrauterine adhesion formation, most associated with aggressive or repeated curettage, and can affect both menstrual flow and future fertility."}, {"stem": "When is D&amp;C typically used for diagnostic purposes?", "opts": ["Only in the third trimester of pregnancy", "As a routine screening test in asymptomatic patients", "Only to treat postpartum hemorrhage", "When office endometrial sampling is non-diagnostic or technically not feasible"], "correct": 3, "explain": "The diagnostic role of D&amp;C is reserved for situations where a simpler office-based sample failed or could not be obtained, not for routine screening or unrelated obstetric emergencies."}]}, {"id": "hysterectomy-approaches", "title": "Hysterectomy Approaches", "instructor": "Stephanie Black", "duration": "~10 min", "tags": [{"label": "Pairs with Module 4", "cls": "mcc"}], "body": "
+<p>Hysterectomy is classified along two independent axes: how much tissue is removed, and which surgical route is used to remove it. Keeping these separate avoids confusing, for example, a \"total\" hysterectomy (an extent descriptor) with a \"laparoscopic\" hysterectomy (an approach descriptor) &mdash; a single procedure is described by one term from each axis.</p>
+<h3>Extent of resection</h3>
+<p>A subtotal (supracervical) hysterectomy removes the uterine body but leaves the cervix in place. A total hysterectomy removes both the uterine body and cervix. A radical hysterectomy extends further, removing the uterus, cervix, upper vagina, and surrounding parametrial tissue &mdash; reserved for gynecologic malignancy, most often cervical cancer, where wider margins are needed.</p>
+<h3>Surgical approach</h3>
+<p>The same extent of resection can be achieved abdominally (open), vaginally, laparoscopically, or with robotic assistance. Minimally invasive approaches (vaginal, laparoscopic, robotic) generally offer faster recovery and lower complication rates than open abdominal surgery when they are technically feasible.</p>
+<div class=\"callout\"><strong>Two independent decisions.</strong> Extent of resection is driven mainly by the indication (benign disease vs malignancy); surgical approach is driven mainly by uterine size, prior surgical history, and surgeon expertise &mdash; the two choices are made somewhat separately.</div>
+<h3>Factors influencing approach choice</h3>
+<p>Larger uterine size, extensive prior abdominal or pelvic surgery, and limited surgeon experience with minimally invasive technique all push toward an open abdominal approach; a smaller uterus, uncomplicated surgical history, and appropriate surgeon expertise favour a minimally invasive route.</p>
+", "quiz": [{"stem": "A hysterectomy that removes the uterine body but leaves the cervix in place is classified as which extent of resection?", "opts": ["Subtotal (supracervical)", "Radical", "Total", "Partial vaginal"], "correct": 0, "explain": "Leaving the cervix in place while removing the uterine body defines a subtotal (supracervical) hysterectomy, distinct from a total hysterectomy which removes the cervix as well."}, {"stem": "A radical hysterectomy, which also removes the upper vagina and parametrial tissue, is most commonly indicated for which condition?", "opts": ["Uncomplicated uterine fibroids", "Cervical cancer", "Simple pelvic organ prolapse", "Asymptomatic endometrial polyps"], "correct": 1, "explain": "The wider margins of a radical hysterectomy are reserved for gynecologic malignancy, most often cervical cancer, where removing surrounding tissue reduces the risk of leaving residual disease."}, {"stem": "Which factor would most favour choosing an open abdominal approach over a minimally invasive one?", "opts": ["A small, mobile uterus", "No prior abdominal surgery", "A very large uterine size", "A surgeon experienced in robotic technique"], "correct": 2, "explain": "A large uterus is a classic factor that can make minimally invasive extraction technically difficult, pushing toward an open abdominal approach, whereas the other listed factors would instead favour a minimally invasive route."}]}, {"id": "pathology-breast", "title": "Pathology of the Breast", "instructor": "Cady Zeman", "duration": "~17 min", "tags": [{"label": "Foundation video", "cls": "mcc"}], "body": "
+<p>Breast pathology is organized around the ductal-lobular system: terminal duct lobular units feed into ducts that converge at the nipple, and essentially every named lesion &mdash; benign or malignant &mdash; is described relative to this anatomy.</p>
+<h3>Benign lesions</h3>
+<p>Fibrocystic change is the most common benign finding, encompassing cysts and fibrosis. Fibroadenoma is the most common benign discrete breast mass in young women, a well-circumscribed, mobile, rubbery lesion. Intraductal papilloma classically presents with unilateral nipple discharge. Fat necrosis often follows trauma or surgery and can mimic malignancy on imaging. Proliferative lesions are further split by whether atypia is present, since atypia raises subsequent breast cancer risk.</p>
+<div class=\"callout\"><strong>Atypia is the pivot point.</strong> Just as with endometrial hyperplasia (cross-reference Module 1), the presence or absence of atypia within a benign or proliferative breast lesion is what meaningfully changes future cancer risk and surveillance intensity &mdash; not the lesion type alone.</div>
+<h3>Breast cancer risk factors</h3>
+<p>Cumulative estrogen exposure (early menarche, late menopause, nulliparity, hormone therapy), family history and inherited mutations (BRCA1/2), and a personal history of atypical proliferative lesions all raise risk.</p>
+<h3>Pathological classification</h3>
+<p>The first branch point is in situ (confined within the ductal or lobular basement membrane) versus invasive (breached the basement membrane, capable of metastasis). The second branch is ductal versus lobular origin. Molecular subtyping further refines prognosis and treatment.</p>
+<h3>Prognostic and predictive markers</h3>
+<p>Estrogen receptor (ER), progesterone receptor (PR), and HER2 status are routinely tested on every invasive breast cancer: ER/PR-positive tumours are candidates for endocrine therapy, HER2-positive tumours for HER2-targeted therapy, and triple-negative tumours (ER/PR/HER2 all negative) lack both targets and rely on chemotherapy. Ki-67 is a proliferation marker used alongside these to gauge tumour aggressiveness.</p>
+", "quiz": [{"stem": "A well-circumscribed, mobile, rubbery breast mass in a 22-year-old is most consistent with which diagnosis?", "opts": ["Intraductal papilloma", "Krukenberg tumour", "Invasive lobular carcinoma", "Fibroadenoma"], "correct": 3, "explain": "Fibroadenoma is the classic well-circumscribed, mobile, rubbery mass seen in young women and is the most common benign discrete breast mass in this age group."}, {"stem": "Why does the presence of atypia in a proliferative breast lesion matter clinically?", "opts": ["It raises subsequent breast cancer risk and changes surveillance", "It confirms the lesion is definitely benign forever", "It means the lesion cannot be sampled by biopsy", "It has no effect on management"], "correct": 0, "explain": "Atypia within a proliferative lesion is the feature that meaningfully increases future breast cancer risk, prompting closer surveillance rather than being treated as reassuring."}, {"stem": "A breast cancer is ER-negative, PR-negative, and HER2-negative. What does this triple-negative status mean for treatment options?", "opts": ["It responds best to endocrine therapy alone", "It lacks targets for endocrine or HER2-directed therapy, so treatment relies on chemotherapy", "It responds best to HER2-targeted therapy alone", "It requires no systemic treatment"], "correct": 1, "explain": "Without ER/PR or HER2 expression, the tumour has no hormonal or HER2-directed target, so systemic treatment for triple-negative disease relies primarily on chemotherapy rather than the targeted options available for receptor-positive tumours."}]}, {"id": "common-breast-problems", "title": "Approach to Common Breast Problems", "instructor": "Andrew Hemphill", "duration": "~13 min", "tags": [{"label": "Cross-refs Module 6", "cls": "mcc"}], "body": "
+<p>This module applies the pathology framework from the prior video to real office presentations &mdash; pain, a palpable lump, and nipple discharge are the three most common complaints, and the approach to each is shaped heavily by the patient's age.</p>
+<h3>History, exam, and investigation by age</h3>
+<p>In younger, premenopausal women, benign causes (fibrocystic change, fibroadenoma) dominate and ultrasound is usually the first imaging test. In postmenopausal women, new findings carry proportionally higher suspicion for malignancy, and mammography becomes the primary imaging modality, sometimes with targeted ultrasound as an adjunct.</p>
+<h3>Treatment strategies by cause</h3>
+<p>Management ranges from reassurance and conservative follow-up for clearly benign, cyclical findings, through core needle biopsy for indeterminate findings, to surgical referral when imaging or biopsy raises concern for malignancy.</p>
+<div class=\"callout\"><strong>Age reframes the same symptom.</strong> An identical complaint &mdash; say, a new lump &mdash; carries very different baseline probability of malignancy depending on whether the patient is 25 or 65, which is why the workup pathway bifurcates by age rather than following one fixed algorithm.</div>
+<h3>Benign vs red-flag features</h3>
+<p>Cyclical pain, a mobile well-defined mass, and bilateral or physiologic discharge lean benign. Red-flag features include a fixed or hard mass, skin dimpling or peau d'orange, nipple retraction, unilateral bloody discharge, and any new axillary lymphadenopathy &mdash; these prompt urgent imaging and biopsy regardless of age.</p>
+<h3>Screening after 50</h3>
+<p>Routine screening mammography is recommended for average-risk women starting around age 50, continuing at a regular interval, as the population-level tool for catching disease before it becomes symptomatic.</p>
+", "quiz": [{"stem": "A 68-year-old presents with a new fixed breast mass and skin dimpling. What is the most appropriate next step?", "opts": ["Reassurance and re-examination in one year", "Advise it is likely fibrocystic change and discharge home", "Urgent imaging and biopsy", "Start empiric antibiotics"], "correct": 2, "explain": "A fixed mass with skin dimmpling are red-flag features that warrant urgent imaging and biopsy regardless of age, rather than reassurance or watchful waiting."}, {"stem": "Why does the initial imaging modality for a new breast complaint differ between a 25-year-old and a 65-year-old?", "opts": ["Mammography is never used before age 70", "Age has no bearing on which imaging test is chosen", "Ultrasound is used only after a mass is proven malignant", "Ultrasound is preferred in younger patients while mammography becomes primary in postmenopausal women"], "correct": 3, "explain": "Younger, denser breast tissue is generally evaluated first with ultrasound, while mammography becomes the primary modality in postmenopausal women, reflecting both tissue density and differing baseline cancer risk."}, {"stem": "At what age does routine screening mammography generally begin for average-risk women?", "opts": ["Around age 50", "Around age 30", "Only after menopause is complete for 10 years", "Screening mammography is not recommended at any age"], "correct": 0, "explain": "Population-level screening mammography for average-risk women is recommended starting around age 50, aiming to catch disease before it becomes symptomatic."}]}, {"id": "ob-care-providers", "title": "OB Care Providers", "instructor": "Laura Sovran", "duration": "~8 min", "tags": [], "body": "
+<p>Pregnant patients in Canada can be cared for by several types of provider, and matching the right provider to the right level of risk is itself a clinical skill.</p>
+<h3>Scope by provider type</h3>
+<p>Midwives provide primary care for low-risk pregnancies, labour, and delivery, with a model emphasizing continuity of care. Family physicians with obstetrical training can manage most low- to moderate-risk pregnancies and deliveries. Obstetricians manage higher-risk pregnancies, operative deliveries, and complications. Maternal-fetal medicine (MFM) specialists provide the most subspecialized care for the highest-risk pregnancies &mdash; significant maternal disease, major fetal anomalies, or multiple escalating risk factors.</p>
+<div class=\"callout\"><strong>Scope escalates with risk, not with time.</strong> A patient does not need to \"graduate\" to a higher-scope provider as pregnancy progresses by default &mdash; the appropriate provider is chosen based on risk factors present at any point, and referral upward can happen at any gestational age when risk factors emerge.</div>
+<h3>Choosing a provider</h3>
+<p>Maternal risk factors (pre-existing disease, prior pregnancy complications), fetal risk factors (anomalies, growth concerns), patient preference for model of care, and geographic access to each provider type all factor into the decision, and referral from a lower- to a higher-scope provider should happen promptly whenever new risk factors emerge.</p>
+", "quiz": [{"stem": "Which provider type is generally reserved for the highest-risk pregnancies, such as significant maternal disease or major fetal anomalies?", "opts": ["Midwife", "Maternal-fetal medicine (MFM) specialist", "Family physician", "Any provider, chosen at random"], "correct": 1, "explain": "MFM specialists provide the most subspecialized level of care, reserved for the highest-risk pregnancies, while midwives and family physicians manage low- to moderate-risk care."}, {"stem": "A low-risk pregnancy develops a new risk factor at 30 weeks. What is the appropriate response?", "opts": ["Wait until delivery to reassess provider type", "Automatically transfer every patient to MFM regardless of the specific risk", "Refer promptly to a higher-scope provider as needed", "Discharge from all obstetric care"], "correct": 2, "explain": "Provider scope is matched to risk whenever it changes, not fixed at the start of pregnancy, so a new risk factor should prompt a prompt referral to an appropriately higher-scope provider rather than waiting."}, {"stem": "What is a defining feature of the midwifery model of care for low-risk pregnancy?", "opts": ["It focuses on operative delivery techniques", "It is reserved only for the highest-risk pregnancies", "It excludes any involvement in low-risk deliveries", "It emphasizes continuity of primary care through labour and delivery"], "correct": 3, "explain": "Midwifery care is characterized by continuity of primary care for low-risk pregnancy through labour and delivery, contrasting with the escalating, subspecialized scope of family physicians, obstetricians, and MFM."}]}, {"id": "teratogenesis", "title": "Teratogenesis", "instructor": "Janine Hutson", "duration": "~14 min", "tags": [{"label": "Cross-refs Module 16", "cls": "mcc"}], "body": "
+<p>A teratogen is any agent &mdash; drug, infection, chemical, or maternal condition &mdash; capable of disrupting normal fetal development. The effect of any given teratogen depends heavily on <em>when</em> exposure occurs, not just what the agent is.</p>
+<h3>Critical periods of susceptibility</h3>
+<p>In the earliest \"all-or-none\" period (roughly the first two weeks post-fertilization), an insult either damages enough cells to cause loss of the pregnancy or is compensated for entirely, with no intermediate malformation outcome. The embryonic period (roughly weeks 3&ndash;8) is when major organs are forming and is the highest-risk window for structural malformations. The fetal period (from roughly week 9 onward) carries lower risk of gross structural malformation but continued risk of growth restriction and functional or neurodevelopmental effects, since organs are refining rather than initially forming.</p>
+<div class=\"callout\"><strong>Timing changes the outcome, not just the severity.</strong> The same teratogen given in the all-or-none period, the embryonic period, and the fetal period can produce three entirely different outcomes &mdash; no effect, a structural malformation, or a growth/functional effect &mdash; which is why \"is X safe in pregnancy\" always needs a trimester attached.</div>
+<h3>Categories of teratogens</h3>
+<p>Medications (e.g. ACE inhibitors/ARBs, cross-reference Module 16's hypertension-in-pregnancy contraindications; isotretinoin; certain anticonvulsants), infections (the classic TORCH group and others), chemical/environmental exposures (alcohol, certain solvents, heavy metals), and maternal conditions themselves (e.g. poorly controlled diabetes, phenylketonuria) are the major categories to screen for in any pregnancy.</p>
+<h3>Counseling principles</h3>
+<p>Counseling should identify the specific agent, the gestational timing of exposure, dose and duration where relevant, and communicate risk in absolute rather than only relative terms, since a worried patient often overestimates risk from a relative-risk framing alone.</p>
+", "quiz": [{"stem": "A teratogenic exposure occurs during the embryonic period (roughly weeks 3-8). What outcome is this window most associated with?", "opts": ["The highest risk of major structural malformation, since organs are actively forming", "No possible effect on the pregnancy", "Growth restriction only, with no structural risk", "Effects only on maternal, not fetal, health"], "correct": 0, "explain": "The embryonic period is when major organ systems are being laid down, making it the highest-risk window for structural malformations, unlike the all-or-none period (loss or no effect) or the later fetal period (growth/functional risk)."}, {"stem": "Why does the all-or-none period (the first ~2 weeks post-fertilization) not typically produce an intermediate malformation?", "opts": ["Organs are already fully formed by this point", "Cells at this stage are either sufficiently damaged to cause loss of the pregnancy or the injury is fully compensated for", "Teratogens cannot cross the placenta this early", "This period does not exist in human pregnancy"], "correct": 1, "explain": "In the all-or-none window, embryonic cells are still largely undifferentiated and totipotent enough that damage is either severe enough to end the pregnancy or gets compensated for, rather than producing a partial structural defect."}, {"stem": "Which class of antihypertensive is a well-established teratogen, particularly with second- and third-trimester exposure?", "opts": ["Labetalol", "Nifedipine", "ACE inhibitors and ARBs", "Methyldopa"], "correct": 2, "explain": "ACE inhibitors and ARBs are contraindicated in pregnancy due to fetal renal damage and other fetopathy, especially later in pregnancy, whereas labetalol, nifedipine, and methyldopa are the pregnancy-safe alternatives (cross-reference Module 16)."}]}, {"id": "first-trimester-bleeding-ultrasound", "title": "Approach to First Trimester Bleeding — Ultrasound", "instructor": "Angelos Vilos", "duration": "~12 min", "tags": [], "body": "
+<p>First-trimester bleeding is evaluated with beta-hCG and ultrasound used together, because neither test alone can answer the central clinical question of whether a pregnancy is viable and correctly located.</p>
+<h3>Why both tests are needed together</h3>
+<p>A single beta-hCG value cannot localize a pregnancy or confirm viability; ultrasound cannot always visualize an early pregnancy on its own without knowing whether the hCG level is high enough that it <em>should</em> be visible yet. Combining a serial hCG trend with sequential ultrasound findings resolves this ambiguity.</p>
+<h3>The normal beta-hCG doubling curve</h3>
+<p>In a normal early intrauterine pregnancy, serum beta-hCG roughly doubles every 48&ndash;72 hours. A rise slower than expected, a plateau, or a fall is concerning for a non-viable pregnancy (miscarriage) or an ectopic pregnancy, and prompts closer monitoring or further workup (cross-reference Module 11's pathology detail).</p>
+<div class=\"callout\"><strong>The discriminatory zone.</strong> This is the beta-hCG level above which a normal intrauterine pregnancy should reliably be visible on transvaginal ultrasound. Above this threshold with no intrauterine sac seen, the differential shifts sharply toward ectopic pregnancy or a recently completed miscarriage; below it, an empty-appearing uterus is simply expected and not yet concerning.</div>
+<h3>Ultrasound landmark timeline</h3>
+<p>Structures appear in a predictable sequence as a normal pregnancy advances: the gestational sac is the first landmark visible, followed by the yolk sac, and then the fetal pole with cardiac activity. Each landmark's expected timing (matched against last menstrual period dating or hCG level) is used to confirm the pregnancy is progressing normally.</p>
+", "quiz": [{"stem": "A patient's beta-hCG rises only 20% over 48 hours instead of roughly doubling. What does this suggest?", "opts": ["A completely normal, healthy pregnancy", "That ultrasound is no longer needed", "That the patient is definitely carrying twins", "A concerning trend for miscarriage or ectopic pregnancy"], "correct": 3, "explain": "A rise slower than the expected ~48-72 hour doubling is a red flag for a non-viable intrauterine pregnancy or an ectopic pregnancy, prompting closer monitoring rather than reassurance."}, {"stem": "A patient's beta-hCG is above the discriminatory zone, but transvaginal ultrasound shows no intrauterine gestational sac. What does this combination suggest?", "opts": ["A shift in suspicion toward ectopic pregnancy or a recently completed miscarriage", "A normal, expected finding requiring no further action", "That the discriminatory zone concept does not apply to this patient", "That the pregnancy is definitely twins"], "correct": 0, "explain": "Above the discriminatory zone, a normal intrauterine pregnancy should be visible; its absence sharply raises concern for ectopic pregnancy or a completed miscarriage rather than being a reassuring or neutral finding."}, {"stem": "In the normal ultrasound landmark timeline of an early pregnancy, which structure is visualized first?", "opts": ["Fetal pole with cardiac activity", "Gestational sac", "Yolk sac", "Placenta"], "correct": 1, "explain": "The gestational sac is the earliest landmark to appear, followed by the yolk sac, and then the fetal pole with detectable cardiac activity, in that predictable sequence."}]}, {"id": "pathology-first-trimester-bleeding", "title": "Pathology of First Trimester Bleeding", "instructor": "Emily Goebel", "duration": "~16 min", "tags": [{"label": "Cross-refs Module 10", "cls": "mcc"}], "body": "
+<p>Building on the hCG-and-ultrasound framework from the previous module, this module covers what is actually happening at the tissue level in the major causes of first-trimester bleeding: spontaneous abortion, ectopic gestation, and gestational trophoblastic disease.</p>
+<h3>Placental implantation and the differential</h3>
+<p>Normal implantation requires trophoblastic invasion into the decidualized endometrium; disruptions to this process underlie most first-trimester bleeding causes. The differential includes benign implantation bleeding, spontaneous (threatened, inevitable, incomplete, complete, missed, or septic) abortion, ectopic gestation, and gestational trophoblastic disease.</p>
+<h3>Spontaneous abortion &mdash; types and findings</h3>
+<p>Threatened abortion is bleeding with a closed cervix and a viable pregnancy on ultrasound; inevitable abortion shows an open cervix with a still-present but non-viable process underway; incomplete abortion has retained products of conception; complete abortion has full passage of tissue with an empty uterus; missed abortion is fetal demise without expulsion; septic abortion involves infection of retained tissue. Microscopically, products of conception show chorionic villi, distinguishing an intrauterine pregnancy from an ectopic one on pathology.</p>
+<h3>Ectopic gestation</h3>
+<p>Prior ectopic pregnancy is the single strongest risk factor for a subsequent one; the fallopian tube (most commonly the ampullary segment) is the most common site. Grossly, a tubal ectopic shows a distended, hemorrhagic tube; microscopically, chorionic villi are found within tubal tissue rather than endometrium &mdash; the defining histologic feature.</p>
+<h3>Gestational trophoblastic disease (GTD)</h3>
+<p>GTD spans three entities: hydatidiform mole (complete or partial), invasive mole, and choriocarcinoma. A complete mole is diploid, entirely paternal in origin (typically 46,XX from duplication of a single sperm's genome after fertilizing an empty egg), with no fetal tissue and diffuse villous hydropic swelling. A partial mole is triploid (typically two sperm fertilizing one egg), and does have some fetal tissue alongside focal hydropic villi. Choriocarcinoma is a highly malignant trophoblastic tumour, grossly hemorrhagic and necrotic, microscopically showing sheets of malignant syncytiotrophoblast and cytotrophoblast without villi &mdash; and it metastasizes hematogenously, most commonly to the <strong>lungs</strong>.</p>
+<div class=\"callout\"><strong>The one thing to remember about choriocarcinoma.</strong> Because it spreads hematogenously rather than needing villi or local invasion first, choriocarcinoma can present with a lung mass and an elevated beta-hCG in a patient whose preceding pregnancy history is easy to overlook &mdash; keep it on the differential for a \"lung mass\" in a woman of reproductive age.</div>
+", "quiz": [{"stem": "On pathology, chorionic villi are identified within fallopian tube tissue rather than endometrium. What does this finding confirm?", "opts": ["A normal intrauterine pregnancy", "A complete hydatidiform mole", "An ectopic (tubal) pregnancy", "Choriocarcinoma"], "correct": 2, "explain": "Finding chorionic villi within tubal tissue, rather than endometrium, is the defining histologic feature that confirms an ectopic (tubal) gestation rather than a normally implanted intrauterine pregnancy."}, {"stem": "A complete hydatidiform mole is typically which of the following genetically?", "opts": ["Triploid, from two sperm fertilizing one egg, with some fetal tissue present", "A normal diploid conceptus with both maternal and paternal chromosomes", "Always associated with a coexisting live fetus", "Diploid and entirely paternal in origin, with no fetal tissue present"], "correct": 3, "explain": "A complete mole is diploid but entirely of paternal origin (typically from duplication of a single sperm's genome fertilizing an empty egg), and characteristically has no fetal tissue, distinguishing it from the triploid partial mole which does retain some fetal tissue."}, {"stem": "A woman of reproductive age presents with a lung mass and an elevated beta-hCG. Which gestational trophoblastic disease entity is most classically associated with this presentation?", "opts": ["Choriocarcinoma", "Partial hydatidiform mole", "Threatened abortion", "Ectopic pregnancy"], "correct": 0, "explain": "Choriocarcinoma spreads hematogenously and most commonly metastasizes to the lungs, so a lung mass with elevated beta-hCG in a woman of reproductive age should raise suspicion for it, distinct from the other options which do not present this way."}]}, {"id": "first-trimester-care", "title": "Care for Pregnancy in the First Trimester", "instructor": "Jordan Schmidt", "duration": "~14 min", "tags": [{"label": "Foundation video", "cls": "mcc"}], "body": "
+<p>This module establishes the normal first-trimester baseline that teratogen timing (Module 9), dating ultrasound (Module 10), and later antenatal care (Module 14) all build on.</p>
+<h3>GTPAL</h3>
+<p>GTPAL is the standard shorthand for summarizing obstetric history at a glance: <strong>G</strong>ravida (total pregnancies, including the current one), <strong>T</strong>erm deliveries (&ge;37 weeks), <strong>P</strong>reterm deliveries (viability to &lt;37 weeks), <strong>A</strong>bortions (losses before viability, spontaneous or induced), and <strong>L</strong>iving children. Multiple gestations count as one pregnancy event for G/T/P/A but each child individually for L.</p>
+<h3>Diagnosing pregnancy and setting the EDB</h3>
+<p>Pregnancy is diagnosed by a positive urine or serum beta-hCG, supported by clinical signs and confirmed by ultrasound when needed. The estimated date of birth (EDB) uses Naegele's rule from the first day of the last menstrual period: add 7 days, subtract 3 months, add 1 year, assuming a regular 28-day cycle. When cycles are irregular or LMP is uncertain, first-trimester crown-rump length on ultrasound is the most accurate dating method and takes precedence when it disagrees meaningfully with LMP-based dating.</p>
+<div class=\"callout\"><strong>Ultrasound dating beats LMP dating early.</strong> The earlier in pregnancy an ultrasound is performed, the more accurate its dating &mdash; which is why a first-trimester crown-rump length measurement, not a recalled LMP date, becomes the reference EDB whenever the two disagree.</div>
+<h3>Symptoms and uterine growth</h3>
+<p>Typical first-trimester symptoms include amenorrhea, breast tenderness, nausea/vomiting (peaking around 9&ndash;10 weeks), fatigue, and urinary frequency. The uterus remains a pelvic organ, not yet palpable abdominally, until roughly 12 weeks gestation, when it becomes palpable just above the pubic symphysis &mdash; a classic clinical landmark.</p>
+<h3>Standard first-trimester test panel</h3>
+<p>Blood type and Rh status with antibody screen, complete blood count, rubella immunity, hepatitis B surface antigen, HIV, syphilis, urinalysis/culture, and Pap testing if not current make up the baseline panel, alongside first-trimester aneuploidy screening when desired.</p>
+", "quiz": [{"stem": "A patient has had two prior term deliveries, one prior miscarriage at 8 weeks, and is currently pregnant. Using GTPAL, what is her Gravida?", "opts": ["2", "4", "3", "1"], "correct": 1, "explain": "Gravida counts total pregnancies including the current one: two prior term deliveries plus one prior miscarriage plus the current pregnancy equals four total pregnancies (G4)."}, {"stem": "A patient's LMP-based dating and first-trimester crown-rump length ultrasound dating disagree meaningfully. Which should take precedence?", "opts": ["LMP-based dating, always", "Neither; the pregnancy cannot be dated", "First-trimester ultrasound dating", "Whichever the patient prefers"], "correct": 2, "explain": "First-trimester ultrasound crown-rump length is the most accurate dating method, especially the earlier it is performed, so it takes precedence over LMP-based dating when the two disagree significantly."}, {"stem": "Around what gestational age does the uterus first become palpable above the pubic symphysis on abdominal exam?", "opts": ["Approximately 6 weeks", "Approximately 20 weeks", "Approximately 30 weeks", "Approximately 12 weeks"], "correct": 3, "explain": "The uterus remains a pelvic organ, not palpable abdominally, until roughly 12 weeks gestation, when it grows enough to be felt just above the pubic symphysis &mdash; a classic clinical landmark for dating by exam."}]}, {"id": "approach-sexual-health", "title": "Approach to Sexual Health", "instructor": "Krista Cameron", "duration": "~10 min", "tags": [], "body": "
+<p>Sexual health and satisfaction are core components of overall wellbeing, yet patients rarely raise concerns unprompted due to embarrassment or stigma. A family physician's role is to proactively normalize the topic as a routine part of history-taking rather than waiting for the patient to bring it up.</p>
+<h3>Inquiry techniques</h3>
+<p>Use open-ended, non-assuming language (asking about \"partners\" rather than assuming gender); explicitly normalize the question (\"I ask all my patients about their sexual health as part of routine care\"); and ask systematically about desire, arousal, satisfaction, and pain rather than one vague catch-all question.</p>
+<div class=\"callout\"><strong>Unlocking a door you have to offer the key to.</strong> Patients rarely volunteer sexual health concerns unprompted &mdash; the physician has to explicitly open the conversation and signal that it is safe to walk through, rather than waiting to be asked.</div>
+<h3>Creating a safe office space</h3>
+<p>Inclusive signage and gender-neutral intake forms, staff training on respectful language, ensured confidentiality (especially important for adolescent or closeted patients), and using the patient's own terminology for their identity and practices all contribute to a safe environment.</p>
+<h3>Contrasting sexual response: cis-men vs cis-women</h3>
+<p>The classic response cycle (desire, arousal, plateau, orgasm, resolution) applies to both, but patterns differ. In cis-men, arousal and physiological response tend to be more tightly linked and rapid, desire is often described as spontaneous, and a refractory period follows orgasm. In cis-women, arousal is more variable and can be less tightly linked to subjective desire &mdash; responsive desire (arising in response to arousal or context, rather than spontaneously) is common and normal &mdash; and the capacity for multiple orgasms without a true refractory period is a key physiological distinction.</p>
+<h3>Defining sexual preferences</h3>
+<p>Sexual orientation describes the pattern of attraction a person experiences (heterosexual, homosexual, bisexual, pansexual, asexual) and is a distinct concept from gender identity, which physicians should be able to discuss without conflating the two.</p>
+", "quiz": [{"stem": "What is the recommended approach when asking a new patient about sexual health for the first time?", "opts": ["Use open-ended, non-assuming language and explicitly normalize the question as routine", "Wait for the patient to bring it up unprompted", "Only ask if the patient appears to be in a relationship", "Avoid the topic entirely to prevent discomfort"], "correct": 0, "explain": "Because patients rarely volunteer sexual health concerns unprompted, the recommended approach is to proactively and explicitly normalize the question as a routine part of care, using open, non-assuming language."}, {"stem": "\"Responsive desire\" &mdash; desire arising in response to arousal or context rather than spontaneously &mdash; is described as a common and normal pattern in which group?", "opts": ["Cis-men specifically", "Cis-women", "Neither cis-men nor cis-women", "Only in patients with a diagnosed sexual dysfunction"], "correct": 1, "explain": "Responsive desire is highlighted as a common and normal pattern in cis-women, contrasting with the more spontaneous desire pattern more typically described in cis-men."}, {"stem": "Sexual orientation and gender identity are best understood as which of the following?", "opts": ["The same concept, described with different words", "Concepts that only apply to adolescent patients", "Distinct concepts that should not be conflated", "Topics outside the scope of family medicine"], "correct": 2, "explain": "Sexual orientation (the pattern of attraction) and gender identity (a person's internal sense of their own gender) are distinct concepts, and a physician should be able to discuss each without conflating them."}]}, {"id": "topics-antenatal-care", "title": "Topics of Antenatal Care", "instructor": "Jordan Schmidt", "duration": "~16 min", "tags": [{"label": "Cross-refs Module 12", "cls": "mcc"}], "body": "
+<p>This module picks up where first-trimester care (Module 12) leaves off, extending antenatal care principles through the second half of pregnancy.</p>
+<h3>Factors important for ongoing care</h3>
+<p>Regular scheduled visits with increasing frequency as pregnancy advances (roughly monthly until 28 weeks, every two weeks from 28&ndash;36 weeks, then weekly until delivery), ongoing screening for maternal complications, fetal surveillance, and maternal education are the core components.</p>
+<h3>Antibody testing and prophylaxis</h3>
+<p>Blood type, Rh status, and an antibody screen are drawn at the first prenatal visit. Rh-negative patients are re-screened around 28 weeks and receive prophylactic anti-D immunoglobulin at that time (again after delivery if the baby is Rh-positive, or after any sensitizing event). Inactivated influenza vaccine is recommended in season regardless of trimester; Tdap is recommended each pregnancy, typically in the third trimester, to transfer passive pertussis immunity; live vaccines are contraindicated during pregnancy. Folic acid and prenatal vitamins with iron continue throughout.</p>
+<div class=\"callout\"><strong>A series of checkpoints on a long drive.</strong> Each antenatal visit checks a specific set of gauges &mdash; growth, blood pressure, fetal movement, labs &mdash; at the right interval, so a problem is caught early rather than only discovered at the destination.</div>
+<h3>Fetal movement</h3>
+<p>A first-time mother typically first perceives fetal movement (quickening) around 18&ndash;20 weeks; a woman who has been pregnant before often perceives it earlier, around 16&ndash;18 weeks, recognizing the sensation from experience. Formal kick counts later in pregnancy are a simple, patient-driven surveillance method, and a notable decrease in movement warrants prompt assessment.</p>
+<h3>The post-20-week visit and nutrition</h3>
+<p>Visits after 20 weeks include blood pressure and urine dipstick (screening for preeclampsia, cross-reference Module 16), symphysis-fundal height, fetal heart rate, and assessment of movement, plus milestone screens (gestational diabetes ~24&ndash;28 weeks, repeat Rh screen/anti-D ~28 weeks, Group B Streptococcus ~35&ndash;37 weeks). Nutritional needs include increased calories and protein, folic acid, iron, calcium and vitamin D, with counseling against high-mercury fish, unpasteurized dairy/deli meats, excess vitamin A, and alcohol.</p>
+", "quiz": [{"stem": "An Rh-negative patient is re-screened for antibodies and receives prophylactic anti-D immunoglobulin at approximately what gestational age?", "opts": ["8 weeks", "16 weeks", "38 weeks", "28 weeks"], "correct": 3, "explain": "Rh-negative patients are re-screened for antibodies and given prophylactic anti-D immunoglobulin around 28 weeks gestation, in addition to postpartum or after any sensitizing event."}, {"stem": "Which vaccine type is contraindicated during pregnancy?", "opts": ["Live vaccines such as MMR", "Inactivated influenza vaccine", "Tdap", "Anti-D immunoglobulin (not a vaccine, but commonly grouped here)"], "correct": 0, "explain": "Live vaccines, such as MMR, are contraindicated during pregnancy and are instead given postpartum if needed, unlike inactivated influenza vaccine and Tdap, which are recommended during pregnancy."}, {"stem": "A multigravida patient first notices fetal movement earlier than a primigravida typically would. What is the best explanation?", "opts": ["Multigravida pregnancies always move gestational age forward by 4 weeks", "Multigravidas recognize the sensation from prior experience, so they often perceive it sooner", "First-time mothers cannot perceive fetal movement until the third trimester", "There is no real difference between the two groups"], "correct": 1, "explain": "A multigravida often perceives quickening earlier (around 16-18 weeks) than a primigravida (around 18-20 weeks) because she recognizes the sensation from a previous pregnancy, not because of any biological difference in movement itself."}]}, {"id": "second-trimester-ultrasound", "title": "Second Trimester Ultrasound", "instructor": "Harrison Banner", "duration": "~15 min", "tags": [{"label": "Cross-refs Module 10", "cls": "mcc"}], "body": "
+<p>Distinct from the first-trimester dating/viability ultrasound (Module 10), the standard second-trimester \"anatomy scan\" is performed around 18&ndash;22 weeks and is a routine, recommended component of antenatal care for essentially all pregnancies.</p>
+<h3>Purpose and timing</h3>
+<p>This window is chosen because fetal structures are large enough to be reliably visualized while the pregnancy is still early enough that, if a significant anomaly is found, the family has time to make informed decisions.</p>
+<div class=\"callout\"><strong>A structural home inspection.</strong> The anatomy scan is a systematic, room-by-room check of every major fetal structure, performed at the one point in pregnancy when they are all large enough to be seen clearly but early enough to still act on any findings.</div>
+<h3>What's assessed</h3>
+<p>A full fetal anatomy survey (brain/ventricles, face, spine, heart with 4-chamber and outflow views, lungs, abdominal organs, limbs, cord insertion), growth biometry (biparietal diameter, head circumference, abdominal circumference, femur length), placental location (screening for placenta previa), and amniotic fluid volume are all systematically checked; fetal sex can typically be determined if desired.</p>
+<h3>Other indications later in pregnancy</h3>
+<p>Beyond the routine anatomy scan, later ultrasounds may be ordered for size-dates discrepancy, suspected growth restriction or macrosomia, decreased fetal movement, suspected placental abnormality, or as part of biophysical profile testing in higher-risk pregnancies.</p>
+<h3>Interpreting results</h3>
+<p>Normal findings require no further action; a suspected structural, growth, or fluid abnormality typically prompts referral to maternal-fetal medicine (cross-reference Module 8's provider-escalation principle) for detailed ultrasound, genetic counseling if indicated, and closer surveillance for the remainder of the pregnancy.</p>
+", "quiz": [{"stem": "The standard second-trimester anatomy scan is typically performed at approximately what gestational age, and why that window?", "opts": ["6-8 weeks, because structures are smallest then", "34-36 weeks, right before delivery", "18-22 weeks, when structures are large enough to see clearly but early enough to still act on findings", "Only performed if a problem is already suspected"], "correct": 2, "explain": "18-22 weeks is chosen deliberately: fetal anatomy is large enough for reliable visualization, while the pregnancy is still early enough to allow informed decisions if a significant anomaly is found."}, {"stem": "Screening for placenta previa is part of which component of the anatomy scan?", "opts": ["Fetal growth biometry", "Amniotic fluid volume assessment", "Fetal anatomy survey of the heart", "Placental location assessment"], "correct": 3, "explain": "Placental location is specifically assessed to screen for placenta previa, which affects delivery planning, distinct from growth biometry, fluid assessment, or the organ-by-organ anatomy survey."}, {"stem": "A second-trimester anatomy scan shows a suspected structural anomaly. What is the most appropriate next step?", "opts": ["Referral to maternal-fetal medicine for detailed ultrasound and further workup", "No further action is needed", "Immediate delivery regardless of gestational age", "Repeat the same scan in the third trimester only"], "correct": 0, "explain": "A suspected structural, growth, or fluid abnormality typically triggers referral to MFM for a targeted, detailed ultrasound and further workup, rather than no action or an unrelated immediate delivery."}]}, {"id": "hypertension-pregnancy", "title": "Hypertension in Pregnancy", "instructor": "Jordan Schmidt", "duration": "~18 min", "tags": [{"label": "Capstone", "cls": "mcc"}], "body": "
+<p>As the capstone of the week, this module ties together the routine blood-pressure screening from every antenatal visit after 20 weeks (Module 14) with what that screening is actually looking for, and connects to growth restriction on ultrasound (Module 15) as a recognized complication.</p>
+<h3>Three categories, distinguished by timing</h3>
+<p>Pre-gestational (chronic) hypertension is present before pregnancy or diagnosed before 20 weeks. Gestational hypertension is new-onset hypertension after 20 weeks without proteinuria or other end-organ features. Preeclampsia is new-onset hypertension after 20 weeks <em>with</em> proteinuria and/or other end-organ involvement (thrombocytopenia, renal insufficiency, impaired liver function, pulmonary edema, new headache/visual symptoms) &mdash; that added end-organ component is what separates it from simple gestational hypertension.</p>
+<h3>Interaction with pregnancy physiology</h3>
+<p>Preeclampsia arises from abnormal placental implantation and spiral artery remodeling early in pregnancy, causing placental ischemia and release of factors that produce widespread maternal endothelial dysfunction. Delivery of the placenta is the only definitive cure, which is why gestational age heavily influences management timing.</p>
+<h3>Contraindicated antihypertensives</h3>
+<p>ACE inhibitors and ARBs are contraindicated throughout pregnancy (cross-reference Module 9's teratogen list), causing fetal renal damage and other fetopathy. Pregnancy-safe first-line agents include labetalol, nifedipine, and methyldopa.</p>
+<h3>Complications and management</h3>
+<p>Maternal complications include progression to severe preeclampsia, eclampsia, HELLP syndrome, abruption, and stroke; fetal complications include growth restriction, oligohydramnios, and preterm birth. Management of gestational hypertension includes regular monitoring, fetal surveillance, antihypertensive therapy if a treatment threshold is reached, and delivery timing balanced between gestational age and disease severity.</p>
+<div class=\"callout\"><strong>One fire, different rooms.</strong> Preeclampsia, eclampsia, and HELLP syndrome are not three unrelated diseases &mdash; they are the same underlying placental/vascular process that can spread to different \"rooms\": seizures (eclampsia) or a specific pattern of liver/blood involvement (HELLP).</div>
+<h3>HELLP, eclampsia, and treatment</h3>
+<p><strong>HELLP syndrome</strong> (Hemolysis, Elevated Liver enzymes, Low Platelets) is a severe variant of preeclampsia generally requiring prompt delivery regardless of gestational age. <strong>Eclampsia</strong> is new-onset generalized seizures in a woman with preeclampsia &mdash; an obstetric emergency. Magnesium sulfate is first-line both for treating an active eclamptic seizure and for seizure prophylaxis in severe preeclampsia, alongside supportive care, IV antihypertensives for severe hypertension, and expedited delivery once the mother is stabilized.</p>
+", "quiz": [{"stem": "What distinguishes preeclampsia from simple gestational hypertension?", "opts": ["Preeclampsia occurs only before 20 weeks gestation", "Preeclampsia includes proteinuria and/or other end-organ involvement alongside new hypertension", "Gestational hypertension always progresses to eclampsia", "There is no clinical difference between the two"], "correct": 1, "explain": "Both are new-onset hypertension after 20 weeks, but preeclampsia is defined by the addition of proteinuria and/or other end-organ features (renal, hepatic, hematologic, pulmonary, or neurological), which gestational hypertension alone lacks."}, {"stem": "Why is delivery of the placenta considered the only definitive cure for preeclampsia?", "opts": ["Because magnesium sulfate cannot control blood pressure", "Because antihypertensive medications are contraindicated in all pregnant patients", "Because the underlying disease process originates from abnormal placental implantation and ischemia", "Because preeclampsia only ever occurs after delivery"], "correct": 2, "explain": "Preeclampsia's underlying pathophysiology stems from abnormal placental implantation causing ischemia and endothelial dysfunction, so removing the placenta via delivery addresses the root cause, unlike medications which only manage symptoms."}, {"stem": "What is the first-line treatment for an active eclamptic seizure?", "opts": ["Labetalol alone", "Immediate general anesthesia with no other intervention", "Oral nifedipine", "Magnesium sulfate"], "correct": 3, "explain": "Magnesium sulfate is first-line both for treating an active eclamptic seizure and for seizure prophylaxis in severe preeclampsia, given its proven superiority over other anticonvulsants in this specific setting."}]}];
+
+(function(){
+  var navlist = document.getElementById('navlist');
+  var content = document.getElementById('content');
+  var totalQ = 0;
+  MODULES.forEach(function(m){ totalQ += m.quiz.length; });
+  document.getElementById('progress-count').textContent = '0 / ' + totalQ;
+
+  var STORE_KEY = 'endo-hub-wk5-answers-v1';
+  var answered = {};
+  try {
+    var raw = localStorage.getItem(STORE_KEY);
+    if (raw) answered = JSON.parse(raw);
+  } catch(e) {}
+
+  function saveAnswered(){
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(answered)); } catch(e) {}
+  }
+
+  function correctCount(){
+    var n = 0;
+    Object.keys(answered).forEach(function(k){ if (answered[k] === 'correct') n++; });
+    return n;
+  }
+
+  function updateProgress(){
+    var c = correctCount();
+    document.getElementById('progress-count').textContent = c + ' / ' + totalQ;
+    document.getElementById('progress-fill').style.width = (totalQ ? (100 * c / totalQ) : 0) + '%';
+  }
+
+  function moduleAnsweredCount(m){
+    var n = 0;
+    m.quiz.forEach(function(q, i){
+      var key = m.id + '-' + i;
+      if (answered[key]) n++;
+    });
+    return n;
+  }
+
+  function markDot(m){
+    var dot = document.querySelector('.navlist a[href="#' + m.id + '"] .dot');
+    if (!dot) return;
+    var done = moduleAnsweredCount(m) === m.quiz.length && m.quiz.length > 0;
+    dot.classList.toggle('done', done);
+  }
+
+  // Build nav
+  MODULES.forEach(function(m, idx){
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + m.id;
+    a.innerHTML = '<span class="num">' + String(idx+1).padStart(2,'0') + '</span><span class="dot"></span><span>' + m.title + '</span>';
+    li.appendChild(a);
+    navlist.appendChild(li);
+  });
+
+  function renderQuiz(m){
+    var wrap = document.createElement('div');
+    wrap.className = 'quiz';
+
+    var head = document.createElement('div');
+    head.className = 'quiz-head';
+    head.innerHTML = '<span>Check yourself</span><span class="quiz-score" id="score-' + m.id + '"></span>';
+    wrap.appendChild(head);
+
+    var scoreEl = head.querySelector('.quiz-score');
+
+    var body = document.createElement('div');
+    body.className = 'quiz-body';
+
+    function updateModuleScore(){
+      var n = moduleAnsweredCount(m);
+      scoreEl.textContent = n + ' / ' + m.quiz.length + ' answered';
+    }
+
+    m.quiz.forEach(function(q, i){
+      var key = m.id + '-' + i;
+      var qd = document.createElement('div');
+      qd.className = 'q';
+      var stem = document.createElement('div');
+      stem.className = 'q-stem';
+      stem.textContent = (i+1) + '. ' + q.stem;
+      qd.appendChild(stem);
+
+      var opts = document.createElement('div');
+      opts.className = 'q-opts';
+
+      var explain = document.createElement('div');
+      explain.className = 'q-explain';
+      explain.innerHTML = '<strong>' + (q.explain.split(' ')[0]) + '</strong> ' + q.explain;
+
+      var alreadyAnswered = !!answered[key];
+
+      q.opts.forEach(function(optText, oi){
+        var btn = document.createElement('button');
+        btn.className = 'opt';
+        btn.innerHTML = '<span class="letter">' + String.fromCharCode(65+oi) + '</span><span>' + optText + '</span>';
+        if (alreadyAnswered) {
+          btn.disabled = true;
+          if (oi === q.correct) btn.classList.add('correct');
+          if (answered[key] === 'incorrect-' + oi) btn.classList.add('incorrect');
+        }
+        btn.addEventListener('click', function(){
+          if (btn.disabled) return;
+          var allOpts = opts.querySelectorAll('.opt');
+          allOpts.forEach(function(o){ o.disabled = true; });
+          if (oi === q.correct) {
+            btn.classList.add('correct');
+            answered[key] = 'correct';
+          } else {
+            btn.classList.add('incorrect');
+            allOpts[q.correct].classList.add('correct');
+            answered[key] = 'incorrect-' + oi;
+          }
+          explain.classList.add('shown');
+          saveAnswered();
+          updateProgress();
+          updateModuleScore();
+          markDot(m);
+        });
+        opts.appendChild(btn);
+      });
+
+      qd.appendChild(opts);
+      qd.appendChild(explain);
+      if (alreadyAnswered) explain.classList.add('shown');
+      body.appendChild(qd);
+    });
+
+    wrap.appendChild(body);
+    updateModuleScore();
+    return wrap;
+  }
+
+  MODULES.forEach(function(m, idx){
+    var sec = document.createElement('section');
+    sec.className = 'module';
+    sec.id = m.id;
+
+    var head = document.createElement('div');
+    head.className = 'module-head';
+    head.innerHTML = '<span class="module-num">' + String(idx+1).padStart(2,'0') + '</span><h2>' + m.title + '</h2>';
+    sec.appendChild(head);
+
+    var meta = document.createElement('div');
+    meta.className = 'module-meta';
+    var tagsHtml = '<span class="tag">' + m.instructor + '</span><span class="tag">' + m.duration + '</span>';
+    (m.tags || []).forEach(function(t){ tagsHtml += '<span class="tag ' + t.cls + '">' + t.label + '</span>'; });
+    meta.innerHTML = tagsHtml;
+    sec.appendChild(meta);
+
+    var bodyDiv = document.createElement('div');
+    bodyDiv.className = 'module-body';
+    bodyDiv.innerHTML = m.body;
+    sec.appendChild(bodyDiv);
+
+    var quizWrap = document.createElement('div');
+    quizWrap.className = 'module-body';
+    quizWrap.appendChild(renderQuiz(m));
+    sec.appendChild(quizWrap);
+
+    content.appendChild(sec);
+    markDot(m);
+  });
+
+  updateProgress();
+
+  // Active-link tracking on scroll
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.module'));
+  var links = Array.prototype.slice.call(document.querySelectorAll('.navlist a'));
+  function onScroll(){
+    var pos = window.scrollY + 120;
+    var current = sections[0];
+    sections.forEach(function(s){ if (s.offsetTop <= pos) current = s; });
+    links.forEach(function(l){ l.classList.toggle('active', l.getAttribute('href') === '#' + current.id); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Close mobile nav on link click
+  links.forEach(function(l){
+    l.addEventListener('click', function(){
+      document.getElementById('sidebar').classList.remove('open');
+    });
+  });
+})();
+</script>

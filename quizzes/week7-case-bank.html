@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 7 Case Bank</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper: #f2f0e8;
+    --paper-raised: #fbfaf5;
+    --ink: #1e2a2e;
+    --ink-soft: #55625f;
+    --hairline: #d6d1c2;
+    --accent: #2c5f5a;
+    --accent-soft: #dce8e4;
+    --accent-ink: #163634;
+    --good: #2f6b3e;
+    --good-soft: #dfeee1;
+    --bad: #a03f37;
+    --bad-soft: #f6e3df;
+    --amber: #b5792c;
+    --amber-soft: #f3e6d2;
+    --shadow: 0 1px 2px rgba(30,42,46,.06), 0 8px 24px -12px rgba(30,42,46,.18);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #171d1e;
+      --paper-raised: #1f2729;
+      --ink: #e9eae4;
+      --ink-soft: #a5afab;
+      --hairline: #333e3f;
+      --accent: #7bbbb0;
+      --accent-soft: #223634;
+      --accent-ink: #cdeae4;
+      --good: #7fc98d;
+      --good-soft: #1e3324;
+      --bad: #e19489;
+      --bad-soft: #3a2320;
+      --amber: #e0b06b;
+      --amber-soft: #3a2f1a;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #171d1e;
+    --paper-raised: #1f2729;
+    --ink: #e9eae4;
+    --ink-soft: #a5afab;
+    --hairline: #333e3f;
+    --accent: #7bbbb0;
+    --accent-soft: #223634;
+    --accent-ink: #cdeae4;
+    --good: #7fc98d;
+    --good-soft: #1e3324;
+    --bad: #e19489;
+    --bad-soft: #3a2320;
+    --amber: #e0b06b;
+    --amber-soft: #3a2f1a;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Public Sans', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+  }
+
+  h1,h2,h3{ font-family:'Fraunces', Georgia, serif; text-wrap:balance; margin:0; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+
+  a{ color:inherit; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  /* ---------- shell ---------- */
+  .shell{ max-width:1040px; margin:0 auto; padding:0 24px 96px; }
+  .topbar{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:16px; padding:28px 24px 20px; max-width:1040px; margin:0 auto;
+    border-bottom:1px solid var(--hairline);
+  }
+  .brand{ display:flex; flex-direction:column; gap:2px; }
+  .brand .kicker{
+    font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--accent); font-weight:600;
+  }
+  .brand h1{ font-size:1.5rem; font-weight:600; }
+  .topstat{ text-align:right; font-family:'JetBrains Mono', monospace; font-size:.78rem; color:var(--ink-soft); }
+  .topstat b{ color:var(--ink); font-weight:600; }
+
+  /* ---------- dashboard ---------- */
+  .intro{ padding:32px 0 8px; max-width:640px; }
+  .intro p{ margin:10px 0 0; color:var(--ink-soft); line-height:1.55; font-size:.97rem; }
+
+  .group-heading{
+    display:flex; align-items:center; gap:12px;
+    margin:36px 0 14px;
+  }
+  .group-heading h2{ font-size:1.05rem; font-weight:600; color:var(--ink); white-space:nowrap; }
+  .group-heading .rule{ height:1px; background:var(--hairline); flex:1; }
+  .group-heading .count{ font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--ink-soft); }
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:14px; }
+
+  .card{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:18px 18px 16px; text-align:left; box-shadow:var(--shadow);
+    display:flex; flex-direction:column; gap:12px; min-height:150px;
+    transition:transform .15s ease, border-color .15s ease;
+    position:relative; overflow:hidden;
+  }
+  .card:hover{ transform:translateY(-2px); border-color:var(--accent); }
+  .card:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .card .num{
+    font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--ink-soft);
+    letter-spacing:.06em;
+  }
+  .card h3{ font-size:1.05rem; font-weight:500; line-height:1.28; flex:1; }
+  .card-foot{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .badge{
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; font-weight:600;
+    padding:3px 8px; border-radius:99px; letter-spacing:.02em;
+  }
+  .badge.new{ background:var(--accent-soft); color:var(--accent-ink); }
+  .badge.done{ background:var(--good-soft); color:var(--good); }
+  .badge.retry{ background:var(--amber-soft); color:var(--amber); }
+  .score{ font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--ink-soft); }
+  .score b{ color:var(--ink); }
+
+  /* ---------- quiz view ---------- */
+  .quiz-header{
+    display:flex; align-items:center; gap:14px; padding:26px 0 6px; flex-wrap:wrap;
+  }
+  .back-btn{
+    background:none; border:1px solid var(--hairline); border-radius:8px;
+    padding:7px 12px; font-size:.82rem; color:var(--ink-soft); display:flex; align-items:center; gap:6px;
+  }
+  .back-btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .quiz-title{ flex:1; min-width:200px; }
+  .quiz-title .kicker{ font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; font-weight:600;}
+  .quiz-title h2{ font-size:1.25rem; font-weight:600; margin-top:2px; }
+
+  .progress-wrap{ padding:14px 0 30px; }
+  .progress-meta{ display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--ink-soft); margin-bottom:6px; }
+  .progress-track{ height:6px; background:var(--hairline); border-radius:99px; overflow:hidden; }
+  .progress-fill{ height:100%; background:var(--accent); border-radius:99px; transition:width .3s ease; }
+
+  .stem-card{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:12px;
+    padding:26px 28px; box-shadow:var(--shadow); margin-bottom:20px;
+  }
+  .stem-card .vignette-tag{
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--ink-soft);
+    text-transform:uppercase; letter-spacing:.08em; margin-bottom:10px; display:block;
+  }
+  .stem{ font-size:1.14rem; line-height:1.55; font-weight:400; }
+
+  .opts{ display:flex; flex-direction:column; gap:10px; }
+  .opt{
+    display:flex; align-items:flex-start; gap:12px; text-align:left;
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; font-size:.98rem; line-height:1.45; color:var(--ink);
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .opt:hover:not(:disabled){ border-color:var(--accent); }
+  .opt:disabled{ cursor:default; }
+  .opt .letter{
+    font-family:'JetBrains Mono',monospace; font-weight:600; font-size:.82rem;
+    width:22px; height:22px; border-radius:6px; background:var(--accent-soft); color:var(--accent-ink);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;
+  }
+  .opt.correct{ background:var(--good-soft); border-color:var(--good); }
+  .opt.correct .letter{ background:var(--good); color:var(--paper-raised); }
+  .opt.incorrect{ background:var(--bad-soft); border-color:var(--bad); }
+  .opt.incorrect .letter{ background:var(--bad); color:var(--paper-raised); }
+  .opt.dim{ opacity:.55; }
+
+  .explain{
+    margin-top:16px; padding:16px 18px; border-radius:10px; background:var(--accent-soft);
+    border-left:3px solid var(--accent); font-size:.92rem; line-height:1.55; color:var(--ink);
+  }
+  .explain b{ color:var(--accent-ink); }
+
+  .quiz-nav{ display:flex; justify-content:flex-end; margin-top:20px; }
+  .next-btn{
+    background:var(--accent); color:var(--paper-raised); border:none; border-radius:8px;
+    padding:11px 22px; font-size:.92rem; font-weight:600; display:flex; align-items:center; gap:8px;
+    box-shadow:var(--shadow);
+  }
+  .next-btn:disabled{ background:var(--hairline); color:var(--ink-soft); box-shadow:none; cursor:not-allowed; }
+  .next-btn:not(:disabled):hover{ filter:brightness(1.06); }
+
+  /* ---------- summary ---------- */
+  .summary{ padding:40px 0; text-align:center; }
+  .summary .ring{
+    width:132px; height:132px; margin:0 auto 20px; position:relative;
+  }
+  .summary .ring svg{ transform:rotate(-90deg); }
+  .summary .ring .pct{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-size:1.7rem; font-weight:600;
+  }
+  .summary h2{ font-size:1.4rem; margin-bottom:6px; }
+  .summary p{ color:var(--ink-soft); margin:0 0 26px; }
+  .summary-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .btn{
+    border:1px solid var(--hairline); background:var(--paper-raised); color:var(--ink);
+    border-radius:8px; padding:10px 18px; font-size:.9rem; font-weight:500;
+  }
+  .btn.primary{ background:var(--accent); color:var(--paper-raised); border-color:var(--accent); font-weight:600; }
+  .btn:hover{ border-color:var(--accent); }
+
+  .review-list{ text-align:left; max-width:640px; margin:30px auto 0; display:flex; flex-direction:column; gap:10px; }
+  .review-item{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; font-size:.88rem; display:flex; gap:10px; align-items:flex-start;
+  }
+  .review-item .mark{ font-size:.85rem; margin-top:1px; }
+  .review-item .mark.miss{ color:var(--bad); }
+  .review-item .mark.hit{ color:var(--good); }
+  .review-item div{ line-height:1.5; color:var(--ink-soft); }
+  .review-item b{ color:var(--ink); font-weight:500; }
+
+  [hidden]{ display:none !important; }
+
+  footer{
+    max-width:1040px; margin:0 auto; padding:40px 24px 0; color:var(--ink-soft);
+    font-size:.78rem; border-top:1px solid var(--hairline); margin-top:56px; padding-top:20px;
+  }
+
+  @media (max-width:560px){
+    .stem-card{ padding:20px; }
+    .topbar{ flex-direction:column; align-items:flex-start; gap:6px; }
+    .topstat{ text-align:left; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">P2 &middot; Week 7 &middot; Musculoskeletal Medicine</span>
+    <h1>Case Bank</h1>
+  </div>
+  <div class="topstat" id="topstat">30 questions &middot; 5 modules</div>
+</div>
+
+<main class="shell">
+
+  <section id="dashboard">
+    <div class="intro">
+      <p>Six clinical-vignette questions per module, drawn from the Week 7 Musculoskeletal block (intro MSK anatomy, mechanical and non-mechanical back/neck pain, axial spine radiology, and osteology/joints of the proximal upper extremity). Options are written to similar length, and the correct answer's position is shuffled per question &mdash; work the case, don't read the answer key by eye.</p>
+    </div>
+    <div id="groups"></div>
+  </section>
+
+  <section id="quizview" hidden>
+    <div class="quiz-header">
+      <button class="back-btn" id="backBtn">&larr; All modules</button>
+      <div class="quiz-title">
+        <div class="kicker" id="quizGroup"></div>
+        <h2 id="quizTitle"></h2>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="progressLabel">Question 1 of 6</span>
+        <span id="scoreLabel">Score 0 / 0</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="stem-card">
+      <span class="vignette-tag" id="qTag">Case</span>
+      <div class="stem" id="qStem"></div>
+    </div>
+
+    <div class="opts" id="opts"></div>
+    <div class="explain" id="explain" hidden></div>
+
+    <div class="quiz-nav">
+      <button class="next-btn" id="nextBtn" disabled>Next question &rarr;</button>
+    </div>
+  </section>
+
+  <section id="summaryview" hidden>
+    <div class="summary">
+      <div class="ring">
+        <svg width="132" height="132" viewBox="0 0 132 132">
+          <circle cx="66" cy="66" r="58" fill="none" stroke="var(--hairline)" stroke-width="10"/>
+          <circle id="ringFg" cx="66" cy="66" r="58" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round"/>
+        </svg>
+        <div class="pct" id="ringPct">0%</div>
+      </div>
+      <h2 id="sumTitle"></h2>
+      <p id="sumSub"></p>
+      <div class="summary-actions">
+        <button class="btn primary" id="retryBtn">Retry module</button>
+        <button class="btn" id="dashBtn">Back to modules</button>
+      </div>
+      <div class="review-list" id="reviewList"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Week 7 study material &middot; P2 Musculoskeletal Block &middot; for personal review use</footer>
+
+<script id="data" type="application/json">[{"id": "intro-msk-anatomy", "title": "Introduction to MSK Anatomy", "group": "Musculoskeletal Medicine", "q": [{"stem": "A patient is asked to lie face-down on the exam table for a back assessment. Which term describes this position?", "opts": ["Supine", "Anatomical position", "Lateral recumbent", "Prone"], "correct": 3, "explain": "Prone describes lying face-down, in contrast to supine (face-up); anatomical position is a standing reference position with palms forward, not a lying position."}, {"stem": "A physiotherapist has a patient perform a squat, with the feet planted on the floor throughout. How should this exercise be classified?", "opts": ["An open kinetic chain exercise", "A purely isometric exercise", "A closed kinetic chain exercise", "An eccentric-only exercise"], "correct": 2, "explain": "In a closed kinetic chain exercise the distal segment (the foot) is fixed against a surface, as in a squat, which loads the joints more predictably than an open-chain movement."}, {"stem": "A patient reports significant soreness after a workout emphasizing the slow lowering phase of each lift rather than the lifting phase. Which contraction type is most associated with this?", "opts": ["Concentric contraction", "Isometric contraction", "Isotonic lifting contraction", "Eccentric contraction"], "correct": 3, "explain": "Eccentric contraction, where the muscle lengthens while still generating tension (the lowering phase), produces more delayed-onset soreness than concentric shortening or static isometric tension."}, {"stem": "A student is told that cartilage and synovial membrane are poorly supplied with pain fibres. In true joint pain, which structures are most likely generating that signal?", "opts": ["The articular cartilage surface", "The capsule, ligaments, and subchondral bone", "The synovial fluid itself", "The epiphyseal growth plate"], "correct": 1, "explain": "Because hyaline cartilage and synovial membrane are poorly innervated, true joint pain usually arises from the fibrous capsule, surrounding ligaments, or subchondral bone, not the cartilage itself."}, {"stem": "A resident examines a patient with a C6 nerve root lesion and finds only mild weakness, not complete paralysis, in the muscles that root supplies. What developmental fact best explains this?", "opts": ["Dermatomes and myotomes form independently of spinal segments", "A single somite supplies an entire limb's muscles", "Myotomes elongate and fuse, so muscles span more than one level", "Motor fibres exit only through the dorsal root"], "correct": 2, "explain": "Because myotomes elongate and fuse during development, an adult muscle's innervation usually spans more than one spinal level, so a single root lesion weakens rather than paralyzes it."}, {"stem": "An examiner palpates a deep, basin-like depression on a bone at a site of articulation. Using standard bony terminology, what is this feature called?", "opts": ["A fossa", "A tubercle", "A foramen", "A crest"], "correct": 0, "explain": "A fossa is a basin-like depression, frequently serving as an articulation site, distinct from projections like tubercles and crests or openings like foramina."}]}, {"id": "mechanical-back-neck-pain", "title": "Mechanical Back & Neck Pain", "group": "Musculoskeletal Medicine", "q": [{"stem": "A 34-year-old office worker has 3 weeks of low back pain that is worse with movement and better with rest, with no red flags. What is the most appropriate next step?", "opts": ["Order an urgent lumbar MRI", "Refer for surgical evaluation", "Order inflammatory markers now", "Treat empirically without imaging"], "correct": 3, "explain": "With no red flags and symptoms under 6 weeks, imaging is not indicated; this fits mechanical back pain, managed with reassurance, activity, and conservative treatment."}, {"stem": "A patient's back pain is localized, occasionally unilateral, worse with extension, and improved with forward flexion. Which structure is the likely pain generator?", "opts": ["The facet (zygapophyseal) joint", "The intervertebral disc", "The cauda equina", "The sacroiliac joint"], "correct": 0, "explain": "Facetogenic pain classically worsens with extension and improves with flexion, the opposite pattern from discogenic pain, which is typically worse with forward flexion."}, {"stem": "An MRI ordered for an unrelated reason incidentally shows facet degeneration in an asymptomatic 50-year-old. How should this finding be interpreted?", "opts": ["As proof of future facet pain", "As an acute spondyloarthropathy", "A likely incidental finding", "As a reason to avoid activity"], "correct": 2, "explain": "Facet degeneration on imaging correlates poorly with symptoms, and degenerative change is extremely common even in people without back pain, so this finding does not by itself explain symptoms."}, {"stem": "A patient was in a low-speed collision 2 days ago and now has neck pain and stiffness, with a normal neurologic exam. What is the most appropriate management?", "opts": ["Rigid collar immobilization until resolved", "Immediate cervical spine MRI", "Hospital admission for monitoring", "Encourage staying mobile, avoiding a cervical collar"], "correct": 3, "explain": "Whiplash-associated disorder is usually managed conservatively with an emphasis on staying mobile; most patients improve, and aggressive early physiotherapy or prolonged collar use can slow recovery."}, {"stem": "A lumbar MRI describes a disc herniation where the extruded portion is wider than its base and has lost continuity with the parent disc. What is this pattern called?", "opts": ["A sequestered extrusion", "A simple disc bulge", "A protrusion", "Annular microtearing alone"], "correct": 0, "explain": "When extruded disc material is wider than its base and has separated from the parent disc, it is classified as a sequestered fragment, a specific subtype of extrusion."}, {"stem": "A 45-year-old reports axial-predominant back pain, worse with forward bending, that has partly responded to NSAIDs and activity modification. Which process best fits this picture?", "opts": ["Cauda equina syndrome", "Active vertebral osteomyelitis", "Discogenic pain from annular and nucleus changes", "A leaking aortic aneurysm"], "correct": 2, "explain": "Axial-predominant pain that is movement-related, worse with forward flexion, and responsive to conservative measures fits the classic discogenic pain pattern."}]}, {"id": "nonmechanical-back-neck-pain", "title": "Non-Mechanical Back & Neck Pain", "group": "Musculoskeletal Medicine", "q": [{"stem": "A 29-year-old presents with new saddle anesthesia, bilateral leg weakness, and urinary retention with overflow incontinence. What is the most appropriate immediate step?", "opts": ["Emergent MRI and urgent surgical consultation", "Outpatient physiotherapy follow-up", "A short course of oral NSAIDs", "Plain lumbar X-rays and discharge"], "correct": 0, "explain": "Saddle anesthesia, bilateral leg findings, and bladder dysfunction describe cauda equina syndrome, a surgical emergency requiring emergent MRI and immediate surgical consultation."}, {"stem": "A 61-year-old with chronic neck pain reports dropping objects and a new wide-based gait, with hyperreflexia and a positive Hoffman's sign. What is the most likely diagnosis?", "opts": ["Cervical myelopathy", "Simple cervical radiculopathy", "Whiplash-associated disorder", "Peripheral neuropathy"], "correct": 0, "explain": "Insidious gait disturbance, loss of hand dexterity, and upper motor neuron signs such as hyperreflexia and a positive Hoffman's sign point to chronic cervical cord compression rather than a simple root lesion."}, {"stem": "A patient describes back pain that is worse overnight, improves with exercise, and comes with over an hour of morning stiffness. What pattern does this suggest?", "opts": ["Inflammatory back pain", "Mechanical back pain", "A referred visceral pain pattern", "A straightforward muscular strain"], "correct": 0, "explain": "Pain worse with rest, improving with movement, and accompanied by prolonged morning stiffness is the inflammatory pattern \\u2014 the opposite of mechanical pain \\u2014 raising concern for a spondyloarthropathy."}, {"stem": "A large central L4-L5 disc herniation compresses nerve roots travelling through the thecal sac below where the spinal cord itself ends. What are these roots collectively called?", "opts": ["The brachial plexus", "The cauda equina", "The sympathetic chain ganglia", "The dorsal root ganglia"], "correct": 1, "explain": "Below the L1/2 level where the spinal cord ends, the remaining nerve roots travel together inside the thecal sac as the cauda equina before exiting at their named levels."}, {"stem": "A febrile patient with an IV drug use history develops new back pain and a new foot drop, with an unremarkable initial spine X-ray. What should this normal X-ray prompt?", "opts": ["Reassurance that serious disease is excluded", "Continued MRI workup despite the normal film", "No further workup given the normal X-ray", "A diagnosis of simple mechanical pain"], "correct": 1, "explain": "Epidural abscess or vertebral osteomyelitis can look deceptively normal on early plain film, so a convincing infectious picture with new neuro deficits should prompt MRI despite the unremarkable X-ray."}, {"stem": "A 68-year-old with a history of breast cancer develops unremitting night back pain with unintentional weight loss. Which red-flag category does this fit?", "opts": ["Vascular", "Inflammatory", "Purely mechanical", "Neoplastic"], "correct": 3, "explain": "Unremitting night pain, weight loss, and a cancer history together form the classic neoplastic red-flag picture; metastatic disease to the spine is far more common than a primary spinal tumour."}]}, {"id": "axial-spine-radiology", "title": "Axial Spine Radiology", "group": "Musculoskeletal Medicine", "q": [{"stem": "A resident reviewing a cervical spine film wants to make sure nothing is missed. Which systematic framework should guide the read?", "opts": ["The TIMSC framework", "The OLDCARS framework", "The Scottie dog method alone", "The ABCS approach"], "correct": 3, "explain": "Every spine film is read systematically using ABCS \\u2014 alignment, bones, cartilage/joint spaces, and soft tissues \\u2014 to ensure a consistent, complete read."}, {"stem": "A trauma patient's C-spine series shows a C1 fracture through both the anterior and posterior arches. What is this fracture pattern called?", "opts": ["A hangman's fracture", "An extension teardrop fracture", "A Jefferson fracture", "A flexion teardrop fracture"], "correct": 2, "explain": "A burst-type fracture of C1 through both the anterior and posterior arches is specifically termed a Jefferson fracture, distinct from the C2-based hangman's fracture or the vertebral body teardrop fractures."}, {"stem": "On an oblique lumbar view, a lucent line crosses the neck of the \"Scottie dog\" at L5. What does this finding represent?", "opts": ["A normal transverse process variant", "A pars interarticularis defect", "Degenerative facet osteoarthritis", "Retropharyngeal soft tissue swelling"], "correct": 1, "explain": "The lucent line across the Scottie dog's neck is the classic \"collar sign\" of a pars interarticularis defect, the anatomic basis for isthmic spondylolisthesis."}, {"stem": "A lateral C-spine film shows abnormal widening between two adjacent spinous processes, with no fracture on any view. What does this most likely indicate?", "opts": ["Normal anatomic spacing", "A ligamentous hyperflexion injury", "A stable anterior body fracture", "Cervical spondylosis"], "correct": 1, "explain": "Widened interspinous spacing with no visible fracture suggests a purely ligamentous hyperflexion injury disrupting the interspinous ligament, which can be unstable despite no fracture on imaging."}, {"stem": "A febrile child with neck pain has prevertebral soft tissue at C5/6 clearly wider than the vertebral body, with small gas locules. What does this suggest?", "opts": ["A retropharyngeal abscess", "Normal prevertebral soft tissue", "An extension teardrop fracture", "Ankylosing spondylitis"], "correct": 0, "explain": "Widening of the prevertebral soft tissue beyond the width of the vertebral body, especially with gas locules, is the classic clue to a retropharyngeal abscess, often with anaerobic involvement."}, {"stem": "A patient with long-standing ankylosing spondylitis sustains a spine fracture after only a minor fall. What change in the spine best explains this increased fracture risk?", "opts": ["Loss of normal cervical lordosis", "Rigid spinal fusion and ankylosis", "A new isthmic pars defect", "Simple disc-space narrowing"], "correct": 1, "explain": "Late ankylosing spondylitis produces a rigid, fused spine from ligament ossification and facet ankylosis; because normal shock-absorbing mobility is lost, even minor trauma can cause a fracture."}]}, {"id": "osteology-proximal-upper-extremity", "title": "Osteology & Joints of the Proximal Upper Extremity", "group": "Musculoskeletal Medicine", "q": [{"stem": "An elderly patient falls onto an outstretched hand and fractures the humerus just distal to the tubercles. Which nerve is most at risk?", "opts": ["The radial nerve", "The median nerve", "The axillary nerve", "The ulnar nerve"], "correct": 2, "explain": "The surgical neck of the humerus, a common fracture site after a low-energy fall in elderly patients, lies close to the axillary nerve."}, {"stem": "A patient sustains a direct blow to the humeral midshaft and develops wrist drop afterward. Which nerve running through the spiral groove explains this?", "opts": ["The median nerve", "The ulnar nerve", "The musculocutaneous nerve", "The radial nerve"], "correct": 3, "explain": "The radial (spiral) groove of the midshaft humerus carries the radial nerve along with the profunda brachii artery, so a shaft fracture there can cause wrist drop."}, {"stem": "A patient falls onto the point of the shoulder and has the clavicle displaced superiorly with a prominent \"step-off\" at the acromion. Which ligaments are most likely disrupted?", "opts": ["The AC ligament alone", "Both the AC and coracoclavicular ligaments", "The glenohumeral ligaments only", "The transverse humeral ligament"], "correct": 1, "explain": "A true AC dislocation with a visible step-off requires disruption of both the AC ligament and the stronger coracoclavicular (conoid and trapezoid) ligaments, beyond a milder AC-only subluxation."}, {"stem": "A young patient's arm is held slightly abducted and externally rotated after a shoulder injury, with the humeral head palpable anteriorly. Which nerve must be checked before and after reduction?", "opts": ["The axillary nerve", "The suprascapular nerve", "The thoracodorsal nerve", "The musculocutaneous nerve"], "correct": 0, "explain": "Because the glenohumeral joint dislocates anteroinferiorly and the axillary nerve wraps around the surgical neck in that region, its function is specifically checked before and after any reduction attempt."}, {"stem": "A patient's chronic overuse shoulder pain has progressed: the fatigued rotator cuff now allows subtle head subluxation, causing secondary compression of the supraspinatus beneath the acromion. What does this illustrate?", "opts": ["Two entirely unrelated diagnoses", "Instability and impingement driving each other", "Primary AC joint pathology alone", "A primary glenohumeral arthritis process"], "correct": 1, "explain": "Chronic instability can fatigue the rotator cuff, allowing subluxation that causes secondary impingement, which in turn worsens cuff function \\u2014 the two processes drive each other rather than existing independently."}, {"stem": "A student asks why the coracoacromial arch rarely ruptures even under a strong superior force on the humeral head. What is the best explanation?", "opts": ["The arch causes early pain, limiting force", "The capsule is thickest superiorly", "The humerus or clavicle tends to fracture first", "The rotator cuff alone resists the force"], "correct": 2, "explain": "The coracoacromial ligament and arch are strong enough that a forceful superior thrust is more likely to fracture the humerus or clavicle than to rupture the arch, explaining why superior dislocation is rare."}]}]</script>
+<script>
+(function(){
+  "use strict";
+  var MODULES = JSON.parse(document.getElementById('data').textContent);
+  var CIRC = 2 * Math.PI * 58;
+
+  var store = { get:function(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+                set:function(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} } };
+  var results = store.get('caseBankResultsWk7-v1') || {};
+
+  var dashboard = document.getElementById('dashboard');
+  var quizview = document.getElementById('quizview');
+  var summaryview = document.getElementById('summaryview');
+  var groupsEl = document.getElementById('groups');
+
+  var state = { modIdx:-1, qIdx:0, correctCount:0, answers:[], locked:false };
+
+  function letterFor(i){ return String.fromCharCode(65+i); }
+
+  function renderDashboard(){
+    groupsEl.innerHTML = '';
+    var groups = [];
+    MODULES.forEach(function(m){
+      var g = groups.filter(function(x){ return x.name===m.group; })[0];
+      if(!g){ g = { name:m.group, mods:[] }; groups.push(g); }
+      g.mods.push(m);
+    });
+    groups.forEach(function(g){
+      var h = document.createElement('div');
+      h.className = 'group-heading';
+      h.innerHTML = '<h2>'+g.name+'</h2><div class="rule"></div><span class="count">'+g.mods.length+' module'+(g.mods.length>1?'s':'')+'</span>';
+      groupsEl.appendChild(h);
+
+      var grid = document.createElement('div');
+      grid.className = 'grid';
+      g.mods.forEach(function(m){
+        var idx = MODULES.indexOf(m);
+        var r = results[m.id];
+        var card = document.createElement('button');
+        card.className = 'card';
+        var badge = '<span class="badge new">Not started</span>';
+        var scoreLine = '';
+        if(r){
+          var pct = Math.round(100*r.score/r.total);
+          badge = pct>=80 ? '<span class="badge done">Completed</span>' : '<span class="badge retry">Review again</span>';
+          scoreLine = '<span class="score">Best <b>'+r.score+' / '+r.total+'</b> ('+pct+'%)</span>';
+        } else {
+          scoreLine = '<span class="score">6 questions</span>';
+        }
+        card.innerHTML =
+          '<span class="num">'+String(idx+1).padStart(2,'0')+' / 5</span>'+
+          '<h3>'+m.title+'</h3>'+
+          '<div class="card-foot">'+scoreLine+badge+'</div>';
+        card.addEventListener('click', function(){ startModule(idx); });
+        grid.appendChild(card);
+      });
+      groupsEl.appendChild(grid);
+    });
+  }
+
+  function startModule(idx){
+    state.modIdx = idx; state.qIdx = 0; state.correctCount = 0; state.answers = [];
+    dashboard.hidden = true; summaryview.hidden = true; quizview.hidden = false;
+    var m = MODULES[idx];
+    document.getElementById('quizGroup').textContent = m.group;
+    document.getElementById('quizTitle').textContent = m.title;
+    renderQuestion();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  function renderQuestion(){
+    var m = MODULES[state.modIdx];
+    var q = m.q[state.qIdx];
+    state.locked = false;
+    document.getElementById('progressLabel').textContent = 'Question '+(state.qIdx+1)+' of '+m.q.length;
+    document.getElementById('scoreLabel').textContent = 'Score '+state.correctCount+' / '+state.qIdx;
+    document.getElementById('progressFill').style.width = (100*state.qIdx/m.q.length)+'%';
+    document.getElementById('qTag').textContent = 'Case '+(state.qIdx+1);
+    document.getElementById('qStem').textContent = q.stem;
+
+    var optsEl = document.getElementById('opts');
+    optsEl.innerHTML = '';
+    q.opts.forEach(function(optText, i){
+      var b = document.createElement('button');
+      b.className = 'opt';
+      b.innerHTML = '<span class="letter">'+letterFor(i)+'</span><span>'+optText+'</span>';
+      b.addEventListener('click', function(){ selectOption(i); });
+      optsEl.appendChild(b);
+    });
+
+    document.getElementById('explain').hidden = true;
+    var nextBtn = document.getElementById('nextBtn');
+    nextBtn.disabled = true;
+    nextBtn.textContent = (state.qIdx === m.q.length-1) ? 'See results →' : 'Next question →';
+  }
+
+  function selectOption(i){
+    if(state.locked) return;
+    state.locked = true;
+    var m = MODULES[state.modIdx];
+    var q = m.q[state.qIdx];
+    var correct = (i === q.correct);
+    if(correct) state.correctCount++;
+    state.answers.push({ q:q, chosen:i, correct:correct });
+
+    var opts = document.querySelectorAll('#opts .opt');
+    opts.forEach(function(el, idx){
+      el.disabled = true;
+      if(idx === q.correct) el.classList.add('correct');
+      else if(idx === i) el.classList.add('incorrect');
+      else el.classList.add('dim');
+    });
+
+    var explain = document.getElementById('explain');
+    explain.innerHTML = '<b>'+(correct ? 'Correct. ' : 'Not quite. ')+'</b>'+q.explain;
+    explain.hidden = false;
+
+    document.getElementById('scoreLabel').textContent = 'Score '+state.correctCount+' / '+(state.qIdx+1);
+    document.getElementById('nextBtn').disabled = false;
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    var m = MODULES[state.modIdx];
+    if(state.qIdx < m.q.length-1){
+      state.qIdx++;
+      renderQuestion();
+    } else {
+      finishModule();
+    }
+  });
+
+  function finishModule(){
+    var m = MODULES[state.modIdx];
+    document.getElementById('progressFill').style.width = '100%';
+    quizview.hidden = true; summaryview.hidden = false;
+
+    var total = m.q.length, score = state.correctCount;
+    var pct = Math.round(100*score/total);
+    results[m.id] = { score:score, total:total };
+    var prev = store.get('caseBankResultsWk7-v1') || {};
+    var existing = prev[m.id];
+    if(!existing || existing.score < score) prev[m.id] = { score:score, total:total };
+    else results[m.id] = existing;
+    store.set('caseBankResultsWk7-v1', prev);
+    results = prev;
+
+    var offset = CIRC * (1 - pct/100);
+    var ring = document.getElementById('ringFg');
+    ring.style.strokeDasharray = CIRC;
+    ring.style.strokeDashoffset = CIRC;
+    requestAnimationFrame(function(){
+      ring.style.transition = 'stroke-dashoffset .6s ease';
+      ring.style.strokeDashoffset = offset;
+    });
+    document.getElementById('ringPct').textContent = pct+'%';
+    document.getElementById('sumTitle').textContent = m.title;
+    document.getElementById('sumSub').textContent = score+' of '+total+' correct — '+(pct>=80?'strong grasp of this module.':pct>=60?'solid, worth a second pass.':'flag this module for review.');
+
+    var reviewList = document.getElementById('reviewList');
+    reviewList.innerHTML = '';
+    var misses = state.answers.filter(function(a){ return !a.correct; });
+    if(misses.length){
+      var h = document.createElement('div');
+      h.style.textAlign = 'left';
+      h.style.fontFamily = "'JetBrains Mono',monospace";
+      h.style.fontSize = '.72rem';
+      h.style.color = 'var(--ink-soft)';
+      h.style.textTransform = 'uppercase';
+      h.style.letterSpacing = '.08em';
+      h.style.margin = '0 0 4px';
+      h.textContent = 'Missed questions';
+      reviewList.appendChild(h);
+    }
+    misses.forEach(function(a){
+      var item = document.createElement('div');
+      item.className = 'review-item';
+      item.innerHTML = '<span class="mark miss">&#10007;</span><div><b>'+a.q.stem+'</b><br>Correct answer: '+a.q.opts[a.q.correct]+'</div>';
+      reviewList.appendChild(item);
+    });
+
+    document.getElementById('retryBtn').onclick = function(){ startModule(state.modIdx); };
+  }
+
+  document.getElementById('dashBtn').addEventListener('click', backToDashboard);
+  document.getElementById('backBtn').addEventListener('click', backToDashboard);
+  function backToDashboard(){
+    quizview.hidden = true; summaryview.hidden = true; dashboard.hidden = false;
+    renderDashboard();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  renderDashboard();
+})();
+</script>

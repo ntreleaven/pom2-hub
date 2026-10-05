@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 7 Video Notes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper: #f2f0e8;
+    --paper-raised: #fbfaf5;
+    --ink: #1e2a2e;
+    --ink-soft: #55625f;
+    --hairline: #d6d1c2;
+    --accent: #2c5f5a;
+    --accent-soft: #dce8e4;
+    --accent-ink: #163634;
+    --amber: #b5792c;
+    --amber-soft: #f3e6d2;
+    --good: #2f6b3e;
+    --good-soft: #dfeee1;
+    --shadow: 0 1px 2px rgba(30,42,46,.06), 0 8px 24px -12px rgba(30,42,46,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #171d1e; --paper-raised: #1f2729; --ink: #e9eae4; --ink-soft: #a5afab;
+      --hairline: #333e3f; --accent: #7bbbb0; --accent-soft: #223634; --accent-ink: #cdeae4;
+      --amber: #e0b06b; --amber-soft: #3a2f1a; --good: #7fc98d; --good-soft: #1e3324;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #171d1e; --paper-raised: #1f2729; --ink: #e9eae4; --ink-soft: #a5afab;
+    --hairline: #333e3f; --accent: #7bbbb0; --accent-soft: #223634; --accent-ink: #cdeae4;
+    --amber: #e0b06b; --amber-soft: #3a2f1a; --good: #7fc98d; --good-soft: #1e3324;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Public Sans', system-ui, sans-serif; -webkit-font-smoothing:antialiased; }
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  h1,h2,h3{ font-family:'Fraunces', Georgia, serif; text-wrap:balance; margin:0; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+  button{ font-family:inherit; cursor:pointer; }
+  textarea{ font-family:inherit; }
+
+  .shell{ max-width:900px; margin:0 auto; padding:0 24px 96px; }
+  .topbar{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:28px 24px 20px; max-width:900px; margin:0 auto; border-bottom:1px solid var(--hairline); }
+  .brand .kicker{ font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:600; }
+  .brand h1{ font-size:1.5rem; font-weight:600; margin-top:2px; }
+  .topstat{ text-align:right; font-family:'JetBrains Mono', monospace; font-size:.78rem; color:var(--ink-soft); }
+
+  .intro{ padding:28px 0 8px; max-width:620px; }
+  .intro p{ margin:8px 0 0; color:var(--ink-soft); line-height:1.55; font-size:.95rem; }
+
+  .group-heading{ display:flex; align-items:center; gap:12px; margin:32px 0 14px; }
+  .group-heading h2{ font-size:1.02rem; font-weight:600; white-space:nowrap; }
+  .group-heading .rule{ height:1px; background:var(--hairline); flex:1; }
+
+  .list{ display:flex; flex-direction:column; gap:10px; }
+  .row{
+    display:flex; align-items:center; gap:14px; text-align:left; width:100%;
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; box-shadow:var(--shadow); transition:border-color .12s ease, transform .12s ease;
+  }
+  .row:hover{ border-color:var(--accent); transform:translateY(-1px); }
+  .row .num{ font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--ink-soft); width:28px; flex-shrink:0; }
+  .row .body{ flex:1; min-width:0; }
+  .row h3{ font-size:1rem; font-weight:500; line-height:1.3; }
+  .row .meta{ font-size:.76rem; color:var(--ink-soft); margin-top:3px; font-family:'JetBrains Mono',monospace; }
+  .row .status{ flex-shrink:0; }
+  .pill{ font-family:'JetBrains Mono',monospace; font-size:.66rem; font-weight:600; padding:3px 9px; border-radius:99px; white-space:nowrap; }
+  .pill.empty{ background:var(--hairline); color:var(--ink-soft); }
+  .pill.started{ background:var(--amber-soft); color:var(--amber); }
+  .pill.done{ background:var(--good-soft); color:var(--good); }
+
+  .detail-header{ display:flex; align-items:center; gap:14px; padding:26px 0 4px; flex-wrap:wrap; }
+  .back-btn{ background:none; border:1px solid var(--hairline); border-radius:8px; padding:7px 12px; font-size:.82rem; color:var(--ink-soft); }
+  .back-btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .detail-title .kicker{ font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; font-weight:600; }
+  .detail-title h2{ font-size:1.3rem; font-weight:600; margin-top:2px; }
+  .runtime{ font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--ink-soft); }
+  .connects{ margin:14px 0 0; padding:10px 14px; background:var(--accent-soft); border-left:3px solid var(--accent); border-radius:6px; font-size:.85rem; color:var(--accent-ink); }
+
+  .obj-card{ margin-top:22px; background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow); }
+  .obj-card h3{ font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); font-weight:600; margin-bottom:10px; }
+  .obj{ display:flex; align-items:flex-start; gap:10px; padding:6px 0; font-size:.9rem; line-height:1.4; }
+  .obj input{ margin-top:3px; flex-shrink:0; width:16px; height:16px; accent-color:var(--accent); }
+  .obj label.checked{ color:var(--ink-soft); text-decoration:line-through; text-decoration-color:var(--hairline); }
+
+  .section-card{ margin-top:16px; background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow); }
+  .section-card .sh{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
+  .section-card h3{ font-size:1.02rem; font-weight:600; }
+  .section-card .tag{ font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--amber); background:var(--amber-soft); padding:2px 8px; border-radius:99px; white-space:nowrap; }
+  .section-card .hint{ font-size:.85rem; color:var(--ink-soft); margin:2px 0 10px; line-height:1.4; }
+  .section-card textarea{
+    width:100%; min-height:76px; resize:vertical; border:1px solid var(--hairline); border-radius:8px;
+    background:var(--paper); color:var(--ink); padding:10px 12px; font-size:.9rem; line-height:1.5;
+  }
+  .section-card textarea:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .section-card textarea::placeholder{ color:var(--ink-soft); opacity:.6; }
+
+  .detail-actions{ display:flex; gap:10px; justify-content:space-between; align-items:center; margin-top:24px; flex-wrap:wrap; }
+  .save-note{ font-size:.76rem; color:var(--ink-soft); font-family:'JetBrains Mono',monospace; }
+  .btn{ border:1px solid var(--hairline); background:var(--paper-raised); color:var(--ink); border-radius:8px; padding:10px 16px; font-size:.86rem; font-weight:500; }
+  .btn.primary{ background:var(--accent); color:var(--paper-raised); border-color:var(--accent); font-weight:600; }
+  .btn:hover{ border-color:var(--accent); }
+
+  [hidden]{ display:none !important; }
+  footer{ max-width:900px; margin:56px auto 0; padding:20px 24px 0; color:var(--ink-soft); font-size:.78rem; border-top:1px solid var(--hairline); }
+
+  @media print{
+    .topbar .topstat, .back-btn, .detail-actions, footer, #dashboard{ display:none !important; }
+    body{ background:#fff; color:#000; }
+    .section-card, .obj-card{ box-shadow:none; border:1px solid #ccc; break-inside:avoid; }
+    textarea{ border:1px solid #999 !important; }
+  }
+  @media (max-width:560px){
+    .topbar{ flex-direction:column; align-items:flex-start; gap:6px; }
+    .topstat{ text-align:left; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">P2 &middot; Week 7 &middot; Musculoskeletal Medicine</span>
+    <h1>Video Notes</h1>
+  </div>
+  <div class="topstat">5 videos &middot; fill in as you watch</div>
+</div>
+
+<main class="shell">
+
+  <section id="dashboard">
+    <div class="intro">
+      <p>An outline for each Video Overview, built from its own structure — same section order the video actually follows. Watch, pause at each heading, and jot the point before moving on. Notes save automatically in this browser.</p>
+    </div>
+    <div id="groups"></div>
+  </section>
+
+  <section id="detail" hidden>
+    <div class="detail-header">
+      <button class="back-btn" id="backBtn">&larr; All videos</button>
+      <div class="detail-title">
+        <div class="kicker" id="detKicker"></div>
+        <h2 id="detTitle"></h2>
+      </div>
+      <span class="runtime" id="detRuntime"></span>
+    </div>
+    <div class="connects" id="detConnects" hidden></div>
+
+    <div class="obj-card">
+      <h3>Learning objectives</h3>
+      <div id="objList"></div>
+    </div>
+
+    <div id="sectionList"></div>
+
+    <div class="detail-actions">
+      <span class="save-note" id="saveNote">Notes save automatically</span>
+      <div style="display:flex; gap:10px;">
+        <button class="btn" id="printBtn">Print this outline</button>
+        <button class="btn primary" id="nextBtn">Next video &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Week 7 study material &middot; P2 Musculoskeletal Block &middot; for personal review use</footer>
+
+<script id="data" type="application/json">[
+ {
+  "id": "intro-msk-anatomy",
+  "num": 1,
+  "title": "Introduction to MSK Anatomy",
+  "group": "Foundations",
+  "runtime": "9-11 min",
+  "connects": "",
+  "objectives": [
+   "Use correct anatomical terminology for the musculoskeletal system — anatomical position, supine vs. prone, and regional terms like axilla, cubital fossa, popliteal fossa, and inguinal region",
+   "Describe the terms of movement: flexion/extension, abduction/adduction, circumduction, protraction/retraction, elevation/depression, pronation/supination, and dorsiflexion/plantarflexion",
+   "Walk through the somatic nervous system pathway — the generic spinal nerve, the reflex arc, and how dermatomes and myotomes arise developmentally",
+   "Describe the four types of muscle contraction (isometric, and the two isotonic types — concentric and eccentric) and open vs. closed kinetic chains",
+   "Describe synovial joint characteristics and the \"laws of joints,\" including Hilton's Law",
+   "Distinguish the axial from the appendicular skeleton and know the general bony terminology (process, tuberosity, condyle, foramen, fossa, etc.)"
+  ],
+  "sections": [
+   {"h": "Why This Module Exists", "tag": "shared vocabulary for the whole block", "p": "Mostly first-year review, but it's the language the back-pain, shoulder, and radiology modules use unglossed, so fluency here pays off all week."},
+   {"h": "Anatomical Position and Movement", "tag": "supine/prone, protraction/retraction", "p": "Forearm supination/pronation is simple rotation; ankle supination/pronation is a distinct, complex tri-planar motion reusing the same words."},
+   {"h": "The Somatic Nervous System, From First Principles", "tag": "dorsal root sensory, ventral root motor", "p": "The whole reflex arc in miniature: sensory neuron in via the dorsal root, synapse, motor neuron out via the ventral root."},
+   {"h": "Where Dermatomes and Myotomes Come From", "tag": "somites split into dermatome + myotome", "p": "Myotomes elongate and fuse into adult muscles spanning multiple spinal levels — why a single root lesion weakens rather than wipes out a muscle."},
+   {"h": "Muscle Contraction Types, Cleanly Separated", "tag": "isometric vs concentric vs eccentric", "p": "Eccentric (lengthening while contracting) causes more delayed-onset soreness; closed-chain exercise loads joints more predictably than open-chain."},
+   {"h": "Synovial Joints", "tag": "Hilton's Law, six joint types", "p": "Joint pain comes from the capsule, ligaments, or subchondral bone, not cartilage itself, since cartilage and synovium are poorly innervated."},
+   {"h": "The Skeleton, Divided", "tag": "axial vs appendicular", "p": "Long bone chains worth rattling off cold: humerus→radius/ulna→carpals, and femur→tibia/fibula→tarsals, with the patella as a sesamoid bone."},
+   {"h": "Bony Terminology, Grouped by Function", "tag": "joint surfaces / attachment points / depressions / openings", "p": "Group the vocabulary conceptually (head/facet/condyle; tuberosity/tubercle/crest; fossa/sulcus/notch; foramen/fissure/meatus) rather than memorizing a flat list."}
+  ]
+ },
+ {
+  "id": "mechanical-back-neck-pain",
+  "num": 2,
+  "title": "Clinical Approach to Mechanical Back & Neck Pain",
+  "group": "Spine & Back Pain",
+  "runtime": "13-16 min",
+  "connects": "",
+  "objectives": [
+   "Describe the functional anatomy of the neck and back relevant to spine pathology: vertebral features by level, the muscles of the back, and the role of ligaments and discs in spinal stability",
+   "Define dermatome and myotome, and know the basic sensory/motor pattern expected with root pathology at C5–C8 and L3–S1",
+   "Build a differential diagnosis and management plan for axial pain: myofascial pain, SI joint pathology, mechanical back pain, spinal stenosis, cauda equina, radiculopathy, and cervical myelopathy",
+   "Distinguish inflammatory from non-inflammatory back pain, and spondylosis from spondylolysis from spondylolisthesis",
+   "Recognize normal spinal anatomy and common anomalies on plain X-ray (fracture, spondylolysis, scoliosis)",
+   "Build an approach to investigating and managing the common painful spine conditions above"
+  ],
+  "sections": [
+   {"h": "Why This Matters", "tag": "confidence, not always a precise diagnosis", "p": "You don't always need a specific structural diagnosis — you need confidence you aren't missing something dangerous."},
+   {"h": "The Toolkit for Sorting Through Axial Pain", "tag": "OLDCARS + red-flag screen by category", "p": "History, red flags (neurologic/inflammatory/neoplastic/infectious/fracture/vascular), exam, and imaging used thoughtfully — most low back pain under 6 weeks with no red flags doesn't need imaging."},
+   {"h": "Mechanical Back Pain, Defined", "tag": "worse with movement, better with rest", "p": "Degenerative change \"tweaked\" by something minor, anywhere on the acute-to-chronic spectrum, with no red flags by definition."},
+   {"h": "The Anatomy Underlying It", "tag": "four curves, discs, facet joints", "p": "Regional differences matter: cervical transverse foramina and bifid spines, thoracic costal facets, lumbar load-bearing bodies; C1/C2 are atypical."},
+   {"h": "The Disc as a Pain Source", "tag": "bulge vs protrusion vs extrusion", "p": "Discogenic pain is axial-predominant, worse with flexion; most herniations occur at L4–L5 and L5–S1, explaining why those radiculopathies dominate."},
+   {"h": "The Facet Joint as a Pain Source", "tag": "worse with extension, relieved by flexion", "p": "The opposite aggravating pattern from disc pain — and facet degeneration on imaging correlates poorly with symptoms."},
+   {"h": "Spondylosis, Spondylolisthesis, and Stenosis", "tag": "umbrella degenerative term", "p": "Spondylosis can progress to degenerative spondylolisthesis and cause central or foraminal stenosis with nerve root encroachment."},
+   {"h": "Muscular Causes", "tag": "strain, spasm, myofascial trigger points", "p": "No diagnostic test exists; it's a clinical diagnosis by exclusion, managed with reassurance, relative rest, and physio."},
+   {"h": "Whiplash-Associated Disorder", "tag": "stay mobile, avoid collars", "p": "Most improve with conservative management; aggressive early physio can actually worsen symptoms."},
+   {"h": "The Practical Bottom Line on Imaging", "tag": "no red flags + under 6 weeks = no imaging", "p": "X-ray exists to catch red-flag pathology like fracture or malignancy, not to characterize routine mechanical pain."}
+  ]
+ },
+ {
+  "id": "nonmechanical-back-neck-pain",
+  "num": 3,
+  "title": "Clinical Approach to Non-Mechanical Back & Neck Pain",
+  "group": "Spine & Back Pain",
+  "runtime": "10-12 min",
+  "connects": "Picks up right where Mechanical Back & Neck Pain leaves off — the pain patterns that aren't just degenerative wear and tear.",
+  "objectives": [
+   "Describe the functional anatomy of the neck and back as it relates to non-mechanical spine pathology, including dermatomes, myotomes, and the expected pattern of root lesions at C5–C8 and L3–S1",
+   "Build a differential diagnosis and management plan for axial pain that isn't simple mechanical pain: red flags, inflammatory vs non-inflammatory pain, radiculopathy, spinal stenosis, cauda equina syndrome, and cervical myelopathy",
+   "Recognize normal spinal anatomy and common anomalies on plain X-ray",
+   "Develop an approach to investigating and managing these non-mechanical spine conditions"
+  ],
+  "sections": [
+   {"h": "Spinal Cord and Nerve Root Anatomy", "tag": "cord ends at L1/2, cauda equina below", "p": "A paracentral herniation typically hits the root exiting the level below (L5/S1 paracentral classically hits S1); a far lateral herniation catches the same-level root."},
+   {"h": "Radiculopathy — Problems to the Side", "tag": "dermatome pain + myotome weakness + reduced reflex", "p": "Knowing the C5–C8 and L3–S1 patterns cold lets you localize a lesion from the bedside before imaging exists."},
+   {"h": "Cauda Equina Syndrome", "tag": "the one true surgical emergency here", "p": "Saddle anesthesia, bilateral leg findings, and urinary retention with overflow incontinence need emergent MRI and surgical consult, not watchful waiting."},
+   {"h": "Cervical Myelopathy", "tag": "dropping things, UMN signs, Hoffman's", "p": "Insidious gait disturbance and hand-dexterity loss with hyperreflexia should prompt cervical MRI rather than being written off as mechanical neck pain."},
+   {"h": "Inflammatory Back Pain", "tag": "worse with rest, better with movement", "p": "The opposite pattern from mechanical pain; morning stiffness plus SI involvement, rash, uveitis, or family history raises suspicion for spondyloarthropathy."},
+   {"h": "The Rest of the Red-Flag Categories", "tag": "fracture / visceral / infection / neoplasm", "p": "Referred visceral pain (AAA, pancreatitis, renal colic) and epidural abscess are easy to miss because early imaging can look deceptively normal."},
+   {"h": "Plain X-Ray in This Context", "tag": "won't show cord compression or early infection", "p": "A convincing red-flag history should prompt MRI even when the X-ray looks unremarkable."},
+   {"h": "Putting It Together", "tag": "pattern-match aggravating/relieving factors", "p": "Worse with rest points inflammatory/neoplastic; worse with movement points mechanical — that split drives reassurance vs same-day MRI."}
+  ]
+ },
+ {
+  "id": "axial-spine-radiology",
+  "num": 4,
+  "title": "Axial Spine Radiology",
+  "group": "Spine & Back Pain",
+  "runtime": "11-13 min",
+  "connects": "The imaging correlate of the two back-pain modules — the findings that turn \"non-specific back pain\" into a red-flag diagnosis.",
+  "objectives": [
+   "Determine a differential diagnosis and appropriate management plan for patients presenting with axial pain",
+   "Recognize normal spinal anatomy on plain X-rays",
+   "Identify common spinal anomalies: fracture, spondylolysis, and scoliosis"
+  ],
+  "sections": [
+   {"h": "The Systematic Approach — ABCS", "tag": "Alignment, Bones, Cartilage/joints, Soft tissues", "p": "Read every spine film the same way every time, and always zoom out to check lung fields, mediastinum, or bowel gas for incidental findings."},
+   {"h": "Regional View Sets", "tag": "C-spine odontoid view, Scottie dog obliques", "p": "Count C-spine vertebrae from T1 via the first rib; count lumbar vertebrae from the 12th rib; the oblique \"Scottie dog\" view inspects the pars interarticularis."},
+   {"h": "Bone Pathology — TIMSC", "tag": "Trauma/Tumour, Infection, Metabolic, Systemic, Congenital", "p": "A general radiology framework that structures the differential beyond just the spine."},
+   {"h": "Cervical Trauma Patterns", "tag": "Jefferson, hangman's, teardrop fractures", "p": "Posterior element involvement is the dividing line between stable and unstable; dens fractures are typed by location (tip/base/body)."},
+   {"h": "Facet Dislocation and Ligamentous Injury", "tag": "perched facets, interspinous widening", "p": "Purely ligamentous hyperflexion injury can show no fracture at all — just abnormal interspinous widening."},
+   {"h": "Non-Traumatic Pathology", "tag": "spondylosis, retropharyngeal abscess, AS", "p": "Retropharyngeal widening at C5/6 wider than the vertebral body is a soft-tissue tell for abscess, not a bone finding."},
+   {"h": "Isthmic Spondylolisthesis", "tag": "Scottie dog collar sign", "p": "Bilateral pars defect causing anterior slippage, graded by millimetres of slip — distinct from degenerative spondylolisthesis, which has no pars defect."}
+  ]
+ },
+ {
+  "id": "osteology-proximal-upper-extremity",
+  "num": 5,
+  "title": "Osteology and Joints of the Proximal Upper Extremity",
+  "group": "Shoulder & Upper Extremity",
+  "runtime": "14-17 min",
+  "connects": "Feeds directly into the Clinical Anatomy of the Proximal Upper Extremity lab.",
+  "objectives": [
+   "Identify the important functional anatomy of the upper extremity as it relates to arm pathology, including how bony and joint features appear on plain radiographs",
+   "Build a differential diagnosis and management plan for a patient presenting with upper extremity numbness, weakness, pain, or reduced range of motion, focused on the shoulder region",
+   "Describe the anatomic basis of common shoulder pathologies: AC joint separation, rotator cuff disease, biceps tendinopathy, glenohumeral arthritis, instability, and adhesive capsulitis",
+   "Outline an approach to diagnosis and management (non-pharmacologic, pharmacologic, surgical) for each of those conditions"
+  ],
+  "sections": [
+   {"h": "The Pectoral Girdle Is Four Joints, Not One", "tag": "scapulohumeral rhythm", "p": "SC, AC, scapulothoracic, and GH joints move as a coordinated unit — the GH-crossing muscles need a stable scapular origin to work efficiently."},
+   {"h": "Clavicle and Scapula Landmarks", "tag": "coracoid, glenoid fossa, suprascapular notch", "p": "The suprascapular notch is a recognized entrapment site for the suprascapular nerve on its way to the posterior scapula."},
+   {"h": "Humerus Landmarks", "tag": "surgical neck, radial groove, epicondyles", "p": "The surgical neck is the classic fall-related fracture site risking the axillary nerve; the medial epicondyle is \"funny bone\" territory for the ulnar nerve."},
+   {"h": "Fracture-to-Nerve Pairings", "tag": "surgical neck/axillary, midshaft/radial, distal/median, medial epicondyle/ulnar", "p": "Worth memorizing as a set since they come up constantly across the shoulder and elbow."},
+   {"h": "Sternoclavicular and Acromioclavicular Joints", "tag": "two-tier AC ligament grading", "p": "An upward force first sprains the AC ligament alone (subluxation); a more severe blow adds coracoclavicular ligament rupture (true dislocation with step-off deformity)."},
+   {"h": "Glenohumeral Joint — Mobility Traded for Stability", "tag": "labrum + rotator cuff + ligaments stabilize", "p": "Poor congruency and a lax capsule maximize motion; the labrum, cuff, and glenohumeral/coracohumeral/coracoacromial ligaments counterbalance it."},
+   {"h": "Why Dislocation Goes Anteroinferior", "tag": "axillary nerve check before and after reduction", "p": "The coracoacromial arch blocks superior escape and the capsule is weakest anteroinferiorly, putting the axillary nerve directly at risk."},
+   {"h": "Impingement and Instability as a Connected Cycle", "tag": "one drives the other", "p": "Chronic overuse stretches static stabilizers, cuff fatigue allows subluxation, and subluxation causes secondary impingement — which is why cuff strengthening treats both."},
+   {"h": "Innervation via Hilton's Law", "tag": "same nerves supply cuff and joint", "p": "Suprascapular, axillary, pectoral, musculocutaneous, subscapular, thoracodorsal, and radial nerves innervate both the joint and the muscles crossing it."}
+  ]
+ }
+]</script>
+<script>
+(function(){
+  "use strict";
+  var MODULES = JSON.parse(document.getElementById('data').textContent);
+  var store = {
+    get: function(){ try{ return JSON.parse(localStorage.getItem('wk7VideoNotes-v1')) || {}; }catch(e){ return {}; } },
+    set: function(v){ try{ localStorage.setItem('wk7VideoNotes-v1', JSON.stringify(v)); }catch(e){} }
+  };
+  var data = store.get();
+
+  var dashboard = document.getElementById('dashboard');
+  var detail = document.getElementById('detail');
+  var groupsEl = document.getElementById('groups');
+  var currentIdx = -1;
+  var saveTimer = null;
+
+  function moduleState(m){
+    var d = data[m.id] || {};
+    var notesFilled = (m.sections || []).filter(function(s,i){ return d['note'+i] && d['note'+i].trim().length; }).length;
+    var objChecked = (m.objectives || []).filter(function(o,i){ return d['obj'+i]; }).length;
+    if(notesFilled === 0 && objChecked === 0) return 'empty';
+    if(notesFilled === (m.sections||[]).length && objChecked === (m.objectives||[]).length) return 'done';
+    return 'started';
+  }
+
+  function renderDashboard(){
+    groupsEl.innerHTML = '';
+    var groups = [];
+    MODULES.forEach(function(m){
+      var g = groups.filter(function(x){ return x.name===m.group; })[0];
+      if(!g){ g = {name:m.group, mods:[]}; groups.push(g); }
+      g.mods.push(m);
+    });
+    groups.forEach(function(g){
+      var h = document.createElement('div');
+      h.className = 'group-heading';
+      h.innerHTML = '<h2>'+g.name+'</h2><div class="rule"></div>';
+      groupsEl.appendChild(h);
+
+      var list = document.createElement('div');
+      list.className = 'list';
+      g.mods.forEach(function(m){
+        var idx = MODULES.indexOf(m);
+        var st = moduleState(m);
+        var row = document.createElement('button');
+        row.className = 'row';
+        var pillLabel = st==='done' ? 'Notes complete' : st==='started' ? 'In progress' : 'Not started';
+        row.innerHTML =
+          '<span class="num">'+String(m.num).padStart(2,'0')+'</span>'+
+          '<span class="body"><h3>'+m.title+'</h3><span class="meta">'+m.runtime+' · '+m.sections.length+' sections</span></span>'+
+          '<span class="status"><span class="pill '+st+'">'+pillLabel+'</span></span>';
+        row.addEventListener('click', function(){ openModule(idx); });
+        list.appendChild(row);
+      });
+      groupsEl.appendChild(list);
+    });
+  }
+
+  function openModule(idx){
+    currentIdx = idx;
+    var m = MODULES[idx];
+    var d = data[m.id] || (data[m.id] = {});
+    dashboard.hidden = true; detail.hidden = false;
+
+    document.getElementById('detKicker').textContent = 'Video '+m.num+' of 5';
+    document.getElementById('detTitle').textContent = m.title;
+    document.getElementById('detRuntime').textContent = m.runtime;
+    var connEl = document.getElementById('detConnects');
+    if(m.connects){ connEl.hidden = false; connEl.textContent = m.connects; }
+    else { connEl.hidden = true; }
+
+    var objList = document.getElementById('objList');
+    objList.innerHTML = '';
+    m.objectives.forEach(function(o, i){
+      var row = document.createElement('div');
+      row.className = 'obj';
+      var checked = !!d['obj'+i];
+      row.innerHTML = '<input type="checkbox" id="obj_'+i+'" '+(checked?'checked':'')+'><label for="obj_'+i+'"'+(checked?' class="checked"':'')+'>'+o+'</label>';
+      var cb = row.querySelector('input');
+      var lbl = row.querySelector('label');
+      cb.addEventListener('change', function(){
+        d['obj'+i] = cb.checked;
+        lbl.classList.toggle('checked', cb.checked);
+        persist();
+      });
+      objList.appendChild(row);
+    });
+
+    var sectionList = document.getElementById('sectionList');
+    sectionList.innerHTML = '';
+    m.sections.forEach(function(s, i){
+      var card = document.createElement('div');
+      card.className = 'section-card';
+      var tagHtml = s.tag ? '<span class="tag">'+s.tag+'</span>' : '';
+      var hintHtml = s.p ? '<div class="hint">'+s.p+'</div>' : '';
+      card.innerHTML =
+        '<div class="sh"><h3>'+(i+1)+'. '+s.h+'</h3>'+tagHtml+'</div>'+
+        hintHtml +
+        '<textarea placeholder="Notes on this section...">'+(d['note'+i]||'')+'</textarea>';
+      var ta = card.querySelector('textarea');
+      ta.addEventListener('input', function(){
+        d['note'+i] = ta.value;
+        persist();
+      });
+      sectionList.appendChild(card);
+    });
+
+    document.getElementById('nextBtn').textContent = (idx === MODULES.length-1) ? 'Back to all videos' : 'Next video →';
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  function persist(){
+    store.set(data);
+    var note = document.getElementById('saveNote');
+    note.textContent = 'Saved';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ note.textContent = 'Notes save automatically'; }, 1200);
+  }
+
+  document.getElementById('backBtn').addEventListener('click', function(){
+    detail.hidden = true; dashboard.hidden = false;
+    renderDashboard();
+    window.scrollTo({top:0, behavior:'instant'});
+  });
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    if(currentIdx === MODULES.length-1){
+      detail.hidden = true; dashboard.hidden = false;
+      renderDashboard();
+      window.scrollTo({top:0, behavior:'instant'});
+    } else {
+      openModule(currentIdx+1);
+    }
+  });
+  document.getElementById('printBtn').addEventListener('click', function(){ window.print(); });
+
+  renderDashboard();
+})();
+</script>

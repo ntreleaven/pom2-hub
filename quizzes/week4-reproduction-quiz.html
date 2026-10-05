@@ -1,0 +1,2027 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 4 Case Bank</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper: #f2f0e8;
+    --paper-raised: #fbfaf5;
+    --ink: #1e2a2e;
+    --ink-soft: #55625f;
+    --hairline: #d6d1c2;
+    --accent: #2c5f5a;
+    --accent-soft: #dce8e4;
+    --accent-ink: #163634;
+    --good: #2f6b3e;
+    --good-soft: #dfeee1;
+    --bad: #a03f37;
+    --bad-soft: #f6e3df;
+    --amber: #b5792c;
+    --amber-soft: #f3e6d2;
+    --shadow: 0 1px 2px rgba(30,42,46,.06), 0 8px 24px -12px rgba(30,42,46,.18);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #171d1e;
+      --paper-raised: #1f2729;
+      --ink: #e9eae4;
+      --ink-soft: #a5afab;
+      --hairline: #333e3f;
+      --accent: #7bbbb0;
+      --accent-soft: #223634;
+      --accent-ink: #cdeae4;
+      --good: #7fc98d;
+      --good-soft: #1e3324;
+      --bad: #e19489;
+      --bad-soft: #3a2320;
+      --amber: #e0b06b;
+      --amber-soft: #3a2f1a;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #171d1e;
+    --paper-raised: #1f2729;
+    --ink: #e9eae4;
+    --ink-soft: #a5afab;
+    --hairline: #333e3f;
+    --accent: #7bbbb0;
+    --accent-soft: #223634;
+    --accent-ink: #cdeae4;
+    --good: #7fc98d;
+    --good-soft: #1e3324;
+    --bad: #e19489;
+    --bad-soft: #3a2320;
+    --amber: #e0b06b;
+    --amber-soft: #3a2f1a;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Public Sans', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+  }
+
+  h1,h2,h3{ font-family:'Fraunces', Georgia, serif; text-wrap:balance; margin:0; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+
+  a{ color:inherit; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  /* ---------- shell ---------- */
+  .shell{ max-width:1040px; margin:0 auto; padding:0 24px 96px; }
+  .topbar{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:16px; padding:28px 24px 20px; max-width:1040px; margin:0 auto;
+    border-bottom:1px solid var(--hairline);
+  }
+  .brand{ display:flex; flex-direction:column; gap:2px; }
+  .brand .kicker{
+    font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--accent); font-weight:600;
+  }
+  .brand h1{ font-size:1.5rem; font-weight:600; }
+  .topstat{ text-align:right; font-family:'JetBrains Mono', monospace; font-size:.78rem; color:var(--ink-soft); }
+  .topstat b{ color:var(--ink); font-weight:600; }
+
+  /* ---------- dashboard ---------- */
+  .intro{ padding:32px 0 8px; max-width:640px; }
+  .intro p{ margin:10px 0 0; color:var(--ink-soft); line-height:1.55; font-size:.97rem; }
+
+  .group-heading{
+    display:flex; align-items:center; gap:12px;
+    margin:36px 0 14px;
+  }
+  .group-heading h2{ font-size:1.05rem; font-weight:600; color:var(--ink); white-space:nowrap; }
+  .group-heading .rule{ height:1px; background:var(--hairline); flex:1; }
+  .group-heading .count{ font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--ink-soft); }
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:14px; }
+
+  .card{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:18px 18px 16px; text-align:left; box-shadow:var(--shadow);
+    display:flex; flex-direction:column; gap:12px; min-height:150px;
+    transition:transform .15s ease, border-color .15s ease;
+    position:relative; overflow:hidden;
+  }
+  .card:hover{ transform:translateY(-2px); border-color:var(--accent); }
+  .card:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .card .num{
+    font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--ink-soft);
+    letter-spacing:.06em;
+  }
+  .card h3{ font-size:1.05rem; font-weight:500; line-height:1.28; flex:1; }
+  .card-foot{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .badge{
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; font-weight:600;
+    padding:3px 8px; border-radius:99px; letter-spacing:.02em;
+  }
+  .badge.new{ background:var(--accent-soft); color:var(--accent-ink); }
+  .badge.done{ background:var(--good-soft); color:var(--good); }
+  .badge.retry{ background:var(--amber-soft); color:var(--amber); }
+  .score{ font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--ink-soft); }
+  .score b{ color:var(--ink); }
+
+  /* ---------- quiz view ---------- */
+  .quiz-header{
+    display:flex; align-items:center; gap:14px; padding:26px 0 6px; flex-wrap:wrap;
+  }
+  .back-btn{
+    background:none; border:1px solid var(--hairline); border-radius:8px;
+    padding:7px 12px; font-size:.82rem; color:var(--ink-soft); display:flex; align-items:center; gap:6px;
+  }
+  .back-btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .quiz-title{ flex:1; min-width:200px; }
+  .quiz-title .kicker{ font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; font-weight:600;}
+  .quiz-title h2{ font-size:1.25rem; font-weight:600; margin-top:2px; }
+
+  .progress-wrap{ padding:14px 0 30px; }
+  .progress-meta{ display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--ink-soft); margin-bottom:6px; }
+  .progress-track{ height:6px; background:var(--hairline); border-radius:99px; overflow:hidden; }
+  .progress-fill{ height:100%; background:var(--accent); border-radius:99px; transition:width .3s ease; }
+
+  .stem-card{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:12px;
+    padding:26px 28px; box-shadow:var(--shadow); margin-bottom:20px;
+  }
+  .stem-card .vignette-tag{
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--ink-soft);
+    text-transform:uppercase; letter-spacing:.08em; margin-bottom:10px; display:block;
+  }
+  .stem{ font-size:1.14rem; line-height:1.55; font-weight:400; }
+
+  .opts{ display:flex; flex-direction:column; gap:10px; }
+  .opt{
+    display:flex; align-items:flex-start; gap:12px; text-align:left;
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; font-size:.98rem; line-height:1.45; color:var(--ink);
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .opt:hover:not(:disabled){ border-color:var(--accent); }
+  .opt:disabled{ cursor:default; }
+  .opt .letter{
+    font-family:'JetBrains Mono',monospace; font-weight:600; font-size:.82rem;
+    width:22px; height:22px; border-radius:6px; background:var(--accent-soft); color:var(--accent-ink);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;
+  }
+  .opt.correct{ background:var(--good-soft); border-color:var(--good); }
+  .opt.correct .letter{ background:var(--good); color:var(--paper-raised); }
+  .opt.incorrect{ background:var(--bad-soft); border-color:var(--bad); }
+  .opt.incorrect .letter{ background:var(--bad); color:var(--paper-raised); }
+  .opt.dim{ opacity:.55; }
+
+  .explain{
+    margin-top:16px; padding:16px 18px; border-radius:10px; background:var(--accent-soft);
+    border-left:3px solid var(--accent); font-size:.92rem; line-height:1.55; color:var(--ink);
+  }
+  .explain b{ color:var(--accent-ink); }
+
+  .quiz-nav{ display:flex; justify-content:flex-end; margin-top:20px; }
+  .next-btn{
+    background:var(--accent); color:var(--paper-raised); border:none; border-radius:8px;
+    padding:11px 22px; font-size:.92rem; font-weight:600; display:flex; align-items:center; gap:8px;
+    box-shadow:var(--shadow);
+  }
+  .next-btn:disabled{ background:var(--hairline); color:var(--ink-soft); box-shadow:none; cursor:not-allowed; }
+  .next-btn:not(:disabled):hover{ filter:brightness(1.06); }
+
+  /* ---------- summary ---------- */
+  .summary{ padding:40px 0; text-align:center; }
+  .summary .ring{
+    width:132px; height:132px; margin:0 auto 20px; position:relative;
+  }
+  .summary .ring svg{ transform:rotate(-90deg); }
+  .summary .ring .pct{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-size:1.7rem; font-weight:600;
+  }
+  .summary h2{ font-size:1.4rem; margin-bottom:6px; }
+  .summary p{ color:var(--ink-soft); margin:0 0 26px; }
+  .summary-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .btn{
+    border:1px solid var(--hairline); background:var(--paper-raised); color:var(--ink);
+    border-radius:8px; padding:10px 18px; font-size:.9rem; font-weight:500;
+  }
+  .btn.primary{ background:var(--accent); color:var(--paper-raised); border-color:var(--accent); font-weight:600; }
+  .btn:hover{ border-color:var(--accent); }
+
+  .review-list{ text-align:left; max-width:640px; margin:30px auto 0; display:flex; flex-direction:column; gap:10px; }
+  .review-item{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; font-size:.88rem; display:flex; gap:10px; align-items:flex-start;
+  }
+  .review-item .mark{ font-size:.85rem; margin-top:1px; }
+  .review-item .mark.miss{ color:var(--bad); }
+  .review-item .mark.hit{ color:var(--good); }
+  .review-item div{ line-height:1.5; color:var(--ink-soft); }
+  .review-item b{ color:var(--ink); font-weight:500; }
+
+  [hidden]{ display:none !important; }
+
+  footer{
+    max-width:1040px; margin:0 auto; padding:40px 24px 0; color:var(--ink-soft);
+    font-size:.78rem; border-top:1px solid var(--hairline); margin-top:56px; padding-top:20px;
+  }
+
+  @media (max-width:560px){
+    .stem-card{ padding:20px; }
+    .topbar{ flex-direction:column; align-items:flex-start; gap:6px; }
+    .topstat{ text-align:left; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">P2 · Week 4 · Reproduction</span>
+    <h1>Case Bank</h1>
+  </div>
+  <div class="topstat" id="topstat">128 questions · 16 modules</div>
+</div>
+
+<main class="shell">
+
+  <section id="dashboard">
+    <div class="intro">
+      <p>Eight clinical-vignette questions per module, drawn from the Week 4 Reproduction block. Options are written to similar length, and the correct answer's position is shuffled per question — work the case, don't read the answer key by eye.</p>
+    </div>
+    <div id="groups"></div>
+  </section>
+
+  <section id="quizview" hidden>
+    <div class="quiz-header">
+      <button class="back-btn" id="backBtn">&larr; All modules</button>
+      <div class="quiz-title">
+        <div class="kicker" id="quizGroup"></div>
+        <h2 id="quizTitle"></h2>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="progressLabel">Question 1 of 10</span>
+        <span id="scoreLabel">Score 0 / 0</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="stem-card">
+      <span class="vignette-tag" id="qTag">Case</span>
+      <div class="stem" id="qStem"></div>
+    </div>
+
+    <div class="opts" id="opts"></div>
+    <div class="explain" id="explain" hidden></div>
+
+    <div class="quiz-nav">
+      <button class="next-btn" id="nextBtn" disabled>Next question &rarr;</button>
+    </div>
+  </section>
+
+  <section id="summaryview" hidden>
+    <div class="summary">
+      <div class="ring">
+        <svg width="132" height="132" viewBox="0 0 132 132">
+          <circle cx="66" cy="66" r="58" fill="none" stroke="var(--hairline)" stroke-width="10"/>
+          <circle id="ringFg" cx="66" cy="66" r="58" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round"/>
+        </svg>
+        <div class="pct" id="ringPct">0%</div>
+      </div>
+      <h2 id="sumTitle"></h2>
+      <p id="sumSub"></p>
+      <div class="summary-actions">
+        <button class="btn primary" id="retryBtn">Retry module</button>
+        <button class="btn" id="dashBtn">Back to modules</button>
+      </div>
+      <div class="review-list" id="reviewList"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Week 4 study material · P2 Reproduction Block · for personal review use</footer>
+
+<script id="data" type="application/json">[
+ {
+  "id": "contraception",
+  "title": "Contraception",
+  "group": "Contraception & Family Planning",
+  "q": [
+   {
+    "stem": "A 24-year-old asks which contraceptive method has the lowest typical-use failure rate. Which of the following fits?",
+    "opts": [
+     "The combined oral contraceptive pill",
+     "The progestin-only pill",
+     "The male condom",
+     "The hormonal IUD (LNG-IUS)"
+    ],
+    "correct": 3,
+    "explain": "The hormonal IUD has a typical-use failure rate around 0.2%, the lowest of any reversible method — well below the pill (~9%) or condoms (~18%)."
+   },
+   {
+    "stem": "A patient asks why condom failure rates look so different across sources. What best explains the gap between the 2% and 18% figures she has seen?",
+    "opts": [
+     "Latex versus polyurethane condom material",
+     "Perfect use versus typical use of the same method",
+     "Different rates for male versus female partners",
+     "Confusion between condoms and diaphragms"
+    ],
+    "correct": 1,
+    "explain": "Perfect-use failure (about 2%) assumes flawless, consistent use every time; typical-use failure (about 18%) reflects real-world behaviour like late application or inconsistent use."
+   },
+   {
+    "stem": "A patient using DMPA injections asks about the bone density changes she has read about. What should she be told?",
+    "opts": [
+     "Bone density is unaffected by DMPA at any duration",
+     "Bone density loss is usually reversible after stopping DMPA",
+     "Bone loss only occurs after ten years of continuous use",
+     "DMPA causes permanent osteoporosis in most users"
+    ],
+    "correct": 1,
+    "explain": "DMPA causes a reversible decrease in bone mineral density over the first two years of use, which is not the same as osteoporosis and recovers after discontinuation."
+   },
+   {
+    "stem": "A 33-year-old had unprotected intercourse 4 days ago and wants the most effective emergency contraception available to her right now. What should be offered?",
+    "opts": [
+     "Combined estrogen-progestin pills",
+     "Oral ulipristal acetate",
+     "Oral levonorgestrel",
+     "Copper IUD insertion"
+    ],
+    "correct": 3,
+    "explain": "The copper IUD is the most effective emergency contraception, usable up to 7 days after intercourse, and it also leaves the patient with ongoing highly effective contraception."
+   },
+   {
+    "stem": "A 37-year-old heavy smoker requests a highly effective, low-maintenance contraceptive method. Which option is most appropriate given her smoking history?",
+    "opts": [
+     "A levonorgestrel IUD placed the same day",
+     "A combined estrogen-progestin patch",
+     "A combined vaginal ring",
+     "A low-dose combined oral contraceptive pill"
+    ],
+    "correct": 0,
+    "explain": "Smoking over age 35 is an absolute contraindication to estrogen-containing methods, and there are essentially no true contraindications to IUD placement in her situation."
+   },
+   {
+    "stem": "Which mechanism best distinguishes how the copper IUD prevents pregnancy from how the hormonal IUD works?",
+    "opts": [
+     "Copper triggers a sterile inflammatory reaction toxic to sperm and ova, without hormones",
+     "Copper works only as emergency contraception, never as ongoing contraception",
+     "Copper thickens cervical mucus through a local progestin effect",
+     "Copper suppresses ovulation in nearly all users, like the hormonal IUD"
+    ],
+    "correct": 0,
+    "explain": "The copper IUD is entirely non-hormonal, working through a local inflammatory reaction toxic to sperm and ova, while the hormonal IUD releases levonorgestrel to thicken mucus and alter the endometrium."
+   },
+   {
+    "stem": "Data show that when patients discontinue a contraceptive method, a large share switch to a less effective one without consulting a provider. What proportion switches to a less effective method?",
+    "opts": [
+     "22%",
+     "85%",
+     "42%",
+     "69%"
+    ],
+    "correct": 3,
+    "explain": "Sixty-nine percent of people who switch methods move to a less effective one, and 42% discontinue without ever consulting a health care provider — both real counselling opportunities."
+   },
+   {
+    "stem": "A patient wants a permanent method and asks how vasectomy compares to tubal interruption. What is the key clinical difference to counsel her on?",
+    "opts": [
+     "Vasectomy carries a higher rate of post-procedure regret than tubal interruption",
+     "Tubal interruption takes effect immediately with no confirmatory testing needed",
+     "Vasectomy has a higher failure rate than tubal interruption at ten years",
+     "Vasectomy is safer and cheaper but requires a confirmatory semen analysis before it is considered effective"
+    ],
+    "correct": 3,
+    "explain": "Vasectomy is safer, cheaper, and less invasive than tubal interruption, but it requires a follow-up semen analysis confirming azoospermia and continued contraception until then; regret is more strongly linked to younger age at tubal interruption."
+   }
+  ]
+ },
+ {
+  "id": "drugs-gynecology",
+  "title": "Drugs Used in Gynecology",
+  "group": "Contraception & Family Planning",
+  "q": [
+   {
+    "stem": "A patient on tamoxifen for breast cancer asks why her oncologist mentioned a small risk to her uterus. What explains this?",
+    "opts": [
+     "Tamoxifen suppresses ovulation completely, causing endometrial atrophy",
+     "Tamoxifen acts as a partial estrogen agonist in the endometrium while blocking estrogen in breast tissue",
+     "Tamoxifen is metabolized into estradiol directly within the uterus",
+     "Tamoxifen has no endometrial activity but impairs liver clearance of estrogen"
+    ],
+    "correct": 1,
+    "explain": "Tamoxifen is a SERM: it antagonizes estrogen receptors in breast tissue but acts as a partial agonist in the endometrium and bone, which is why it carries an endometrial cancer risk despite treating breast cancer."
+   },
+   {
+    "stem": "Which drug class is being used when a clinician prescribes a GnRH agonist to shrink estrogen-dependent endometriosis implants?",
+    "opts": [
+     "An agent inducing reversible medical menopause by suppressing the hypothalamic-pituitary-ovarian axis",
+     "An androgen antagonist blocking peripheral testosterone conversion",
+     "A direct cytotoxic agent targeting endometrial glandular cells",
+     "A selective progesterone receptor modulator acting only on ectopic tissue"
+    ],
+    "correct": 0,
+    "explain": "GnRH agonists like leuprolide induce a reversible medical menopause by suppressing the hypothalamic-pituitary-ovarian axis, removing the estrogen signal that drives endometriosis implants."
+   },
+   {
+    "stem": "A patient with PCOS and bothersome acne asks about spironolactone. What is its mechanism in this setting?",
+    "opts": [
+     "It suppresses ovulation directly through progesterone receptor activation",
+     "It stimulates hepatic synthesis of sex hormone-binding globulin only",
+     "It blocks the androgen receptor, reducing androgen-driven skin changes",
+     "It converts testosterone into estradiol at the tissue level"
+    ],
+    "correct": 2,
+    "explain": "Spironolactone is an androgen receptor antagonist, used off-label for hirsutism and hormonal acne by blocking androgen action at the receptor level, commonly in PCOS."
+   },
+   {
+    "stem": "In a combined hormonal contraceptive, which component is primarily responsible for suppressing ovulation and thickening cervical mucus?",
+    "opts": [
+     "The progestin component",
+     "The estrogen component",
+     "Both act equally on cervical mucus",
+     "Neither hormone acts on ovulation"
+    ],
+    "correct": 0,
+    "explain": "The progestin does most of the contraceptive work by suppressing ovulation and thickening cervical mucus, while estrogen mainly stabilizes the endometrium to control breakthrough bleeding."
+   },
+   {
+    "stem": "A patient wants heavy menstrual bleeding reduced without taking any hormones. Which non-hormonal option works by stabilizing clots through an antifibrinolytic mechanism?",
+    "opts": [
+     "Mefenamic acid",
+     "Ulipristal acetate",
+     "Tranexamic acid",
+     "Levonorgestrel"
+    ],
+    "correct": 2,
+    "explain": "Tranexamic acid blocks plasminogen activation, stabilizing endometrial clots and reducing heavy menstrual bleeding by 30-50% without any hormonal effect."
+   },
+   {
+    "stem": "How do NSAIDs like mefenamic acid help with both dysmenorrhea and heavy menstrual bleeding?",
+    "opts": [
+     "They inhibit cyclooxygenase, reducing endometrial prostaglandin production",
+     "They block progesterone receptors, thinning the endometrial lining",
+     "They act as antifibrinolytics, stabilizing endometrial clots directly",
+     "They suppress the hypothalamic-pituitary-ovarian axis at the pituitary level"
+    ],
+    "correct": 0,
+    "explain": "NSAIDs inhibit cyclooxygenase, lowering endometrial prostaglandin levels, which relieves the uterine cramping of dysmenorrhea and modestly reduces blood loss through effects on vascular tone."
+   },
+   {
+    "stem": "Which hormone surge, produced by the dominant follicle, triggers ovulation at the mid-cycle peak?",
+    "opts": [
+     "Prolactin, released in response to falling estradiol",
+     "Follicle-stimulating hormone, released independent of estradiol",
+     "Progesterone, released from the developing follicle directly",
+     "Luteinizing hormone, released after a peak in estradiol"
+    ],
+    "correct": 3,
+    "explain": "Rising estradiol from the dominant follicle produces positive feedback at mid-cycle, triggering the LH surge that causes ovulation — a switch from the negative feedback estrogen exerts earlier in the cycle."
+   },
+   {
+    "stem": "Ulipristal acetate is used both as emergency contraception and, in a different context, for endometriosis-related suppression. What class of drug is it?",
+    "opts": [
+     "A gonadotropin-releasing hormone agonist",
+     "A pure androgen receptor antagonist",
+     "A selective estrogen receptor modulator",
+     "A selective progesterone receptor modulator"
+    ],
+    "correct": 3,
+    "explain": "Ulipristal acetate is a selective progesterone receptor modulator (SPRM), blocking progesterone's action on target tissue — the same drug class mechanism used in emergency contraception."
+   }
+  ]
+ },
+ {
+  "id": "abortion-canada",
+  "title": "Abortion in Canada",
+  "group": "Contraception & Family Planning",
+  "q": [
+   {
+    "stem": "A patient asks whether federal law restricts her ability to obtain an abortion in Canada. What is the accurate answer?",
+    "opts": [
+     "Canada has no federal law restricting abortion; it is regulated like other medical care, provincially",
+     "A 1988 federal law requires committee approval for all abortions",
+     "Abortion remains illegal but is rarely prosecuted in practice",
+     "Abortion is legal only up to 12 weeks nationwide under federal law"
+    ],
+    "correct": 0,
+    "explain": "Since R v Morgentaler struck down the prior law in 1988, Canada has had no federal law restricting abortion at all; access is instead governed provincially, like other medical procedures."
+   },
+   {
+    "stem": "A patient at 9 weeks gestation wants to avoid an invasive procedure and is comfortable with a treatment that takes days to complete. Which option fits best?",
+    "opts": [
+     "Dilation and evacuation",
+     "Manual vacuum aspiration",
+     "Mifepristone plus misoprostol",
+     "Dilation and curettage"
+    ],
+    "correct": 2,
+    "explain": "Medical abortion with mifepristone and misoprostol avoids an invasive procedure and can be done privately, but takes days and requires committed follow-up compared with the faster surgical options."
+   },
+   {
+    "stem": "What is the mechanism by which mifepristone initiates a medical abortion?",
+    "opts": [
+     "It inhibits dihydrofolate reductase, halting DNA synthesis in the cytotrophoblast",
+     "It suppresses pituitary gonadotropin release, causing endometrial atrophy",
+     "It binds the progesterone receptor without activating it, causing decidual necrosis and cervical softening",
+     "It directly stimulates uterine prostaglandin E1 receptors to induce contractions"
+    ],
+    "correct": 2,
+    "explain": "Mifepristone is an anti-progestin that binds the progesterone receptor without activating it, causing decidual necrosis, cervical softening, and increased uterine contractility."
+   },
+   {
+    "stem": "A patient asks how the risk of a safely performed first-trimester abortion compares to continuing an unwanted pregnancy to term. What should she be told?",
+    "opts": [
+     "First-trimester abortion carries a lower complication rate than continuing pregnancy to term",
+     "The two options carry statistically identical complication rates",
+     "Risk comparison depends entirely on whether the method is medical or surgical",
+     "Continuing pregnancy to term is consistently the lower-risk option"
+    ],
+    "correct": 0,
+    "explain": "Across the literature, first-trimester abortion — medical or surgical — carries a lower complication rate than continuing a pregnancy to term, an important point for risk counselling."
+   },
+   {
+    "stem": "How soon after a first-trimester abortion can ovulation resume, and what does this mean for contraceptive counselling?",
+    "opts": [
+     "Ovulation is suppressed for three months regardless of method used",
+     "As early as two weeks, so contraception should start immediately, not at the next period",
+     "Not until at least six weeks, so contraception can wait for the follow-up visit",
+     "Immediately at the time of the procedure itself, requiring same-day sterilization only"
+    ],
+    "correct": 1,
+    "explain": "Ovulation can resume as early as two weeks after a first-trimester abortion, which is why contraceptive counselling and initiation need to happen right away rather than being deferred to the next period."
+   },
+   {
+    "stem": "Which complication is specifically associated with repeated uterine instrumentation after abortion, with risk rising sharply after a third procedure?",
+    "opts": [
+     "Ectopic pregnancy",
+     "Premature ovarian insufficiency",
+     "Asherman's syndrome",
+     "Cervical incompetence"
+    ],
+    "correct": 2,
+    "explain": "Asherman's syndrome (intrauterine adhesions) carries about an 8% risk after a single curettage, rising to roughly 30% after a third consecutive procedure, driven mainly by instrumentation trauma rather than infection."
+   },
+   {
+    "stem": "A patient at 16 weeks gestation needs a surgical termination. Which procedure is appropriate at this gestational age?",
+    "opts": [
+     "Dilation and evacuation",
+     "Manual vacuum aspiration",
+     "Dilation and curettage",
+     "Mifepristone-misoprostol alone"
+    ],
+    "correct": 0,
+    "explain": "Dilation and evacuation (D&E) is the surgical method used in the second trimester, generally performed up to 25 weeks, whereas manual vacuum aspiration and standard D&C are first-trimester procedures."
+   },
+   {
+    "stem": "Which statement about abortion myths is medically accurate and appropriate for patient counselling?",
+    "opts": [
+     "Abortion performed safely commonly leads to secondary infertility",
+     "Abortion performed safely does not cause infertility or breast cancer",
+     "Abortion is only sought by patients with no religious affiliation",
+     "Abortion increases lifetime breast cancer risk in most patients"
+    ],
+    "correct": 1,
+    "explain": "Performed safely, abortion carries no greater fertility risk than a D&C for miscarriage and does not cause breast cancer; patients across all religious backgrounds and relationship statuses seek abortion care."
+   }
+  ]
+ },
+ {
+  "id": "fertilization-infertility",
+  "title": "Fertilization & Infertility",
+  "group": "Fertility & Early Pregnancy",
+  "q": [
+   {
+    "stem": "A couple asks when intercourse is most likely to result in pregnancy within a 28-day cycle. What is the best answer?",
+    "opts": [
+     "The day ovulation actually occurs",
+     "About two days before ovulation",
+     "Any day during the luteal phase equally",
+     "Three to four days after ovulation"
+    ],
+    "correct": 1,
+    "explain": "Pregnancy rates peak with intercourse about two days before ovulation, with the odds dropping quickly once ovulation has already occurred, since the oocyte is viable for only 12-24 hours."
+   },
+   {
+    "stem": "Where in the female reproductive tract does fertilization normally take place?",
+    "opts": [
+     "The endometrial cavity of the uterus",
+     "The fimbriated end of the tube",
+     "The ampulla of the fallopian tube",
+     "The isthmus of the fallopian tube"
+    ],
+    "correct": 2,
+    "explain": "Fertilization occurs in the ampulla of the fallopian tube, after the fimbriated end has collected the ovulated oocyte and sperm have undergone capacitation."
+   },
+   {
+    "stem": "A 32-year-old with regular cycles has been trying to conceive for 9 months without success. Per standard guidance, when should she be referred for a fertility workup?",
+    "opts": [
+     "After 12 months of regular, unprotected intercourse, since she is under 35",
+     "Only after 24 months, since 93% conceive by then",
+     "After 6 months, the threshold used for all reproductive-age women",
+     "Immediately, regardless of age, after any 9-month interval"
+    ],
+    "correct": 0,
+    "explain": "Standard guidance is one year of trying before workup for women under 35, versus six months for women 35 and older or anyone with a known fertility risk factor like PCOS."
+   },
+   {
+    "stem": "A day 2 hormone panel shows FSH of 30 IU/L, which looks elevated, but estradiol on the same draw is 500 pmol/L. How should this be interpreted?",
+    "opts": [
+     "This confirms primary ovarian insufficiency regardless of estradiol",
+     "The estradiol result should be disregarded as a lab error",
+     "A dominant follicle is likely already active, so the patient is not truly at a day-2 baseline physiologically",
+     "This pattern is diagnostic of hypothalamic amenorrhea"
+    ],
+    "correct": 2,
+    "explain": "Day 2-4 hormones must be interpreted together: an already-elevated estradiol suggests a dominant follicle is producing estrogen, which explains the seemingly high FSH rather than indicating ovarian failure."
+   },
+   {
+    "stem": "Which single test best estimates ovarian reserve and can be drawn at any point in the menstrual cycle?",
+    "opts": [
+     "Urinary LH surge testing",
+     "Cycle day 2-4 FSH and estradiol",
+     "Anti-Müllerian hormone (AMH)",
+     "Day 21 progesterone"
+    ],
+    "correct": 2,
+    "explain": "AMH can be measured at any time in the cycle and estimates ovarian reserve and guides IVF dosing, though it does not predict natural fertility on its own."
+   },
+   {
+    "stem": "What proportion of infertility cases are attributable to an isolated male factor?",
+    "opts": [
+     "24%",
+     "11%",
+     "50%",
+     "41%"
+    ],
+    "correct": 0,
+    "explain": "Infertility splits roughly 41% isolated female, 24% isolated male, 24% combined, and 11% unexplained, which is why semen analysis is a non-negotiable part of every infertility workup."
+   },
+   {
+    "stem": "A patient with two prior first-trimester pregnancy losses is being worked up for recurrent pregnancy loss. Which finding accounts for the largest identifiable share of cases?",
+    "opts": [
+     "Uterine septum",
+     "Balanced reciprocal translocation",
+     "Chronic endometritis",
+     "Antiphospholipid antibody syndrome"
+    ],
+    "correct": 3,
+    "explain": "Antiphospholipid antibody syndrome accounts for roughly 5-20% of recurrent pregnancy loss cases and is treatable with heparin and aspirin, making it an important and actionable finding on workup."
+   },
+   {
+    "stem": "Through which mechanism does endometriosis most directly impair fertility even in patients with normal-appearing pelvic anatomy?",
+    "opts": [
+     "Embryotoxic peritoneal fluid impairing implantation",
+     "Complete mechanical obstruction of both fallopian tubes",
+     "Suppression of pituitary FSH release",
+     "Direct destruction of the endometrial lining"
+    ],
+    "correct": 0,
+    "explain": "Even without distorted anatomy, endometriosis can impair fertility through embryotoxic peritoneal fluid, reduced implantation rates, and impaired follicle development — mechanisms distinct from simple tubal blockage."
+   }
+  ]
+ },
+ {
+  "id": "early-pregnancy-complications",
+  "title": "Early Pregnancy Complications",
+  "group": "Fertility & Early Pregnancy",
+  "q": [
+   {
+    "stem": "A patient at 7 weeks has vaginal bleeding, a closed cervical os, and a viable intrauterine pregnancy on ultrasound. What is this classified as?",
+    "opts": [
+     "Threatened abortion",
+     "Incomplete abortion",
+     "Missed abortion",
+     "Inevitable abortion"
+    ],
+    "correct": 0,
+    "explain": "Threatened abortion describes bleeding with a closed cervix and a viable pregnancy on ultrasound; roughly half of these will still go on to miscarry despite an initially reassuring scan."
+   },
+   {
+    "stem": "An ultrasound performed for routine dating incidentally shows fetal demise, with a closed cervix and no tissue passed. Which term applies?",
+    "opts": [
+     "Complete abortion",
+     "Septic abortion",
+     "Inevitable abortion",
+     "Missed abortion"
+    ],
+    "correct": 3,
+    "explain": "Missed abortion is fetal demise with a closed cervix and no passage of tissue, often found incidentally on ultrasound rather than through symptoms."
+   },
+   {
+    "stem": "Above the beta-hCG discriminatory zone with no intrauterine pregnancy visible on transvaginal ultrasound, what should be presumed until proven otherwise?",
+    "opts": [
+     "A completed spontaneous abortion event",
+     "A normal but very early intrauterine gestation",
+     "A laboratory error requiring repeat testing",
+     "Ectopic pregnancy, until excluded"
+    ],
+    "correct": 3,
+    "explain": "Once beta-hCG exceeds the discriminatory zone, a normal intrauterine pregnancy should be visible on ultrasound; if it is not seen, ectopic pregnancy is presumed until proven otherwise."
+   },
+   {
+    "stem": "In a normal early intrauterine pregnancy, how does beta-hCG typically change over 48-72 hours?",
+    "opts": [
+     "It falls by half before rising again",
+     "It roughly doubles",
+     "It rises by about 10%",
+     "It stays essentially flat"
+    ],
+    "correct": 1,
+    "explain": "Beta-hCG roughly doubles every 48-72 hours in a normal early intrauterine pregnancy; a slower rise or a plateau raises suspicion for a failing pregnancy or an ectopic."
+   },
+   {
+    "stem": "What is the single strongest risk factor for ectopic pregnancy?",
+    "opts": [
+     "Advanced paternal age",
+     "A history of one prior term vaginal delivery",
+     "A prior ectopic pregnancy",
+     "Current combined oral contraceptive use"
+    ],
+    "correct": 2,
+    "explain": "A prior ectopic pregnancy is the single strongest risk factor for a future ectopic, ahead of prior pelvic inflammatory disease, tubal surgery, or assisted reproductive technology."
+   },
+   {
+    "stem": "A hemodynamically stable patient has an unruptured ectopic pregnancy, no fetal cardiac activity, and hCG below the treatment threshold. What is the appropriate management?",
+    "opts": [
+     "Expectant management with no follow-up needed",
+     "Medical management with methotrexate",
+     "Immediate laparoscopic salpingectomy",
+     "Mifepristone plus misoprostol"
+    ],
+    "correct": 1,
+    "explain": "Methotrexate is appropriate for a stable patient with an unruptured ectopic, no fetal cardiac activity, and hCG below a defined threshold, using the same antimetabolite mechanism as in medical abortion, with serial hCG monitoring."
+   },
+   {
+    "stem": "What proportion of clinically recognized pregnancies end in miscarriage, and what is the leading cause?",
+    "opts": [
+     "Roughly 5%, mostly due to uterine structural anomalies",
+     "Roughly 10-15%, mostly due to chromosomal abnormality",
+     "Roughly 40%, mostly due to untreated thyroid disease",
+     "Roughly 25-30%, mostly due to maternal infection"
+    ],
+    "correct": 1,
+    "explain": "About 10-15% of clinically recognized pregnancies miscarry, and the great majority are due to chromosomal abnormality (aneuploidy), which is why extensive workup usually isn't warranted after a first isolated loss."
+   },
+   {
+    "stem": "Which patient population requires Rh immunoglobulin after either a spontaneous abortion or an ectopic pregnancy?",
+    "opts": [
+     "Only patients undergoing surgical management",
+     "Rh-negative patients",
+     "Only patients past 12 weeks gestation",
+     "Rh-positive patients"
+    ],
+    "correct": 1,
+    "explain": "All Rh-negative patients experiencing a pregnancy loss, whether spontaneous abortion or ectopic pregnancy, should receive Rh immunoglobulin to prevent alloimmunization in future pregnancies."
+   }
+  ]
+ },
+ {
+  "id": "genetic-screening-pregnancy",
+  "title": "Genetic Screening for Pregnancy in Canada",
+  "group": "Fertility & Early Pregnancy",
+  "q": [
+   {
+    "stem": "A patient of Ashkenazi Jewish ancestry asks about expanded carrier screening. Which condition is specifically part of that expanded panel?",
+    "opts": [
+     "A French-Canadian founder mutation",
+     "Sickle cell disease",
+     "Alpha-thalassemia",
+     "Tay-Sachs disease"
+    ],
+    "correct": 3,
+    "explain": "Ashkenazi Jewish ancestry carries markedly elevated carrier frequencies for conditions including Tay-Sachs disease, Canavan disease, familial dysautonomia, Gaucher disease, and cystic fibrosis."
+   },
+   {
+    "stem": "A patient of Mediterranean ancestry is being counselled on population-specific carrier screening. Which condition group has increased carrier frequency in this population?",
+    "opts": [
+     "French-Canadian founder mutations",
+     "Familial dysautonomia specifically",
+     "Tay-Sachs disease and Canavan disease",
+     "Thalassemias and hemoglobinopathies"
+    ],
+    "correct": 3,
+    "explain": "Mediterranean, Middle Eastern, South Asian, and Southeast Asian ancestry carries increased carrier frequency for alpha- and beta-thalassemia and related hemoglobinopathies."
+   },
+   {
+    "stem": "A patient receives a positive NIPT result for trisomy 21. What is the appropriate next step before any irreversible decision is made?",
+    "opts": [
+     "Repeat the NIPT test in two weeks with no other testing",
+     "Order a detailed anatomy ultrasound only, with no further testing",
+     "Confirm the result with diagnostic testing",
+     "Proceed directly based on the NIPT result alone"
+    ],
+    "correct": 2,
+    "explain": "NIPT is a screening test, not diagnostic — a positive result requires confirmation with invasive diagnostic testing (CVS or amniocentesis) before any irreversible decision, since false positives can occur from mosaicism or other causes."
+   },
+   {
+    "stem": "Which procedure samples placental tissue and can be performed earlier in pregnancy than amniocentesis?",
+    "opts": [
+     "Nuchal translucency ultrasound",
+     "Chorionic villus sampling",
+     "Preimplantation genetic testing",
+     "Maternal serum quad screening"
+    ],
+    "correct": 1,
+    "explain": "Chorionic villus sampling is performed around 11-14 weeks by sampling placental tissue, earlier than amniocentesis, which samples amniotic fluid from about 15 weeks onward."
+   },
+   {
+    "stem": "What distinguishes PGT-A from PGT-M in the context of IVF embryo testing?",
+    "opts": [
+     "PGT-A tests maternal blood while PGT-M biopsies the embryo directly",
+     "PGT-A screens for aneuploidy while PGT-M tests for a specific known familial monogenic condition",
+     "PGT-A requires amniocentesis while PGT-M requires chorionic villus sampling",
+     "PGT-A is performed during pregnancy while PGT-M is performed before implantation"
+    ],
+    "correct": 1,
+    "explain": "PGT-A screens biopsied embryonic cells for the correct chromosome number (aneuploidy), while PGT-M tests specifically for a known familial monogenic condition when a parent is a confirmed carrier."
+   },
+   {
+    "stem": "The combined first-trimester screen, performed around 11-14 weeks, uses nuchal translucency ultrasound together with which maternal serum markers?",
+    "opts": [
+     "PAPP-A and free beta-hCG",
+     "AFP and inhibin A",
+     "Estradiol and progesterone",
+     "TSH and prolactin"
+    ],
+    "correct": 0,
+    "explain": "The combined first-trimester screen pairs nuchal translucency measurement with PAPP-A and free beta-hCG to estimate risk for trisomy 21, 18, and 13."
+   },
+   {
+    "stem": "What is the modern estimated procedure-related miscarriage risk for amniocentesis and chorionic villus sampling in experienced hands?",
+    "opts": [
+     "Approximately 10%",
+     "Approximately 5%",
+     "Approximately 15-20%",
+     "Well under 1%"
+    ],
+    "correct": 3,
+    "explain": "Modern estimates put procedure-related miscarriage risk for both CVS and amniocentesis well under 1% in experienced hands, lower than older teaching often suggested."
+   },
+   {
+    "stem": "A patient declines all prenatal genetic screening after being fully informed of her options. What is the most appropriate clinical response?",
+    "opts": [
+     "Respect her decision, since screening decisions are values-based, not purely medical",
+     "Document non-compliance and repeat the offer at every subsequent visit",
+     "Order NIPT anyway given its high sensitivity and specificity",
+     "Refer automatically to prenatal genetics for further counselling"
+    ],
+    "correct": 0,
+    "explain": "Genetic screening decisions are values-based; some patients reasonably prefer to decline entirely, finding probabilistic risk information more burdensome than reassuring, and this preference should be respected."
+   }
+  ]
+ },
+ {
+  "id": "approach-to-sti",
+  "title": "Approach to Sexually Transmitted Infection",
+  "group": "Sexual Health & Cervical Screening",
+  "q": [
+   {
+    "stem": "A patient presents with a single, painless genital ulcer with a clean base and indurated edges. Which organism is most likely?",
+    "opts": [
+     "Treponema pallidum",
+     "Herpes simplex virus",
+     "Chlamydia trachomatis",
+     "Trichomonas vaginalis"
+    ],
+    "correct": 0,
+    "explain": "Syphilis classically causes a single painless chancre with a clean base and indurated edges, distinguishing it from the multiple painful vesicular ulcers typical of HSV."
+   },
+   {
+    "stem": "A patient with a positive gonorrhea NAAT is being treated. Why is empiric chlamydia coverage usually added at the same time?",
+    "opts": [
+     "Because gonorrhea cannot be treated without progestin coverage",
+     "Because co-infection with chlamydia is common",
+     "Because chlamydia testing is not clinically available",
+     "Because ceftriaxone has no activity against gonorrhea alone"
+    ],
+    "correct": 1,
+    "explain": "Co-infection with chlamydia is common when gonorrhea is diagnosed, so empiric chlamydia treatment is usually added unless chlamydia has already been specifically excluded."
+   },
+   {
+    "stem": "Which diagnostic approach for syphilis uses a non-treponemal test to both diagnose and track response to treatment by titre?",
+    "opts": [
+     "A fourth-generation antigen/antibody screen",
+     "RPR or VDRL confirmed by a treponemal-specific test",
+     "NAAT on a first-catch urine sample",
+     "PCR of an active genital lesion"
+    ],
+    "correct": 1,
+    "explain": "Syphilis diagnosis uses a two-step approach: a non-treponemal test (RPR or VDRL), which also tracks treatment response by titre, confirmed by a treponemal-specific test."
+   },
+   {
+    "stem": "Which STI is treated with presumptive partner therapy without requiring the partner to first be tested?",
+    "opts": [
+     "Trichomoniasis",
+     "Gonorrhea",
+     "HIV",
+     "Syphilis"
+    ],
+    "correct": 0,
+    "explain": "Trichomonas partners are treated presumptively without requiring their own testing first, since the infection is frequently asymptomatic in men."
+   },
+   {
+    "stem": "A patient's first-catch urine NAAT confirms chlamydia. What is the recommended first-line treatment?",
+    "opts": [
+     "Oral metronidazole course",
+     "Single intramuscular penicillin dose",
+     "Single intramuscular ceftriaxone dose",
+     "Oral doxycycline course"
+    ],
+    "correct": 3,
+    "explain": "Doxycycline is now generally preferred over single-dose azithromycin for chlamydia, given better efficacy at extragenital sites; ceftriaxone and penicillin treat gonorrhea and syphilis respectively."
+   },
+   {
+    "stem": "A patient recently exposed to HIV 3 weeks ago wants testing. Which test can reliably detect infection within about 2-4 weeks of exposure?",
+    "opts": [
+     "A CD4 count alone",
+     "A rapid antibody-only test",
+     "A viral culture from peripheral blood",
+     "A fourth-generation antigen/antibody test"
+    ],
+    "correct": 3,
+    "explain": "A fourth-generation combined antigen/antibody screening test can detect HIV infection within about 2-4 weeks of exposure, earlier than antibody-only assays."
+   },
+   {
+    "stem": "Which high-risk HPV subtypes are most strongly linked to cervical dysplasia and cancer?",
+    "opts": [
+     "31 and 45 exclusively",
+     "16 and 18",
+     "All subtypes equally",
+     "6 and 11"
+    ],
+    "correct": 1,
+    "explain": "High-risk subtypes 16 and 18 are the most important drivers of cervical dysplasia and cancer, while low-risk subtypes 6 and 11 cause genital warts rather than malignant change."
+   },
+   {
+    "stem": "What is the recommended abstinence period after completing treatment for chlamydia or gonorrhea?",
+    "opts": [
+     "Until the next scheduled Pap test",
+     "7 days after treatment completion and symptom resolution",
+     "24 hours after the first dose only",
+     "No abstinence period is required if partners are also treated"
+    ],
+    "correct": 1,
+    "explain": "Patients should abstain from sex until 7 days after treatment completion and resolution of symptoms, and partners from the preceding 60 days need testing and treatment."
+   }
+  ]
+ },
+ {
+  "id": "public-health-stis",
+  "title": "Public Health and STIs",
+  "group": "Sexual Health & Cervical Screening",
+  "q": [
+   {
+    "stem": "Which bacterial STI is consistently the most commonly reported in Canada?",
+    "opts": [
+     "Chlamydia",
+     "Syphilis",
+     "Gonorrhea",
+     "Trichomoniasis"
+    ],
+    "correct": 0,
+    "explain": "Chlamydia is consistently the most commonly reported bacterial STI in Canada, followed by gonorrhea, with both trending upward over the past decade."
+   },
+   {
+    "stem": "Which age group accounts for most reported chlamydia and gonorrhea cases in Canada?",
+    "opts": [
+     "15-29 years",
+     "45-59 years",
+     "60 years and older",
+     "30-44 years"
+    ],
+    "correct": 0,
+    "explain": "Most chlamydia and gonorrhea cases occur in people aged 15-29, which is why opportunistic screening in this age group during any healthcare encounter is emphasized."
+   },
+   {
+    "stem": "Why does public health reporting of STIs like chlamydia and syphilis matter clinically, beyond administrative record-keeping?",
+    "opts": [
+     "It exists solely to track physician prescribing patterns",
+     "It is required only for insurance billing purposes",
+     "It enables partner notification, outbreak detection, and population-level surveillance",
+     "It replaces the need for individual patient treatment"
+    ],
+    "correct": 2,
+    "explain": "Reportable disease status enables partner notification and contact tracing, outbreak detection from case clusters, and surveillance that shapes resource allocation and screening guidelines."
+   },
+   {
+    "stem": "Which condition has seen a genuine resurgence in Canada in recent years, including cases in newborns?",
+    "opts": [
+     "Neonatal gonorrhea only",
+     "Congenital chlamydia",
+     "Congenital syphilis",
+     "Congenital trichomoniasis"
+    ],
+    "correct": 2,
+    "explain": "Infectious syphilis has risen sharply in recent years, including a resurgence of congenital syphilis, which had become rare and is now a genuine public health concern again."
+   },
+   {
+    "stem": "At a population level, which factor most directly shapes where the global STI burden is heaviest, according to WHO data?",
+    "opts": [
+     "Genetic susceptibility differences between populations",
+     "Climate and average regional temperature",
+     "The specific bacterial serotypes circulating regionally",
+     "Access to testing, treatment, and comprehensive sex education"
+    ],
+    "correct": 3,
+    "explain": "Global STI burden is shaped by access to testing and treatment, comprehensive sex education, healthcare infrastructure, and stigma, rather than by innate biological differences between populations."
+   },
+   {
+    "stem": "Which of the following is best described as a structural or social risk factor for STI acquisition, rather than an individual behavioural one?",
+    "opts": [
+     "Inconsistent condom use",
+     "Multiple recent sexual partners",
+     "Unstable housing",
+     "A prior STI diagnosis"
+    ],
+    "correct": 2,
+    "explain": "Structural and social factors like unstable housing, incarceration history, and limited healthcare access are the drivers population-level public health interventions are designed to address, distinct from individual risk behaviours."
+   },
+   {
+    "stem": "Which population-level intervention has demonstrably reduced high-grade cervical dysplasia rates in vaccinated cohorts?",
+    "opts": [
+     "HPV vaccination programs",
+     "Routine annual pelvic ultrasound",
+     "Mandatory partner disclosure laws alone",
+     "Universal prophylactic antibiotics"
+    ],
+    "correct": 0,
+    "explain": "HPV vaccination programs are now demonstrably reducing high-grade cervical dysplasia rates in vaccinated cohorts, an early measurable endpoint ahead of longer-term cancer incidence data."
+   },
+   {
+    "stem": "Roughly how many new curable STIs does the WHO estimate are acquired worldwide each day?",
+    "opts": [
+     "About ten thousand",
+     "About five million",
+     "About one hundred thousand",
+     "Over one million"
+    ],
+    "correct": 3,
+    "explain": "The WHO estimates over a million new curable STIs (chlamydia, gonorrhea, syphilis, trichomoniasis) are acquired daily worldwide."
+   }
+  ]
+ },
+ {
+  "id": "cervical-cancer-screening",
+  "title": "Cervical Cancer Screening",
+  "group": "Sexual Health & Cervical Screening",
+  "q": [
+   {
+    "stem": "Why is cervical cancer considered one of the most preventable cancers through organized screening?",
+    "opts": [
+     "It has a long, well-characterized precancerous phase that can be detected and treated",
+     "It progresses from normal tissue to cancer within weeks",
+     "Screening tests can directly cure early invasive cancer",
+     "It has no identifiable precancerous phase at all"
+    ],
+    "correct": 0,
+    "explain": "Cervical intraepithelial neoplasia (CIN) can persist for years before progressing to invasive cancer, giving screening a long window to catch and treat precancerous change before it becomes cancer."
+   },
+   {
+    "stem": "Approximately what proportion of cervical cancers are caused by HPV subtypes 16 and 18 together?",
+    "opts": [
+     "About 25%",
+     "About 70%",
+     "About 45%",
+     "About 90%"
+    ],
+    "correct": 1,
+    "explain": "HPV 16 and 18 together account for roughly 70% of cervical cancer cases, making them the primary targets of HPV vaccination."
+   },
+   {
+    "stem": "A patient's primary HPV test is positive. What is the role of cytology in this pathway?",
+    "opts": [
+     "It confirms invasive cancer without needing biopsy",
+     "It replaces the need for HPV testing entirely going forward",
+     "It is used only when HPV testing is unavailable",
+     "It triages the positive result to determine how urgently further evaluation is needed"
+    ],
+    "correct": 3,
+    "explain": "When primary HPV testing is positive, cytology (or direct colposcopy) helps triage whether abnormal cells are present and how urgently further evaluation is needed."
+   },
+   {
+    "stem": "Confirmed high-grade CIN (CIN2/3) is typically treated with which procedure?",
+    "opts": [
+     "Systemic antiviral therapy",
+     "Loop electrosurgical excision procedure (LEEP)",
+     "Observation alone with no intervention",
+     "Total hysterectomy in all cases"
+    ],
+    "correct": 1,
+    "explain": "LEEP is the most common treatment for confirmed high-grade CIN, both treating the lesion and providing a specimen that confirms there is no unsuspected invasive component."
+   },
+   {
+    "stem": "Why does HPV vaccination provide the greatest benefit when given before sexual debut?",
+    "opts": [
+     "Post-debut vaccination provides no measurable benefit at all",
+     "Vaccine efficacy declines to zero after any HPV exposure",
+     "The vaccine only works in patients who have never had intercourse",
+     "Most people have not yet been exposed to the vaccine-covered subtypes"
+    ],
+    "correct": 3,
+    "explain": "Vaccination is most effective before sexual debut since it precedes exposure, though it still provides benefit afterward because most people have not been exposed to every vaccine-covered subtype."
+   },
+   {
+    "stem": "Most HPV infections in sexually active people follow what natural course?",
+    "opts": [
+     "Progression to invasive cancer within five years",
+     "Lifelong persistence in the great majority of cases",
+     "Immediate clearance within days of exposure",
+     "Spontaneous clearance within one to two years"
+    ],
+    "correct": 3,
+    "explain": "Most HPV infections clear spontaneously within one to two years through normal immune clearance; cancer risk comes specifically from infections that persist rather than clear."
+   },
+   {
+    "stem": "Modern Ontario cervical screening programs are shifting toward which primary screening strategy?",
+    "opts": [
+     "Primary high-risk HPV DNA testing",
+     "Annual Pap smears starting at age 18",
+     "Cytology alone without HPV testing",
+     "Colposcopy as the first-line test for all patients"
+    ],
+    "correct": 0,
+    "explain": "Programs are shifting toward primary HPV DNA testing because it is more sensitive than cytology alone, allowing a longer safe interval before the next screen when negative."
+   },
+   {
+    "stem": "Which viral proteins drive the stepwise progression from dysplasia to invasive cervical cancer in persistent high-risk HPV infection?",
+    "opts": [
+     "The viral polymerase complex alone",
+     "L1 and L2 capsid proteins",
+     "Structural envelope glycoproteins",
+     "E6 and E7 oncoproteins"
+    ],
+    "correct": 3,
+    "explain": "In persistent infection, the E6 and E7 oncoproteins progressively disrupt normal cell-cycle control, driving progression from low-grade to high-grade dysplasia to invasive cancer."
+   }
+  ]
+ },
+ {
+  "id": "vaginal-discharge",
+  "title": "Vaginal Discharge",
+  "group": "Sexual Health & Cervical Screening",
+  "q": [
+   {
+    "stem": "A patient describes clear, abundant, stretchy discharge occurring right around the middle of her cycle. What does this most likely represent?",
+    "opts": [
+     "Early candidiasis requiring antifungal therapy",
+     "An abnormal finding warranting an urgent workup",
+     "Normal ovulatory cervical mucus under peak estrogen influence",
+     "Bacterial vaginosis requiring treatment"
+    ],
+    "correct": 2,
+    "explain": "Clear, abundant, stretchy 'egg-white' mucus peaking around ovulation reflects the estrogen-driven physiologic pattern and is functionally optimized to aid sperm transport, not pathology."
+   },
+   {
+    "stem": "A patient has thin, grey-white discharge with a fishy odor on KOH testing and an elevated vaginal pH. Microscopy shows clue cells. What is the diagnosis?",
+    "opts": [
+     "Candidiasis",
+     "Bacterial vaginosis",
+     "Physiologic ovulatory discharge",
+     "Trichomoniasis"
+    ],
+    "correct": 1,
+    "explain": "Thin grey-white discharge, a positive whiff test, elevated pH, and clue cells on microscopy are the classic findings of bacterial vaginosis, reflecting disrupted vaginal flora rather than a single sexually transmitted pathogen."
+   },
+   {
+    "stem": "A patient has frothy, malodorous, yellow-green discharge with an elevated pH and motile organisms seen on wet mount. Which management step is required that differs from candidiasis or bacterial vaginosis?",
+    "opts": [
+     "Reassurance only, with a follow-up Pap in one year",
+     "Topical antifungal cream for both partners",
+     "Partner testing and treatment, since it is a true STI",
+     "No treatment, since it resolves spontaneously"
+    ],
+    "correct": 2,
+    "explain": "Trichomoniasis is a true STI, unlike candidiasis or bacterial vaginosis, so partners require testing and treatment, which is not routinely needed for the other two conditions."
+   },
+   {
+    "stem": "Thick, white, 'cottage cheese' discharge with intense itching and normal pH following a course of antibiotics is most consistent with which diagnosis?",
+    "opts": [
+     "Trichomoniasis",
+     "Cervicitis from chlamydia",
+     "Candidiasis",
+     "Bacterial vaginosis"
+    ],
+    "correct": 2,
+    "explain": "Candidiasis classically presents with thick white cottage-cheese discharge, normal pH, and intense itching, often triggered by recent antibiotic use disrupting normal flora."
+   },
+   {
+    "stem": "What vaginal pH threshold is used clinically to help distinguish bacterial vaginosis or trichomoniasis from candidiasis?",
+    "opts": [
+     "Above 4.5",
+     "Exactly 6.0",
+     "Above 7.0",
+     "Below 3.0"
+    ],
+    "correct": 0,
+    "explain": "A vaginal pH elevated above 4.5 points toward bacterial vaginosis or trichomoniasis, while candidiasis is typically associated with a normal (under 4.5) pH."
+   },
+   {
+    "stem": "Immediately after menses, before estrogen has risen substantially, what does normal vaginal discharge typically look like?",
+    "opts": [
+     "Frothy and malodorous",
+     "Abundant and stretchy",
+     "Minimal and thick",
+     "Thin, grey, and fishy-smelling"
+    ],
+    "correct": 2,
+    "explain": "Right after menses, discharge is typically minimal and thick, becoming progressively more abundant and stretchy as estrogen rises toward ovulation."
+   },
+   {
+    "stem": "During a discharge assessment, what does finding cervical motion tenderness or adnexal tenderness on exam suggest?",
+    "opts": [
+     "A definitive diagnosis of candidiasis",
+     "That the discharge is purely physiologic",
+     "Possible upper genital tract involvement rather than simple vaginitis",
+     "That no further testing is required"
+    ],
+    "correct": 2,
+    "explain": "Cervical motion or adnexal tenderness suggests the process may extend beyond simple vaginitis into the upper genital tract, prompting a broader workup for ascending infection."
+   },
+   {
+    "stem": "Which discharge history detail specifically predisposes a patient to candidiasis?",
+    "opts": [
+     "Use of a copper IUD",
+     "A new sexual partner within the past month",
+     "A family history of bacterial vaginosis",
+     "Recent antibiotic use"
+    ],
+    "correct": 3,
+    "explain": "Recent antibiotic use disrupts normal protective vaginal flora and predisposes to candidiasis, distinct from the sexual-exposure risk factors more relevant to trichomoniasis."
+   }
+  ]
+ },
+ {
+  "id": "abnormal-uterine-bleeding",
+  "title": "Abnormal Uterine Bleeding",
+  "group": "Abnormal Bleeding & Vulvar Disease",
+  "q": [
+   {
+    "stem": "In the FIGO PALM-COEIN classification, which letter category includes fibroids?",
+    "opts": [
+     "L, for leiomyoma",
+     "A, for adenomyosis",
+     "P, for polyp",
+     "M, for malignancy"
+    ],
+    "correct": 0,
+    "explain": "Leiomyomas (fibroids) are the 'L' in PALM-COEIN, a structural cause distinct from polyps (P), adenomyosis (A), and malignancy/hyperplasia (M)."
+   },
+   {
+    "stem": "Which cause of abnormal uterine bleeding is most common in reproductive-age women with chronic anovulation?",
+    "opts": [
+     "Hyperprolactinemia alone",
+     "Perimenarchal HPO immaturity",
+     "PCOS, most commonly",
+     "Primary hypothyroidism alone"
+    ],
+    "correct": 2,
+    "explain": "PCOS is the single most common cause of chronic anovulation in reproductive-age women, ahead of thyroid dysfunction and hyperprolactinemia as drivers of anovulatory AUB."
+   },
+   {
+    "stem": "A postmenopausal patient presents with vaginal bleeding. What is the appropriate baseline assumption?",
+    "opts": [
+     "Endometrial cancer until proven otherwise",
+     "A benign polyp, since malignancy is rare after menopause",
+     "Withdrawal bleeding from residual ovarian activity",
+     "Physiologic atrophic bleeding requiring no workup"
+    ],
+    "correct": 0,
+    "explain": "Any postmenopausal bleeding is treated as endometrial cancer until proven otherwise, given roughly a 10% baseline risk of malignancy in that population, and warrants endometrial biopsy."
+   },
+   {
+    "stem": "Which fibroid location is associated with the heaviest menstrual bleeding?",
+    "opts": [
+     "Submucosal, distorting the endometrial cavity",
+     "Subserosal, on the outer uterine surface",
+     "Intramural, without cavity distortion",
+     "Cervical, outside the uterine body"
+    ],
+    "correct": 0,
+    "explain": "Submucosal fibroids distort the endometrial cavity directly and cause far more bleeding than subserosal fibroids, which sit on the outer uterine surface without cavity involvement."
+   },
+   {
+    "stem": "Which first-line medical treatment for heavy menstrual bleeding without a structural cause also frequently achieves amenorrhea over time?",
+    "opts": [
+     "A short course of oral iron supplementation",
+     "The hormonal IUD (LNG-IUS)",
+     "NSAIDs taken during menses only",
+     "Tranexamic acid taken during menses only"
+    ],
+    "correct": 1,
+    "explain": "The hormonal IUD is first-line for heavy bleeding without a structural cause requiring surgery, highly effective at reducing blood loss and often achieving amenorrhea over time."
+   },
+   {
+    "stem": "A patient with heavy bleeding since menarche and a family history of easy bruising is being worked up for AUB. Which underdiagnosed condition should be actively considered?",
+    "opts": [
+     "Cervical malignancy",
+     "von Willebrand disease",
+     "Endometrial hyperplasia",
+     "Ovarian torsion"
+    ],
+    "correct": 1,
+    "explain": "Von Willebrand disease is underdiagnosed in patients with heavy menstrual bleeding and should be actively considered when history suggests a bleeding disorder, such as onset since menarche or a family history."
+   },
+   {
+    "stem": "Postcoital bleeding with a friable, exophytic cervical lesion is classically associated with which diagnosis?",
+    "opts": [
+     "Endometrial cancer",
+     "Adenomyosis",
+     "A submucosal fibroid",
+     "Cervical cancer"
+    ],
+    "correct": 3,
+    "explain": "Cervical cancer classically presents with postcoital and intermenstrual bleeding from a friable exophytic lesion that bleeds with contact, which is why postcoital bleeding warrants direct cervical visualization."
+   },
+   {
+    "stem": "An exam finding of a diffusely enlarged, boggy, and tender uterus in a patient with heavy, painful menses points most toward which diagnosis?",
+    "opts": [
+     "Cervical dysplasia",
+     "Adenomyosis",
+     "An endometrial polyp",
+     "A subserosal fibroid"
+    ],
+    "correct": 1,
+    "explain": "A diffusely enlarged, boggy, tender uterus with heavy, painful menses is the classic exam finding in adenomyosis, distinct from the focal irregularity typical of fibroids."
+   }
+  ]
+ },
+ {
+  "id": "vulvar-lesions-cancer",
+  "title": "Vulvar Lesions and Vulvar Cancer",
+  "group": "Abnormal Bleeding & Vulvar Disease",
+  "q": [
+   {
+    "stem": "What is the most common vulvar mass in reproductive-age women?",
+    "opts": [
+     "Bartholin gland cyst",
+     "Vulvar varicosity",
+     "Vulvar squamous cell carcinoma",
+     "Epidermal inclusion cyst"
+    ],
+    "correct": 0,
+    "explain": "Bartholin gland cyst is the most common vulvar mass in reproductive-age women, presenting as a unilateral, fluctuant swelling at the posterior introitus from a blocked duct."
+   },
+   {
+    "stem": "Recurrent Bartholin gland cysts in a postmenopausal patient warrant which specific step?",
+    "opts": [
+     "Incision and drainage with no further evaluation",
+     "A course of oral antifungal therapy",
+     "Reassurance alone, since recurrence is expected",
+     "Biopsy to exclude Bartholin gland carcinoma"
+    ],
+    "correct": 3,
+    "explain": "Recurrent Bartholin cysts in a postmenopausal patient warrant biopsy, since Bartholin gland carcinoma, though rare, disproportionately affects that age group."
+   },
+   {
+    "stem": "Thin, white, 'cigarette-paper' plaques in a figure-of-eight distribution around the vulva and perianal skin describe which condition?",
+    "opts": [
+     "Lichen planus",
+     "Contact dermatitis",
+     "Lichen sclerosus",
+     "Psoriasis"
+    ],
+    "correct": 2,
+    "explain": "Lichen sclerosus classically causes thin, porcelain-white, cigarette-paper plaques in a figure-of-eight distribution, with intense pruritus and, over time, architectural scarring."
+   },
+   {
+    "stem": "Why does lichen sclerosus require a low threshold for biopsy of any new nodule or non-healing area?",
+    "opts": [
+     "It always represents an early manifestation of melanoma",
+     "It is itself a form of invasive cancer requiring urgent excision",
+     "It carries a small but real increased risk of vulvar squamous cell carcinoma",
+     "It has no malignant potential but mimics cancer clinically"
+    ],
+    "correct": 2,
+    "explain": "Lichen sclerosus carries a small but real increased risk of vulvar squamous cell carcinoma, so any area that fails typical treatment or develops a new nodule or ulcer warrants biopsy."
+   },
+   {
+    "stem": "Differentiated VIN, arising in a background of lichen sclerosus in older patients, differs from HPV-associated (usual type) VIN in what key way?",
+    "opts": [
+     "It carries a higher and faster risk of progression to invasive cancer despite looking less dramatic",
+     "It never requires biopsy regardless of clinical appearance",
+     "It is caused directly by high-risk HPV infection",
+     "It is exclusively found in younger patients with prior cervical dysplasia"
+    ],
+    "correct": 0,
+    "explain": "Differentiated VIN is HPV-independent, arises against lichen sclerosus in older patients, and carries a higher, faster risk of progression to invasive cancer despite often appearing less dramatic than HPV-associated VIN."
+   },
+   {
+    "stem": "A chronic inflammatory condition of apocrine gland-bearing vulvar skin causing recurrent painful nodules, abscesses, and sinus tracts describes which condition?",
+    "opts": [
+     "Contact dermatitis",
+     "Psoriasis",
+     "Lichen simplex chronicus",
+     "Hidradenitis suppurativa"
+    ],
+    "correct": 3,
+    "explain": "Hidradenitis suppurativa is a chronic inflammatory condition of apocrine gland-bearing skin, causing recurrent nodules, abscesses, and sinus tract formation requiring dermatologic co-management."
+   },
+   {
+    "stem": "Which histologic type accounts for the large majority of vulvar cancer cases?",
+    "opts": [
+     "Melanoma",
+     "Bartholin gland carcinoma",
+     "Squamous cell carcinoma",
+     "Paget's disease"
+    ],
+    "correct": 2,
+    "explain": "Squamous cell carcinoma accounts for the large majority of vulvar cancer cases, though melanoma, Paget's disease, and Bartholin gland carcinoma remain important, rarer possibilities."
+   },
+   {
+    "stem": "On the vulva, psoriasis often lacks the classic silvery scale seen elsewhere on the body. Why is this?",
+    "opts": [
+     "Estrogen exposure directly prevents scale formation",
+     "The vulva lacks the epidermal layer needed for scale to form",
+     "Psoriasis never affects mucosal or genital skin",
+     "Moisture in the area keeps the plaques macerated"
+    ],
+    "correct": 3,
+    "explain": "Chronic moisture in the vulvar region keeps psoriatic plaques macerated, so they present as well-demarcated, smooth erythematous plaques rather than the classic silvery scale seen elsewhere."
+   }
+  ]
+ },
+ {
+  "id": "approach-pathology-aub-pelvic-pain",
+  "title": "Approach to Pathology of AUB and Pelvic Pain",
+  "group": "Abnormal Bleeding & Vulvar Disease",
+  "q": [
+   {
+    "stem": "Building a structural differential for AUB or pelvic pain organ by organ is intended to achieve what compared with using PALM-COEIN directly?",
+    "opts": [
+     "A replacement framework that no longer requires PALM-COEIN",
+     "The same differential, but built from anatomic reasoning rather than memorization",
+     "A differential specific to postmenopausal patients only",
+     "A narrower differential that excludes non-structural causes entirely"
+    ],
+    "correct": 1,
+    "explain": "Working organ by organ through the pelvis reliably generates the same differential as PALM-COEIN, but builds it from anatomic reasoning rather than rote memorization."
+   },
+   {
+    "stem": "In an adolescent patient with abnormal uterine bleeding since menarche, which two causes should be considered first?",
+    "opts": [
+     "Immature-axis anovulation, or a bleeding disorder like von Willebrand disease",
+     "Adenomyosis alongside submucosal fibroids",
+     "Pelvic congestion syndrome and endometriosis",
+     "Endometrial malignancy alongside cervical cancer"
+    ],
+    "correct": 0,
+    "explain": "In adolescents, AUB is disproportionately anovulatory from an immature HPO axis, or, if severe from menarche, due to a bleeding disorder such as von Willebrand disease; structural pathology and malignancy are rare at this age."
+   },
+   {
+    "stem": "In a perimenopausal patient with new abnormal bleeding, why does the threshold for endometrial sampling drop compared with a younger reproductive-age patient?",
+    "opts": [
+     "Perimenopausal patients cannot develop anovulatory bleeding at all",
+     "Fibroids become biologically inactive after roughly age forty",
+     "This age band is where hyperplasia and early endometrial cancer start entering the differential",
+     "Endometrial sampling is generally contraindicated in younger patients"
+    ],
+    "correct": 2,
+    "explain": "Perimenopausal patients still commonly have anovulatory bleeding, but this age band is also where hyperplasia and early endometrial cancer begin entering the differential meaningfully, lowering the threshold for sampling."
+   },
+   {
+    "stem": "Which history clue most specifically points toward cervical pathology as the source of bleeding?",
+    "opts": [
+     "Fever together with abnormal discharge",
+     "Postcoital bleeding specifically",
+     "Cyclic pain worsening progressively over years",
+     "Acute-onset unilateral pelvic pain"
+    ],
+    "correct": 1,
+    "explain": "Postcoital bleeding specifically points to the cervix as the likely source, prompting direct cervical visualization rather than assuming a uterine or ovarian cause."
+   },
+   {
+    "stem": "Which structure, when affected by ectopic endometrial tissue within its wall, causes both heavy cyclic bleeding and cyclic pain?",
+    "opts": [
+     "The endometrium, in a simple polyp",
+     "The ovary, in a functional cyst",
+     "The peritoneum, in isolated endometriosis implants",
+     "The myometrium, in adenomyosis"
+    ],
+    "correct": 3,
+    "explain": "Adenomyosis involves ectopic endometrial tissue within the myometrium, producing both heavy bleeding and cyclic pain, distinct from isolated peritoneal endometriosis implants which typically cause pain without direct AUB."
+   },
+   {
+    "stem": "When explaining anovulatory bleeding to a patient in plain language, which explanation best matches the recommended communication approach?",
+    "opts": [
+     "The uterine lining is told to grow by one hormone but not told to stop and shed regularly, so it builds up and bleeds irregularly",
+     "The ovaries have stopped working permanently and menopause has begun",
+     "The bleeding is entirely psychological and requires no physical explanation",
+     "A tumor is growing inside the uterus and needs immediate removal"
+    ],
+    "correct": 0,
+    "explain": "The recommended patient-facing explanation uses plain language tied to the actual mechanism — unopposed estrogen driving irregular buildup and shedding — while avoiding jargon like 'endometrium.'"
+   },
+   {
+    "stem": "A patient's new pelvic pain and bleeding pattern differs from her usual, long-standing baseline symptoms. What should this change prompt?",
+    "opts": [
+     "Increased concern, rather than attribution to 'the same old thing'",
+     "Reassurance that chronic conditions naturally fluctuate over time",
+     "A referral to physiotherapy without further gynecologic workup",
+     "No action, since baseline symptoms already explain any variation"
+    ],
+    "correct": 0,
+    "explain": "A change in a previously stable chronic pattern — new bleeding pattern or new pain character — should always raise concern and prompt reassessment rather than being attributed automatically to a known chronic condition."
+   },
+   {
+    "stem": "Which ovarian/adnexal pathology classically causes acute severe pain without associated abnormal bleeding?",
+    "opts": [
+     "Endometrioma",
+     "A functional cyst",
+     "Torsion",
+     "Tubo-ovarian abscess"
+    ],
+    "correct": 2,
+    "explain": "Ovarian torsion classically causes acute, severe pain without bleeding, whereas endometriomas more often cause pain with possible associated AUB from hormonal disruption, and functional cysts are usually mild or asymptomatic."
+   }
+  ]
+ },
+ {
+  "id": "endometriosis",
+  "title": "Endometriosis",
+  "group": "Pelvic Pain",
+  "q": [
+   {
+    "stem": "What is the leading explanatory model for how endometrial-like tissue reaches the pelvic peritoneum in endometriosis?",
+    "opts": [
+     "Direct hematogenous spread from the ovary",
+     "Sampson's theory of retrograde menstruation",
+     "Iatrogenic seeding from prior cesarean section exclusively",
+     "Congenital displacement during fetal development only"
+    ],
+    "correct": 1,
+    "explain": "Sampson's theory of retrograde menstruation — menstrual tissue flowing backward through the tubes into the pelvis — is the leading model, though it doesn't fully explain why most people with retrograde flow never develop endometriosis."
+   },
+   {
+    "stem": "A patient with extensive endometriosis on imaging reports minimal pain, while another with minimal disease reports debilitating symptoms. What key teaching point does this illustrate?",
+    "opts": [
+     "Disease severity does not correlate with symptom severity",
+     "Extensive disease always causes the most severe symptoms",
+     "Minimal disease is never clinically significant",
+     "Pain severity is a reliable proxy for laparoscopic stage"
+    ],
+    "correct": 0,
+    "explain": "A key teaching point in endometriosis is that disease severity on imaging or laparoscopy does not reliably correlate with symptom severity — minimal disease can be debilitating and extensive disease can be nearly silent."
+   },
+   {
+    "stem": "Which physical exam finding suggests deep infiltrating endometriosis along the posterior cul-de-sac?",
+    "opts": [
+     "An anteverted, mobile uterus",
+     "Bilateral symmetric ovarian enlargement only",
+     "A completely normal bimanual exam",
+     "Tenderness or nodularity along the uterosacral ligaments"
+    ],
+    "correct": 3,
+    "explain": "Tenderness or nodularity along the uterosacral ligaments or posterior cul-de-sac on bimanual exam suggests deep infiltrating disease, though a normal exam does not rule out endometriosis."
+   },
+   {
+    "stem": "Deep dyspareunia, as opposed to entry-level pain, most specifically points toward which source?",
+    "opts": [
+     "Implants or nodularity in the posterior cul-de-sac",
+     "Superficial vaginal dryness on its own",
+     "A benign vulvar dermatosis causing irritation",
+     "Pelvic floor muscle tension near the introitus"
+    ],
+    "correct": 0,
+    "explain": "Deep dyspareunia specifically points toward implants or nodularity in the posterior cul-de-sac and uterosacral region, distinguishing it from entry-level pain, which has a different differential related to pelvic floor or vulvar conditions."
+   },
+   {
+    "stem": "For a patient with endometriosis who is not trying to conceive, which hormonal approach is typically used first-line, and why is continuous dosing often preferred?",
+    "opts": [
+     "GnRH agonists, since they carry no bone density risk",
+     "Testosterone therapy, to suppress estrogen-driven implant growth",
+     "Continuous combined oral contraceptives, avoiding the withdrawal bleed that reactivates implants",
+     "Cyclic progestin-only pills, since ovulation suppression is not needed"
+    ],
+    "correct": 2,
+    "explain": "Combined oral contraceptives, often taken continuously to skip the placebo week, are typically first-line since endometriosis is estrogen-driven, and continuous dosing avoids the withdrawal bleed that can reactivate implants."
+   },
+   {
+    "stem": "Why are endometriomas approached cautiously with surgery in patients trying to preserve fertility?",
+    "opts": [
+     "Endometriomas cannot be surgically excised safely under any circumstances",
+     "Surgery on endometriomas has no effect on fertility outcomes at all",
+     "Surgical removal always improves ovarian reserve substantially",
+     "Removing them risks damaging surrounding healthy ovarian tissue and reducing ovarian reserve"
+    ],
+    "correct": 3,
+    "explain": "Endometrioma surgery risks damaging adjacent healthy ovarian tissue and reducing ovarian reserve, so it is approached cautiously in patients trying to preserve fertility, weighing benefit against this risk."
+   },
+   {
+    "stem": "Which adjunctive therapy is increasingly recognized as an essential complement to hormonal and surgical treatment for endometriosis pain?",
+    "opts": [
+     "Long-term broad-spectrum antibiotics",
+     "Routine annual laparoscopy",
+     "Pelvic floor physiotherapy",
+     "High-dose systemic corticosteroids"
+    ],
+    "correct": 2,
+    "explain": "Pelvic floor physiotherapy is increasingly recognized as an essential complement to hormonal and surgical treatment, given how often hypertonic pelvic floor tension co-exists with and amplifies endometriosis pain."
+   },
+   {
+    "stem": "What is a well-documented, persistent problem in endometriosis care that partly stems from clinicians not proactively asking about symptoms?",
+    "opts": [
+     "Underuse of surgical treatment relative to medical therapy",
+     "Overdiagnosis from excessive screening laparoscopy",
+     "Excessive use of GnRH agonists as first-line therapy",
+     "Diagnostic delay, often years between symptom onset and diagnosis"
+    ],
+    "correct": 3,
+    "explain": "Diagnostic delay — often years between symptom onset and diagnosis — remains a persistent problem, part of why proactively asking about dysmenorrhea and dyspareunia matters so much in practice."
+   }
+  ]
+ },
+ {
+  "id": "chronic-pelvic-pain",
+  "title": "Clinical Approach to Chronic Pelvic Pain",
+  "group": "Pelvic Pain",
+  "q": [
+   {
+    "stem": "How is chronic pelvic pain generally defined?",
+    "opts": [
+     "Any pelvic pain lasting more than 48 hours",
+     "Pain that resolves completely with a single NSAID dose",
+     "Cyclic pain occurring only during menstruation",
+     "Non-cyclic pain in the pelvis lasting six months or longer with functional impairment"
+    ],
+    "correct": 3,
+    "explain": "Chronic pelvic pain is typically defined as non-cyclic pain lasting six months or longer, of sufficient severity to cause functional impairment, distinguishing it from acute pain both by duration and evaluation approach."
+   },
+   {
+    "stem": "Why does the recommended approach to chronic pelvic pain organize the differential by system rather than by a single presumed gynecologic diagnosis?",
+    "opts": [
+     "Chronic pelvic pain frequently has more than one contributing cause simultaneously",
+     "Only one system is ever responsible for chronic pelvic pain",
+     "Gynecologic causes are always ruled out before considering other systems",
+     "System-based frameworks are easier to memorize but less accurate clinically"
+    ],
+    "correct": 0,
+    "explain": "Because chronic pelvic pain so often has overlapping contributors across gynecologic, GI, urologic, musculoskeletal, and neurologic systems, organizing the differential by system captures multifactorial cases that an organ-only approach would miss."
+   },
+   {
+    "stem": "Which common comorbid gastrointestinal diagnosis is frequently under-recognized as a contributor to chronic pelvic pain?",
+    "opts": [
+     "Acute appendicitis",
+     "Acute diverticulitis",
+     "Bowel obstruction",
+     "Irritable bowel syndrome"
+    ],
+    "correct": 3,
+    "explain": "Irritable bowel syndrome is an extremely common comorbid diagnosis with chronic pelvic pain and is often under-recognized as a contributor if the GI system isn't specifically explored."
+   },
+   {
+    "stem": "On abdominal exam, pain that persists or worsens with abdominal wall muscle tensing (a positive Carnett's sign) suggests which type of pain source?",
+    "opts": [
+     "A visceral gynecologic source exclusively",
+     "A urologic source such as interstitial cystitis",
+     "A musculoskeletal/abdominal wall source rather than a visceral one",
+     "An ovarian torsion requiring urgent surgery"
+    ],
+    "correct": 2,
+    "explain": "A positive Carnett's sign — pain persisting or worsening with abdominal wall tensing — points toward a musculoskeletal or abdominal wall source rather than a visceral one."
+   },
+   {
+    "stem": "Which contributor to chronic pelvic pain reflects amplified central nervous system pain processing that can persist even after the original tissue pathology is addressed?",
+    "opts": [
+     "Central sensitization",
+     "Acute appendicitis",
+     "Uncomplicated cervicitis",
+     "A ruptured ovarian cyst"
+    ],
+    "correct": 0,
+    "explain": "Central sensitization is a genuine neurophysiologic phenomenon where pain processing becomes amplified over time, meaning pain can persist or worsen even after the original structural cause has been treated."
+   },
+   {
+    "stem": "Depression and anxiety are common in patients with chronic pelvic pain. What is the appropriate way to communicate this to patients?",
+    "opts": [
+     "Avoid discussing mood entirely to prevent stigmatizing the patient",
+     "Tell the patient the pain is primarily psychological in origin",
+     "Explain the genuine bidirectional relationship between chronic pain and mood, without implying the pain is 'not real'",
+     "Attribute all pain exclusively to an undiagnosed mood disorder"
+    ],
+    "correct": 2,
+    "explain": "Chronic pain and mood disorders have genuine bidirectional physiologic relationships, and treating both together improves outcomes — this should be framed without implying the pain is not real."
+   },
+   {
+    "stem": "Which intervention is considered one of the highest-yield, most under-utilized treatments for a hypertonic pelvic floor contributing to chronic pelvic pain?",
+    "opts": [
+     "Long-term opioid therapy",
+     "High-dose combined hormonal contraception alone",
+     "Pelvic floor physiotherapy",
+     "Routine repeat diagnostic laparoscopy"
+    ],
+    "correct": 2,
+    "explain": "Pelvic floor physiotherapy is considered one of the highest-yield, most under-utilized interventions for myofascial/hypertonic pelvic floor contributors and should be considered early rather than as a last resort."
+   },
+   {
+    "stem": "Which imaging modality is first-line for assessing structural gynecologic pathology in a chronic pelvic pain workup?",
+    "opts": [
+     "Plain abdominal X-ray",
+     "Pelvic ultrasound",
+     "MRI pelvis",
+     "CT abdomen and pelvis"
+    ],
+    "correct": 1,
+    "explain": "Pelvic ultrasound remains first-line imaging for structural gynecologic pathology such as fibroids, adenomyosis, or ovarian pathology; MRI and CT are reserved for specific scenarios."
+   }
+  ]
+ },
+ {
+  "id": "acute-pelvic-pain",
+  "title": "Clinical Approach to Acute Pelvic Pain",
+  "group": "Pelvic Pain",
+  "q": [
+   {
+    "stem": "In a reproductive-age patient presenting with acute pelvic pain, what should be assessed before almost everything else?",
+    "opts": [
+     "Contraceptive method history",
+     "Bowel habit history",
+     "Pregnancy status",
+     "Family history of endometriosis"
+    ],
+    "correct": 2,
+    "explain": "A pregnancy test comes before almost everything else in reproductive-age patients with acute pelvic pain, because a positive result immediately reframes the differential toward ectopic pregnancy."
+   },
+   {
+    "stem": "A patient has sudden, severe, unilateral pelvic pain with nausea and vomiting, and an adnexal mass on ultrasound. Which time-sensitive diagnosis must be considered urgently?",
+    "opts": [
+     "Uncomplicated mittelschmerz",
+     "Bacterial vaginosis",
+     "Chronic pelvic congestion syndrome",
+     "Ovarian torsion"
+    ],
+    "correct": 3,
+    "explain": "Ovarian torsion presents with sudden, severe, often unilateral pain and nausea/vomiting, usually with an underlying adnexal mass, and is a surgical emergency where time to intervention determines ovarian salvage."
+   },
+   {
+    "stem": "A normal ovarian Doppler study is obtained in a patient with high clinical suspicion for ovarian torsion. What is the correct next step?",
+    "opts": [
+     "Proceed with urgent surgical consultation despite the normal Doppler",
+     "Discharge home since torsion has been excluded",
+     "Start oral antibiotics for presumed pelvic inflammatory disease",
+     "Repeat the Doppler in 48 hours before further action"
+    ],
+    "correct": 0,
+    "explain": "A normal Doppler does not fully exclude torsion and should not delay surgical consultation if clinical suspicion remains high, since blood flow can appear preserved even with an intermittently twisting ovary."
+   },
+   {
+    "stem": "Classic appendicitis presents with pain migrating from the periumbilical region to which location?",
+    "opts": [
+     "The right upper quadrant",
+     "The suprapubic midline",
+     "The right lower quadrant",
+     "The left lower quadrant"
+    ],
+    "correct": 2,
+    "explain": "Appendicitis classically presents with pain migrating from the periumbilical region to the right lower quadrant, with anorexia and low-grade fever — an important mimic of right-sided gynecologic pathology."
+   },
+   {
+    "stem": "Colicky pain radiating from the flank to the groin, often with hematuria, is most suggestive of which non-gynecologic cause?",
+    "opts": [
+     "Interstitial cystitis",
+     "Diverticulitis",
+     "Pelvic congestion syndrome",
+     "Renal colic"
+    ],
+    "correct": 3,
+    "explain": "Colicky flank-to-groin pain with hematuria is classic for renal colic from a ureteric stone, an important non-gynecologic mimic to include in the acute pelvic pain differential."
+   },
+   {
+    "stem": "A hemodynamically stable patient has a ruptured ovarian cyst with mild associated pain. What is the appropriate initial management?",
+    "opts": [
+     "Conservative management with analgesia and observation",
+     "Methotrexate administration",
+     "Empiric broad-spectrum antibiotics",
+     "Immediate emergency laparoscopy"
+    ],
+    "correct": 0,
+    "explain": "A ruptured cyst in a stable patient is usually managed conservatively with analgesia and observation; surgery is reserved for ongoing hemorrhage or hemodynamic instability."
+   },
+   {
+    "stem": "Which sign on exam signals a surgical emergency requiring urgent escalation, regardless of the eventual diagnosis?",
+    "opts": [
+     "A regular menstrual history with no red flags",
+     "A normal pregnancy test alone",
+     "Mild suprapubic tenderness without other findings",
+     "Peritoneal signs with tachycardia or hypotension"
+    ],
+    "correct": 3,
+    "explain": "Tachycardia, hypotension, or peritoneal signs on exam signal a surgical emergency requiring urgent escalation, regardless of what the eventual differential diagnosis turns out to be."
+   },
+   {
+    "stem": "Mid-cycle ovulatory pain that is typically mild and self-limited is known by which term?",
+    "opts": [
+     "Mittelschmerz",
+     "Menorrhagia",
+     "Dyspareunia",
+     "Dyschezia"
+    ],
+    "correct": 0,
+    "explain": "Mittelschmerz refers to mild, self-limited mid-cycle ovulatory pain, part of the broader (non-emergent) differential for acute pelvic pain once the can't-miss causes are excluded."
+   }
+  ]
+ }
+]</script>
+<script>
+(function(){
+  "use strict";
+  var MODULES = JSON.parse(document.getElementById('data').textContent);
+  var CIRC = 2 * Math.PI * 58;
+
+  var store = { get:function(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+                set:function(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} } };
+  var results = store.get('caseBankResultsWk4-v1') || {};
+
+  var dashboard = document.getElementById('dashboard');
+  var quizview = document.getElementById('quizview');
+  var summaryview = document.getElementById('summaryview');
+  var groupsEl = document.getElementById('groups');
+
+  var state = { modIdx:-1, qIdx:0, correctCount:0, answers:[], locked:false };
+
+  function letterFor(i){ return String.fromCharCode(65+i); }
+
+  function renderDashboard(){
+    groupsEl.innerHTML = '';
+    var groups = [];
+    MODULES.forEach(function(m){
+      var g = groups.filter(function(x){ return x.name===m.group; })[0];
+      if(!g){ g = { name:m.group, mods:[] }; groups.push(g); }
+      g.mods.push(m);
+    });
+    groups.forEach(function(g){
+      var h = document.createElement('div');
+      h.className = 'group-heading';
+      h.innerHTML = '<h2>'+g.name+'</h2><div class="rule"></div><span class="count">'+g.mods.length+' module'+(g.mods.length>1?'s':'')+'</span>';
+      groupsEl.appendChild(h);
+
+      var grid = document.createElement('div');
+      grid.className = 'grid';
+      g.mods.forEach(function(m){
+        var idx = MODULES.indexOf(m);
+        var r = results[m.id];
+        var card = document.createElement('button');
+        card.className = 'card';
+        var badge = '<span class="badge new">Not started</span>';
+        var scoreLine = '';
+        if(r){
+          var pct = Math.round(100*r.score/r.total);
+          badge = pct>=80 ? '<span class="badge done">Completed</span>' : '<span class="badge retry">Review again</span>';
+          scoreLine = '<span class="score">Best <b>'+r.score+' / '+r.total+'</b> ('+pct+'%)</span>';
+        } else {
+          scoreLine = '<span class="score">10 questions</span>';
+        }
+        card.innerHTML =
+          '<span class="num">'+String(idx+1).padStart(2,'0')+' / 16</span>'+
+          '<h3>'+m.title+'</h3>'+
+          '<div class="card-foot">'+scoreLine+badge+'</div>';
+        card.addEventListener('click', function(){ startModule(idx); });
+        grid.appendChild(card);
+      });
+      groupsEl.appendChild(grid);
+    });
+  }
+
+  function startModule(idx){
+    state.modIdx = idx; state.qIdx = 0; state.correctCount = 0; state.answers = [];
+    dashboard.hidden = true; summaryview.hidden = true; quizview.hidden = false;
+    var m = MODULES[idx];
+    document.getElementById('quizGroup').textContent = m.group;
+    document.getElementById('quizTitle').textContent = m.title;
+    renderQuestion();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  function renderQuestion(){
+    var m = MODULES[state.modIdx];
+    var q = m.q[state.qIdx];
+    state.locked = false;
+    document.getElementById('progressLabel').textContent = 'Question '+(state.qIdx+1)+' of '+m.q.length;
+    document.getElementById('scoreLabel').textContent = 'Score '+state.correctCount+' / '+state.qIdx;
+    document.getElementById('progressFill').style.width = (100*state.qIdx/m.q.length)+'%';
+    document.getElementById('qTag').textContent = 'Case '+(state.qIdx+1);
+    document.getElementById('qStem').textContent = q.stem;
+
+    var optsEl = document.getElementById('opts');
+    optsEl.innerHTML = '';
+    q.opts.forEach(function(optText, i){
+      var b = document.createElement('button');
+      b.className = 'opt';
+      b.innerHTML = '<span class="letter">'+letterFor(i)+'</span><span>'+optText+'</span>';
+      b.addEventListener('click', function(){ selectOption(i); });
+      optsEl.appendChild(b);
+    });
+
+    document.getElementById('explain').hidden = true;
+    var nextBtn = document.getElementById('nextBtn');
+    nextBtn.disabled = true;
+    nextBtn.textContent = (state.qIdx === m.q.length-1) ? 'See results →' : 'Next question →';
+  }
+
+  function selectOption(i){
+    if(state.locked) return;
+    state.locked = true;
+    var m = MODULES[state.modIdx];
+    var q = m.q[state.qIdx];
+    var correct = (i === q.correct);
+    if(correct) state.correctCount++;
+    state.answers.push({ q:q, chosen:i, correct:correct });
+
+    var opts = document.querySelectorAll('#opts .opt');
+    opts.forEach(function(el, idx){
+      el.disabled = true;
+      if(idx === q.correct) el.classList.add('correct');
+      else if(idx === i) el.classList.add('incorrect');
+      else el.classList.add('dim');
+    });
+
+    var explain = document.getElementById('explain');
+    explain.innerHTML = '<b>'+(correct ? 'Correct. ' : 'Not quite. ')+'</b>'+q.explain;
+    explain.hidden = false;
+
+    document.getElementById('scoreLabel').textContent = 'Score '+state.correctCount+' / '+(state.qIdx+1);
+    document.getElementById('nextBtn').disabled = false;
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    var m = MODULES[state.modIdx];
+    if(state.qIdx < m.q.length-1){
+      state.qIdx++;
+      renderQuestion();
+    } else {
+      finishModule();
+    }
+  });
+
+  function finishModule(){
+    var m = MODULES[state.modIdx];
+    document.getElementById('progressFill').style.width = '100%';
+    quizview.hidden = true; summaryview.hidden = false;
+
+    var total = m.q.length, score = state.correctCount;
+    var pct = Math.round(100*score/total);
+    results[m.id] = { score:score, total:total };
+    var prev = store.get('caseBankResultsWk4-v1') || {};
+    var existing = prev[m.id];
+    if(!existing || existing.score < score) prev[m.id] = { score:score, total:total };
+    else results[m.id] = existing;
+    store.set('caseBankResultsWk4-v1', prev);
+    results = prev;
+
+    var offset = CIRC * (1 - pct/100);
+    var ring = document.getElementById('ringFg');
+    ring.style.strokeDasharray = CIRC;
+    ring.style.strokeDashoffset = CIRC;
+    requestAnimationFrame(function(){
+      ring.style.transition = 'stroke-dashoffset .6s ease';
+      ring.style.strokeDashoffset = offset;
+    });
+    document.getElementById('ringPct').textContent = pct+'%';
+    document.getElementById('sumTitle').textContent = m.title;
+    document.getElementById('sumSub').textContent = score+' of '+total+' correct — '+(pct>=80?'strong grasp of this module.':pct>=60?'solid, worth a second pass.':'flag this module for review.');
+
+    var reviewList = document.getElementById('reviewList');
+    reviewList.innerHTML = '';
+    var misses = state.answers.filter(function(a){ return !a.correct; });
+    if(misses.length){
+      var h = document.createElement('div');
+      h.style.textAlign = 'left';
+      h.style.fontFamily = "'JetBrains Mono',monospace";
+      h.style.fontSize = '.72rem';
+      h.style.color = 'var(--ink-soft)';
+      h.style.textTransform = 'uppercase';
+      h.style.letterSpacing = '.08em';
+      h.style.margin = '0 0 4px';
+      h.textContent = 'Missed questions';
+      reviewList.appendChild(h);
+    }
+    misses.forEach(function(a){
+      var item = document.createElement('div');
+      item.className = 'review-item';
+      item.innerHTML = '<span class="mark miss">&#10007;</span><div><b>'+a.q.stem+'</b><br>Correct answer: '+a.q.opts[a.q.correct]+'</div>';
+      reviewList.appendChild(item);
+    });
+
+    document.getElementById('retryBtn').onclick = function(){ startModule(state.modIdx); };
+  }
+
+  document.getElementById('dashBtn').addEventListener('click', backToDashboard);
+  document.getElementById('backBtn').addEventListener('click', backToDashboard);
+  function backToDashboard(){
+    quizview.hidden = true; summaryview.hidden = true; dashboard.hidden = false;
+    renderDashboard();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  renderDashboard();
+})();
+</script>

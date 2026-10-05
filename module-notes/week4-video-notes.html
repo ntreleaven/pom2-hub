@@ -1,0 +1,1012 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 4 Video Notes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper: #f2f0e8;
+    --paper-raised: #fbfaf5;
+    --ink: #1e2a2e;
+    --ink-soft: #55625f;
+    --hairline: #d6d1c2;
+    --accent: #2c5f5a;
+    --accent-soft: #dce8e4;
+    --accent-ink: #163634;
+    --amber: #b5792c;
+    --amber-soft: #f3e6d2;
+    --good: #2f6b3e;
+    --good-soft: #dfeee1;
+    --shadow: 0 1px 2px rgba(30,42,46,.06), 0 8px 24px -12px rgba(30,42,46,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #171d1e; --paper-raised: #1f2729; --ink: #e9eae4; --ink-soft: #a5afab;
+      --hairline: #333e3f; --accent: #7bbbb0; --accent-soft: #223634; --accent-ink: #cdeae4;
+      --amber: #e0b06b; --amber-soft: #3a2f1a; --good: #7fc98d; --good-soft: #1e3324;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #171d1e; --paper-raised: #1f2729; --ink: #e9eae4; --ink-soft: #a5afab;
+    --hairline: #333e3f; --accent: #7bbbb0; --accent-soft: #223634; --accent-ink: #cdeae4;
+    --amber: #e0b06b; --amber-soft: #3a2f1a; --good: #7fc98d; --good-soft: #1e3324;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Public Sans', system-ui, sans-serif; -webkit-font-smoothing:antialiased; }
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  h1,h2,h3{ font-family:'Fraunces', Georgia, serif; text-wrap:balance; margin:0; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+  button{ font-family:inherit; cursor:pointer; }
+  textarea{ font-family:inherit; }
+
+  .shell{ max-width:900px; margin:0 auto; padding:0 24px 96px; }
+  .topbar{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:28px 24px 20px; max-width:900px; margin:0 auto; border-bottom:1px solid var(--hairline); }
+  .brand .kicker{ font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:600; }
+  .brand h1{ font-size:1.5rem; font-weight:600; margin-top:2px; }
+  .topstat{ text-align:right; font-family:'JetBrains Mono', monospace; font-size:.78rem; color:var(--ink-soft); }
+
+  .intro{ padding:28px 0 8px; max-width:620px; }
+  .intro p{ margin:8px 0 0; color:var(--ink-soft); line-height:1.55; font-size:.95rem; }
+
+  .group-heading{ display:flex; align-items:center; gap:12px; margin:32px 0 14px; }
+  .group-heading h2{ font-size:1.02rem; font-weight:600; white-space:nowrap; }
+  .group-heading .rule{ height:1px; background:var(--hairline); flex:1; }
+
+  .list{ display:flex; flex-direction:column; gap:10px; }
+  .row{
+    display:flex; align-items:center; gap:14px; text-align:left; width:100%;
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; box-shadow:var(--shadow); transition:border-color .12s ease, transform .12s ease;
+  }
+  .row:hover{ border-color:var(--accent); transform:translateY(-1px); }
+  .row .num{ font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--ink-soft); width:28px; flex-shrink:0; }
+  .row .body{ flex:1; min-width:0; }
+  .row h3{ font-size:1rem; font-weight:500; line-height:1.3; }
+  .row .meta{ font-size:.76rem; color:var(--ink-soft); margin-top:3px; font-family:'JetBrains Mono',monospace; }
+  .row .status{ flex-shrink:0; }
+  .pill{ font-family:'JetBrains Mono',monospace; font-size:.66rem; font-weight:600; padding:3px 9px; border-radius:99px; white-space:nowrap; }
+  .pill.empty{ background:var(--hairline); color:var(--ink-soft); }
+  .pill.started{ background:var(--amber-soft); color:var(--amber); }
+  .pill.done{ background:var(--good-soft); color:var(--good); }
+
+  .detail-header{ display:flex; align-items:center; gap:14px; padding:26px 0 4px; flex-wrap:wrap; }
+  .back-btn{ background:none; border:1px solid var(--hairline); border-radius:8px; padding:7px 12px; font-size:.82rem; color:var(--ink-soft); }
+  .back-btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .detail-title .kicker{ font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; font-weight:600; }
+  .detail-title h2{ font-size:1.3rem; font-weight:600; margin-top:2px; }
+  .runtime{ font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--ink-soft); }
+  .connects{ margin:14px 0 0; padding:10px 14px; background:var(--accent-soft); border-left:3px solid var(--accent); border-radius:6px; font-size:.85rem; color:var(--accent-ink); }
+
+  .obj-card{ margin-top:22px; background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow); }
+  .obj-card h3{ font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); font-weight:600; margin-bottom:10px; }
+  .obj{ display:flex; align-items:flex-start; gap:10px; padding:6px 0; font-size:.9rem; line-height:1.4; }
+  .obj input{ margin-top:3px; flex-shrink:0; width:16px; height:16px; accent-color:var(--accent); }
+  .obj label.checked{ color:var(--ink-soft); text-decoration:line-through; text-decoration-color:var(--hairline); }
+
+  .section-card{ margin-top:16px; background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow); }
+  .section-card .sh{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
+  .section-card h3{ font-size:1.02rem; font-weight:600; }
+  .section-card .tag{ font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--amber); background:var(--amber-soft); padding:2px 8px; border-radius:99px; white-space:nowrap; }
+  .section-card .hint{ font-size:.85rem; color:var(--ink-soft); margin:2px 0 10px; line-height:1.4; }
+  .section-card textarea{
+    width:100%; min-height:76px; resize:vertical; border:1px solid var(--hairline); border-radius:8px;
+    background:var(--paper); color:var(--ink); padding:10px 12px; font-size:.9rem; line-height:1.5;
+  }
+  .section-card textarea:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .section-card textarea::placeholder{ color:var(--ink-soft); opacity:.6; }
+
+  .detail-actions{ display:flex; gap:10px; justify-content:space-between; align-items:center; margin-top:24px; flex-wrap:wrap; }
+  .save-note{ font-size:.76rem; color:var(--ink-soft); font-family:'JetBrains Mono',monospace; }
+  .btn{ border:1px solid var(--hairline); background:var(--paper-raised); color:var(--ink); border-radius:8px; padding:10px 16px; font-size:.86rem; font-weight:500; }
+  .btn.primary{ background:var(--accent); color:var(--paper-raised); border-color:var(--accent); font-weight:600; }
+  .btn:hover{ border-color:var(--accent); }
+
+  [hidden]{ display:none !important; }
+  footer{ max-width:900px; margin:56px auto 0; padding:20px 24px 0; color:var(--ink-soft); font-size:.78rem; border-top:1px solid var(--hairline); }
+
+  @media print{
+    .topbar .topstat, .back-btn, .detail-actions, footer, #dashboard{ display:none !important; }
+    body{ background:#fff; color:#000; }
+    .section-card, .obj-card{ box-shadow:none; border:1px solid #ccc; break-inside:avoid; }
+    textarea{ border:1px solid #999 !important; }
+  }
+  @media (max-width:560px){
+    .topbar{ flex-direction:column; align-items:flex-start; gap:6px; }
+    .topstat{ text-align:left; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">P2 · Week 4 · Reproduction</span>
+    <h1>Video Notes</h1>
+  </div>
+  <div class="topstat">16 videos · fill in as you watch</div>
+</div>
+
+<main class="shell">
+
+  <section id="dashboard">
+    <div class="intro">
+      <p>An outline for each Video Overview, built from its own structure — same section order the video actually follows. Watch, pause at each heading, and jot the point before moving on. Notes save automatically in this browser.</p>
+    </div>
+    <div id="groups"></div>
+  </section>
+
+  <section id="detail" hidden>
+    <div class="detail-header">
+      <button class="back-btn" id="backBtn">&larr; All videos</button>
+      <div class="detail-title">
+        <div class="kicker" id="detKicker"></div>
+        <h2 id="detTitle"></h2>
+      </div>
+      <span class="runtime" id="detRuntime"></span>
+    </div>
+    <div class="connects" id="detConnects" hidden></div>
+
+    <div class="obj-card">
+      <h3>Learning objectives</h3>
+      <div id="objList"></div>
+    </div>
+
+    <div id="sectionList"></div>
+
+    <div class="detail-actions">
+      <span class="save-note" id="saveNote">Notes save automatically</span>
+      <div style="display:flex; gap:10px;">
+        <button class="btn" id="printBtn">Print this outline</button>
+        <button class="btn primary" id="nextBtn">Next video &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Week 4 study material · P2 Reproduction Block · for personal review use</footer>
+
+<script id="data" type="application/json">[
+ {
+  "id": "contraception",
+  "num": 1,
+  "title": "Contraception",
+  "group": "Contraception & Family Planning",
+  "runtime": "10-12 min",
+  "connects": "",
+  "objectives": [
+   "List contraceptive options and their failure rates",
+   "Counsel regarding the most effective contraceptive methods",
+   "Understand the mechanism of action of contraceptive options",
+   "Discuss emergency contraception options",
+   "Apply new knowledge to clinical case scenarios"
+  ],
+  "sections": [
+   {
+    "h": "Why unintended pregnancy matters",
+    "tag": "42% switch methods without consulting a provider",
+    "p": "Scope in Canada and the counselling gap it creates"
+   },
+   {
+    "h": "Perfect-use vs typical-use efficacy",
+    "tag": "condoms: 2% vs 18%",
+    "p": "Why the gap is behavioural, not biological — lead with typical-use numbers"
+   },
+   {
+    "h": "Natural, barrier & permanent methods",
+    "tag": "",
+    "p": "Failure rates, spermicide caveats, vasectomy vs tubal interruption"
+   },
+   {
+    "h": "Progestin-only & combined hormonal methods",
+    "tag": "estrogen contraindications",
+    "p": "Mechanisms, non-contraceptive benefits, side-effect-based pill selection"
+   },
+   {
+    "h": "Intrauterine contraception",
+    "tag": "copper 0.8% vs hormonal 0.2% failure",
+    "p": "Mechanisms and the short true-contraindication list"
+   },
+   {
+    "h": "Emergency contraception",
+    "tag": "levonorgestrel vs ulipristal vs copper IUD",
+    "p": "Timing windows and which option wins when"
+   },
+   {
+    "h": "Clinical case synthesis",
+    "tag": "3 worked cases",
+    "p": "Matching method to patient risk factors"
+   }
+  ]
+ },
+ {
+  "id": "fertilization-infertility",
+  "num": 2,
+  "title": "Fertilization & Infertility",
+  "group": "Fertility & Early Pregnancy",
+  "runtime": "12-14 min",
+  "connects": "",
+  "objectives": [
+   "Explain how fertilization occurs",
+   "Describe the optimal time for intercourse to achieve pregnancy",
+   "Outline an approach to infertility for a family physician",
+   "Describe general causes and prevalence of infertility",
+   "Describe an approach to assessment, including who needs early referral",
+   "Outline how pelvic infection or pain causes infertility"
+  ],
+  "sections": [
+   {
+    "h": "Sperm transport & capacitation",
+    "tag": "sperm reach the tube in ~5 min",
+    "p": "Timeline from ejaculation to fertilization"
+   },
+   {
+    "h": "Fertilization sequence & optimal timing",
+    "tag": "best day: 2 days before ovulation",
+    "p": "Zona binding through diploid restoration"
+   },
+   {
+    "h": "Infertility definitions & prevalence",
+    "tag": "1 in 10 couples",
+    "p": "Primary vs secondary; age-dependent risk curve"
+   },
+   {
+    "h": "The standard infertility workup",
+    "tag": "day 2-4 bloodwork → sonohysterogram → day 21 progesterone",
+    "p": "Six-step sequence, always both partners"
+   },
+   {
+    "h": "PCOS & endometriosis as infertility drivers",
+    "tag": "",
+    "p": "Distinct mechanisms, distinct first-line management"
+   },
+   {
+    "h": "Male factor infertility",
+    "tag": "50/50 split with female factor",
+    "p": "Leading causes and why semen analysis is non-negotiable"
+   },
+   {
+    "h": "Recurrent pregnancy loss",
+    "tag": "2+ losses = workup",
+    "p": "Key causes and the ~50% unexplained rate"
+   }
+  ]
+ },
+ {
+  "id": "drugs-gynecology",
+  "num": 3,
+  "title": "Drugs Used in Gynecology",
+  "group": "Contraception & Family Planning",
+  "runtime": "10 min",
+  "connects": "Pairs with Contraception — same methods, underlying pharmacology",
+  "objectives": [
+   "Describe the pharmacological principles underlying estrogens, progestins and androgens",
+   "Describe the basic components of combined contraceptive products and routes of delivery",
+   "Compare combined, emergency, progesterone-only, and long-acting progesterone contraception",
+   "Identify benefits, risks, side effects and contraindications of contraceptive preparations",
+   "Explain how SERMs and SPRMs are used for breast cancer and endometriosis",
+   "Describe the pharmacological uses of androgen agonists and antagonists",
+   "Describe the menstrual cycle",
+   "Explain how NSAIDs or tranexamic acid treat menstrual symptoms"
+  ],
+  "sections": [
+   {
+    "h": "Estrogens, progestins & androgens",
+    "tag": "",
+    "p": "Core receptor pharmacology"
+   },
+   {
+    "h": "Combined contraceptive products",
+    "tag": "progestin = primary agent, estrogen = cycle control",
+    "p": "Routes of delivery, dose tailoring"
+   },
+   {
+    "h": "Comparing contraceptive categories",
+    "tag": "",
+    "p": "Combined vs progestin-only vs long-acting vs emergency"
+   },
+   {
+    "h": "SERMs & SPRMs",
+    "tag": "tamoxifen, ulipristal, GnRH agonists",
+    "p": "Breast cancer and endometriosis applications"
+   },
+   {
+    "h": "Androgen agonists & antagonists",
+    "tag": "spironolactone, cyproterone",
+    "p": "PCOS/hirsutism management"
+   },
+   {
+    "h": "The menstrual cycle, NSAIDs & tranexamic acid",
+    "tag": "",
+    "p": "HPO axis recap; non-hormonal bleeding/pain control"
+   }
+  ]
+ },
+ {
+  "id": "abortion-canada",
+  "num": 4,
+  "title": "Abortion in Canada",
+  "group": "Contraception & Family Planning",
+  "runtime": "11-13 min",
+  "connects": "",
+  "objectives": [
+   "Review pregnancy termination options in Canada",
+   "Compare options based on gestational age and describe risks of abortion",
+   "Compare risks of termination vs. risk of pregnancy",
+   "Outline counseling regarding fertility and contraception"
+  ],
+  "sections": [
+   {
+    "h": "Definitions & legal history",
+    "tag": "R v Morgentaler, 1988",
+    "p": "No federal law restricting abortion today"
+   },
+   {
+    "h": "Scale, Ontario practicalities & access",
+    "tag": "gestational limits: 12+0 to 24+6 weeks by province",
+    "p": ""
+   },
+   {
+    "h": "Methods by gestational age",
+    "tag": "medical vs surgical",
+    "p": "First vs second trimester options"
+   },
+   {
+    "h": "Mifepristone-misoprostol & surgical methods in detail",
+    "tag": "90% abort within 24h of misoprostol",
+    "p": "Mechanisms, regimens, key complications"
+   },
+   {
+    "h": "Risk comparison & contraceptive counselling after",
+    "tag": "ovulation resumes as early as 2 weeks",
+    "p": "Abortion vs continuing-pregnancy risk"
+   },
+   {
+    "h": "Fertility, emotional outcomes & myths",
+    "tag": "Asherman's: 8% after one procedure, ~30% after a third",
+    "p": "Addressing common misconceptions directly"
+   }
+  ]
+ },
+ {
+  "id": "early-pregnancy-complications",
+  "num": 5,
+  "title": "Early Pregnancy Complications: Spontaneous Abortion and Ectopic Pregnancy",
+  "group": "Fertility & Early Pregnancy",
+  "runtime": "10-12 min",
+  "connects": "Shares the pregnancy-loss framework used in Fertilization & Infertility",
+  "objectives": [
+   "Distinguish the categories of spontaneous abortion by clinical and ultrasound findings",
+   "Outline expectant, medical, and surgical management options",
+   "Recognize risk factors and the classic presentation of ectopic pregnancy",
+   "Apply beta-hCG trend and the discriminatory zone to diagnosis",
+   "Outline ectopic pregnancy management by stability and hCG",
+   "Identify who needs Rh immunoglobulin"
+  ],
+  "sections": [
+   {
+    "h": "Spontaneous abortion categories",
+    "tag": "threatened / inevitable / incomplete / complete / missed / septic",
+    "p": ""
+   },
+   {
+    "h": "Management options",
+    "tag": "expectant vs medical vs surgical",
+    "p": "Choosing by stability, gestational age, preference"
+   },
+   {
+    "h": "Ectopic pregnancy risk factors & presentation",
+    "tag": "prior ectopic = strongest risk factor",
+    "p": "Classic triad, but presentation varies widely"
+   },
+   {
+    "h": "Diagnosis: discriminatory zone & hCG trend",
+    "tag": "hCG should roughly double every 48-72h",
+    "p": ""
+   },
+   {
+    "h": "Ectopic management & Rh immunoglobulin",
+    "tag": "",
+    "p": "Expectant / methotrexate / surgical by stability and hCG"
+   }
+  ]
+ },
+ {
+  "id": "approach-to-sti",
+  "num": 6,
+  "title": "Approach to Sexually Transmitted Infection",
+  "group": "Sexual Health & Cervical Screening",
+  "runtime": "9-10 min",
+  "connects": "",
+  "objectives": [
+   "Describe clinical symptoms and findings for various STI presentations",
+   "Outline diagnostic criteria for various STIs",
+   "Apply treatment regimens to common STIs"
+  ],
+  "sections": [
+   {
+    "h": "Framing: pattern recognition",
+    "tag": "urethritis/cervicitis, ulcer, discharge, systemic spread",
+    "p": ""
+   },
+   {
+    "h": "Chlamydia & gonorrhea",
+    "tag": "doxycycline vs single-dose ceftriaxone",
+    "p": "Diagnosis, treatment, partner notification"
+   },
+   {
+    "h": "Genital ulcer disease: HSV vs syphilis",
+    "tag": "painful multiple vesicles vs painless solitary chancre",
+    "p": ""
+   },
+   {
+    "h": "Vaginal/vulvar presentations & HPV",
+    "tag": "",
+    "p": "Trichomonas is the only true STI in the discharge differential"
+   },
+   {
+    "h": "HIV",
+    "tag": "4th-generation test detects at 2-4 weeks; U=U",
+    "p": "Presentation, diagnosis, treatment, PEP/PrEP"
+   },
+   {
+    "h": "General treatment principles",
+    "tag": "",
+    "p": "Co-testing, presumptive treatment, partner notification, public health reporting"
+   }
+  ]
+ },
+ {
+  "id": "public-health-stis",
+  "num": 7,
+  "title": "Public Health and STIs",
+  "group": "Sexual Health & Cervical Screening",
+  "runtime": "7-8 min",
+  "connects": "Population lens on the individual STI presentations from the prior video",
+  "objectives": [
+   "Identify common STIs in Canada, including relevant age groups",
+   "Describe patterns of global disease burden with regards to STIs",
+   "Identify and list risk factors for STIs",
+   "Review the role of public health in reporting STIs",
+   "Outline population-level interventions to reduce the burden of STIs"
+  ],
+  "sections": [
+   {
+    "h": "Who gets STIs in Canada",
+    "tag": "chlamydia > gonorrhea; ages 15-29 hit hardest",
+    "p": ""
+   },
+   {
+    "h": "The global picture",
+    "tag": "1M+ new curable STIs per day (WHO)",
+    "p": ""
+   },
+   {
+    "h": "Individual & structural risk factors",
+    "tag": "",
+    "p": "Behavioural vs housing/incarceration/access-driven"
+   },
+   {
+    "h": "The role of public health reporting",
+    "tag": "contact tracing, outbreak detection, surveillance",
+    "p": ""
+   },
+   {
+    "h": "Population-level interventions",
+    "tag": "",
+    "p": "Screening, low-barrier testing, vaccination, harm reduction, partner notification"
+   }
+  ]
+ },
+ {
+  "id": "cervical-cancer-screening",
+  "num": 8,
+  "title": "Cervical Cancer Screening",
+  "group": "Sexual Health & Cervical Screening",
+  "runtime": "9-10 min",
+  "connects": "HPV biology from the STI video, applied to screening",
+  "objectives": [
+   "Explain why cervical cancer screening is effective in preventing cervical cancer",
+   "Explain the process for cervical cancer screening and management of abnormalities",
+   "Describe HPV's role in cervical cancer, vaccination benefits, and HPV testing in screening"
+  ],
+  "sections": [
+   {
+    "h": "Why screening works",
+    "tag": "CIN persists for years before invasive cancer",
+    "p": ""
+   },
+   {
+    "h": "HPV as the necessary cause",
+    "tag": "16 & 18 = ~70% of cases",
+    "p": "Vaccination timing and benefit"
+   },
+   {
+    "h": "The screening process",
+    "tag": "primary HPV testing, cytology as triage",
+    "p": ""
+   },
+   {
+    "h": "Managing an abnormal result",
+    "tag": "LEEP treats confirmed CIN2/3",
+    "p": "Low-grade vs high-grade pathway"
+   }
+  ]
+ },
+ {
+  "id": "vaginal-discharge",
+  "num": 9,
+  "title": "Vaginal Discharge",
+  "group": "Sexual Health & Cervical Screening",
+  "runtime": "7 min",
+  "connects": "Differential overlaps directly with the STI discharge content",
+  "objectives": [
+   "Describe the changes in vaginal discharge over the menstrual cycle",
+   "Describe the assessment of vaginal discharge"
+  ],
+  "sections": [
+   {
+    "h": "Normal discharge across the cycle",
+    "tag": "egg-white mucus peaks right at ovulation",
+    "p": ""
+   },
+   {
+    "h": "Structured assessment approach",
+    "tag": "history, exam, pH, whiff test, wet mount",
+    "p": ""
+   },
+   {
+    "h": "The differential",
+    "tag": "candidiasis vs BV vs trichomoniasis",
+    "p": "Only trichomoniasis is a true STI"
+   }
+  ]
+ },
+ {
+  "id": "abnormal-uterine-bleeding",
+  "num": 10,
+  "title": "Abnormal Uterine Bleeding",
+  "group": "Abnormal Bleeding & Vulvar Disease",
+  "runtime": "10-11 min",
+  "connects": "",
+  "objectives": [
+   "Define the normal amount of bleeding in a menstrual cycle",
+   "List the components of PALM-COEIN",
+   "Identify main causes of anovulation",
+   "Analyze pelvic exam findings using an understanding of causes of AUB",
+   "Identify the structural causes of AUB on pathology",
+   "Describe the clinical presentations of cervical or endometrial cancer with regards to AUB",
+   "List investigations used in the diagnosis of AUB",
+   "Select appropriate medical treatments for AUB"
+  ],
+  "sections": [
+   {
+    "h": "What counts as normal",
+    "tag": "21-35 day cycle, <80mL, up to 8 days",
+    "p": ""
+   },
+   {
+    "h": "PALM-COEIN framework",
+    "tag": "the classification to memorize",
+    "p": "Structural (PALM) vs non-structural (COEIN)"
+   },
+   {
+    "h": "Anovulation — main causes",
+    "tag": "PCOS is the most common cause",
+    "p": ""
+   },
+   {
+    "h": "Pelvic exam through the PALM-COEIN lens",
+    "tag": "",
+    "p": "Enlarged/irregular vs boggy/tender vs normal-feeling uterus"
+   },
+   {
+    "h": "Structural causes on pathology",
+    "tag": "polyp / adenomyosis / leiomyoma / malignancy",
+    "p": ""
+   },
+   {
+    "h": "Cervical & endometrial cancer presentations",
+    "tag": "postmenopausal bleeding = cancer until proven otherwise",
+    "p": ""
+   },
+   {
+    "h": "Investigations & medical treatment options",
+    "tag": "LNG-IUS is first-line for heavy bleeding",
+    "p": ""
+   }
+  ]
+ },
+ {
+  "id": "vulvar-lesions-cancer",
+  "num": 11,
+  "title": "Vulvar Lesions and Vulvar Cancer",
+  "group": "Abnormal Bleeding & Vulvar Disease",
+  "runtime": "9 min",
+  "connects": "",
+  "objectives": [
+   "Describe different lesions of the vulva",
+   "List the various differential diagnoses for the various lesions",
+   "Compare and contrast vulvar conditions with other skin lesions",
+   "Describe the presentation of vulvar malignancy",
+   "List benign masses of the vulva with clinical presentations"
+  ],
+  "sections": [
+   {
+    "h": "Approaching the vulva like skin",
+    "tag": "morphology, distribution, symptom pattern first",
+    "p": ""
+   },
+   {
+    "h": "Benign vulvar masses",
+    "tag": "Bartholin cyst = most common vulvar mass",
+    "p": ""
+   },
+   {
+    "h": "Dermatoses with a vulvar pattern",
+    "tag": "lichen sclerosus vs lichen planus vs psoriasis",
+    "p": ""
+   },
+   {
+    "h": "VIN — the precancerous step",
+    "tag": "HPV-associated (usual) vs differentiated",
+    "p": ""
+   },
+   {
+    "h": "Vulvar malignancy",
+    "tag": "two clinical settings to recognize",
+    "p": "Low threshold to biopsy anything persistent or atypical"
+   }
+  ]
+ },
+ {
+  "id": "approach-pathology-aub-pelvic-pain",
+  "num": 12,
+  "title": "Approach to Pathology of AUB & Pelvic Pain",
+  "group": "Abnormal Bleeding & Vulvar Disease",
+  "runtime": "9 min",
+  "connects": "Synthesis of the AUB and pelvic pain videos — no new content, just the reasoning framework",
+  "objectives": [
+   "Build a differential for structural causes of AUB & pelvic pain from anatomy/pathology",
+   "Narrow the differential based on age, common reasons, and history/exam clues",
+   "Compose an oral narrative explaining AUB & pelvic pain to patients"
+  ],
+  "sections": [
+   {
+    "h": "Building the differential from anatomy",
+    "tag": "organ-by-organ reasoning",
+    "p": "Endometrium → myometrium → adnexa → peritoneum → cervix"
+   },
+   {
+    "h": "Narrowing by age & history clues",
+    "tag": "adolescent / reproductive-age / perimenopausal / postmenopausal",
+    "p": ""
+   },
+   {
+    "h": "Composing the patient narrative",
+    "tag": "3-step, plain-language structure",
+    "p": "Name it → connect to findings → explain the plan"
+   }
+  ]
+ },
+ {
+  "id": "endometriosis",
+  "num": 13,
+  "title": "Endometriosis",
+  "group": "Pelvic Pain",
+  "runtime": "7-8 min",
+  "connects": "One of the two named drivers in the pathology-synthesis video",
+  "objectives": [
+   "Define endometriosis",
+   "Describe clinical symptoms and physical exam findings",
+   "Outline an approach to discussion of dyspareunia",
+   "Apply treatments for endometriosis",
+   "Describe clinical outcomes of endometriosis"
+  ],
+  "sections": [
+   {
+    "h": "Definition & Sampson's theory",
+    "tag": "disease severity ≠ symptom severity",
+    "p": "Retrograde menstruation plus immune/genetic factors"
+   },
+   {
+    "h": "Clinical symptoms & exam findings",
+    "tag": "classic triad: dysmenorrhea, dyspareunia, chronic pelvic pain",
+    "p": "Exam can be entirely normal"
+   },
+   {
+    "h": "Approaching dyspareunia in conversation",
+    "tag": "deep vs entry-level pain",
+    "p": "Ask directly, matter-of-factly, every time"
+   },
+   {
+    "h": "Treatment: hormonal, surgical, multimodal",
+    "tag": "continuous OCPs avoid the withdrawal bleed",
+    "p": ""
+   },
+   {
+    "h": "Clinical outcomes",
+    "tag": "chronic disease, no cure",
+    "p": "Diagnostic delay is a persistent, documented problem"
+   }
+  ]
+ },
+ {
+  "id": "chronic-pelvic-pain",
+  "num": 14,
+  "title": "Clinical Approach to Chronic Pelvic Pain",
+  "group": "Pelvic Pain",
+  "runtime": "9 min",
+  "connects": "Endometriosis is one of its most common gynecologic drivers",
+  "objectives": [
+   "Outline a clinical approach to chronic pelvic pain",
+   "Recognize common causes of chronic pelvic pain",
+   "List a differential diagnosis for chronic pelvic pain",
+   "Outline appropriate investigations for pelvic pain",
+   "Identify treatment options for common causes of pelvic pain"
+  ],
+  "sections": [
+   {
+    "h": "Defining chronic pelvic pain",
+    "tag": "non-cyclic, 6+ months, functional impairment",
+    "p": ""
+   },
+   {
+    "h": "Think by system, not just organ",
+    "tag": "gyn / GI / urologic / MSK / neuro-psych",
+    "p": "Often more than one contributor at once"
+   },
+   {
+    "h": "History & exam clues",
+    "tag": "Carnett's sign, dedicated pelvic floor exam",
+    "p": ""
+   },
+   {
+    "h": "Investigations",
+    "tag": "ultrasound is first-line",
+    "p": "Beyond that, targeted by the leading differential"
+   },
+   {
+    "h": "Multimodal treatment",
+    "tag": "pelvic floor PT is high-yield, under-used",
+    "p": "Hormonal, GI/urologic-directed, neuropathic, psychological support"
+   }
+  ]
+ },
+ {
+  "id": "acute-pelvic-pain",
+  "num": 15,
+  "title": "Clinical Approach to Acute Pelvic Pain",
+  "group": "Pelvic Pain",
+  "runtime": "9 min",
+  "connects": "Pairs with Early Pregnancy Complications on the time-critical end",
+  "objectives": [
+   "Outline a clinical approach to acute pelvic pain",
+   "Recognize common causes of acute pelvic pain",
+   "List a differential diagnosis for acute pelvic pain",
+   "Outline appropriate investigations for pelvic pain",
+   "Identify treatment options for common causes of pelvic pain"
+  ],
+  "sections": [
+   {
+    "h": "Priority: rule out emergencies first",
+    "tag": "",
+    "p": "Different mindset from the chronic-pain approach"
+   },
+   {
+    "h": "Step one, every time: pregnancy status",
+    "tag": "",
+    "p": "A positive test reframes the whole differential"
+   },
+   {
+    "h": "The can't-miss differential",
+    "tag": "torsion, ruptured cyst, TOA, appendicitis, renal colic",
+    "p": ""
+   },
+   {
+    "h": "Structured approach & investigations",
+    "tag": "beta-hCG always first",
+    "p": "Vitals, focused history, exam, targeted imaging"
+   },
+   {
+    "h": "Treatment by cause",
+    "tag": "",
+    "p": "Ectopic, torsion, ruptured cyst, PID/TOA, non-gyn causes"
+   }
+  ]
+ },
+ {
+  "id": "genetic-screening-pregnancy",
+  "num": 16,
+  "title": "Genetic Screening for Pregnancy in Canada",
+  "group": "Fertility & Early Pregnancy",
+  "runtime": "11-12 min",
+  "connects": "",
+  "objectives": [
+   "Develop an approach to asking relevant family and genetic history",
+   "List ethnicities (and conditions) requiring specific fetal screening",
+   "Identify red flags and indications for Prenatal Genetics referral",
+   "Describe the timing and process of fetal genetic screening",
+   "Define non-invasive prenatal testing (NIPT)",
+   "Define invasive prenatal testing",
+   "Define preimplantation genetic screening and diagnosis",
+   "Assess your own and future patients' values and beliefs on genetic testing"
+  ],
+  "sections": [
+   {
+    "h": "Taking a genetic & family history",
+    "tag": "",
+    "p": "Age, ancestry, consanguinity, prior pregnancy history, 3-generation history"
+   },
+   {
+    "h": "Ethnicity-specific carrier screening",
+    "tag": "Ashkenazi Jewish, Mediterranean/South Asian, Sub-Saharan African, French Canadian",
+    "p": ""
+   },
+   {
+    "h": "Red flags for genetics referral",
+    "tag": "",
+    "p": "Low threshold — genetic counsellors handle the values-based conversation"
+   },
+   {
+    "h": "Timing & process of screening",
+    "tag": "1st-trimester combined screen → 2nd-trimester anatomy scan",
+    "p": ""
+   },
+   {
+    "h": "NIPT vs invasive testing",
+    "tag": "screening ≠ diagnostic",
+    "p": "CVS ~11-14wk, amniocentesis ~15wk+, both <1% procedural risk"
+   },
+   {
+    "h": "Preimplantation genetic testing",
+    "tag": "PGT-A (aneuploidy) vs PGT-M (monogenic)",
+    "p": "Pre-transfer, in the context of IVF"
+   },
+   {
+    "h": "Values & beliefs",
+    "tag": "",
+    "p": "Present information neutrally; support whichever decision fits the patient"
+   }
+  ]
+ }
+]</script>
+<script>
+(function(){
+  "use strict";
+  var MODULES = JSON.parse(document.getElementById('data').textContent);
+  var store = {
+    get: function(){ try{ return JSON.parse(localStorage.getItem('wk4VideoNotes-v1')) || {}; }catch(e){ return {}; } },
+    set: function(v){ try{ localStorage.setItem('wk4VideoNotes-v1', JSON.stringify(v)); }catch(e){} }
+  };
+  var data = store.get();
+
+  var dashboard = document.getElementById('dashboard');
+  var detail = document.getElementById('detail');
+  var groupsEl = document.getElementById('groups');
+  var currentIdx = -1;
+  var saveTimer = null;
+
+  function moduleState(m){
+    var d = data[m.id] || {};
+    var notesFilled = (m.sections || []).filter(function(s,i){ return d['note'+i] && d['note'+i].trim().length; }).length;
+    var objChecked = (m.objectives || []).filter(function(o,i){ return d['obj'+i]; }).length;
+    if(notesFilled === 0 && objChecked === 0) return 'empty';
+    if(notesFilled === (m.sections||[]).length && objChecked === (m.objectives||[]).length) return 'done';
+    return 'started';
+  }
+
+  function renderDashboard(){
+    groupsEl.innerHTML = '';
+    var groups = [];
+    MODULES.forEach(function(m){
+      var g = groups.filter(function(x){ return x.name===m.group; })[0];
+      if(!g){ g = {name:m.group, mods:[]}; groups.push(g); }
+      g.mods.push(m);
+    });
+    groups.forEach(function(g){
+      var h = document.createElement('div');
+      h.className = 'group-heading';
+      h.innerHTML = '<h2>'+g.name+'</h2><div class="rule"></div>';
+      groupsEl.appendChild(h);
+
+      var list = document.createElement('div');
+      list.className = 'list';
+      g.mods.forEach(function(m){
+        var idx = MODULES.indexOf(m);
+        var st = moduleState(m);
+        var row = document.createElement('button');
+        row.className = 'row';
+        var pillLabel = st==='done' ? 'Notes complete' : st==='started' ? 'In progress' : 'Not started';
+        row.innerHTML =
+          '<span class="num">'+String(m.num).padStart(2,'0')+'</span>'+
+          '<span class="body"><h3>'+m.title+'</h3><span class="meta">'+m.runtime+' · '+m.sections.length+' sections</span></span>'+
+          '<span class="status"><span class="pill '+st+'">'+pillLabel+'</span></span>';
+        row.addEventListener('click', function(){ openModule(idx); });
+        list.appendChild(row);
+      });
+      groupsEl.appendChild(list);
+    });
+  }
+
+  function openModule(idx){
+    currentIdx = idx;
+    var m = MODULES[idx];
+    var d = data[m.id] || (data[m.id] = {});
+    dashboard.hidden = true; detail.hidden = false;
+
+    document.getElementById('detKicker').textContent = 'Video '+m.num+' of 16';
+    document.getElementById('detTitle').textContent = m.title;
+    document.getElementById('detRuntime').textContent = m.runtime;
+    var connEl = document.getElementById('detConnects');
+    if(m.connects){ connEl.hidden = false; connEl.textContent = m.connects; }
+    else { connEl.hidden = true; }
+
+    var objList = document.getElementById('objList');
+    objList.innerHTML = '';
+    m.objectives.forEach(function(o, i){
+      var row = document.createElement('div');
+      row.className = 'obj';
+      var checked = !!d['obj'+i];
+      row.innerHTML = '<input type="checkbox" id="obj_'+i+'" '+(checked?'checked':'')+'><label for="obj_'+i+'"'+(checked?' class="checked"':'')+'>'+o+'</label>';
+      var cb = row.querySelector('input');
+      var lbl = row.querySelector('label');
+      cb.addEventListener('change', function(){
+        d['obj'+i] = cb.checked;
+        lbl.classList.toggle('checked', cb.checked);
+        persist();
+      });
+      objList.appendChild(row);
+    });
+
+    var sectionList = document.getElementById('sectionList');
+    sectionList.innerHTML = '';
+    m.sections.forEach(function(s, i){
+      var card = document.createElement('div');
+      card.className = 'section-card';
+      var tagHtml = s.tag ? '<span class="tag">'+s.tag+'</span>' : '';
+      var hintHtml = s.p ? '<div class="hint">'+s.p+'</div>' : '';
+      card.innerHTML =
+        '<div class="sh"><h3>'+(i+1)+'. '+s.h+'</h3>'+tagHtml+'</div>'+
+        hintHtml+
+        '<textarea placeholder="Notes on this section...">'+(d['note'+i]||'')+'</textarea>';
+      var ta = card.querySelector('textarea');
+      ta.addEventListener('input', function(){
+        d['note'+i] = ta.value;
+        persist();
+      });
+      sectionList.appendChild(card);
+    });
+
+    document.getElementById('nextBtn').textContent = (idx === MODULES.length-1) ? 'Back to all videos' : 'Next video →';
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  function persist(){
+    store.set(data);
+    var note = document.getElementById('saveNote');
+    note.textContent = 'Saved';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ note.textContent = 'Notes save automatically'; }, 1200);
+  }
+
+  document.getElementById('backBtn').addEventListener('click', function(){
+    detail.hidden = true; dashboard.hidden = false;
+    renderDashboard();
+    window.scrollTo({top:0, behavior:'instant'});
+  });
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    if(currentIdx === MODULES.length-1){
+      detail.hidden = true; dashboard.hidden = false;
+      renderDashboard();
+      window.scrollTo({top:0, behavior:'instant'});
+    } else {
+      openModule(currentIdx+1);
+    }
+  });
+  document.getElementById('printBtn').addEventListener('click', function(){ window.print(); });
+
+  renderDashboard();
+})();
+</script>

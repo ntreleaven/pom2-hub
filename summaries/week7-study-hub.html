@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Musculoskeletal Medicine Study Hub</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --paper: #f3f5f4;
+    --paper-raised: #ffffff;
+    --ink: #1b2321;
+    --ink-soft: #4b5651;
+    --ink-faint: #7c8a84;
+    --line: #d8ddda;
+    --line-soft: #e7eae8;
+    --amber: #a8641c;
+    --amber-ink: #7a4712;
+    --amber-wash: #f4e6d3;
+    --teal: #1f6e73;
+    --teal-ink: #17565a;
+    --teal-wash: #dcedee;
+    --good: #2f7a4f;
+    --good-wash: #dcf0e2;
+    --bad: #ae3f34;
+    --bad-wash: #f7ded9;
+    --shadow: 0 1px 2px rgba(27,35,33,0.06), 0 6px 20px -8px rgba(27,35,33,0.12);
+    --radius: 3px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12191a;
+      --paper-raised: #182123;
+      --ink: #e9edea;
+      --ink-soft: #b6c0bb;
+      --ink-faint: #7d8b85;
+      --line: #2c3937;
+      --line-soft: #223030;
+      --amber: #e0a860;
+      --amber-ink: #f0c592;
+      --amber-wash: #33291b;
+      --teal: #6fc2c6;
+      --teal-ink: #9adade;
+      --teal-wash: #16302f;
+      --good: #6fbf8f;
+      --good-wash: #1a3327;
+      --bad: #e2897c;
+      --bad-wash: #3a211d;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12191a;
+    --paper-raised: #182123;
+    --ink: #e9edea;
+    --ink-soft: #b6c0bb;
+    --ink-faint: #7d8b85;
+    --line: #2c3937;
+    --line-soft: #223030;
+    --amber: #e0a860;
+    --amber-ink: #f0c592;
+    --amber-wash: #33291b;
+    --teal: #6fc2c6;
+    --teal-ink: #9adade;
+    --teal-wash: #16302f;
+    --good: #6fbf8f;
+    --good-wash: #1a3327;
+    --bad: #e2897c;
+    --bad-wash: #3a211d;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  h1, h2, h3, h4 { font-family: 'Spectral', Georgia, serif; text-wrap: balance; margin: 0; }
+  a { color: var(--teal-ink); }
+  table { border-collapse: collapse; }
+
+  .shell { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 280px;
+    flex: none;
+    border-right: 1px solid var(--line);
+    background: var(--paper-raised);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 22px 18px 30px;
+  }
+  .sidebar-head { margin-bottom: 4px; }
+  .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--teal-ink);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .sidebar-head h1 { font-size: 21px; font-weight: 600; line-height: 1.25; }
+  .sidebar-head .sub { color: var(--ink-faint); font-size: 13px; margin-top: 6px; }
+
+  .progress-block { margin: 18px 0 20px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-soft); margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+  .progress-track { height: 6px; background: var(--line-soft); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--amber); width: 0%; transition: width .4s ease; }
+
+  .navlist { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-soft); padding-top: 10px; }
+  .navlist li { margin: 0; }
+  .navlist a {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    padding: 7px 6px;
+    border-radius: var(--radius);
+  }
+  .navlist a:hover { background: var(--line-soft); color: var(--ink); }
+  .navlist a.active { color: var(--ink); font-weight: 600; }
+  .navlist .num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-faint); flex: none; width: 16px; }
+  .navlist .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--line); flex: none; }
+  .navlist .dot.done { background: var(--good); }
+
+  .sidebar-foot { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--line-soft); font-size: 12px; color: var(--ink-faint); }
+  .sidebar-foot code { font-family: 'IBM Plex Mono', monospace; background: var(--line-soft); padding: 1px 5px; border-radius: 2px; }
+
+  main { flex: 1; min-width: 0; }
+  .topbar {
+    position: sticky; top: 0; z-index: 5;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 40px;
+    display: none;
+  }
+
+  .hero {
+    padding: 54px 48px 40px;
+    border-bottom: 1px solid var(--line);
+    max-width: 900px;
+  }
+  .hero .kicker { margin-bottom: 14px; }
+  .hero h1 { font-size: 40px; font-weight: 600; letter-spacing: -0.01em; }
+  .hero .dek { color: var(--ink-soft); font-size: 16.5px; margin-top: 14px; max-width: 62ch; }
+  .hero-meta { display: flex; gap: 26px; margin-top: 26px; flex-wrap: wrap; }
+  .hero-meta div { font-size: 13px; color: var(--ink-faint); }
+  .hero-meta strong { display: block; font-family: 'Spectral', serif; font-size: 20px; color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .content { padding: 8px 48px 90px; max-width: 900px; }
+
+  section.module {
+    padding: 46px 0;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 20px;
+  }
+  section.module:last-of-type { border-bottom: none; }
+
+  .module-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 6px; }
+  .module-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--amber); padding-top: 6px; flex: none; width: 24px; }
+  .module-head h2 { font-size: 25px; font-weight: 600; }
+  .module-meta { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 22px 40px; }
+  .tag { font-size: 11.5px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.03em; color: var(--ink-faint); border: 1px solid var(--line); padding: 3px 8px; border-radius: 99px; }
+  .tag.mcc { color: var(--teal-ink); border-color: var(--teal); background: var(--teal-wash); }
+
+  .module-body { margin-left: 40px; }
+  .module-body p { color: var(--ink-soft); margin: 0 0 14px; max-width: 68ch; }
+  .module-body h3 { font-size: 15px; font-weight: 600; margin: 22px 0 10px; color: var(--ink); }
+  .module-body ul, .module-body ol { margin: 0 0 14px; padding-left: 20px; color: var(--ink-soft); max-width: 66ch; }
+  .module-body li { margin-bottom: 6px; }
+  .module-body li strong { color: var(--ink); }
+  .callout {
+    background: var(--amber-wash);
+    border-left: 3px solid var(--amber);
+    padding: 12px 16px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 14px;
+    color: var(--ink);
+    margin: 16px 0;
+    max-width: 64ch;
+  }
+  .callout strong { color: var(--amber-ink); }
+
+  .data-table { width: 100%; margin: 10px 0 20px; font-size: 13.5px; overflow-x: auto; display: block; }
+  .data-table table { width: 100%; min-width: 480px; }
+  .data-table th, .data-table td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  .data-table th { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); font-weight: 500; }
+  .data-table td.num { font-variant-numeric: tabular-nums; }
+
+  .quiz {
+    margin-top: 26px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .quiz-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--line-soft);
+    background: var(--line-soft);
+  }
+  .quiz-head span { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+  .quiz-score { font-size: 12.5px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+  .quiz-body { padding: 18px; }
+  .q { margin-bottom: 20px; }
+  .q:last-child { margin-bottom: 0; }
+  .q-stem { font-size: 14.5px; color: var(--ink); margin-bottom: 10px; font-weight: 500; }
+  .q-opts { display: flex; flex-direction: column; gap: 7px; }
+  .opt {
+    text-align: left;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    padding: 9px 12px;
+    border-radius: var(--radius);
+    font-size: 13.5px;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    gap: 9px;
+  }
+  .opt:hover { border-color: var(--teal); }
+  .opt:focus-visible { outline: 2px solid var(--teal); outline-offset: 1px; }
+  .opt .letter { font-family: 'IBM Plex Mono', monospace; color: var(--ink-faint); flex: none; }
+  .opt.correct { background: var(--good-wash); border-color: var(--good); }
+  .opt.incorrect { background: var(--bad-wash); border-color: var(--bad); }
+  .opt[disabled] { cursor: default; }
+  .q-explain {
+    display: none;
+    margin-top: 9px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    background: var(--teal-wash);
+    border-left: 3px solid var(--teal);
+    padding: 9px 12px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .q-explain.shown { display: block; }
+  .q-explain strong { color: var(--teal-ink); }
+
+  .colophon {
+    max-width: 900px;
+    padding: 34px 48px 70px;
+    color: var(--ink-faint);
+    font-size: 12.5px;
+    border-top: 1px solid var(--line);
+  }
+  .colophon a { color: var(--ink-soft); }
+
+  .theme-toggle {
+    position: fixed; bottom: 18px; right: 18px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    color: var(--ink-soft);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10;
+  }
+
+  .mobile-nav-toggle { display: none; }
+
+  @media (max-width: 880px) {
+    .sidebar { position: fixed; left: -300px; top: 0; z-index: 20; transition: left .25s ease; box-shadow: var(--shadow); }
+    .sidebar.open { left: 0; }
+    .topbar { display: flex; align-items: center; gap: 12px; padding: 12px 20px; }
+    .mobile-nav-toggle {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: var(--radius);
+      border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace; font-size: 13px; cursor: pointer;
+    }
+    .topbar strong { font-family: 'Spectral', serif; font-size: 15px; }
+    .hero { padding: 30px 20px 28px; }
+    .hero h1 { font-size: 30px; }
+    .content { padding: 8px 20px 70px; }
+    .module-meta, .module-body { margin-left: 0; }
+    .module-head { gap: 10px; }
+    .colophon { padding: 26px 20px 60px; }
+  }
+</style>
+
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <span class="kicker">PoM2 &middot; Musculoskeletal Medicine</span>
+      <h1>Week&nbsp;7 &mdash; MSK Anatomy, Spine Pain &amp; Shoulder</h1>
+      <div class="sub">Musculoskeletal Block</div>
+    </div>
+
+    <div class="progress-block">
+      <div class="progress-label"><span>Quiz progress</span><span id="progress-count">0 / 20</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+
+    <ul class="navlist" id="navlist"></ul>
+
+    <div class="sidebar-foot">
+      Built from this week's NotebookLM video scripts (Learning Objectives + High-Yield Content) for the MSK block. Content is written for review, not a substitute for the source modules &mdash; cross-check anything <code>flagged</code> against lecture.
+    </div>
+  </nav>
+
+  <main>
+    <div class="topbar">
+      <button class="mobile-nav-toggle" id="navToggle" aria-label="Toggle module list">&#9776;</button>
+      <strong>Week 7 &mdash; Musculoskeletal Medicine</strong>
+    </div>
+
+    <header class="hero">
+      <span class="kicker">Study Hub</span>
+      <h1>Musculoskeletal Medicine</h1>
+      <p class="dek">Five modules covering the shared vocabulary of the MSK system, then applying it to the two most common MSK complaints &mdash; axial spine pain and shoulder pain. Starts with anatomy review and movement/joint terminology, moves through mechanical and non-mechanical back &amp; neck pain, the systematic read of a spine X-ray, and finishes with the osteology and joints of the proximal upper extremity. Read a section, then clear its quiz before moving on.</p>
+      <div class="hero-meta">
+        <div><strong>5</strong>modules</div>
+        <div><strong>20</strong>quiz questions</div>
+        <div><strong>~3.5h</strong>estimated content time</div>
+      </div>
+    </header>
+
+    <div class="content" id="content"></div>
+
+    <footer class="colophon">
+      Sources: content in every module &mdash; learning objectives, mechanisms, diagnostic approach, imaging patterns, and concept-check logic &mdash; is drawn directly from this week's NotebookLM video scripts for the MSK block (Introduction to MSK Anatomy; Mechanical and Non-Mechanical Back &amp; Neck Pain; Axial Spine Radiology; Osteology &amp; Joints of the Proximal Upper Extremity), then condensed and rewritten in my own words rather than copied verbatim. Quiz stems and explanations are also my own paraphrase, built to test the same concepts the scripts actually cover &mdash; not the course's original questions. If anything here doesn't match what a professor said in lecture, trust the lecture.
+    </footer>
+  </main>
+</div>
+
+<button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle color theme">&#9788;</button>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var stored = null;
+  try { stored = localStorage.getItem('msk-hub-theme'); } catch(e) {}
+  if (stored) root.setAttribute('data-theme', stored);
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var current = root.getAttribute('data-theme');
+    var next = current === 'dark' ? 'light' : (current === 'light' ? 'dark' : ((window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'light' : 'dark'));
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('msk-hub-theme', next); } catch(e) {}
+  });
+
+  document.getElementById('navToggle').addEventListener('click', function(){
+    document.getElementById('sidebar').classList.toggle('open');
+  });
+})();
+</script>
+
+<script>
+const MODULES = [
+{
+  "id": "msk-anatomy-intro",
+  "title": "Introduction to MSK Anatomy",
+  "instructor": "Video script",
+  "duration": "~8 min",
+  "tags": [{"label": "Foundation review", "cls": "mcc"}],
+  "body": `
+<p>Most of this module is first-year review, but it's the shared vocabulary for everything else in the block &mdash; back pain, shoulder pain, radiology all lean on this unglossed, so it's worth being fluent rather than just recognizing it.</p>
+<h3>Movement vocabulary and the somatic reflex arc</h3>
+<p>Anatomical position is standing with palms forward; supine is face-up, prone is face-down. Protraction/retraction describe the scapula sliding forward/back, elevation/depression are up/down, and supination/pronation apply to the forearm (and are reused at the ankle for a different, tri-planar motion). Every spinal nerve carries two general fibre types: general sensory (pain, proprioception, temperature, pressure, touch) travelling in via the dorsal root with its cell body in the dorsal root ganglion, and general motor travelling out via the ventral root to skeletal muscle &mdash; the whole reflex arc in miniature.</p>
+<h3>Dermatomes, myotomes, and contraction types</h3>
+<p>Paired somites of paraxial mesoderm flank the neural tube in development; each somite's dermomyotome splits into a dermatome (skin) and myotome (muscle), and each somite is supplied by one spinal nerve segment. Myotomes then elongate and fuse into actual muscles, so an adult muscle's innervation usually spans more than one spinal level &mdash; the reason a single root lesion weakens a muscle rather than paralyzing it outright. Contraction types: isometric (tension develops, length unchanged) versus isotonic, which splits into concentric (shortening while contracting, the "lifting" phase) and eccentric (lengthening while contracting, the "lowering" phase, and the type most linked to delayed-onset soreness). Kinetic chains: open means the distal segment is free to move; closed means it's fixed against a surface, loading joints more predictably.</p>
+<h3>Synovial joints and Hilton's Law</h3>
+<p>A synovial joint has a fibrous capsule lined by synovial membrane (which secretes synovial fluid) and hyaline cartilage capping the bone ends. Cartilage and synovial membrane are poorly innervated, so joint pain actually arises from the capsule, ligaments, or subchondral bone. The six classic types: hinge (elbow), pivot (radioulnar joint), saddle (first CMC), condyloid (MCP joints), plane/gliding (AC joint), and ball-and-socket (glenohumeral, hip). Stability comes down to articulating-surface shape, ligaments, and the muscles crossing the joint.</p>
+<div class="callout"><strong>Hilton's Law.</strong> The nerve that innervates a muscle acting on a joint also supplies the sensory innervation to that joint and the skin overlying it &mdash; it resurfaces later this week explaining referred shoulder pain.</div>
+<h3>Axial vs appendicular skeleton and bony terminology</h3>
+<p>Axial skeleton: skull, vertebral column, sternum, ribs. Appendicular skeleton: the limbs plus the girdles attaching them (pectoral: clavicle + scapula; pelvic: the pelvic bones), with humerus &rarr; radius/ulna &rarr; carpals/metacarpals/phalanges and femur &rarr; tibia/fibula &rarr; tarsals/metatarsals/phalanges, plus the patella as a sesamoid bone. Bony terminology groups conceptually: joint surfaces (head, facet, condyle); soft-tissue attachment points (process, tuberosity, tubercle, trochanter, epicondyle, crest, spine); depressions (fossa, groove, sulcus, notch); and openings (foramen, fissure, meatus). This vocabulary &mdash; "intervertebral foramen," "superior articular facet," "greater tuberosity" &mdash; shows up unglossed in every module this week.</p>
+`,
+  "quiz": [
+    {"stem": "A patient has a lesion affecting a single spinal nerve root. Why does this typically cause weakness rather than complete paralysis of the muscles that root supplies?", "opts": ["Myotomes elongate and fuse, so most muscles end up innervated by several spinal levels", "Dermatomes take over motor function when myotomes are damaged", "Motor neurons fully regenerate within a few hours after root injury", "Each adult muscle is supplied exclusively by a single nerve root"], "correct": 0, "explain": "Because myotomes elongate and fuse during development into the muscles we see in the adult, a given muscle is usually innervated by more than one spinal level, so losing one root weakens rather than eliminates its function."},
+    {"stem": "Which type of muscle contraction is most associated with delayed-onset muscle soreness?", "opts": ["Isometric contraction, where tension develops without any change in length", "Eccentric contraction, where the muscle lengthens while still generating tension", "Concentric contraction, where the muscle shortens while generating tension", "Isotonic contraction performed exclusively in an open kinetic chain"], "correct": 1, "explain": "Eccentric contraction — lengthening while under tension, as in the lowering phase of a lift — produces more delayed-onset muscle soreness than the shortening (concentric) or static (isometric) types."},
+    {"stem": "A patient has shoulder joint pain that is also felt over the skin covering the deltoid. Which principle explains why joint pain and overlying skin pain often travel together?", "opts": ["Dermatomes and myotomes always arise from exactly one shared spinal nerve", "Joint capsules lack sensory nerves, so all pain here comes from the skin", "Hilton's Law: a joint's nerve supply mirrors the nerve supply of the muscles crossing it", "Referred pain like this only occurs in ball-and-socket joints"], "correct": 2, "explain": "Hilton's Law states that the nerve supplying a muscle acting on a joint also supplies the sensory innervation of that joint and the skin overlying it, which is why joint and overlying skin pain are so often linked."},
+    {"stem": "An imaging report describes a 'large rounded projection serving as a muscle or tendon attachment site' on a bone. Which term does this describe?", "opts": ["Facet, a small flat surface where two bones articulate", "Fossa, a basin-like depression that often forms part of a joint", "Foramen, a round or oval opening passing through the bone", "Tuberosity, a large rounded projection for soft-tissue attachment"], "correct": 3, "explain": "A tuberosity is specifically a large rounded bony projection that serves as a soft-tissue attachment site, distinct from a facet (articulating surface), fossa (depression), or foramen (opening through bone)."}
+  ]
+},
+{
+  "id": "mechanical-back-neck-pain",
+  "title": "Mechanical Back &amp; Neck Pain",
+  "instructor": "Video script",
+  "duration": "~12 min",
+  "tags": [{"label": "Cross-refs Module 1", "cls": "mcc"}],
+  "body": `
+<p>Back and neck pain are among the most common primary care complaints, and a precise anatomic diagnosis is often genuinely hard to pin down. The honest framing: you don't always need a specific structural diagnosis &mdash; you need confidence you're not missing something dangerous.</p>
+<h3>History, red flags, and when to image</h3>
+<p>History is structured with OLDCARS (onset, location, duration, character, aggravating/alleviating factors, radiation, severity) plus a deliberate red-flag screen across six categories: neurologic (progressive weakness, sensory change, saddle anesthesia, incontinence), inflammatory (morning stiffness, second-half-of-night pain, rash, eye symptoms), neoplastic (age extremes, unremitting night pain, weight loss, cancer history), infectious (fevers, IVDU, immunosuppression), fracture (trauma, osteoporosis), and vascular (vertebral artery insufficiency, claudication). X-ray is cheap and best for alignment/fracture, CT for bony detail/trauma, MRI for soft tissue, bone scan for multifocal disease.</p>
+<div class="callout"><strong>Most low back pain does not need imaging.</strong> No red flags plus symptoms under 6 weeks means imaging isn't indicated &mdash; degenerative findings are common even in asymptomatic people, so an abnormal scan doesn't necessarily explain the pain.</div>
+<h3>Vertebral, disc, and facet anatomy</h3>
+<p>Mechanical back pain is axial pain worse with movement and better with rest, with no red flags, usually degenerative change "tweaked" by something minor. The spine has four curves (cervical/lumbar lordosis, thoracic/sacral kyphosis); each vertebra has a body, arch, pedicles, lamina, and spinous/transverse/articular processes. Cervical vertebrae are small with transverse foramina (vertebral arteries) and bifid spinous processes; thoracic vertebrae have costal facets; lumbar vertebrae are large-bodied for load-bearing. C1 has no body and rings around C2's dens, allowing head rotation.</p>
+<h3>Discogenic vs facetogenic pain</h3>
+<p>Discogenic pain: axial-predominant, worse with forward flexion, from annular microtears and nucleus pulposus degeneration; herniation terminology runs bulge &rarr; protrusion &rarr; extrusion &rarr; sequestration by degree of displacement. Most lumbar herniations occur at L4&ndash;L5 and L5&ndash;S1, which is why L5 and S1 radiculopathies dominate. Facetogenic pain is localized, sometimes unilateral, can cause cervicogenic headache, and is classically worse with extension and relieved by flexion &mdash; the opposite pattern from disc pain. Facet degeneration on imaging correlates poorly with symptoms.</p>
+<h3>Spondylosis, muscular causes, and whiplash</h3>
+<p>Spondylosis is the umbrella term for degenerative disc and facet change together, which can progress to degenerative spondylolisthesis or central/foraminal stenosis. Muscular causes (strain, repetitive strain, myofascial trigger points) have no diagnostic test &mdash; a clinical diagnosis by exclusion, managed with reassurance, relative rest, heat/ice, short-course anti-inflammatories, and physiotherapy. Whiplash-associated disorder follows an acceleration-deceleration mechanism, most often straining muscle; under 5% have severe symptoms at 2 years, and management favours staying mobile over a cervical collar, since aggressive early physio can worsen symptoms.</p>
+`,
+  "quiz": [
+    {"stem": "A patient's axial low back pain is worse with spinal extension and relieved by flexion, with no leg pain. Which structure is most likely the pain source?", "opts": ["The intervertebral disc, from an annular tear causing axial pain", "The facet (zygapophyseal) joint, degenerating like any synovial joint", "The cauda equina, compressed centrally within the thecal sac", "The sacroiliac joint, inflamed as part of a spondyloarthropathy"], "correct": 1, "explain": "Facetogenic pain classically worsens with extension and improves with flexion, the opposite aggravating pattern from discogenic pain, which is worse with forward flexion."},
+    {"stem": "A 30-year-old has 3 weeks of axial back pain, no red flags, and a normal neuro exam, and asks for an MRI. What is the most appropriate next step?", "opts": ["No imaging is needed yet — treat conservatively and reassess if pain persists", "Order an urgent MRI today to rule out cauda equina syndrome", "Order a plain X-ray now to screen for fracture or malignancy", "Refer directly to neurosurgery before any conservative trial"], "correct": 0, "explain": "With no red flags and symptoms under 6 weeks, imaging is not indicated — the appropriate step is conservative management with reassessment, since degenerative findings are common even without symptoms."},
+    {"stem": "Lumbar disc herniations most commonly occur at which levels, explaining why L5 and S1 radiculopathies are seen most frequently?", "opts": ["L1–L2 and L2–L3, the most mobile upper lumbar segments", "T12–L1 and L1–L2, at the thoracolumbar junction", "L4–L5 and L5–S1, the lowest and most heavily loaded segments", "L2–L3 and L3–L4, the mid-lumbar segments"], "correct": 2, "explain": "L4–L5 and L5–S1 bear the most load and are the most common herniation sites, which is why radiculopathies at L5 and S1 are the ones seen most often in practice."},
+    {"stem": "A patient presents two days after a rear-end MVC with neck pain but normal strength, sensation, and reflexes. What is the most appropriate initial management?", "opts": ["Immediate MRI of the cervical spine before any other treatment", "A rigid cervical collar worn continuously for several weeks", "Aggressive physiotherapy starting the same day to prevent stiffness", "Encourage staying mobile, with imaging reserved for concerning exam findings"], "correct": 3, "explain": "Most whiplash-associated disorder improves with conservative management favouring mobility over collar immobilization; imaging and more aggressive intervention are reserved for concerning exam findings, not used routinely."}
+  ]
+},
+{
+  "id": "nonmechanical-back-neck-pain",
+  "title": "Non-Mechanical Back &amp; Neck Pain",
+  "instructor": "Video script",
+  "duration": "~12 min",
+  "tags": [{"label": "Cross-refs Module 2", "cls": "mcc"}],
+  "body": `
+<p>This module picks up where mechanical back pain leaves off: pain patterns that aren't just degenerative wear and tear, where missing the diagnosis costs the patient something. It splits into neurology-focused problems, then the broader red-flag categories.</p>
+<h3>Cord and nerve root anatomy, and radiculopathy</h3>
+<p>The spinal cord ends around L1/2 in adults, but all 31 spinal nerve pairs still exit at their named level, travelling below L1/2 as the cauda equina inside the thecal sac. Because lumbar roots exit on a steep downward angle, a paracentral disc herniation at a level typically hits the root exiting the level <em>below</em> (an L5/S1 paracentral herniation classically hits S1, since L5 has already exited more proximally); a far lateral herniation instead catches the root exiting at that same level. Radiculopathy produces a recognizable pattern along a dermatome/myotome: radiating band-like pain, sensory change, weakness in muscles that root supplies, and a reduced or absent reflex if that root contributes to one.</p>
+<div class="callout"><strong>Cauda equina syndrome &mdash; the one true surgical emergency here.</strong> Central compression (massive central disc herniation, tumour, epidural abscess/hematoma) causes saddle anesthesia, bilateral leg weakness/sensory change, and bowel/bladder dysfunction (classically urinary retention with overflow incontinence). This needs emergent MRI and surgical consult, not watchful waiting.</div>
+<h3>Cervical myelopathy</h3>
+<p>Chronic cervical cord compression presents insidiously: gait disturbance (unsteady, wide-based), loss of fine hand dexterity (the classic "keeps dropping things"), and sometimes radiating neck/arm pain. Upper motor neuron signs &mdash; hyperreflexia, clonus, a positive Hoffman's sign &mdash; distinguish it from a simple radiculopathy. Because it's subtle and progresses slowly, it's easy to under-recognize; chronic neck pain plus new dexterity loss, gait change, or bladder symptoms warrants a cervical MRI rather than being written off as mechanical.</p>
+<h3>Inflammatory back pain</h3>
+<p>Inflammatory back pain is worse with rest (classically worse overnight), improves with exercise, and comes with prolonged morning stiffness &mdash; the opposite pattern from mechanical pain. It can travel with extra-articular spondyloarthropathy features: SI joint involvement, psoriasis, uveitis, or a family history of inflammatory arthritis, any of which should raise suspicion even if the back pain itself sounds nonspecific.</p>
+<h3>Fracture, visceral, infectious, and neoplastic red flags</h3>
+<p>Fracture: trauma, osteoporosis, point tenderness &mdash; posterior element involvement means unstable. Visceral: back pain can be referred from a leaking/dissecting aortic aneurysm, pancreatitis, renal colic, or pyelonephritis, so abdominal exam belongs in every back pain workup. Infection: epidural abscess or vertebral osteomyelitis/discitis &mdash; fevers, IVDU, immunosuppression, new neuro deficits &mdash; is easy to miss because early imaging can look normal. Neoplasm: unremitting night pain, weight loss, cancer history, and age extremes, since metastatic spinal disease is far more common than primary spinal tumours. Plain X-ray has real limits here &mdash; it won't show cord compression, disc herniation, or early infection, so a convincing red-flag history should prompt MRI even with a normal X-ray.</p>
+`,
+  "quiz": [
+    {"stem": "A patient presents with saddle anesthesia, bilateral leg weakness, and new urinary retention. What is the most appropriate immediate step?", "opts": ["Emergent MRI and surgical consult for suspected cauda equina syndrome", "Outpatient MRI scheduled within the next one to two weeks", "Reassurance, since this pattern usually reflects mechanical back pain", "A trial of NSAIDs and physiotherapy for four to six weeks"], "correct": 0, "explain": "Saddle anesthesia with bilateral leg involvement and bowel/bladder dysfunction is the classic presentation of cauda equina syndrome, a true surgical emergency requiring emergent MRI and surgical consult, not a conservative trial."},
+    {"stem": "A patient describes back pain that wakes them in the second half of the night and improves with exercise. Which pattern does this suggest?", "opts": ["Mechanical back pain, since movement typically worsens true mechanical pain", "Facetogenic pain, since facet pain classically improves with flexion only", "Inflammatory back pain, given the rest-related pain and exercise improvement", "Cauda equina syndrome, given the nocturnal timing of symptoms"], "correct": 2, "explain": "Pain that is worse with rest (especially overnight) and improves with exercise, often with morning stiffness, is the classic inflammatory pattern — the opposite of mechanical pain, which worsens with movement."},
+    {"stem": "A paracentral disc herniation at L5–S1 most commonly compresses which nerve root, and why?", "opts": ["L5, since that root exits closer to the disc space itself", "S1, since paracentral herniations typically catch the root exiting the level below", "L4, since far lateral herniations catch the root one level up", "Both L5 and S1 equally, regardless of herniation type or location"], "correct": 1, "explain": "Because lumbar roots exit on a steep downward angle, a paracentral herniation at a given level typically compresses the root that is about to exit the level below — at L5–S1 that is the S1 root, since L5 has already exited more proximally."},
+    {"stem": "A patient with chronic neck pain reports new difficulty with fine hand movements and an unsteady, wide-based gait, with hyperreflexia and a positive Hoffman's sign on exam. What does this suggest?", "opts": ["Simple cervical radiculopathy from a single nerve root", "Peripheral neuropathy from an unrelated systemic cause", "Whiplash-associated disorder following a recent MVC", "Cervical myelopathy from chronic cord compression, warranting MRI"], "correct": 3, "explain": "Gait disturbance, loss of hand dexterity, and upper motor neuron signs like hyperreflexia and a positive Hoffman's sign point to cervical myelopathy from chronic cord compression, which should prompt a cervical MRI rather than being dismissed as mechanical neck pain."}
+  ]
+},
+{
+  "id": "axial-spine-radiology",
+  "title": "Axial Spine Radiology",
+  "instructor": "Video script",
+  "duration": "~11 min",
+  "tags": [{"label": "Cross-refs Modules 2-3", "cls": "mcc"}],
+  "body": `
+<p>Determine a differential and management plan for axial pain by recognizing normal spinal anatomy on plain X-ray and the common anomalies: fracture, spondylolysis, and scoliosis.</p>
+<h3>The ABCS systematic approach</h3>
+<p>Every spine film gets read the same way: <strong>A</strong>lignment (overall curvature &mdash; cervical/lumbar lordosis, thoracic kyphosis &mdash; and segment-to-segment lines), <strong>B</strong>ones (trace every cortex; vertebral body height, pedicles, transverse processes), <strong>C</strong>artilage and joints (really the disc space &mdash; width, calcification, bridging &mdash; plus the facet joints), and <strong>S</strong>oft tissues (prevertebral/paraspinal stripes, whose widening hints at abscess or hematoma, plus a scan of everything else on the film so an incidental finding isn't missed).</p>
+<h3>Regional view sets and counting vertebrae</h3>
+<p>Cervical: AP, lateral, obliques, and an open-mouth odontoid view for C1/C2; trauma patients skip obliques and often go straight to CT. Count vertebrae on the AP view by finding the first rib (marks T1) and counting upward. Thoracic: same principle, harder to see individual vertebrae past overlapping ribs and mediastinum. Lumbar: AP and lateral standard, with dedicated sacral/SI views on request; count using the 12th rib (the vertebra just below it is L1). The lateral view's key structure is the <strong>pars interarticularis</strong>, the bone bridge between the superior and inferior articular processes &mdash; a defect here is the anatomic basis of isthmic spondylolisthesis, inspected on oblique views via the "Scottie dog" pattern (transverse process = nose, superior facet = ear, inferior facet = front leg, pars = neck).</p>
+<div class="callout"><strong>The Scottie dog collar sign.</strong> A pars interarticularis defect shows up as a lucent line across the Scottie dog's neck on the oblique lumbar view &mdash; the anatomic basis of isthmic spondylolisthesis.</div>
+<h3>Trauma patterns</h3>
+<p>Organized by TIMSC (Trauma/Tumour, Infection/Inflammatory/Idiopathic, Metabolic/Malignancy, Systemic/Senile, Congenital), trauma is the highest-yield section. A <strong>Jefferson fracture</strong> is a C1 burst fracture through both arches. A <strong>hangman's fracture</strong> is bilateral C2 pars fractures producing traumatic C2-on-C3 spondylolisthesis &mdash; unstable. <strong>Teardrop fractures</strong>: an extension teardrop avulses the anteroinferior vertebral body corner from hyperextension; a flexion teardrop is a more serious hyperflexion injury, often with posterior ligament/cord injury. Hyperflexion can also be purely ligamentous, seen as widened interspinous spacing with no fracture. <strong>Facet dislocation</strong> shows "perched" or incongruent facets with associated spondylolisthesis; asymmetric spinous process spacing on AP view is a clue even without a clear lateral. Fractures confined to the anterior body tend to be stable; posterior element involvement means unstable. <strong>Dens fractures</strong>: Type I (tip), Type II (base/waist, most common, most often needs fixation), Type III (into the C2 body).</p>
+<h3>Non-traumatic pathology</h3>
+<p>Cervical spondylosis: straightened lordosis, disc-space narrowing, anterior osteophytes, endplate sclerosis. Retropharyngeal abscess: widened prevertebral soft tissue at C5/6 (sometimes with gas locules). Isthmic spondylolisthesis: anterior slippage from a bilateral pars defect, graded by slippage in mm (versus degenerative spondylolisthesis, which lacks a pars defect and reflects facet/ligament laxity). Ankylosing spondylitis: late-stage ossification of the longitudinal ligaments and facet ankylosis, producing a rigid spine at much higher fracture risk from minor trauma.</p>
+`,
+  "quiz": [
+    {"stem": "On an oblique lumbar X-ray, a lucent line crosses the 'neck' of the Scottie dog. What does this finding represent?", "opts": ["A normal variant seen in most asymptomatic adults", "A facet joint dislocation requiring emergent surgery", "A pars interarticularis defect, the basis of isthmic spondylolisthesis", "Calcification within the anterior longitudinal ligament"], "correct": 2, "explain": "The Scottie dog's 'neck' represents the pars interarticularis, and a lucent line across it is the collar sign of a pars defect, which underlies isthmic spondylolisthesis."},
+    {"stem": "A C1 fracture goes through both the anterior and posterior arches as a burst-type injury. Which fracture does this describe?", "opts": ["A Jefferson fracture, a burst injury of the C1 ring itself", "A hangman's fracture, from bilateral C2 pars fractures", "A flexion teardrop fracture of the vertebral body", "A Type II dens fracture through the odontoid base"], "correct": 0, "explain": "A Jefferson fracture is specifically a C1 burst fracture through both the anterior and posterior arches, distinct from a hangman's fracture (C2 pars) or a dens fracture (odontoid)."},
+    {"stem": "A spine fracture report notes involvement of the posterior elements. What does this imply about spinal stability?", "opts": ["The fracture is stable because the anterior body bears the main load", "Posterior element involvement has no bearing on spinal stability", "The fracture is stable as long as there is no cord compression", "The fracture is unstable, since posterior element involvement signals instability"], "correct": 3, "explain": "Fractures confined to the anterior vertebral body tend to be stable, but once the posterior elements are involved, the fracture is considered unstable — exactly what radiology reports are flagging with that comment."},
+    {"stem": "A febrile patient with neck pain has a C5/6 prevertebral soft tissue stripe wider than the vertebral body on lateral X-ray. What does this suggest?", "opts": ["A normal variant with no clinical significance", "Retropharyngeal abscess, until proven otherwise", "An isthmic spondylolisthesis at the same level", "Ankylosing spondylitis with ligament ossification"], "correct": 1, "explain": "Widening of the prevertebral soft tissue stripe at C5/6, especially with fever, is the classic X-ray clue to a retropharyngeal abscess, sometimes with small gas locules suggesting anaerobic infection."}
+  ]
+},
+{
+  "id": "osteology-proximal-upper-extremity",
+  "title": "Osteology &amp; Joints of the Proximal Upper Extremity",
+  "instructor": "Video script",
+  "duration": "~13 min",
+  "tags": [{"label": "Feeds anatomy lab", "cls": "mcc"}],
+  "body": `
+<p>"The shoulder" is easy to picture as one joint, but the functional unit is actually four: the sternoclavicular (SC), acromioclavicular (AC), scapulothoracic (not a true synovial joint &mdash; just scapula-on-thoracic-wall gliding), and glenohumeral (GH) joints. Their coordinated motion is <strong>scapulohumeral rhythm</strong>, which matters because the muscles crossing the GH joint need a stable scapular origin, which depends on the other three joints doing their job.</p>
+<h3>Osteology landmarks and fracture-to-nerve pairings</h3>
+<p>Clavicle: S-shaped, enlarged triangular medial end at the SC joint, flatter lateral end at the AC joint. Scapula: the acromion articulates with the clavicle; the coracoid process anchors the biceps short head, coracobrachialis, and pec minor; the glenoid fossa is a shallow socket with supraglenoid (long head biceps) and infraglenoid (long head triceps) tubercles; the suprascapular notch is a recognized entrapment site for the suprascapular nerve. Humerus: greater and lesser tubercles (rotator cuff insertions) flank the intertubercular groove (long head biceps tendon); the surgical neck is the common fracture site after a low-energy fall, especially in elderly patients; the radial (spiral) groove carries the radial nerve and profunda brachii artery; the medial epicondyle has the ulnar nerve running directly posterior ("funny bone").</p>
+<div class="callout"><strong>Fracture-to-nerve pairings, as a set:</strong> surgical neck &rarr; axillary nerve; midshaft humerus &rarr; radial nerve (plus profunda brachii artery); distal humerus &rarr; median nerve; medial epicondyle &rarr; ulnar nerve.</div>
+<h3>AC joint grading and GH joint stability</h3>
+<p>The SC joint is the only true articulation linking the upper limb to the axial skeleton, and its ligaments are strong enough that the clavicle fractures before it dislocates. The AC joint is a plane, uniaxial synovial joint stabilized by two ligament tiers: the AC ligament (superior reinforcement) and the coracoclavicular ligaments (conoid and trapezoid, anchoring clavicle to coracoid). A fall onto the point of the shoulder first sprains the AC ligament alone (subluxation); only a more severe force also ruptures the coracoclavicular ligaments (true dislocation), producing the classic superior "step-off" deformity. The GH joint is ball-and-socket and the most mobile joint in the body &mdash; a direct trade-off against stability. Mobility comes from poor head-glenoid congruency, multiple bursae, extensive cartilage, and a lax capsule; stability comes from the glenoid labrum, the rotator cuff, and ligaments (glenohumeral, coracohumeral, coracoacromial, transverse humeral).</p>
+<h3>Dislocation direction and the impingement-instability cycle</h3>
+<p>The coracoacromial arch blocks superior escape of the humeral head, and the capsule is comparatively weak anteroinferiorly &mdash; so GH dislocation is overwhelmingly anteroinferior, exactly where the axillary nerve wraps the surgical neck. That's why every shoulder dislocation workup checks axillary nerve function (sensation over the "regimental badge" area, deltoid contraction) before and after reduction. Impingement (supraspinatus compression in the subacromial space) and instability aren't always separate diagnoses: chronic overuse can stretch the capsule/ligaments/labrum, forcing the cuff to work harder, which fatigues the cuff, allows subtle subluxation, and causes secondary impingement &mdash; a vicious cycle that is exactly why rotator cuff strengthening is first-line treatment for both.</p>
+`,
+  "quiz": [
+    {"stem": "A 78-year-old falls onto an outstretched hand and sustains a fracture of the surgical neck of the humerus. Which nerve is most at risk?", "opts": ["Radial nerve, as it runs in the spiral groove nearby", "Median nerve, as it crosses the distal humerus", "Ulnar nerve, as it passes behind the medial epicondyle", "Axillary nerve, which wraps directly around the surgical neck"], "correct": 3, "explain": "The axillary nerve wraps directly around the surgical neck of the humerus, making it the nerve most at risk with a surgical neck fracture — distinct from the radial, median, and ulnar nerve injuries associated with other humeral fracture sites."},
+    {"stem": "A midshaft humeral fracture from a direct blow puts which nerve and vessel most at risk?", "opts": ["The radial nerve and profunda brachii artery, both in the spiral groove", "The axillary nerve and posterior circumflex humeral artery", "The median nerve and brachial artery, both anterior to the humerus", "The ulnar nerve and superior ulnar collateral artery"], "correct": 0, "explain": "The radial (spiral) groove, where a midshaft fracture occurs, carries both the radial nerve and the profunda brachii artery, so a direct blow at this level risks both structures together."},
+    {"stem": "A patient falls onto the point of the shoulder and has a prominent, tender AC joint with no clavicle displacement. Which structures are injured?", "opts": ["Both the AC ligament and coracoclavicular ligaments, a full dislocation", "The glenohumeral ligaments only, producing anterior instability", "The AC ligament alone, producing a subluxation rather than true dislocation", "The coracoacromial ligament, which blocks superior humeral displacement"], "correct": 2, "explain": "A lesser upward force along the humerus sprains the AC ligament alone, producing a subluxation without the superior clavicle displacement seen once the coracoclavicular ligaments also tear in a true dislocation."},
+    {"stem": "Why does every shoulder dislocation workup include an axillary nerve check, including deltoid sensation and contraction?", "opts": ["The coracoacromial arch usually ruptures first, damaging the nerve directly", "Dislocation is almost always anteroinferior, right where the axillary nerve passes", "The suprascapular nerve is the structure most often injured instead", "Rotator cuff tears always accompany a glenohumeral dislocation"], "correct": 1, "explain": "Because the coracoacromial arch blocks superior escape and the capsule is weakest anteroinferiorly, glenohumeral dislocation is overwhelmingly anteroinferior — exactly where the axillary nerve wraps the surgical neck — making it the nerve most at risk during dislocation."}
+  ]
+}
+];
+</script>
+<script>
+(function(){
+  var navlist = document.getElementById('navlist');
+  var content = document.getElementById('content');
+  var totalQ = 0;
+  MODULES.forEach(function(m){ totalQ += m.quiz.length; });
+  document.getElementById('progress-count').textContent = '0 / ' + totalQ;
+
+  var STORE_KEY = 'msk-hub-wk7-answers-v1';
+  var answered = {};
+  try {
+    var raw = localStorage.getItem(STORE_KEY);
+    if (raw) answered = JSON.parse(raw);
+  } catch(e) {}
+
+  function saveAnswered(){
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(answered)); } catch(e) {}
+  }
+
+  function correctCount(){
+    var n = 0;
+    Object.keys(answered).forEach(function(k){ if (answered[k] === 'correct') n++; });
+    return n;
+  }
+
+  function updateProgress(){
+    var c = correctCount();
+    document.getElementById('progress-count').textContent = c + ' / ' + totalQ;
+    document.getElementById('progress-fill').style.width = (totalQ ? (100 * c / totalQ) : 0) + '%';
+  }
+
+  function moduleAnsweredCount(m){
+    var n = 0;
+    m.quiz.forEach(function(q, i){
+      var key = m.id + '-' + i;
+      if (answered[key]) n++;
+    });
+    return n;
+  }
+
+  function markDot(m){
+    var dot = document.querySelector('.navlist a[href="#' + m.id + '"] .dot');
+    if (!dot) return;
+    var done = moduleAnsweredCount(m) === m.quiz.length && m.quiz.length > 0;
+    dot.classList.toggle('done', done);
+  }
+
+  // Build nav
+  MODULES.forEach(function(m, idx){
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + m.id;
+    a.innerHTML = '<span class="num">' + String(idx+1).padStart(2,'0') + '</span><span class="dot"></span><span>' + m.title + '</span>';
+    li.appendChild(a);
+    navlist.appendChild(li);
+  });
+
+  function renderQuiz(m){
+    var wrap = document.createElement('div');
+    wrap.className = 'quiz';
+
+    var head = document.createElement('div');
+    head.className = 'quiz-head';
+    head.innerHTML = '<span>Check yourself</span><span class="quiz-score" id="score-' + m.id + '"></span>';
+    wrap.appendChild(head);
+
+    var scoreEl = head.querySelector('.quiz-score');
+
+    var body = document.createElement('div');
+    body.className = 'quiz-body';
+
+    function updateModuleScore(){
+      var n = moduleAnsweredCount(m);
+      scoreEl.textContent = n + ' / ' + m.quiz.length + ' answered';
+    }
+
+    m.quiz.forEach(function(q, i){
+      var key = m.id + '-' + i;
+      var qd = document.createElement('div');
+      qd.className = 'q';
+      var stem = document.createElement('div');
+      stem.className = 'q-stem';
+      stem.textContent = (i+1) + '. ' + q.stem;
+      qd.appendChild(stem);
+
+      var opts = document.createElement('div');
+      opts.className = 'q-opts';
+
+      var explain = document.createElement('div');
+      explain.className = 'q-explain';
+      explain.innerHTML = '<strong>' + (q.explain.split(' ')[0]) + '</strong> ' + q.explain;
+
+      var alreadyAnswered = !!answered[key];
+
+      q.opts.forEach(function(optText, oi){
+        var btn = document.createElement('button');
+        btn.className = 'opt';
+        btn.innerHTML = '<span class="letter">' + String.fromCharCode(65+oi) + '</span><span>' + optText + '</span>';
+        if (alreadyAnswered) {
+          btn.disabled = true;
+          if (oi === q.correct) btn.classList.add('correct');
+          if (answered[key] === 'incorrect-' + oi) btn.classList.add('incorrect');
+        }
+        btn.addEventListener('click', function(){
+          if (btn.disabled) return;
+          var allOpts = opts.querySelectorAll('.opt');
+          allOpts.forEach(function(o){ o.disabled = true; });
+          if (oi === q.correct) {
+            btn.classList.add('correct');
+            answered[key] = 'correct';
+          } else {
+            btn.classList.add('incorrect');
+            allOpts[q.correct].classList.add('correct');
+            answered[key] = 'incorrect-' + oi;
+          }
+          explain.classList.add('shown');
+          saveAnswered();
+          updateProgress();
+          updateModuleScore();
+          markDot(m);
+        });
+        opts.appendChild(btn);
+      });
+
+      qd.appendChild(opts);
+      qd.appendChild(explain);
+      if (alreadyAnswered) explain.classList.add('shown');
+      body.appendChild(qd);
+    });
+
+    wrap.appendChild(body);
+    updateModuleScore();
+    return wrap;
+  }
+
+  MODULES.forEach(function(m, idx){
+    var sec = document.createElement('section');
+    sec.className = 'module';
+    sec.id = m.id;
+
+    var head = document.createElement('div');
+    head.className = 'module-head';
+    head.innerHTML = '<span class="module-num">' + String(idx+1).padStart(2,'0') + '</span><h2>' + m.title + '</h2>';
+    sec.appendChild(head);
+
+    var meta = document.createElement('div');
+    meta.className = 'module-meta';
+    var tagsHtml = '<span class="tag">' + m.instructor + '</span><span class="tag">' + m.duration + '</span>';
+    (m.tags || []).forEach(function(t){ tagsHtml += '<span class="tag ' + t.cls + '">' + t.label + '</span>'; });
+    meta.innerHTML = tagsHtml;
+    sec.appendChild(meta);
+
+    var bodyDiv = document.createElement('div');
+    bodyDiv.className = 'module-body';
+    bodyDiv.innerHTML = m.body;
+    sec.appendChild(bodyDiv);
+
+    var quizWrap = document.createElement('div');
+    quizWrap.className = 'module-body';
+    quizWrap.appendChild(renderQuiz(m));
+    sec.appendChild(quizWrap);
+
+    content.appendChild(sec);
+    markDot(m);
+  });
+
+  updateProgress();
+
+  // Active-link tracking on scroll
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.module'));
+  var links = Array.prototype.slice.call(document.querySelectorAll('.navlist a'));
+  function onScroll(){
+    var pos = window.scrollY + 120;
+    var current = sections[0];
+    sections.forEach(function(s){ if (s.offsetTop <= pos) current = s; });
+    links.forEach(function(l){ l.classList.toggle('active', l.getAttribute('href') === '#' + current.id); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Close mobile nav on link click
+  links.forEach(function(l){
+    l.addEventListener('click', function(){
+      document.getElementById('sidebar').classList.remove('open');
+    });
+  });
+})();
+</script>

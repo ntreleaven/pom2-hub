@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 1 Case Bank</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper: #f2f0e8;
+    --paper-raised: #fbfaf5;
+    --ink: #1e2a2e;
+    --ink-soft: #55625f;
+    --hairline: #d6d1c2;
+    --accent: #2c5f5a;
+    --accent-soft: #dce8e4;
+    --accent-ink: #163634;
+    --good: #2f6b3e;
+    --good-soft: #dfeee1;
+    --bad: #a03f37;
+    --bad-soft: #f6e3df;
+    --amber: #b5792c;
+    --amber-soft: #f3e6d2;
+    --shadow: 0 1px 2px rgba(30,42,46,.06), 0 8px 24px -12px rgba(30,42,46,.18);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #171d1e;
+      --paper-raised: #1f2729;
+      --ink: #e9eae4;
+      --ink-soft: #a5afab;
+      --hairline: #333e3f;
+      --accent: #7bbbb0;
+      --accent-soft: #223634;
+      --accent-ink: #cdeae4;
+      --good: #7fc98d;
+      --good-soft: #1e3324;
+      --bad: #e19489;
+      --bad-soft: #3a2320;
+      --amber: #e0b06b;
+      --amber-soft: #3a2f1a;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #171d1e;
+    --paper-raised: #1f2729;
+    --ink: #e9eae4;
+    --ink-soft: #a5afab;
+    --hairline: #333e3f;
+    --accent: #7bbbb0;
+    --accent-soft: #223634;
+    --accent-ink: #cdeae4;
+    --good: #7fc98d;
+    --good-soft: #1e3324;
+    --bad: #e19489;
+    --bad-soft: #3a2320;
+    --amber: #e0b06b;
+    --amber-soft: #3a2f1a;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Public Sans', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+  }
+
+  h1,h2,h3{ font-family:'Fraunces', Georgia, serif; text-wrap:balance; margin:0; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+
+  a{ color:inherit; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  /* ---------- shell ---------- */
+  .shell{ max-width:1040px; margin:0 auto; padding:0 24px 96px; }
+  .topbar{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:16px; padding:28px 24px 20px; max-width:1040px; margin:0 auto;
+    border-bottom:1px solid var(--hairline);
+  }
+  .brand{ display:flex; flex-direction:column; gap:2px; }
+  .brand .kicker{
+    font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--accent); font-weight:600;
+  }
+  .brand h1{ font-size:1.5rem; font-weight:600; }
+  .topstat{ text-align:right; font-family:'JetBrains Mono', monospace; font-size:.78rem; color:var(--ink-soft); }
+  .topstat b{ color:var(--ink); font-weight:600; }
+
+  /* ---------- dashboard ---------- */
+  .intro{ padding:32px 0 8px; max-width:640px; }
+  .intro p{ margin:10px 0 0; color:var(--ink-soft); line-height:1.55; font-size:.97rem; }
+
+  .group-heading{
+    display:flex; align-items:center; gap:12px;
+    margin:36px 0 14px;
+  }
+  .group-heading h2{ font-size:1.05rem; font-weight:600; color:var(--ink); white-space:nowrap; }
+  .group-heading .rule{ height:1px; background:var(--hairline); flex:1; }
+  .group-heading .count{ font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--ink-soft); }
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:14px; }
+
+  .card{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:18px 18px 16px; text-align:left; box-shadow:var(--shadow);
+    display:flex; flex-direction:column; gap:12px; min-height:150px;
+    transition:transform .15s ease, border-color .15s ease;
+    position:relative; overflow:hidden;
+  }
+  .card:hover{ transform:translateY(-2px); border-color:var(--accent); }
+  .card:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .card .num{
+    font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--ink-soft);
+    letter-spacing:.06em;
+  }
+  .card h3{ font-size:1.05rem; font-weight:500; line-height:1.28; flex:1; }
+  .card-foot{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .badge{
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; font-weight:600;
+    padding:3px 8px; border-radius:99px; letter-spacing:.02em;
+  }
+  .badge.new{ background:var(--accent-soft); color:var(--accent-ink); }
+  .badge.done{ background:var(--good-soft); color:var(--good); }
+  .badge.retry{ background:var(--amber-soft); color:var(--amber); }
+  .score{ font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--ink-soft); }
+  .score b{ color:var(--ink); }
+
+  /* ---------- quiz view ---------- */
+  .quiz-header{
+    display:flex; align-items:center; gap:14px; padding:26px 0 6px; flex-wrap:wrap;
+  }
+  .back-btn{
+    background:none; border:1px solid var(--hairline); border-radius:8px;
+    padding:7px 12px; font-size:.82rem; color:var(--ink-soft); display:flex; align-items:center; gap:6px;
+  }
+  .back-btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .quiz-title{ flex:1; min-width:200px; }
+  .quiz-title .kicker{ font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; font-weight:600;}
+  .quiz-title h2{ font-size:1.25rem; font-weight:600; margin-top:2px; }
+
+  .progress-wrap{ padding:14px 0 30px; }
+  .progress-meta{ display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--ink-soft); margin-bottom:6px; }
+  .progress-track{ height:6px; background:var(--hairline); border-radius:99px; overflow:hidden; }
+  .progress-fill{ height:100%; background:var(--accent); border-radius:99px; transition:width .3s ease; }
+
+  .stem-card{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:12px;
+    padding:26px 28px; box-shadow:var(--shadow); margin-bottom:20px;
+  }
+  .stem-card .vignette-tag{
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--ink-soft);
+    text-transform:uppercase; letter-spacing:.08em; margin-bottom:10px; display:block;
+  }
+  .stem{ font-size:1.14rem; line-height:1.55; font-weight:400; }
+
+  .opts{ display:flex; flex-direction:column; gap:10px; }
+  .opt{
+    display:flex; align-items:flex-start; gap:12px; text-align:left;
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; font-size:.98rem; line-height:1.45; color:var(--ink);
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .opt:hover:not(:disabled){ border-color:var(--accent); }
+  .opt:disabled{ cursor:default; }
+  .opt .letter{
+    font-family:'JetBrains Mono',monospace; font-weight:600; font-size:.82rem;
+    width:22px; height:22px; border-radius:6px; background:var(--accent-soft); color:var(--accent-ink);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;
+  }
+  .opt.correct{ background:var(--good-soft); border-color:var(--good); }
+  .opt.correct .letter{ background:var(--good); color:var(--paper-raised); }
+  .opt.incorrect{ background:var(--bad-soft); border-color:var(--bad); }
+  .opt.incorrect .letter{ background:var(--bad); color:var(--paper-raised); }
+  .opt.dim{ opacity:.55; }
+
+  .explain{
+    margin-top:16px; padding:16px 18px; border-radius:10px; background:var(--accent-soft);
+    border-left:3px solid var(--accent); font-size:.92rem; line-height:1.55; color:var(--ink);
+  }
+  .explain b{ color:var(--accent-ink); }
+
+  .quiz-nav{ display:flex; justify-content:flex-end; margin-top:20px; }
+  .next-btn{
+    background:var(--accent); color:var(--paper-raised); border:none; border-radius:8px;
+    padding:11px 22px; font-size:.92rem; font-weight:600; display:flex; align-items:center; gap:8px;
+    box-shadow:var(--shadow);
+  }
+  .next-btn:disabled{ background:var(--hairline); color:var(--ink-soft); box-shadow:none; cursor:not-allowed; }
+  .next-btn:not(:disabled):hover{ filter:brightness(1.06); }
+
+  /* ---------- summary ---------- */
+  .summary{ padding:40px 0; text-align:center; }
+  .summary .ring{
+    width:132px; height:132px; margin:0 auto 20px; position:relative;
+  }
+  .summary .ring svg{ transform:rotate(-90deg); }
+  .summary .ring .pct{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-size:1.7rem; font-weight:600;
+  }
+  .summary h2{ font-size:1.4rem; margin-bottom:6px; }
+  .summary p{ color:var(--ink-soft); margin:0 0 26px; }
+  .summary-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .btn{
+    border:1px solid var(--hairline); background:var(--paper-raised); color:var(--ink);
+    border-radius:8px; padding:10px 18px; font-size:.9rem; font-weight:500;
+  }
+  .btn.primary{ background:var(--accent); color:var(--paper-raised); border-color:var(--accent); font-weight:600; }
+  .btn:hover{ border-color:var(--accent); }
+
+  .review-list{ text-align:left; max-width:640px; margin:30px auto 0; display:flex; flex-direction:column; gap:10px; }
+  .review-item{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; font-size:.88rem; display:flex; gap:10px; align-items:flex-start;
+  }
+  .review-item .mark{ font-size:.85rem; margin-top:1px; }
+  .review-item .mark.miss{ color:var(--bad); }
+  .review-item .mark.hit{ color:var(--good); }
+  .review-item div{ line-height:1.5; color:var(--ink-soft); }
+  .review-item b{ color:var(--ink); font-weight:500; }
+
+  [hidden]{ display:none !important; }
+
+  footer{
+    max-width:1040px; margin:0 auto; padding:40px 24px 0; color:var(--ink-soft);
+    font-size:.78rem; border-top:1px solid var(--hairline); margin-top:56px; padding-top:20px;
+  }
+
+  @media (max-width:560px){
+    .stem-card{ padding:20px; }
+    .topbar{ flex-direction:column; align-items:flex-start; gap:6px; }
+    .topstat{ text-align:left; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">P2 · Week 1 · Diabetes &amp; Obesity</span>
+    <h1>Case Bank</h1>
+  </div>
+  <div class="topstat" id="topstat">120 questions · 12 modules</div>
+</div>
+
+<main class="shell">
+
+  <section id="dashboard">
+    <div class="intro">
+      <p>Ten clinical-vignette questions per module, drawn from the Week 1 course material. Options are written to similar length on purpose — work the case, don't read the answer key by eye.</p>
+    </div>
+    <div id="groups"></div>
+  </section>
+
+  <section id="quizview" hidden>
+    <div class="quiz-header">
+      <button class="back-btn" id="backBtn">&larr; All modules</button>
+      <div class="quiz-title">
+        <div class="kicker" id="quizGroup"></div>
+        <h2 id="quizTitle"></h2>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="progressLabel">Question 1 of 10</span>
+        <span id="scoreLabel">Score 0 / 0</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="stem-card">
+      <span class="vignette-tag" id="qTag">Case</span>
+      <div class="stem" id="qStem"></div>
+    </div>
+
+    <div class="opts" id="opts"></div>
+    <div class="explain" id="explain" hidden></div>
+
+    <div class="quiz-nav">
+      <button class="next-btn" id="nextBtn" disabled>Next question &rarr;</button>
+    </div>
+  </section>
+
+  <section id="summaryview" hidden>
+    <div class="summary">
+      <div class="ring">
+        <svg width="132" height="132" viewBox="0 0 132 132">
+          <circle cx="66" cy="66" r="58" fill="none" stroke="var(--hairline)" stroke-width="10"/>
+          <circle id="ringFg" cx="66" cy="66" r="58" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round"/>
+        </svg>
+        <div class="pct" id="ringPct">0%</div>
+      </div>
+      <h2 id="sumTitle"></h2>
+      <p id="sumSub"></p>
+      <div class="summary-actions">
+        <button class="btn primary" id="retryBtn">Retry module</button>
+        <button class="btn" id="dashBtn">Back to modules</button>
+      </div>
+      <div class="review-list" id="reviewList"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Week 1 study material · P2 Diabetes &amp; Obesity · for personal review use</footer>
+
+<script id="data" type="application/json">[{"id": "endo-principles", "title": "Clinically Useful Endocrine Principles", "group": "Diabetes Foundations", "q": [{"stem": "A patient has a low free T4 and a low TSH. Where does this most likely localize?", "opts": ["A laboratory error in the T4 assay", "Primary failure of the thyroid gland", "Peripheral resistance to thyroid hormone action", "Secondary failure at the pituitary or hypothalamus"], "correct": 3, "explain": "A low end-organ hormone paired with a trophic hormone that isn't appropriately elevated points upstream — an intact axis would drive TSH up in response to low T4, so a low TSH alongside low T4 localizes to the pituitary or hypothalamus."}, {"stem": "24-hour urine free cortisol is elevated and plasma ACTH is also elevated (26.4 pM). What is the most likely source of the excess?", "opts": ["Pituitary adenoma or an ectopic ACTH source", "Exogenous glucocorticoid use suppressing the axis", "An autonomously functioning adrenal adenoma", "Primary adrenal insufficiency from gland failure"], "correct": 0, "explain": "High cortisol with a high ACTH is ACTH-dependent hypercortisolism — a pituitary corticotroph adenoma (Cushing's disease) or an ectopic ACTH-secreting tumor. An adrenal source or exogenous steroid would suppress, not raise, ACTH."}, {"stem": "24-hour urine free cortisol is elevated but plasma ACTH is undetectable. What is the most likely source?", "opts": ["Primary adrenal failure with low cortisol", "A pituitary corticotroph adenoma causing Cushing's", "An adrenal adenoma or exogenous steroid", "An ectopic ACTH-secreting tumor of the lung"], "correct": 2, "explain": "High cortisol with suppressed ACTH is ACTH-independent — an autonomously functioning adrenal adenoma, or exogenous glucocorticoid (always excluded first). Pituitary and ectopic ACTH sources are wrong because both would drive ACTH up, not suppress it."}, {"stem": "AM serum cortisol is low (54.9 nM) and AM plasma ACTH is high (102.3 pM). What does this pattern represent?", "opts": ["Exogenous glucocorticoid use suppressing ACTH", "Primary adrenal failure, an Addison's pattern", "An ectopic ACTH-secreting tumor driving cortisol", "Secondary adrenal insufficiency from the pituitary"], "correct": 1, "explain": "Low cortisol with a compensatory high ACTH reflects loss of negative feedback from a failing adrenal gland — primary adrenal insufficiency. A pituitary problem would give low ACTH driving low cortisol, and an ectopic source or exogenous steroid would raise cortisol, not lower it."}, {"stem": "A patient with a large but hormonally normal thyroid goiter reports new voice hoarseness. What explains this symptom?", "opts": ["A functional deficiency of thyroid hormone", "An unrelated primary vocal cord tumor", "Excess thyroid hormone irritating the vocal cords", "Compression of the recurrent laryngeal nerve"], "correct": 3, "explain": "A structurally enlarged but functionally normal gland causes symptoms through mass effect on nearby structures — here, compression of the recurrent laryngeal nerve producing dysphonia, independent of hormone level."}, {"stem": "What is the single most common cause of clinically important Cushing's syndrome encountered in practice?", "opts": ["A pituitary corticotroph adenoma (Cushing's disease)", "A cortisol-secreting adenoma of the adrenal gland", "An ectopic ACTH-secreting tumor of the lung", "Prescribed exogenous glucocorticoid medication"], "correct": 3, "explain": "Iatrogenic glucocorticoid use is more common than any endogenous cause of Cushing's syndrome, which is why exogenous steroid use should always be near the top of the differential and excluded first."}, {"stem": "What is the most common cause of a low TSH with a high free T4 (thyrotoxicosis) seen in practice?", "opts": ["Subacute thyroiditis releasing stored thyroid hormone", "Over-replacement with prescribed levothyroxine therapy", "Graves' disease driven by TSH-receptor antibodies", "A toxic multinodular goiter secreting hormone"], "correct": 1, "explain": "Just as with Cushing's syndrome, an iatrogenic cause is the most common explanation — over-replacement with levothyroxine is more common than Graves' disease as a cause of this biochemical pattern."}, {"stem": "A patient has an anatomically enlarged gland with entirely normal hormone levels on testing. How should this be categorized?", "opts": ["Both a structural and functional problem", "A pure functional problem of deficient hormone", "A pure functional problem of excess hormone", "A pure structural problem, function intact"], "correct": 3, "explain": "Structure and function are independent axes to assess. Normal hormone levels with an anatomically abnormal gland is a purely structural problem, evaluated by imaging and exam rather than hormone testing."}, {"stem": "A patient recently started high-dose steroids for an unrelated illness now has suppressed ACTH and elevated cortisol. What is the correct interpretation?", "opts": ["Order a pituitary MRI to find an adenoma", "Test specifically for primary adrenal insufficiency", "Order a chest CT to find an ectopic tumor", "Recognize this as exogenous, iatrogenic Cushing's"], "correct": 3, "explain": "The pattern (high cortisol, suppressed ACTH) plus a clear history of exogenous steroid use points to iatrogenic Cushing's — always the first cause to exclude before pursuing imaging for an endogenous source."}, {"stem": "Before pursuing endogenous causes of any hormone excess syndrome, what is the first question a clinician should ask?", "opts": ["Is the patient taking an exogenous hormone", "Has the patient recently changed their diet", "Does the patient have a family history", "Has the patient had recent genetic testing"], "correct": 0, "explain": "Exogenous or iatrogenic hormone use is the most common cause of both glucocorticoid excess and thyrotoxicosis, so it should always be excluded first before an endogenous workup begins."}]}, {"id": "diabetes-physiology", "title": "Introduction to Diabetes Physiology & Pathophysiology", "group": "Diabetes Foundations", "q": [{"stem": "A 10-year-old with a sibling who has T1DM tests positive for anti-GAD and anti-insulin antibodies, with a fasting glucose of 6.5 mmol/L. Which stage of T1DM development is this?", "opts": ["Stage 1 — autoantibodies with normal glucose", "Stage 2 — autoantibodies with dysglycemia", "Stage 3 — symptomatic clinical diabetes", "Stage 4 — long-standing established diabetes"], "correct": 1, "explain": "Multiple positive autoantibodies plus dysglycemia (an elevated but not yet diabetic-range fasting glucose) defines Stage 2 — autoimmunity is active and glucose regulation has already begun to fail, but symptoms haven't developed yet."}, {"stem": "A monozygotic twin of a person with T1DM has roughly a 50% risk of developing it too. What does this concordance rate indicate about T1DM's cause?", "opts": ["T1DM is purely a genetic disease", "A strong genetic component, but not solely genetic", "T1DM is purely an environmental disease", "Twin studies are not informative for T1DM"], "correct": 1, "explain": "A 50% concordance is far above the general population risk, showing a strong genetic contribution — but well below 100%, meaning environmental or other non-genetic factors must also be required to trigger disease."}, {"stem": "By the time a patient reaches the prediabetes glucose range, roughly what proportion of beta cell function has already been lost?", "opts": ["Roughly 20 percent of beta cell function", "Essentially no beta cell function is lost", "Roughly 80 percent of beta cell function", "Roughly 50 percent of beta cell function"], "correct": 2, "explain": "Beta cells compensate for rising insulin resistance for a long time before glucose visibly rises — by the time someone is in the prediabetes range, about 80% of beta cell function is already gone."}, {"stem": "In Type 2 diabetes, which incretin hormone is actually decreased, contributing to the reduced incretin effect (as opposed to the incretin that is elevated but ineffective)?", "opts": ["Both GLP-1 and GIP are increased", "Neither incretin hormone changes in T2DM", "GIP levels are decreased in T2DM", "GLP-1 levels are decreased in T2DM"], "correct": 3, "explain": "In T2DM, GIP levels are actually increased but the insulin response to it is blunted, while GLP-1 levels themselves are decreased — both contribute to the reduced incretin effect seen in T2DM."}, {"stem": "In Type 2 diabetes, fat cells become resistant to insulin's normal antilipolytic effect. What downstream consequence follows?", "opts": ["Rising free fatty acids that worsen insulin resistance", "Increased leptin secretion that suppresses appetite", "Decreased glucagon secretion from the pancreas", "Falling free fatty acids that improve glucose uptake"], "correct": 0, "explain": "Insulin-resistant fat cells release more free fatty acids (FFAs). These FFAs then stimulate gluconeogenesis and further impair insulin secretion and action, compounding the underlying insulin resistance."}, {"stem": "SGLT-2 expression rises in states of hyperglycemia. What effect does this have on a patient's diabetes control?", "opts": ["Increased renal glucose reabsorption, worsening hyperglycemia", "Decreased renal glucose reabsorption, improving hyperglycemia", "No meaningful effect on blood glucose control", "Increased renal glucose excretion, improving hyperglycemia"], "correct": 0, "explain": "Increased SGLT-2 activity reabsorbs more filtered glucose back into the blood instead of excreting it, which potentiates rather than relieves the underlying hyperglycemia — a vicious cycle in T2DM."}, {"stem": "Circulating glucagon levels are higher than normal in people with Type 2 diabetes. What best explains this finding?", "opts": ["Autoimmune destruction of glucagon-secreting cells", "Complete absence of pancreatic alpha cells", "Glucagon receptors becoming completely desensitized", "Partly driven by reduced GLP-1 suppression of glucagon"], "correct": 3, "explain": "GLP-1 normally suppresses glucagon release; with GLP-1 levels reduced in T2DM, that suppression weakens, contributing to inappropriately elevated glucagon and increased hepatic gluconeogenesis."}, {"stem": "Which of the following is NOT one of the well-characterized T1DM autoantibodies discussed in the module?", "opts": ["Zinc transporter 8, abbreviated ZnT8, antibody", "Insulinoma-associated protein 2, or IA-2", "Anti-thyroglobulin, a thyroid-specific marker", "Glutamic acid decarboxylase, or GAD, antibody"], "correct": 2, "explain": "GAD, IA-2, ZnT8, and insulin/proinsulin antibodies are the well-characterized islet autoantibodies used in T1DM risk staging. Anti-thyroglobulin is a thyroid autoimmunity marker, not one of the T1DM islet antibodies."}, {"stem": "In the autoimmune destruction seen in T1DM, what happens to the glucagon-producing alpha cells relative to the insulin-producing beta cells?", "opts": ["Alpha cells convert directly into beta cells", "Alpha cells are relatively spared from destruction", "Alpha cells are destroyed along with beta cells", "Alpha cells stop producing glucagon entirely"], "correct": 1, "explain": "The autoimmune attack in T1DM is targeted specifically at insulin-producing beta cells; the neighboring glucagon-producing alpha cells are relatively preserved, which is part of why glucagon remains an active hormone in T1DM."}, {"stem": "Once the fat storage capacity of adipocytes is exceeded, what happens to excess fat in the pathophysiology of T2DM?", "opts": ["Fat is safely stored in bone marrow instead", "Excess fat is directly excreted in the urine", "Fat storage capacity simply increases to compensate", "Fat spills into muscle, liver, and beta cells"], "correct": 3, "explain": "Once adipocyte storage capacity is reached, fat 'spills over' into muscle, liver, and beta cells, where it drives insulin resistance in muscle and liver and impairs insulin secretion from the beta cells themselves."}]}, {"id": "t1dm-peds", "title": "Type 1 Diabetes in Children & Adolescents", "group": "Diabetes Foundations", "q": [{"stem": "An 8-year-old boy has 2 weeks of fatigue, 3 weeks of polyuria and polydipsia, weight loss, random glucose 18.9 mmol/L, and positive urine ketones. What is the diagnosis?", "opts": ["Diabetes insipidus from an ADH deficiency", "New-onset Type 1 diabetes, most likely", "A simple pediatric urinary tract infection", "New-onset Type 2 diabetes, most likely"], "correct": 1, "explain": "The classic triad of polyuria, polydipsia, and weight loss, plus a markedly elevated random glucose and ketonuria in a young child, is the classic presentation of new-onset Type 1 diabetes."}, {"stem": "What is the general target A1c for a child or adolescent under 18 with Type 1 diabetes, per current guidelines?", "opts": ["A target A1c of less than 6.0%", "A target A1c of less than 5.0%", "A target A1c of less than 9.0%", "A target A1c of less than 7.5%"], "correct": 3, "explain": "Current pediatric guidelines target an A1c under 7.5% in most children, balancing the benefits of glycemic control against the elevated risk of severe hypoglycemia in this age group."}, {"stem": "A patient on multiple daily insulin injections shows consistently high lunchtime readings across several days, while breakfast, supper, and bedtime readings are closer to target. What adjustment is most appropriate?", "opts": ["Increase the bedtime basal insulin dose", "Decrease the breakfast rapid-acting insulin dose", "Increase the breakfast rapid-acting insulin dose", "Increase the lunchtime rapid-acting insulin dose"], "correct": 2, "explain": "A consistent post-lunch high reflects insufficient coverage from the insulin acting over that period — the breakfast rapid-acting dose — so increasing it, not the lunch or bedtime dose, targets the actual gap."}, {"stem": "What is a key advantage of insulin pump therapy over multiple daily injections in children with T1DM?", "opts": ["No need for any glucose monitoring at all", "Complete elimination of all hypoglycemia risk", "More precise dosing with flexible meal timing", "Lower cost with a simpler daily routine"], "correct": 2, "explain": "Pumps allow more precise, adjustable basal and bolus dosing and let meals be timed or skipped flexibly, improving both control and quality of life — though monitoring and hypoglycemia risk are still present."}, {"stem": "Compared to fingerstick testing, what key advantage does continuous glucose monitoring (CGM) provide?", "opts": ["Continuous trend data instead of single snapshots", "Higher accuracy than any fingerstick reading", "Direct measurement of venous blood glucose", "No need for any periodic sensor replacement"], "correct": 0, "explain": "CGM reports glucose trends every few minutes rather than single isolated values, enabling proactive management and predictive alerts rather than only reactive responses to a single fingerstick reading."}, {"stem": "The DCCT trial found what key tradeoff with intensive glycemic control in Type 1 diabetes?", "opts": ["Fewer complications with no added risks at all", "No difference in complications either way", "Fewer long-term complications but more severe hypoglycemia", "More complications despite less severe hypoglycemia"], "correct": 2, "explain": "Intensive treatment reduced the risk of long-term microvascular complications but came with a 2-3 fold increase in severe hypoglycemia — the classic tradeoff between tight control and tolerability."}, {"stem": "A child with T1DM develops shakiness, sweating, hunger, and pallor shortly before dinner. What are these symptoms?", "opts": ["Symptoms of an allergic reaction to insulin", "Early, adrenergic symptoms of low blood sugar", "Late, neuroglycopenic symptoms of low blood sugar", "Classic early symptoms of diabetic ketoacidosis"], "correct": 1, "explain": "Shakiness, sweating, hunger, and pallor are adrenergic (sympathetic) warning symptoms that appear early in hypoglycemia, before the later neuroglycopenic symptoms like confusion or drowsiness develop."}, {"stem": "A child with known T1DM is found unconscious and cannot safely swallow. What is the appropriate immediate treatment?", "opts": ["Oral glucose tablets given carefully by mouth", "Wait and recheck blood glucose in an hour", "Intramuscular or intranasal glucagon injection now", "A larger dose of rapid-acting insulin"], "correct": 2, "explain": "When a patient cannot safely swallow, oral treatment is unsafe — glucagon (intramuscular, subcutaneous, or intranasal) is the appropriate emergency treatment to rapidly raise blood glucose."}, {"stem": "An insulin pump's bolus calculator subtracts 'insulin on board' before recommending a correction dose. Why is this done?", "opts": ["To account for recent carbohydrate intake only", "To calibrate the pump's glucose sensor", "To avoid stacking insulin and causing hypoglycemia", "To increase the total insulin dose given"], "correct": 2, "explain": "Subtracting still-active insulin from a previous dose prevents 'stacking' additional insulin on top of it, which would otherwise risk a dangerous cumulative overdose and subsequent hypoglycemia."}, {"stem": "The 'time in range' concept illustrates what important point, even between two patients who share the same A1c?", "opts": ["That A1c is inaccurate and unusable clinically", "That neither patient needs further monitoring", "Identical glucose variability in both patients", "Very different glucose variability and wellbeing"], "correct": 3, "explain": "Two patients can have an identical A1c (say 7%) yet very different day-to-day glucose variability and time spent in range, which affects wellbeing and risk in ways that A1c alone does not capture."}]}, {"id": "insulin-pharm", "title": "Pharmacology of Insulin", "group": "Diabetes Pharmacology & Management", "q": [{"stem": "Why do rapid-acting insulin analogs (like lispro or aspart) act faster than regular human insulin?", "opts": ["Structural changes speed monomer dissociation from hexamers", "They bypass the subcutaneous tissue entirely on injection", "They contain a substantially higher total insulin dose", "They are injected using a considerably larger needle"], "correct": 0, "explain": "Insulin self-associates into hexamers, and only monomers activate the receptor. Structural changes in rapid-acting analogs speed hexamer dissociation into monomers, producing a faster onset of action."}, {"stem": "Which self-association state of insulin is capable of activating the insulin receptor?", "opts": ["All self-association states act equally", "Only the hexamer form of insulin", "Only the monomer form of insulin", "Only the dimer form of insulin"], "correct": 2, "explain": "Insulin self-associates from monomers to dimers to hexamers, but only the monomer is small enough and correctly configured to bind and activate the insulin receptor."}, {"stem": "A patient needs IV insulin as part of management for severe hyperkalemia. Which insulin formulation can safely be given intravenously?", "opts": ["Insulin degludec is the only option", "Insulin glargine is the only option", "Any rapid-acting analog works equally well", "Regular human insulin is the only option"], "correct": 3, "explain": "Only regular human insulin is approved and appropriate for intravenous administration; basal analogs like glargine and degludec are formulated for subcutaneous depot release and are not given IV."}, {"stem": "Insulin icodec is notable for being dosed only once weekly. What property of the molecule makes this possible?", "opts": ["Once monthly, from hepatic depot storage", "Once weekly, from an albumin-bound depot", "Once daily, identical to insulin glargine", "Twice daily, from very rapid absorption kinetics"], "correct": 1, "explain": "Icodec's fatty diacid modification creates an albumin-bound depot with reduced receptor affinity, producing a very long half-life (about 196 hours) that supports once-weekly dosing at steady state."}, {"stem": "What is the single most common adverse drug reaction associated with insulin therapy overall?", "opts": ["Lipohypertrophy, from repeated same-site injection", "Weight gain, from insulin's anabolic actions", "Hypoglycemia, from insulin's direct glucose-lowering action", "Allergic reaction, from formulation additives"], "correct": 2, "explain": "Hypoglycemia is the most common adverse effect of insulin, a direct extension of its intended glucose-lowering action, and the main reason absorption kinetics and dose timing matter so much clinically."}, {"stem": "A patient who injects insulin at the same abdominal spot for years now has unpredictable absorption and a firm, painless lump there. What is this?", "opts": ["Lipohypertrophy at the injection site", "Cellulitis developing at the injection site", "An insulin allergy at the injection site", "A subcutaneous insulin-secreting tumor forming"], "correct": 0, "explain": "Repeated injection at the same site causes lipohypertrophy — a fatty, firm lump with slow and unpredictable insulin absorption — which is why systematic site rotation is recommended."}, {"stem": "Why are basal insulins generally not used in, or mixed for use in, insulin pumps?", "opts": ["Pumps can only deliver oral diabetes medications", "Basal insulins are chemically unstable when exposed to air", "Pumps need one continuously adjustable rapid formulation", "Basal insulins cannot lower blood glucose at all"], "correct": 2, "explain": "Pumps deliver a single, continuously adjustable rapid-acting insulin to mimic both basal and bolus needs; basal insulin formulations aren't designed for this continuous infusion approach."}, {"stem": "A patient on a stable insulin regimen develops progressively declining renal function. What adjustment should be considered?", "opts": ["No insulin adjustment is ever needed", "Insulin dose may need to be reduced", "Switch immediately to an oral agent instead", "Insulin dose should always be increased"], "correct": 1, "explain": "Reduced renal clearance of insulin can prolong its effect and increase hypoglycemia risk, so dose adjustment (often reduction) should be considered as renal function declines."}, {"stem": "What is the key clinical advantage of rapid-acting insulin analogs compared to regular human insulin?", "opts": ["Better matching of the post-meal glucose surge", "Significantly greater overall reduction of A1c", "Elimination of the need for basal insulin", "A much longer overall duration of action"], "correct": 0, "explain": "Rapid analogs aren't necessarily more effective at lowering A1c overall, but their faster onset better matches the post-meal glucose surge, giving more predictable postprandial control and less hypoglycemia."}, {"stem": "Which factors are known to affect the absorption of subcutaneously injected insulin?", "opts": ["Only the patient's blood type and sex", "Only the specific brand of insulin pen used", "Injection site, local blood flow, and muscle activity", "Only the total insulin dose that is injected"], "correct": 2, "explain": "Insulin absorption depends on route, formulation, dose, injection site, local blood flow, and muscle activity — for example, exercising a limb just after injection there speeds absorption."}]}, {"id": "t2dm-diagnosis", "title": "Type 2 Diabetes — Diagnosis & Epidemiology", "group": "Diabetes Foundations", "q": [{"stem": "A routine A1c comes back 6.2% in an asymptomatic patient. How should this result be classified?", "opts": ["Normal, requiring no further testing at all", "Prediabetes, in the A1c 6.0–6.4% range", "Type 1 diabetes, refer to endocrinology urgently", "Frank Type 2 diabetes, confirm and treat now"], "correct": 1, "explain": "An A1c between 6.0% and 6.4% falls in the prediabetes range, one of three ways (along with IFG and IGT) a patient can land in this glucose 'grey zone' between normal and diabetes."}, {"stem": "Why were the specific diagnostic glucose thresholds for diabetes chosen at their current values?", "opts": ["They match the renal glucose reabsorption threshold", "They were set arbitrarily by expert committee vote", "They mark the level where retinopathy risk rises", "They mark the level where neuropathy fully resolves"], "correct": 2, "explain": "The diagnostic cut-points are not arbitrary — they mark the glycemic level at which the risk of diabetic retinopathy rises sharply, making them a clinically meaningful threshold rather than a round number."}, {"stem": "A 28-year-old with an incidental glucose of 12 mmol/L and only mild fatigue has a mother with T1DM and a grandfather with T2DM. Which history detail would most support T2DM over T1DM here?", "opts": ["Presence of both urine and serum ketones", "A positive family history of Type 1 diabetes", "Recent weight gain and reduced physical activity", "A sudden and dramatic recent weight loss"], "correct": 2, "explain": "Recent weight gain and reduced activity are classic T2DM risk drivers and support an indolent T2DM course, whereas dramatic weight loss or ketosis would instead point toward an acute T1DM presentation."}, {"stem": "Metabolic syndrome in a patient without diagnosed diabetes signals an increased future risk of what?", "opts": ["Cardiovascular disease and future Type 2 diabetes", "Type 1 diabetes and autoimmune thyroid disease", "Only an increased future bone fracture risk", "No meaningful increase in any future health risk"], "correct": 0, "explain": "Metabolic syndrome — hypertension, low HDL, high triglycerides, visceral obesity, and elevated glucose — signals elevated risk for both future cardiovascular disease and future Type 2 diabetes."}, {"stem": "Monozygotic twin concordance for Type 2 diabetes is roughly what, compared to the lower concordance seen in Type 1 diabetes?", "opts": ["About 10 percent, notably lower than in T1DM", "About 90 percent, much higher than in T1DM", "About 0 percent, showing no genetic link at all", "About 50 percent, roughly similar to T1DM"], "correct": 1, "explain": "If one monozygotic twin develops T2DM, the other has roughly a 90% risk — a much stronger genetic signal than the roughly 50% concordance seen for T1DM."}, {"stem": "Which population groups are specifically noted as being at particularly elevated risk for developing Type 2 diabetes?", "opts": ["Only populations living permanently at high altitude", "No specific ethnic group carries elevated risk", "Only populations of Northern European descent", "South Asian, Hispanic, and Indigenous populations"], "correct": 3, "explain": "Asian, South Asian, Hispanic, Indigenous, and African-descent populations, along with women with a history of gestational diabetes, are specifically identified as being at elevated T2DM risk."}, {"stem": "What intrauterine exposure pattern is associated with increased later-life risk of Type 2 diabetes?", "opts": ["Delivery method, whether vaginal or Caesarian", "Both very low and very high birth weight", "Maternal iron supplementation taken during pregnancy", "Only an exactly average birth weight range"], "correct": 1, "explain": "Both underweight and overweight infants show increased metabolic risk decades later, alongside exposure to higher in-utero glucose levels, which may cause lasting metabolic programming."}, {"stem": "Can a Type 2 diabetes diagnosis ever technically resolve with lifestyle change alone?", "opts": ["Yes, if glucose falls below threshold with lifestyle change", "No, Type 2 diabetes is always permanent once diagnosed", "Yes, but this is only possible after bariatric surgery", "No, medication is always required once diagnosed"], "correct": 0, "explain": "Because the diagnostic threshold is a defined glucose cut-point, if weight loss and activity bring glucose below that threshold, a patient technically no longer meets diagnostic criteria — though periodic rechecking is still wise."}, {"stem": "What proportion of all diabetes cases worldwide is Type 2 diabetes?", "opts": ["About 90 percent of all diabetes cases", "About 25 percent of all diabetes cases", "About 10 percent of all diabetes cases", "About 50 percent of all diabetes cases"], "correct": 0, "explain": "Type 2 diabetes accounts for roughly 90% of all diabetes cases worldwide, making it the dominant driver of the overall global diabetes burden and pandemic."}, {"stem": "A patient with prediabetes is told the pancreas 'can only support the needs of a smaller body.' What does this imply about lifestyle-only management for some patients?", "opts": ["Lifestyle change alone may not fully reverse it", "Medication is never appropriate in this scenario", "Lifestyle change alone always fully reverses it", "The original diagnosis must have been made in error"], "correct": 0, "explain": "Not all T2DM is due to being overweight and underactive — if underlying insulin deficiency is significant, blood glucose may stay elevated despite excellent lifestyle change, requiring medication regardless of weight."}]}, {"id": "glucose-lowering-drugs", "title": "Pharmacology of Glucose-Lowering Drugs", "group": "Diabetes Pharmacology & Management", "q": [{"stem": "A patient starts metformin and develops nausea and diarrhea in the first weeks. What is the most likely explanation?", "opts": ["Evidence the drug is not being absorbed", "An early sign of impending lactic acidosis", "An allergic reaction requiring immediate discontinuation", "Common, often dose-limiting GI side effects"], "correct": 3, "explain": "GI effects like nausea, diarrhea, and abdominal discomfort are common and often dose-limiting adverse effects of metformin, distinct from the rare but serious complication of lactic acidosis."}, {"stem": "A patient on long-term metformin develops progressively worsening renal function. What serious risk becomes more likely?", "opts": ["Weight gain from significant fluid retention", "Bladder cancer from prolonged drug exposure", "Lactic acidosis from renal drug accumulation", "Hypoglycemia from excess insulin secretion"], "correct": 2, "explain": "Metformin is eliminated unchanged by the kidneys, so renal impairment causes it to accumulate, raising the risk of the rare but serious complication of lactic acidosis."}, {"stem": "Sulfonylureas cause hypoglycemia more often than metformin because of what underlying mechanism?", "opts": ["Insulin release independent of the glucose level", "Insulin release only when glucose is high", "Increased peripheral insulin sensitivity only", "Decreased hepatic glucose production only"], "correct": 0, "explain": "Sulfonylureas trigger insulin secretion by directly closing the beta cell K+/ATP channel, regardless of the current glucose level — unlike glucose-dependent agents, this raises hypoglycemia risk."}, {"stem": "A patient on pioglitazone develops new leg swelling and shortness of breath. What complication does this represent?", "opts": ["An expected sign of good glycemic control", "A hypoglycemic episode caused by the medication", "A new bladder infection caused by the drug", "Fluid retention precipitating worsening heart failure"], "correct": 3, "explain": "TZDs like pioglitazone cause fluid retention, which can precipitate or worsen heart failure — this is why heart failure is a contraindication to starting this drug class."}, {"stem": "GLP-1 receptor agonists cause less hypoglycemia than sulfonylureas because of what property?", "opts": ["Glucose-independent stimulation of insulin secretion", "Complete inhibition of insulin secretion overall", "Glucose-dependent stimulation of insulin secretion", "No meaningful effect on insulin secretion at all"], "correct": 2, "explain": "GLP-1 receptor agonists stimulate insulin secretion in a glucose-dependent manner, meaning the effect diminishes as glucose normalizes — unlike sulfonylureas, which keep pushing insulin release regardless of glucose."}, {"stem": "A patient with a personal history of medullary thyroid carcinoma is considering a GLP-1 receptor agonist. What is the key concern?", "opts": ["GLP-1 agonists are contraindicated in this history", "GLP-1 agonists are first-line given this history", "GLP-1 agonists require no special caution here", "GLP-1 agonists only affect renal function here"], "correct": 0, "explain": "A history of medullary thyroid carcinoma or MEN2 syndrome is a contraindication to GLP-1 receptor agonists, based on a thyroid C-cell tumor signal seen in rodent studies."}, {"stem": "SGLT2 inhibitors lower blood glucose through what underlying mechanism?", "opts": ["Inhibiting hepatic glucose production only", "Blocking intestinal carbohydrate absorption directly", "Promoting glucosuria, independent of insulin action", "Stimulating additional pancreatic insulin secretion"], "correct": 2, "explain": "SGLT2 inhibitors block glucose reabsorption in the renal proximal tubule, promoting glucose loss in the urine (glucosuria) and lowering blood glucose independent of insulin secretion or action."}, {"stem": "A patient starting an SGLT2 inhibitor should be counseled about which expected risk of the drug class?", "opts": ["Permanent loss of all pancreatic function", "Significant weight gain over several months", "Severe hypoglycemia requiring emergency glucagon", "Genital yeast infections from ongoing glucosuria"], "correct": 3, "explain": "The glucosuric mechanism of SGLT2 inhibitors promotes fungal and bacterial growth in the genital area, making genital infections (along with UTIs and volume depletion) an expected class effect."}, {"stem": "Acarbose's most common limiting side effect relates to what underlying mechanism?", "opts": ["Flatulence from undigested carbohydrate fermentation", "Weight gain from a marked increase in appetite", "Hypoglycemia from excess pancreatic insulin release", "Sedation from central nervous system effects"], "correct": 0, "explain": "By blocking carbohydrate digestion in the small intestine, acarbose allows undigested carbohydrate to reach the colon, where gut bacteria ferment it, producing gas and flatulence."}, {"stem": "Why are SGLT2 inhibitors and GLP-1 receptor agonists preferentially chosen in patients with heart failure or chronic kidney disease?", "opts": ["They have the lowest overall daily pill burden", "They are consistently the cheapest available options", "They avoid essentially all gastrointestinal side effects", "Trial evidence shows independent cardiorenal protection"], "correct": 3, "explain": "Major outcome trials (EMPA-REG, DAPA-HF, CREDENCE, LEADER, FLOW, and others) established cardiovascular and renal protective benefits for these classes that are independent of their glucose-lowering effect."}]}, {"id": "dka-hhs-complications", "title": "Acute (DKA, HHS) & Chronic Complications", "group": "Diabetes Complications & Special Populations", "q": [{"stem": "A 22-year-old man with no known diabetes presents with severe abdominal pain, nausea, and vomiting. Labs show Na 130, K 3.2, bicarbonate 10, and glucose 25 mmol/L. What is the best confirmatory test?", "opts": ["Thyroid function tests and antibody panel", "Venous blood gas and serum ketones", "Abdominal ultrasound to evaluate for pancreatitis", "Fasting lipid panel and liver enzymes"], "correct": 1, "explain": "The picture (hyperglycemia, low bicarbonate, hyponatremia, hypokalemia) suggests new-onset T1DM presenting in DKA — a venous blood gas and serum ketones confirm the acidosis and ketosis needed for diagnosis."}, {"stem": "What key laboratory difference most reliably distinguishes DKA from HHS?", "opts": ["DKA has an elevated anion gap and acidosis", "HHS has more severe ketosis than DKA does", "DKA has a normal anion gap in almost all cases", "HHS presents with a lower glucose than DKA"], "correct": 0, "explain": "DKA is characterized by an elevated anion gap, low bicarbonate, and low pH from ketoacidosis, while HHS typically has a normal anion gap, near-normal pH, and negative or only trace ketones."}, {"stem": "An elderly patient with T2DM develops gradually rising glucose over several days, no abdominal pain or vomiting, and a very high serum osmolality. What is the diagnosis?", "opts": ["New-onset Type 1 diabetes presenting in DKA", "Hyperosmolar hyperglycemic state, or HHS", "Acute pancreatitis with reactive hyperglycemia", "Diabetic ketoacidosis, the classic DKA pattern"], "correct": 1, "explain": "A gradual onset over days, absence of abdominal pain or vomiting, and very high serum osmolality without significant ketosis or acidosis is the classic HHS pattern, typically in older patients with T2DM."}, {"stem": "During IV insulin treatment for DKA, which electrolyte requires the closest ongoing monitoring, and why?", "opts": ["Chloride, which insulin actively and rapidly depletes", "Potassium, which shifts intracellularly with insulin", "Calcium, which characteristically rises with treatment", "Magnesium, on which insulin has no known effect"], "correct": 1, "explain": "Insulin drives potassium into cells, so even a normal initial serum potassium can fall dangerously low during treatment, risking life-threatening cardiac arrhythmias if not monitored and replaced carefully."}, {"stem": "Once blood glucose falls to about 12–14 mmol/L during DKA treatment, what change is typically made to the IV fluids?", "opts": ["Add potassium and discontinue the normal saline", "Switch immediately to oral fluids only from now", "Stop the insulin infusion completely right away", "Add dextrose so the insulin infusion can continue"], "correct": 3, "explain": "Insulin needs to keep running to close the anion gap and resolve the underlying acidosis, so dextrose is added to the IV fluid at this point to prevent hypoglycemia while treatment continues."}, {"stem": "A patient with T1DM has progressive numb, tingling feet over years and a slow-healing foot ulcer, plus non-proliferative retinopathy, but no chest pain, claudication, or stroke symptoms. Which complication category applies?", "opts": ["Macrovascular complications only, no microvascular signs", "Neither microvascular nor macrovascular complications", "Microvascular complications only, no macrovascular signs", "Both microvascular and macrovascular complications"], "correct": 2, "explain": "Sensorimotor neuropathy, a foot ulcer, and retinopathy are all microvascular complications; the absence of any PVD, MI, or stroke/TIA symptoms means there is no evidence of macrovascular disease here."}, {"stem": "Proliferative retinopathy is considered vision-threatening because of what specific feature?", "opts": ["Cotton wool spots that never progress further", "New fragile vessels risking vitreous hemorrhage", "Mild macular edema with no bleeding risk", "Small dot hemorrhages that always fully resolve"], "correct": 1, "explain": "Proliferative retinopathy involves the growth of new, fragile blood vessels that are prone to bleeding into the vitreous, which is what distinguishes it as the vision-threatening stage requiring treatment."}, {"stem": "Charcot foot deformity develops through what underlying mechanism?", "opts": ["Direct bacterial infection of the underlying bone", "Unfelt repeated injury from ongoing sensory loss", "Poor circulation causing sudden gangrene onset", "Autoimmune destruction of the foot joint cartilage"], "correct": 1, "explain": "Peripheral neuropathy impairs the ability to sense repeated minor injuries to the foot, and this ongoing unfelt trauma leads to progressive joint destruction and characteristic deformities like the rocker-bottom foot."}, {"stem": "A patient asks why chronically high blood glucose damages nerves and blood vessels. Which mechanism is part of the answer?", "opts": ["Reduced oxidative stress within affected tissues", "Decreased intracellular sorbitol protecting the cell", "Complete loss of vascular endothelial growth factor", "Increased intracellular sorbitol causing osmotic injury"], "correct": 3, "explain": "High glucose increases intracellular sorbitol via the polyol pathway, causing osmotic cell swelling and injury — one of several proposed mechanisms (alongside oxidative stress and VEGF effects) behind chronic complications."}, {"stem": "What sick-day advice applies specifically to patients with Type 1 diabetes who are not eating due to illness?", "opts": ["Double the usual insulin dose immediately", "Switch entirely to an oral medication instead", "Stop all insulin entirely until eating resumes", "Continue taking at least some basal insulin"], "correct": 3, "explain": "Insulin (usually a reduced basal dose) should be continued even when not eating, since illness itself raises blood glucose and stopping insulin entirely risks precipitating DKA."}]}, {"id": "pregnancy-diabetes", "title": "Pregnancy and Diabetes", "group": "Diabetes Complications & Special Populations", "q": [{"stem": "A woman with pre-existing Type 2 diabetes is planning conception and her current A1c is 9%. What is the primary counseling point?", "opts": ["Optimize A1c before conception to lower malformation risk", "Malformations from hyperglycemia only occur in Type 1 diabetes", "It is fine to wait until after delivery to address A1c", "Malformation risk is unrelated to glycemic control"], "correct": 0, "explain": "Congenital malformation risk correlates directly with glycemic control, and optimal preconception control is associated with roughly a 70% reduction in congenital anomalies compared to poor control."}, {"stem": "Why is preconception glycemic control specifically so important for reducing malformation risk?", "opts": ["Malformation risk depends only on maternal age", "Organogenesis occurs in the first six weeks", "Insulin needs are typically lowest in early pregnancy", "Organogenesis occurs mostly in the third trimester"], "correct": 1, "explain": "Organogenesis happens in the first six weeks, often before a woman knows she has conceived, which is exactly why glycemic control needs to be excellent before conception, not just after a pregnancy is confirmed."}, {"stem": "A patient at 28 weeks gestation has a 50g glucose challenge result of 12.0 mmol/L. What is the next step?", "opts": ["No further action is needed, this result is normal", "Repeat the 50g glucose challenge again next week", "Proceed directly to the fasting 75g OGTT next", "GDM is diagnosed outright, no further testing needed"], "correct": 3, "explain": "A 50g screen result of 11.1 mmol/L or higher diagnoses GDM outright without needing the confirmatory 75g OGTT, which is reserved for intermediate results in the 7.8–11.0 mmol/L range."}, {"stem": "Gestational diabetes does not raise the risk of congenital malformations in the baby. Why not?", "opts": ["GDM only affects maternal, not fetal, glucose levels", "GDM never actually causes any degree of hyperglycemia", "Hyperglycemia in GDM occurs after organogenesis", "Organogenesis does not depend on glucose levels at all"], "correct": 2, "explain": "GDM is diagnosed at 24–28 weeks, well after the first-trimester window of organogenesis has closed, so the hyperglycemia of GDM cannot disrupt the organ formation that has already happened."}, {"stem": "Insulin needs typically fall during which stage, raising hypoglycemia risk for a pregnant patient with pre-existing diabetes?", "opts": ["The second trimester of the pregnancy", "The immediate postpartum period only", "The third trimester of the pregnancy", "The first trimester of the pregnancy"], "correct": 3, "explain": "Insulin needs commonly fall in the first trimester, raising hypoglycemia risk — this isn't limited to women with nausea and vomiting, and needs then rise progressively through the second and third trimesters."}, {"stem": "Why are ACE inhibitors and ARBs avoided for blood pressure control during pregnancy?", "opts": ["They are contraindicated due to potential fetal harm", "They have essentially no effect on blood pressure", "They are actually the safest antihypertensive class in pregnancy", "They are only considered unsafe in the third trimester"], "correct": 0, "explain": "ACE inhibitors and ARBs are contraindicated in pregnancy due to fetal harm; pregnancy-safe alternatives like beta blockers or calcium channel blockers are used instead for blood pressure control."}, {"stem": "A newborn of a mother with poorly controlled gestational diabetes is large for gestational age. Which delivery risk is most increased?", "opts": ["Neural tube defects related to fetal macrosomia", "Congenital heart disease related to macrosomia", "Shoulder dystocia related to fetal macrosomia", "Renal agenesis related to fetal macrosomia"], "correct": 2, "explain": "Macrosomia from GDM raises the risk of birth trauma during delivery, particularly shoulder dystocia and brachial plexus injury — not malformations, since GDM hyperglycemia occurs after organogenesis."}, {"stem": "A woman diagnosed with 'GDM' at 26 weeks still has elevated glucose well after delivery. What does this most likely suggest?", "opts": ["The newborn is causing ongoing maternal hyperglycemia", "She likely has true, pre-existing diabetes", "The GDM diagnostic criteria were applied incorrectly", "Postpartum stress is causing transient hyperglycemia"], "correct": 1, "explain": "True GDM resolves after delivery. Glucose that remains elevated postpartum is a clinical clue that the patient actually has true, pre-existing (often Type 2) diabetes that was only detected during pregnancy testing."}, {"stem": "Fasting and 1-hour post-meal blood glucose targets during pregnancy are the same across which set of conditions?", "opts": ["None of these conditions share the same targets", "GDM only, not pre-existing diabetes types", "GDM, Type 1 diabetes, and Type 2 diabetes", "Type 1 diabetes only, not GDM or Type 2"], "correct": 2, "explain": "Blood glucose goals during pregnancy — fasting under 5.3 mmol/L and 1-hour post-meal under 7.8 mmol/L — are identical whether the diagnosis is GDM, Type 1, or Type 2 diabetes."}, {"stem": "If lifestyle measures fail to control gestational diabetes, which medication is generally used first before others?", "opts": ["Glyburide, always used as the very first choice", "A sulfonylurea other than glyburide as first choice", "Metformin, which is safe though somewhat less potent", "An ACE inhibitor added for extra protection"], "correct": 2, "explain": "Metformin is safe in pregnancy though less powerful than insulin; glyburide crosses the placenta and risks neonatal hypoglycemia, so it's typically reserved for when metformin alone isn't enough."}]}, {"id": "prevent-t2dm", "title": "Can We Prevent Type 2 Diabetes?", "group": "Diabetes Complications & Special Populations", "q": [{"stem": "In the Diabetes Prevention Program (DPP) trial, which intervention reduced diabetes incidence more — intensive lifestyle change or metformin?", "opts": ["Neither intervention reduced incidence significantly at all", "Lifestyle change, reducing incidence by 58 percent", "Both reduced incidence by an exactly equal amount", "Metformin, reducing incidence by 58 percent instead"], "correct": 1, "explain": "The DPP trial found intensive lifestyle intervention reduced diabetes incidence by 58%, compared to a 31% reduction with metformin — both significant, but lifestyle change was clearly more effective."}, {"stem": "What weight loss goal was targeted in the lifestyle intervention arm of the DPP trial?", "opts": ["A goal of 20 percent body weight loss", "A goal of 7 percent body weight loss", "No specific weight loss goal was set", "A goal of 1 percent body weight loss"], "correct": 1, "explain": "The DPP lifestyle arm targeted 7% weight loss (with actual achieved loss around 5%), alongside 150 minutes per week of aerobic activity and reduced fat and calorie intake."}, {"stem": "A 55-year-old with prediabetes and a BMI of 38 is being considered for metformin as a preventive therapy. Which feature makes metformin especially likely to help her?", "opts": ["Her having no family history of diabetes", "Her age being over 60 years old already", "Her having a completely normal fasting glucose", "Her significant obesity, with a BMI over 35"], "correct": 3, "explain": "Metformin for diabetes prevention was found to be more effective specifically in younger individuals, those with significant obesity (BMI over 35), and women with a history of gestational diabetes."}, {"stem": "Which medication class showed the largest relative risk reduction for progression to diabetes in the DREAM trial?", "opts": ["Alpha-glucosidase inhibitors, reducing risk substantially", "Thiazolidinediones, like rosiglitazone, reducing risk substantially", "Sulfonylureas, which reduced progression risk substantially", "Insulin therapy, which reduced progression risk substantially"], "correct": 1, "explain": "In the DREAM trial, rosiglitazone (a TZD) produced a 62% relative risk reduction in progression to diabetes — the largest effect among the medication classes studied for prevention."}, {"stem": "Acarbose reduced progression to diabetes in trials, but what limited its long-term usefulness for prevention?", "opts": ["It significantly and permanently worsened kidney function", "The protective effect did not persist after stopping it", "It caused severe and frequent episodes of hypoglycemia", "It caused irreversible, permanent pancreatic damage"], "correct": 1, "explain": "Acarbose reduced diabetes progression by OGTT criteria while being taken, but this protective effect did not persist once the medication was discontinued — limiting its value as a durable preventive strategy."}, {"stem": "In weight-loss trials, semaglutide was associated with what outcome specifically in patients with prediabetes?", "opts": ["A high rate of new diabetes diagnoses instead", "Worsening glucose tolerance over the study period", "No measurable effect on blood glucose at all", "A high rate of reversion to normoglycemia"], "correct": 3, "explain": "Over 68 weeks, 84% of patients with prediabetes on semaglutide reverted to normoglycemia, compared to 47.8% on placebo — a striking effect on reversing, not just preventing, dysglycemia."}, {"stem": "How many medications are currently approved in Canada specifically for the indication of diabetes prevention?", "opts": ["One medication is approved for this specific indication", "None are currently approved for this specific indication", "Three medications are approved for this specific indication", "All glucose-lowering drugs are approved for this indication"], "correct": 1, "explain": "Despite promising research evidence across several drug classes, no medication currently carries formal approval in Canada specifically for the indication of preventing Type 2 diabetes."}, {"stem": "Bariatric surgery is generally associated with roughly what degree of total body weight loss?", "opts": ["About 60 to 70 percent of total body weight", "About 5 to 10 percent of total body weight", "About 30 to 35 percent of total body weight", "Essentially no measurable total body weight change"], "correct": 2, "explain": "Both Roux-en-Y gastric bypass and sleeve gastrectomy are associated with roughly 30-35% total body weight loss, though some weight regain (10-20%) is common over subsequent years."}, {"stem": "Which two procedures are described as the most commonly performed weight-loss surgeries?", "opts": ["Gastric banding and sleeve gastrectomy performed together", "Sleeve gastrectomy and Roux-en-Y gastric bypass together", "Roux-en-Y gastric bypass and gastric banding together", "Duodenal switch and gastric banding performed together"], "correct": 1, "explain": "Sleeve gastrectomy and Roux-en-Y gastric bypass are the two most commonly performed bariatric procedures; laparoscopic gastric banding is noted as no longer being performed."}, {"stem": "A patient asks whether healthy dietary patterns alone reduce future risk of Type 2 diabetes. What does the evidence show?", "opts": ["Yes, diets like Mediterranean reduce risk by about 20%", "No, diet has no measurable effect on future risk", "Yes, but only when combined with bariatric surgery", "No, only medication meaningfully reduces this future risk"], "correct": 0, "explain": "Healthy dietary patterns such as Mediterranean, DASH, and AHEI diets were each associated with roughly a 20% reduced risk of future Type 2 diabetes, independent of medication or surgery."}]}, {"id": "glycemic-goals", "title": "Glycemic Goals of Care in Adults", "group": "Diabetes Pharmacology & Management", "q": [{"stem": "An 85-year-old woman with severe dementia, fully dependent for daily activities, is on gliclazide (a hypoglycemia-risk drug). What A1c target is most appropriate?", "opts": ["The tightest possible target, under 6.0% overall", "A more liberal target, around 7.1 to 8.5%", "No A1c target is set for such patients", "A tight target, around 6.0 to 6.5% instead"], "correct": 1, "explain": "Dementia, functional dependence, and a hypoglycemia-risk medication all argue for relaxing the target, since the long-term benefits of tight control are harder to justify against near-term hypoglycemia risk."}, {"stem": "A 35-year-old man with Type 2 diabetes for 2 years, no complications, on metformin alone, and low hypoglycemia risk. What A1c target fits best?", "opts": ["A tight target of 6.5% or lower", "A liberal target of 9.0% or higher instead", "No specific A1c target is needed here", "A liberal target of 8.0 to 8.5% instead"], "correct": 0, "explain": "Young age, longer life expectancy, short diabetes duration, no complications yet, and low hypoglycemia risk on metformin all support a tighter target aimed at preventing future complications."}, {"stem": "A1c is considered the best-validated marker of glycemic control mainly because of what?", "opts": ["Its established link to complication risk shown in RCTs", "Its complete independence from red blood cell turnover", "Its ability to meaningfully change within just minutes", "Its complete lack of any laboratory measurement variability"], "correct": 0, "explain": "Major randomized trials (DCCT, UKPDS, ADVANCE, and others) established A1c's relationship to microvascular and, in some trials, cardiovascular complication risk, making it the best-validated glycemic marker."}, {"stem": "A patient's blood glucose reads 3.2 mmol/L, and they need help from a family member to treat it safely. How is this hypoglycemia classified?", "opts": ["Severe hypoglycemia, requiring assistance from another person", "Moderate hypoglycemia, easily self-treatable at home alone", "Mild hypoglycemia, easily self-treatable at home alone", "Asymptomatic hypoglycemia, discovered only incidentally"], "correct": 0, "explain": "Severe hypoglycemia is specifically defined as an episode requiring assistance from another person — a bystander, family member, EMS, or the emergency department — due to the severity of symptoms."}, {"stem": "Why does A1c tend to lag behind very recent changes in plasma glucose control?", "opts": ["It is essentially unrelated to average plasma glucose", "It only reflects glucose from the last 24 hours", "It reflects glucose only from years earlier, not weeks", "About half reflects glucose from the last 30 days"], "correct": 3, "explain": "A1c reflects mean glucose over roughly the preceding 8-12 weeks, but about half of the value is weighted toward the most recent 30 days, which is why it changes gradually rather than instantly."}, {"stem": "In patients with a limited life expectancy, why might tighter glycemic control reasonably be de-emphasized?", "opts": ["Complication-reducing benefits take years to accrue", "Tight control always improves quality of life instantly", "Long-term complications never develop in these patients", "Tight control completely eliminates all treatment costs"], "correct": 0, "explain": "The microvascular and cardiovascular benefits of tight glycemic control take years to manifest, so in patients with limited life expectancy, those benefits are harder to justify against near-term hypoglycemia risk."}, {"stem": "What is the recommended general A1c target for most adults with either Type 1 or Type 2 diabetes?", "opts": ["An A1c target of 7.0 percent or lower", "An A1c target of 10.0 percent or lower", "An A1c target of 5.0 percent or lower", "An A1c target of 9.0 percent or lower"], "correct": 0, "explain": "Guidelines recommend targeting an A1c of 7.0% or lower in most people with Type 1 or Type 2 diabetes to reduce microvascular complication risk, with individualization from there."}, {"stem": "Why does self-monitoring of blood glucose remain essential even alongside routine A1c testing?", "opts": ["It requires no patient involvement at all to interpret", "It fully replaces the need for any A1c testing", "It helps prevent and detect hypoglycemia in real time", "It measures average glucose over three whole months"], "correct": 2, "explain": "SMBG provides real-time feedback that A1c cannot: preventing and confirming hypoglycemia, guiding medication and dose changes, and giving patients immediate feedback on diet and activity choices."}, {"stem": "A patient with a history of severe hypoglycemia and hypoglycemia unawareness should generally have what kind of A1c target?", "opts": ["The tightest possible target that is available", "No change made to their current target at all", "A relaxed target, up to about 8.5% overall", "A target kept below 6.0% for safety overall"], "correct": 2, "explain": "Risk factors for severe hypoglycemia, including hypoglycemia unawareness or a history of recurrent severe lows, justify relaxing the A1c target above 7.0%, up to about 8.5%, for safety."}, {"stem": "What is the minimum glycemic goal that applies to essentially all patients with diabetes, regardless of other individual factors?", "opts": ["Freedom from significant hyper- and hypoglycemia symptoms", "An A1c kept under 6.0% at all times overall", "Insulin therapy started regardless of diabetes type", "Complete elimination of all glucose monitoring entirely"], "correct": 0, "explain": "Even when a specific numeric A1c target is individualized, the baseline minimum goal for every patient is freedom from clinically significant symptoms of both hyperglycemia and hypoglycemia."}]}, {"id": "prevention-complications", "title": "Prevention of Chronic Complications", "group": "Diabetes Complications & Special Populations", "q": [{"stem": "The DCCT trial found intensive glycemic control in Type 1 diabetes reduced which category of complications, with no significant within-trial effect shown for the other?", "opts": ["Reduced both categories about equally within the trial", "Reduced neither complication category within the trial", "Reduced microvascular complications, no macrovascular effect shown", "Reduced macrovascular complications, no microvascular effect shown"], "correct": 2, "explain": "DCCT showed large reductions in retinopathy, nephropathy, and neuropathy with intensive control, but did not show a significant macrovascular (MI/stroke) benefit within the original trial period itself."}, {"stem": "What was the main tradeoff observed with intensive glycemic control in the DCCT trial?", "opts": ["A 2 to 3 fold increase in hypoglycemia risk", "A 2 to 3 fold increase in overall weight gain", "A significant increase in bone fracture risk", "A significant increase in retinopathy risk instead"], "correct": 0, "explain": "Intensive treatment reduced microvascular complications substantially but came at the cost of a 2-3 fold increased risk of severe hypoglycemia compared to conventional treatment."}, {"stem": "The 'legacy effect,' or metabolic memory, observed in long-term DCCT and UKPDS follow-up describes what phenomenon?", "opts": ["Benefits disappearing immediately once a trial ends", "Benefits persisting after glucose control levels converge", "A1c permanently staying fixed at trial-era levels", "Complications appearing for the first time after age 80"], "correct": 1, "explain": "Even after the intensive and conventional groups' glucose control converged post-trial, the original intensive group retained significant long-term reductions in complications and mortality — the legacy or 'metabolic memory' effect."}, {"stem": "In UKPDS, intensive blood pressure control (compared to glucose control alone) reduced which set of outcomes?", "opts": ["Only neuropathy, with no other measurable benefit shown", "Only retinopathy, with no other measurable benefit shown", "No additional outcomes beyond glucose control alone", "Strokes and both microvascular and macrovascular disease"], "correct": 3, "explain": "Tight blood pressure control in UKPDS reduced strokes, diabetes-related death, heart failure, microvascular complications, and vision loss — a broader benefit than glucose control alone provided."}, {"stem": "A 31-year-old woman with a 20-year history of Type 1 diabetes and persistent microalbuminuria, not planning to conceive, is being started on new therapy. Which medication class is most appropriate to add?", "opts": ["A high-intensity statin specifically for renal protection", "A thiazide diuretic for blood pressure control only", "A sulfonylurea for additional glucose control", "An ACE inhibitor for renal protection"], "correct": 3, "explain": "ACE inhibitors (or ARBs) are specifically indicated for renal protection in patients with microalbuminuria, reducing progression of diabetic nephropathy — this is the targeted intervention here."}, {"stem": "What are the recommended LDL cholesterol and blood pressure targets for most adults with diabetes?", "opts": ["LDL under 2.0 mmol/L and BP at or under 130/80", "LDL under 1.0 mmol/L and BP at or under 110/70", "LDL under 4.0 mmol/L and BP at or under 150/90", "LDL under 3.0 mmol/L and BP at or under 140/90"], "correct": 0, "explain": "Guidelines target an LDL under 2.0 mmol/L (typically with a statin) and a blood pressure at or under 130/80 mmHg (typically with an ACE inhibitor or ARB) for most adults with diabetes."}, {"stem": "Mr. X, a 30-year-old newly diagnosed with Type 2 diabetes, presents with polyuria, polydipsia, and weight loss (A1c 14%). What first-line therapy is indicated given his symptom severity?", "opts": ["A sulfonylurea, regardless of his symptom severity", "Metformin alone, regardless of his symptom severity", "Lifestyle change alone, without starting any medication", "Insulin, given his significant hyperglycemic symptoms"], "correct": 3, "explain": "Very symptomatic hyperglycemia (marked polyuria, polydipsia, weight loss, very high A1c) warrants starting insulin rather than an oral agent alone, even in a patient ultimately diagnosed with Type 2 diabetes."}, {"stem": "Which lifestyle intervention most directly reduces macrovascular risk (MI, stroke, PVD) in patients with diabetes?", "opts": ["Smoking cessation, reducing MI, stroke, and PVD risk", "Increased dietary fiber alone, without other changes made", "Daily multivitamin use, reducing MI and stroke risk", "Annual dental cleaning, reducing MI and stroke risk"], "correct": 0, "explain": "Smoking cessation is specifically highlighted as reducing MI, stroke, peripheral artery disease, and possibly retinopathy — a direct macrovascular benefit distinct from general lifestyle advice."}, {"stem": "In UKPDS, did intensive glucose control alone reduce macrovascular disease within the original trial period?", "opts": ["Yes, but only in patients over 70 years old", "No macrovascular disease data was collected at all", "Yes, it substantially reduced macrovascular disease shown", "No, glucose control alone showed no macrovascular effect"], "correct": 3, "explain": "UKPDS found intensive glucose control alone reduced microvascular complications by 25% but showed no significant effect on macrovascular disease within the original trial — blood pressure control mattered more there."}, {"stem": "For primary CAD prevention (no known CAD) in diabetes, which factor determines whether a statin is started based on age and diabetes duration?", "opts": ["Any age at all, as long as LDL is normal", "Diabetes duration under 5 years only, regardless of age", "Over 30 years old with diabetes duration over 15 years", "Under 30 years old regardless of diabetes duration"], "correct": 2, "explain": "Guidelines recommend a statin for primary prevention in patients over 30 years old with diabetes duration over 15 years, or in anyone 40 years or older, regardless of duration."}]}, {"id": "obesity-intro", "title": "Introduction to Obesity", "group": "Obesity", "q": [{"stem": "A patient with a BMI of 32 and no other medical comorbidities asks about medication eligibility for weight loss. Does she qualify?", "opts": ["No, a qualifying comorbidity is always required too", "No, a BMI of at least 35 is required", "Yes, a BMI of 30 or higher alone qualifies", "Yes, but only with a prior GDM history too"], "correct": 2, "explain": "Weight-loss medication eligibility is BMI 30 kg/m2 or higher on its own, or BMI 27 or higher with a weight-related complication — her BMI of 32 alone already meets the threshold."}, {"stem": "Obesity is best understood as resulting from what, rather than simply willpower or energy balance alone?", "opts": ["A complex interaction of hormonal and other factors", "Purely a matter of voluntary caloric intake choices", "A single hormone deficiency, correctable with one drug", "A rare genetic mutation present in most cases"], "correct": 0, "explain": "Obesity results from a complex interplay of hormonal regulation, genetics, prenatal environment, medications, gut microbiome, and social determinants of health — not simply willpower or a single cause."}, {"stem": "Which hormone is primarily described as driving hunger, in contrast to the several hormones that mediate satiety?", "opts": ["Ghrelin, the main hunger-driving hormone", "Leptin, the main hunger-driving hormone", "Insulin, the main hunger-driving hormone", "GLP-1, the main hunger-driving hormone"], "correct": 0, "explain": "Ghrelin is the hormone that drives hunger, while leptin, GLP-1, GIP, CCK, insulin, and amylin all act to mediate satiety and signal fullness."}, {"stem": "A patient recently started an antipsychotic medication for an unrelated condition and has since gained significant weight. What category of obesity contributor does this represent?", "opts": ["A purely behavioral, willpower-related contributor", "An iatrogenic, medication-induced contributor", "A purely social determinant of health contributor", "A purely genetic, inherited contributor"], "correct": 1, "explain": "Certain medications, including steroids and antidepressants or antipsychotics, are recognized iatrogenic contributors to weight gain — a medication-driven cause rather than a behavioral or purely genetic one."}, {"stem": "After bariatric surgery, which micronutrient deficiency is considered the most serious due to potential neurologic sequelae?", "opts": ["Vitamin A deficiency, risking impaired night vision instead", "Thiamine deficiency, risking Wernicke's encephalopathy", "Calcium deficiency, risking reduced long-term bone density", "Iron deficiency, risking iron-deficiency anemia instead"], "correct": 1, "explain": "Thiamine deficiency is the most serious post-bariatric-surgery micronutrient deficiency because of its risk of Wernicke's encephalopathy, a potentially permanent neurologic complication."}, {"stem": "A post-bariatric-surgery patient presents with poor oral intake, nausea, and new confusion. Before giving IV glucose, what should be given first?", "opts": ["Calcium, given before any glucose is administered", "A multivitamin, given before any glucose is administered", "Thiamine, given before any glucose is administered", "Iron, given before any glucose is administered"], "correct": 2, "explain": "Giving glucose before thiamine can precipitate or worsen Wernicke's encephalopathy in a thiamine-deficient patient, so thiamine should always be given first in this clinical scenario."}, {"stem": "What BMI threshold defines bariatric surgery eligibility in a patient who also has an uncontrolled comorbidity like diabetes?", "opts": ["BMI of 20 or higher, regardless of any comorbidities", "BMI of 25 or higher, with any comorbidity present", "BMI of 40 or higher, with no comorbidity needed at all", "BMI of 30 or higher, with uncontrolled diabetes present"], "correct": 3, "explain": "Bariatric surgery eligibility is BMI 40 or higher alone, BMI 35 or higher with a complication, or BMI 30 or higher specifically with suboptimally controlled diabetes."}, {"stem": "Ranked by effectiveness for weight loss, which pharmacotherapy class is described as the most effective?", "opts": ["Lipase inhibitors, like orlistat used alone", "Alpha-glucosidase inhibitors, like acarbose alone", "Dual GLP-1/GIP agonists, like tirzepatide", "Sulfonylureas, like glyburide used alone"], "correct": 2, "explain": "The dual GLP-1/GIP agonist tirzepatide is ranked as the most effective weight-loss pharmacotherapy, followed by GLP-1 agonists like semaglutide, then naltrexone-bupropion, with orlistat rarely used."}, {"stem": "What is the first step in the '5 A's' framework for obesity management, before assessment or advice?", "opts": ["Agree on specific SMART goals first instead", "Advise on risks and treatment options first instead", "Assess contributors and the 4Ms first instead", "Ask permission before discussing weight at all"], "correct": 3, "explain": "The 5 A's begin with Ask — obtaining the patient's permission to discuss weight and examining any biases — before moving on to Assess, Advise, Agree, and Assist."}, {"stem": "Bariatric surgery is considered inappropriate for a patient with which of the following?", "opts": ["A history of a prior uncomplicated pregnancy", "An untreated, active substance use disorder", "Well-controlled hypothyroidism on stable medication", "A BMI measured at exactly 40 kg/m2"], "correct": 1, "explain": "Untreated substance use disorder, unstable psychiatric illness, malignancy or reduced life expectancy, and inability to adhere to long-term follow-up are all listed as reasons a patient is not a good bariatric surgery candidate."}]}]</script>
+
+<script>
+(function(){
+  "use strict";
+  var MODULES = JSON.parse(document.getElementById('data').textContent);
+  var CIRC = 2 * Math.PI * 58;
+
+  var store = { get:function(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+                set:function(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} } };
+  var results = store.get('caseBankResultsWk1-v1') || {};
+
+  var dashboard = document.getElementById('dashboard');
+  var quizview = document.getElementById('quizview');
+  var summaryview = document.getElementById('summaryview');
+  var groupsEl = document.getElementById('groups');
+
+  var state = { modIdx:-1, qIdx:0, correctCount:0, answers:[], locked:false };
+
+  function letterFor(i){ return String.fromCharCode(65+i); }
+
+  function renderDashboard(){
+    groupsEl.innerHTML = '';
+    var groups = [];
+    MODULES.forEach(function(m){
+      var g = groups.filter(function(x){ return x.name===m.group; })[0];
+      if(!g){ g = { name:m.group, mods:[] }; groups.push(g); }
+      g.mods.push(m);
+    });
+    groups.forEach(function(g){
+      var h = document.createElement('div');
+      h.className = 'group-heading';
+      h.innerHTML = '<h2>'+g.name+'</h2><div class="rule"></div><span class="count">'+g.mods.length+' module'+(g.mods.length>1?'s':'')+'</span>';
+      groupsEl.appendChild(h);
+
+      var grid = document.createElement('div');
+      grid.className = 'grid';
+      g.mods.forEach(function(m){
+        var idx = MODULES.indexOf(m);
+        var r = results[m.id];
+        var card = document.createElement('button');
+        card.className = 'card';
+        var badge = '<span class="badge new">Not started</span>';
+        var scoreLine = '';
+        if(r){
+          var pct = Math.round(100*r.score/r.total);
+          badge = pct>=80 ? '<span class="badge done">Completed</span>' : '<span class="badge retry">Review again</span>';
+          scoreLine = '<span class="score">Best <b>'+r.score+' / '+r.total+'</b> ('+pct+'%)</span>';
+        } else {
+          scoreLine = '<span class="score">10 questions</span>';
+        }
+        card.innerHTML =
+          '<span class="num">'+String(idx+1).padStart(2,'0')+' / 12</span>'+
+          '<h3>'+m.title+'</h3>'+
+          '<div class="card-foot">'+scoreLine+badge+'</div>';
+        card.addEventListener('click', function(){ startModule(idx); });
+        grid.appendChild(card);
+      });
+      groupsEl.appendChild(grid);
+    });
+  }
+
+  function startModule(idx){
+    state.modIdx = idx; state.qIdx = 0; state.correctCount = 0; state.answers = [];
+    dashboard.hidden = true; summaryview.hidden = true; quizview.hidden = false;
+    var m = MODULES[idx];
+    document.getElementById('quizGroup').textContent = m.group;
+    document.getElementById('quizTitle').textContent = m.title;
+    renderQuestion();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  function renderQuestion(){
+    var m = MODULES[state.modIdx];
+    var q = m.q[state.qIdx];
+    state.locked = false;
+    document.getElementById('progressLabel').textContent = 'Question '+(state.qIdx+1)+' of '+m.q.length;
+    document.getElementById('scoreLabel').textContent = 'Score '+state.correctCount+' / '+state.qIdx;
+    document.getElementById('progressFill').style.width = (100*state.qIdx/m.q.length)+'%';
+    document.getElementById('qTag').textContent = 'Case '+(state.qIdx+1);
+    document.getElementById('qStem').textContent = q.stem;
+
+    var optsEl = document.getElementById('opts');
+    optsEl.innerHTML = '';
+    q.opts.forEach(function(optText, i){
+      var b = document.createElement('button');
+      b.className = 'opt';
+      b.innerHTML = '<span class="letter">'+letterFor(i)+'</span><span>'+optText+'</span>';
+      b.addEventListener('click', function(){ selectOption(i); });
+      optsEl.appendChild(b);
+    });
+
+    document.getElementById('explain').hidden = true;
+    var nextBtn = document.getElementById('nextBtn');
+    nextBtn.disabled = true;
+    nextBtn.textContent = (state.qIdx === m.q.length-1) ? 'See results →' : 'Next question →';
+  }
+
+  function selectOption(i){
+    if(state.locked) return;
+    state.locked = true;
+    var m = MODULES[state.modIdx];
+    var q = m.q[state.qIdx];
+    var correct = (i === q.correct);
+    if(correct) state.correctCount++;
+    state.answers.push({ q:q, chosen:i, correct:correct });
+
+    var opts = document.querySelectorAll('#opts .opt');
+    opts.forEach(function(el, idx){
+      el.disabled = true;
+      if(idx === q.correct) el.classList.add('correct');
+      else if(idx === i) el.classList.add('incorrect');
+      else el.classList.add('dim');
+    });
+
+    var explain = document.getElementById('explain');
+    explain.innerHTML = '<b>'+(correct ? 'Correct. ' : 'Not quite. ')+'</b>'+q.explain;
+    explain.hidden = false;
+
+    document.getElementById('scoreLabel').textContent = 'Score '+state.correctCount+' / '+(state.qIdx+1);
+    document.getElementById('nextBtn').disabled = false;
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    var m = MODULES[state.modIdx];
+    if(state.qIdx < m.q.length-1){
+      state.qIdx++;
+      renderQuestion();
+    } else {
+      finishModule();
+    }
+  });
+
+  function finishModule(){
+    var m = MODULES[state.modIdx];
+    document.getElementById('progressFill').style.width = '100%';
+    quizview.hidden = true; summaryview.hidden = false;
+
+    var total = m.q.length, score = state.correctCount;
+    var pct = Math.round(100*score/total);
+    results[m.id] = { score:score, total:total };
+    var prev = store.get('caseBankResultsWk1-v1') || {};
+    var existing = prev[m.id];
+    if(!existing || existing.score < score) prev[m.id] = { score:score, total:total };
+    else results[m.id] = existing;
+    store.set('caseBankResultsWk1-v1', prev);
+    results = prev;
+
+    var offset = CIRC * (1 - pct/100);
+    var ring = document.getElementById('ringFg');
+    ring.style.strokeDasharray = CIRC;
+    ring.style.strokeDashoffset = CIRC;
+    requestAnimationFrame(function(){
+      ring.style.transition = 'stroke-dashoffset .6s ease';
+      ring.style.strokeDashoffset = offset;
+    });
+    document.getElementById('ringPct').textContent = pct+'%';
+    document.getElementById('sumTitle').textContent = m.title;
+    document.getElementById('sumSub').textContent = score+' of '+total+' correct — '+(pct>=80?'strong grasp of this module.':pct>=60?'solid, worth a second pass.':'flag this module for review.');
+
+    var reviewList = document.getElementById('reviewList');
+    reviewList.innerHTML = '';
+    var misses = state.answers.filter(function(a){ return !a.correct; });
+    if(misses.length){
+      var h = document.createElement('div');
+      h.style.textAlign = 'left';
+      h.style.fontFamily = "'JetBrains Mono',monospace";
+      h.style.fontSize = '.72rem';
+      h.style.color = 'var(--ink-soft)';
+      h.style.textTransform = 'uppercase';
+      h.style.letterSpacing = '.08em';
+      h.style.margin = '0 0 4px';
+      h.textContent = 'Missed questions';
+      reviewList.appendChild(h);
+    }
+    misses.forEach(function(a){
+      var item = document.createElement('div');
+      item.className = 'review-item';
+      item.innerHTML = '<span class="mark miss">&#10007;</span><div><b>'+a.q.stem+'</b><br>Correct answer: '+a.q.opts[a.q.correct]+'</div>';
+      reviewList.appendChild(item);
+    });
+
+    document.getElementById('retryBtn').onclick = function(){ startModule(state.modIdx); };
+  }
+
+  document.getElementById('dashBtn').addEventListener('click', backToDashboard);
+  document.getElementById('backBtn').addEventListener('click', backToDashboard);
+  function backToDashboard(){
+    quizview.hidden = true; summaryview.hidden = true; dashboard.hidden = false;
+    renderDashboard();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  renderDashboard();
+})();
+</script>

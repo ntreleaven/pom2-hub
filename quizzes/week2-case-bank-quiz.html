@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 2 Case Bank</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper: #f2f0e8;
+    --paper-raised: #fbfaf5;
+    --ink: #1e2a2e;
+    --ink-soft: #55625f;
+    --hairline: #d6d1c2;
+    --accent: #2c5f5a;
+    --accent-soft: #dce8e4;
+    --accent-ink: #163634;
+    --good: #2f6b3e;
+    --good-soft: #dfeee1;
+    --bad: #a03f37;
+    --bad-soft: #f6e3df;
+    --amber: #b5792c;
+    --amber-soft: #f3e6d2;
+    --shadow: 0 1px 2px rgba(30,42,46,.06), 0 8px 24px -12px rgba(30,42,46,.18);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #171d1e;
+      --paper-raised: #1f2729;
+      --ink: #e9eae4;
+      --ink-soft: #a5afab;
+      --hairline: #333e3f;
+      --accent: #7bbbb0;
+      --accent-soft: #223634;
+      --accent-ink: #cdeae4;
+      --good: #7fc98d;
+      --good-soft: #1e3324;
+      --bad: #e19489;
+      --bad-soft: #3a2320;
+      --amber: #e0b06b;
+      --amber-soft: #3a2f1a;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #171d1e;
+    --paper-raised: #1f2729;
+    --ink: #e9eae4;
+    --ink-soft: #a5afab;
+    --hairline: #333e3f;
+    --accent: #7bbbb0;
+    --accent-soft: #223634;
+    --accent-ink: #cdeae4;
+    --good: #7fc98d;
+    --good-soft: #1e3324;
+    --bad: #e19489;
+    --bad-soft: #3a2320;
+    --amber: #e0b06b;
+    --amber-soft: #3a2f1a;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Public Sans', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+  }
+
+  h1,h2,h3{ font-family:'Fraunces', Georgia, serif; text-wrap:balance; margin:0; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+
+  a{ color:inherit; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  /* ---------- shell ---------- */
+  .shell{ max-width:1040px; margin:0 auto; padding:0 24px 96px; }
+  .topbar{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:16px; padding:28px 24px 20px; max-width:1040px; margin:0 auto;
+    border-bottom:1px solid var(--hairline);
+  }
+  .brand{ display:flex; flex-direction:column; gap:2px; }
+  .brand .kicker{
+    font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--accent); font-weight:600;
+  }
+  .brand h1{ font-size:1.5rem; font-weight:600; }
+  .topstat{ text-align:right; font-family:'JetBrains Mono', monospace; font-size:.78rem; color:var(--ink-soft); }
+  .topstat b{ color:var(--ink); font-weight:600; }
+
+  /* ---------- dashboard ---------- */
+  .intro{ padding:32px 0 8px; max-width:640px; }
+  .intro p{ margin:10px 0 0; color:var(--ink-soft); line-height:1.55; font-size:.97rem; }
+
+  .group-heading{
+    display:flex; align-items:center; gap:12px;
+    margin:36px 0 14px;
+  }
+  .group-heading h2{ font-size:1.05rem; font-weight:600; color:var(--ink); white-space:nowrap; }
+  .group-heading .rule{ height:1px; background:var(--hairline); flex:1; }
+  .group-heading .count{ font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--ink-soft); }
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:14px; }
+
+  .card{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:18px 18px 16px; text-align:left; box-shadow:var(--shadow);
+    display:flex; flex-direction:column; gap:12px; min-height:150px;
+    transition:transform .15s ease, border-color .15s ease;
+    position:relative; overflow:hidden;
+  }
+  .card:hover{ transform:translateY(-2px); border-color:var(--accent); }
+  .card:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .card .num{
+    font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--ink-soft);
+    letter-spacing:.06em;
+  }
+  .card h3{ font-size:1.05rem; font-weight:500; line-height:1.28; flex:1; }
+  .card-foot{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .badge{
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; font-weight:600;
+    padding:3px 8px; border-radius:99px; letter-spacing:.02em;
+  }
+  .badge.new{ background:var(--accent-soft); color:var(--accent-ink); }
+  .badge.done{ background:var(--good-soft); color:var(--good); }
+  .badge.retry{ background:var(--amber-soft); color:var(--amber); }
+  .score{ font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--ink-soft); }
+  .score b{ color:var(--ink); }
+
+  /* ---------- quiz view ---------- */
+  .quiz-header{
+    display:flex; align-items:center; gap:14px; padding:26px 0 6px; flex-wrap:wrap;
+  }
+  .back-btn{
+    background:none; border:1px solid var(--hairline); border-radius:8px;
+    padding:7px 12px; font-size:.82rem; color:var(--ink-soft); display:flex; align-items:center; gap:6px;
+  }
+  .back-btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .quiz-title{ flex:1; min-width:200px; }
+  .quiz-title .kicker{ font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; font-weight:600;}
+  .quiz-title h2{ font-size:1.25rem; font-weight:600; margin-top:2px; }
+
+  .progress-wrap{ padding:14px 0 30px; }
+  .progress-meta{ display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--ink-soft); margin-bottom:6px; }
+  .progress-track{ height:6px; background:var(--hairline); border-radius:99px; overflow:hidden; }
+  .progress-fill{ height:100%; background:var(--accent); border-radius:99px; transition:width .3s ease; }
+
+  .stem-card{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:12px;
+    padding:26px 28px; box-shadow:var(--shadow); margin-bottom:20px;
+  }
+  .stem-card .vignette-tag{
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--ink-soft);
+    text-transform:uppercase; letter-spacing:.08em; margin-bottom:10px; display:block;
+  }
+  .stem{ font-size:1.14rem; line-height:1.55; font-weight:400; }
+
+  .opts{ display:flex; flex-direction:column; gap:10px; }
+  .opt{
+    display:flex; align-items:flex-start; gap:12px; text-align:left;
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; font-size:.98rem; line-height:1.45; color:var(--ink);
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .opt:hover:not(:disabled){ border-color:var(--accent); }
+  .opt:disabled{ cursor:default; }
+  .opt .letter{
+    font-family:'JetBrains Mono',monospace; font-weight:600; font-size:.82rem;
+    width:22px; height:22px; border-radius:6px; background:var(--accent-soft); color:var(--accent-ink);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;
+  }
+  .opt.correct{ background:var(--good-soft); border-color:var(--good); }
+  .opt.correct .letter{ background:var(--good); color:var(--paper-raised); }
+  .opt.incorrect{ background:var(--bad-soft); border-color:var(--bad); }
+  .opt.incorrect .letter{ background:var(--bad); color:var(--paper-raised); }
+  .opt.dim{ opacity:.55; }
+
+  .explain{
+    margin-top:16px; padding:16px 18px; border-radius:10px; background:var(--accent-soft);
+    border-left:3px solid var(--accent); font-size:.92rem; line-height:1.55; color:var(--ink);
+  }
+  .explain b{ color:var(--accent-ink); }
+
+  .quiz-nav{ display:flex; justify-content:flex-end; margin-top:20px; }
+  .next-btn{
+    background:var(--accent); color:var(--paper-raised); border:none; border-radius:8px;
+    padding:11px 22px; font-size:.92rem; font-weight:600; display:flex; align-items:center; gap:8px;
+    box-shadow:var(--shadow);
+  }
+  .next-btn:disabled{ background:var(--hairline); color:var(--ink-soft); box-shadow:none; cursor:not-allowed; }
+  .next-btn:not(:disabled):hover{ filter:brightness(1.06); }
+
+  /* ---------- summary ---------- */
+  .summary{ padding:40px 0; text-align:center; }
+  .summary .ring{
+    width:132px; height:132px; margin:0 auto 20px; position:relative;
+  }
+  .summary .ring svg{ transform:rotate(-90deg); }
+  .summary .ring .pct{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-size:1.7rem; font-weight:600;
+  }
+  .summary h2{ font-size:1.4rem; margin-bottom:6px; }
+  .summary p{ color:var(--ink-soft); margin:0 0 26px; }
+  .summary-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .btn{
+    border:1px solid var(--hairline); background:var(--paper-raised); color:var(--ink);
+    border-radius:8px; padding:10px 18px; font-size:.9rem; font-weight:500;
+  }
+  .btn.primary{ background:var(--accent); color:var(--paper-raised); border-color:var(--accent); font-weight:600; }
+  .btn:hover{ border-color:var(--accent); }
+
+  .review-list{ text-align:left; max-width:640px; margin:30px auto 0; display:flex; flex-direction:column; gap:10px; }
+  .review-item{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; font-size:.88rem; display:flex; gap:10px; align-items:flex-start;
+  }
+  .review-item .mark{ font-size:.85rem; margin-top:1px; }
+  .review-item .mark.miss{ color:var(--bad); }
+  .review-item .mark.hit{ color:var(--good); }
+  .review-item div{ line-height:1.5; color:var(--ink-soft); }
+  .review-item b{ color:var(--ink); font-weight:500; }
+
+  [hidden]{ display:none !important; }
+
+  footer{
+    max-width:1040px; margin:0 auto; padding:40px 24px 0; color:var(--ink-soft);
+    font-size:.78rem; border-top:1px solid var(--hairline); margin-top:56px; padding-top:20px;
+  }
+
+  @media (max-width:560px){
+    .stem-card{ padding:20px; }
+    .topbar{ flex-direction:column; align-items:flex-start; gap:6px; }
+    .topstat{ text-align:left; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">P2 · Week 2 · Endocrinology &amp; Reproduction</span>
+    <h1>Case Bank</h1>
+  </div>
+  <div class="topstat" id="topstat">120 questions · 12 modules</div>
+</div>
+
+<main class="shell">
+
+  <section id="dashboard">
+    <div class="intro">
+      <p>Ten clinical-vignette questions per module, drawn from the Week 2 course material. Options are written to similar length on purpose — work the case, don't read the answer key by eye.</p>
+    </div>
+    <div id="groups"></div>
+  </section>
+
+  <section id="quizview" hidden>
+    <div class="quiz-header">
+      <button class="back-btn" id="backBtn">&larr; All modules</button>
+      <div class="quiz-title">
+        <div class="kicker" id="quizGroup"></div>
+        <h2 id="quizTitle"></h2>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="progressLabel">Question 1 of 10</span>
+        <span id="scoreLabel">Score 0 / 0</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="stem-card">
+      <span class="vignette-tag" id="qTag">Case</span>
+      <div class="stem" id="qStem"></div>
+    </div>
+
+    <div class="opts" id="opts"></div>
+    <div class="explain" id="explain" hidden></div>
+
+    <div class="quiz-nav">
+      <button class="next-btn" id="nextBtn" disabled>Next question &rarr;</button>
+    </div>
+  </section>
+
+  <section id="summaryview" hidden>
+    <div class="summary">
+      <div class="ring">
+        <svg width="132" height="132" viewBox="0 0 132 132">
+          <circle cx="66" cy="66" r="58" fill="none" stroke="var(--hairline)" stroke-width="10"/>
+          <circle id="ringFg" cx="66" cy="66" r="58" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round"/>
+        </svg>
+        <div class="pct" id="ringPct">0%</div>
+      </div>
+      <h2 id="sumTitle"></h2>
+      <p id="sumSub"></p>
+      <div class="summary-actions">
+        <button class="btn primary" id="retryBtn">Retry module</button>
+        <button class="btn" id="dashBtn">Back to modules</button>
+      </div>
+      <div class="review-list" id="reviewList"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Week 2 study material · P2 Endocrinology &amp; Reproduction · for personal review use</footer>
+
+<script id="data" type="application/json">[{"id": "thyroid-parathyroid-physiology", "title": "Thyroid & Parathyroid Physiology", "group": "Thyroid & Parathyroid", "q": [{"stem": "A researcher blocks the basolateral transporter that pulls iodide into thyroid follicular cells from the bloodstream, riding the sodium gradient. Which transporter is being inhibited?", "opts": ["Sodium-iodide symporter (NIS)", "Pendrin at the apical membrane", "Thyroid peroxidase enzyme complex", "Sodium-potassium ATPase pump"], "correct": 0, "explain": "NIS sits on the basal membrane and drags iodide into the follicular cell against its gradient, riding the Na+ gradient; pendrin then exports it across the apical membrane into colloid."}, {"stem": "A patient has elevated free T4 but low free T3, with normal thyroid gland function on scan. Testing shows impaired peripheral hormone activation. Which enzyme family is most likely underperforming?", "opts": ["Thyroid peroxidase enzymes", "Peripheral deiodinase enzymes", "Adenylyl cyclase signaling", "Renal 1-alpha-hydroxylase enzyme"], "correct": 1, "explain": "Deiodinases (D1-D4) convert the abundant T4 into the far more potent T3 at the tissue level; a deficiency here would leave T4 elevated while active T3 lags behind."}, {"stem": "A pregnant patient on estrogen-containing therapy has a low total T4 but a normal free T4 and normal TSH, with no thyroid symptoms. What best explains this lab pattern?", "opts": ["Estrogen raises TBG binding capacity", "Undiagnosed primary hypothyroidism", "Estrogen suppresses hepatic TBG output", "Accelerated peripheral clearance of T4"], "correct": 0, "explain": "Estrogen increases hepatic synthesis of thyroxine-binding globulin (TBG), raising the bound fraction and total T4 while the physiologically active free T4 and TSH stay normal."}, {"stem": "A patient from a historically iodine-deficient inland region develops a diffusely enlarged thyroid with elevated TSH and low T4, but no autoantibodies. What mechanism best explains the goiter?", "opts": ["Autoimmune destruction of follicles", "Chronic TSH stimulation from lost feedback", "A RET point mutation driving growth", "TSH-receptor blocking antibodies"], "correct": 1, "explain": "Low iodine limits hormone synthesis, which removes negative feedback on the pituitary; the resulting chronic TSH elevation drives follicular cell hypertrophy and hyperplasia, producing the goiter."}, {"stem": "A patient's parathyroid hormone level is checked after a low-calcium meal. Which combined action of PTH best explains how it raises plasma calcium?", "opts": ["Increases DCT calcium reabsorption and induces calcitriol", "Increases urinary calcium loss directly", "Suppresses osteoclast activity in bone", "Blocks intestinal calcium absorption"], "correct": 0, "explain": "PTH raises calcium both directly, by increasing distal tubule calcium reabsorption, and indirectly, by inducing renal 1-alpha-hydroxylase to make calcitriol, which boosts intestinal absorption."}, {"stem": "A patient with chronic kidney disease has a low-normal calcium and a markedly elevated PTH that never fully normalizes calcium. What best explains this persistent pattern?", "opts": ["The parathyroid glands have atrophied", "Impaired renal calcitriol production limits calcium absorption", "PTH receptors have been fully downregulated", "The patient likely has FHH instead"], "correct": 1, "explain": "CKD impairs 1-alpha-hydroxylase activity, so calcitriol production and intestinal calcium absorption stay limited no matter how high PTH climbs - this is secondary hyperparathyroidism."}, {"stem": "A physiology exam asks what fraction of the roughly 10 g of calcium filtered by the kidney each day is normally reabsorbed under PTH regulation. What is the correct approximate figure?", "opts": ["About 50 percent", "About 70 percent", "About 85 percent", "About 98 percent"], "correct": 3, "explain": "Under normal PTH-driven reabsorption, the kidney reclaims roughly 98% of filtered calcium each day, with the distal convoluted tubule specifically upregulated by PTH."}, {"stem": "On histology, a thyroid follicle's lumen is filled with a dense, pink-staining, iodinated protein that the cell will later reabsorb by pinocytosis to release active hormone. What is this material called?", "opts": ["Colloid, containing iodinated thyroglobulin", "Osteoid matrix protein", "A pendrin-thyroglobulin complex", "Free circulating calcitriol"], "correct": 0, "explain": "Colloid is stored iodinated thyroglobulin in the follicular lumen; the cell later retrieves it by pinocytosis and proteolyzes it in lysosomes to release T3 and T4."}, {"stem": "A bone biopsy is being used to identify the cell type that senses mechanical strain and coordinates the balance between bone formation and resorption. Which cell is this?", "opts": ["Osteoblasts", "Osteoclasts", "Osteocytes", "Chondrocytes"], "correct": 2, "explain": "Osteocytes are the strain-sensing coordinators of remodeling, signaling to both osteoblasts (formation) and osteoclasts (resorption) to keep the skeleton responsive to mechanical load."}, {"stem": "A 58-year-old man has a solitary parathyroid adenoma discovered on imaging after routine labs. Which calcium and PTH pattern would confirm primary hyperparathyroidism?", "opts": ["High calcium with high PTH", "Low calcium with high PTH", "High calcium with low PTH", "Low calcium with low PTH"], "correct": 0, "explain": "In primary hyperparathyroidism, an autonomously secreting adenoma drives PTH up independent of calcium status, so both calcium and PTH are elevated together - unlike the appropriate PTH rise seen in secondary disease."}]}, {"id": "hypothyroidism-thyrotoxicosis", "title": "Hypothyroidism & Thyrotoxicosis", "group": "Thyroid & Parathyroid", "q": [{"stem": "A 34-year-old woman has fatigue and a low TSH with normal free T4 and free T3. No other symptoms are present. How should this pattern be classified and managed?", "opts": ["Overt hyperthyroidism needing immediate treatment", "Subclinical hyperthyroidism, managed by age and TSH level", "Central hypothyroidism needing urgent FT4 testing", "A lab error that should be disregarded"], "correct": 1, "explain": "Low TSH with normal free hormones is subclinical hyperthyroidism; treatment leans toward older patients or a lower TSH (arrhythmia and bone-loss risk), while younger patients with borderline values are often just monitored."}, {"stem": "A 40-year-old woman has thyrotoxicosis with a symmetric goiter, proptosis, and a strong family history of autoimmune disease. Which single test best confirms the underlying mechanism?", "opts": ["Anti-TPO antibody titre", "Radioactive iodine uptake and scan", "Serum calcitonin level", "Serum thyroglobulin level"], "correct": 1, "explain": "RAIU separates thyrotoxicosis by mechanism - diffusely high uptake in Graves', patchy nodular uptake in toxic multinodular goiter, and low uptake in thyroiditis - making it the best single etiology test."}, {"stem": "A patient recently started on levothyroxine also takes a morning multivitamin containing calcium and iron. What counseling point should be given about timing?", "opts": ["Take both together for best absorption", "Separate the multivitamin from levothyroxine by at least four hours", "Levothyroxine must only be taken at bedtime", "No separation between the two is necessary"], "correct": 1, "explain": "Calcium, iron, magnesium, and multivitamins impair levothyroxine absorption, so they should be separated by at least four hours; levothyroxine itself is taken roughly an hour before or two hours after food."}, {"stem": "A 45-year-old man has thyrotoxicosis, a tender goiter, and a recent viral illness, with LOW radioactive iodine uptake on scan. Which mechanism best fits this presentation?", "opts": ["Increased new hormone synthesis from a toxic adenoma", "Leakage of preformed hormone from subacute thyroiditis", "Chronic TSH-receptor stimulation from Graves' antibodies", "Exogenous levothyroxine overtreatment"], "correct": 1, "explain": "A tender goiter after a viral illness with low RAIU is classic subacute thyroiditis - inflamed follicles leak preformed hormone rather than synthesizing new hormone, so uptake is low despite high circulating T3/T4."}, {"stem": "A patient with Graves' disease and worsening orbitopathy is counseled on modifiable risk factors before starting radioactive iodine therapy. Which factor most worsens eye disease progression?", "opts": ["Continued cigarette smoking", "Daily caffeine intake", "Moderate aerobic exercise", "A high-iodine diet"], "correct": 0, "explain": "Smoking is the major modifiable risk factor for Graves' orbitopathy and can worsen it further after radioactive iodine, which is an important counseling point before choosing that treatment option."}, {"stem": "A patient with new hyperthyroid symptoms has a TSH that is normal despite a clearly low free T4, and is also found to have low cortisol. Which category of hypothyroidism does this suggest?", "opts": ["Primary hypothyroidism from Hashimoto's", "Central hypothyroidism from pituitary dysfunction", "Subclinical hypothyroidism, no action needed", "Thyroid hormone resistance syndrome"], "correct": 1, "explain": "A normal or low TSH despite genuinely low FT4, especially alongside another pituitary hormone deficiency (here cortisol), points to central hypothyroidism, where the pituitary itself fails to sense and respond appropriately."}, {"stem": "An elderly patient presents obtunded, hypothermic, hypotensive, and bradycardic after years of unmanaged hypothyroid symptoms. What is this life-threatening endpoint called?", "opts": ["Thyroid storm", "Myxedema coma", "Sick euthyroid syndrome", "Hashitoxicosis"], "correct": 1, "explain": "Myxedema coma is the rare, urgent endpoint of severe untreated hypothyroidism, presenting with obtundation, hypothermia, hypotension, bradycardia, hyponatremia, and hypoventilation - it requires emergent treatment."}, {"stem": "A 29-year-old woman with Graves' disease wants to become pregnant soon and needs symptom control now. Which antithyroid drug is generally preferred outside of pregnancy and thyroid storm?", "opts": ["Methimazole", "Propylthiouracil (PTU)", "Levothyroxine", "Radioactive iodine"], "correct": 0, "explain": "Methimazole is preferred over PTU outside of pregnancy and thyroid storm because of a better hepatotoxicity profile, though PTU is favored specifically in early pregnancy and in thyroid storm."}, {"stem": "A 60-year-old woman has a TSH of 12 with a positive anti-TPO antibody and mild fatigue, but a normal free T4. What is the best next step?", "opts": ["No treatment, since free T4 is normal", "Start levothyroxine given TSH above 10 with positive antibodies", "Order a radioactive iodine uptake scan", "Refer immediately for thyroidectomy"], "correct": 1, "explain": "Subclinical hypothyroidism is treated when TSH exceeds 10, anti-TPO is positive, or the patient is pregnant - this patient meets two of those criteria, making levothyroxine initiation appropriate."}, {"stem": "A patient taking excess over-the-counter thyroid supplements for weight loss has thyrotoxicosis with LOW radioactive iodine uptake and a low serum thyroglobulin. What is the most likely cause?", "opts": ["Graves' disease", "Toxic multinodular goiter", "Exogenous (factitious) thyroid hormone ingestion", "Subacute thyroiditis"], "correct": 2, "explain": "Low RAIU plus a low thyroglobulin (since exogenous hormone doesn't come from the gland itself) points to exogenous or factitious ingestion, distinguishing it from thyroiditis, where thyroglobulin is typically elevated."}]}, {"id": "thyroid-masses", "title": "Thyroid Nodule Workup", "group": "Thyroid & Parathyroid", "q": [{"stem": "A 42-year-old woman has a 2 cm enlarging thyroid nodule, a normal TSH, and a father with thyroid cancer. What is the appropriate next test?", "opts": ["CT scan of the neck", "Ultrasound of the thyroid with TI-RADS scoring", "Needle core biopsy of the nodule", "Radioactive iodine uptake scan"], "correct": 1, "explain": "With a normal TSH, ultrasound with TI-RADS risk stratification is the next step - the least invasive way to characterize the nodule and decide whether biopsy is warranted; RAIU is reserved for a low-TSH picture."}, {"stem": "A thyroid FNAB result comes back as Bethesda category V, suspicious for malignancy. What does this mean for management?", "opts": ["Low risk, routine follow-up is sufficient", "Indeterminate, repeat biopsy in six months", "High risk, surgery is generally indicated", "Non-diagnostic, the sample must be repeated"], "correct": 2, "explain": "Bethesda V and VI both carry a high risk of malignancy and generally warrant surgery, distinguishing them from category I (non-diagnostic, repeat) and the indeterminate categories III/IV."}, {"stem": "A patient's thyroid nodule is being sampled for tissue diagnosis. Why is fine needle aspiration preferred over needle core biopsy for this organ?", "opts": ["FNA shows more precise tissue architecture", "The thyroid's vascularity makes core biopsy risk seeding and hematoma", "Core biopsy cannot be read by pathologists", "FNA is reserved only for confirmed cancers"], "correct": 1, "explain": "The thyroid's high vascularity makes the large-bore core needle risky for tumour seeding and hematoma, so the much finer FNA needle is used first-line despite requiring more expertise to interpret."}, {"stem": "A patient presents with a rapidly enlarging, fixed, firm neck mass with stridor over two weeks. How should this nodule be triaged compared to the routine outpatient pathway?", "opts": ["Routine ultrasound in the next few weeks", "Urgent assessment, bypassing the routine pathway", "Reassurance, since most nodules are benign", "Watchful waiting for three months"], "correct": 1, "explain": "Rapid growth, stridor, progressive dysphagia, or a fixed firm mass are red flags that push a nodule out of the routine pathway and into urgent assessment for a potentially aggressive process like anaplastic carcinoma."}, {"stem": "A patient has a low TSH and a thyroid nodule. Which imaging study should be obtained first, before proceeding to ultrasound-based risk stratification?", "opts": ["Radioactive iodine uptake scan", "MRI of the neck", "PET-CT scan", "Contrast CT of the chest"], "correct": 0, "explain": "A low TSH prompts a radioactive iodine scan first - a 'hot,' functioning nodule is treated as benign hyperthyroidism, while a 'cold' nodule is indeterminate and proceeds to further workup like ultrasound and FNA."}, {"stem": "A thyroid ultrasound shows a nodule scored as TI-RADS low risk, and cytology on FNA returns benign. What is the appropriate next step?", "opts": ["Immediate surgical excision", "Clinical follow-up alone", "Repeat biopsy within one month", "Radioactive iodine ablation"], "correct": 1, "explain": "Low-risk ultrasound findings combined with benign cytology require only clinical follow-up - surgery is reserved for high-risk ultrasound findings, malignant or certain indeterminate cytology, or a symptomatic nodule."}, {"stem": "A resident orders an incisional biopsy on a thyroid nodule to get definitive tissue diagnosis before proceeding to surgery. What is the issue with this plan?", "opts": ["Incisional biopsy is standard practice for thyroid nodules", "Incisional biopsy is not performed on the thyroid; lobectomy is used instead", "Incisional biopsy requires no anesthesia and is preferred", "It is only used for parathyroid, not thyroid, lesions"], "correct": 1, "explain": "Open incisional biopsy is not used on the thyroid - if tissue-level assessment beyond FNA is needed, that means proceeding directly to a surgical lobectomy or thyroidectomy rather than an open biopsy of the mass in place."}, {"stem": "A 55-year-old man has a thyroid nodule with indeterminate ultrasound features and a Bethesda III cytology result. What is the most appropriate next step?", "opts": ["Immediate total thyroidectomy", "Repeat FNA biopsy or molecular testing", "No further action needed, treat as benign", "Start levothyroxine suppression therapy"], "correct": 1, "explain": "Bethesda III (atypia of undetermined significance) is inherently indeterminate, so the standard next step is a repeat biopsy or molecular testing rather than jumping straight to surgery or dismissing the finding."}, {"stem": "According to a Choosing Wisely-style approach to thyroid nodule workup, which principle should guide test ordering?", "opts": ["Order every available test to be thorough", "Use the least invasive test that changes management", "Match whatever the supervising physician usually orders", "Order tests primarily for the learning experience"], "correct": 1, "explain": "The Choosing Wisely framework emphasizes using the least invasive test first and ordering only what will actually change management - not testing reflexively or to match a preceptor's presumed preference."}, {"stem": "A patient's neck mass turns out to be a lymph node rather than thyroid tissue on further workup. What does this illustrate about the initial differential for a neck mass?", "opts": ["All neck masses are thyroid in origin by definition", "The differential must include lymph node, parathyroid, and soft tissue, not just thyroid", "Lymph nodes never present in the anterior neck", "Ultrasound cannot distinguish thyroid from lymph node tissue"], "correct": 1, "explain": "Not every neck mass is thyroid - lymph node, parathyroid, and soft tissue lesions all belong on the initial differential before the workup narrows specifically toward thyroid pathology."}]}, {"id": "thyroid-pathology", "title": "Thyroid Gland Pathology", "group": "Thyroid & Parathyroid", "q": [{"stem": "A patient's sister just had a hemithyroidectomy showing papillary thyroid carcinoma. What is the most accurate thing to say about her prognosis without more pathology detail?", "opts": ["It is benign, so there is nothing to worry about", "It is malignant, but generally carries a very good prognosis", "It is an aggressive cancer with a poor prognosis", "Prognosis cannot be discussed without a completion thyroidectomy"], "correct": 1, "explain": "Papillary carcinoma is malignant, not benign - but it is the most common and generally most indolent thyroid cancer type, with roughly 93% ten-year survival for most patients."}, {"stem": "On FNA cytology, a follicular lesion cannot be classified as benign versus malignant, even though papillary lesions often can be. What explains this difference?", "opts": ["Follicular lesions need invasion assessed on the full surgical specimen", "Follicular lesions are always benign regardless of invasion", "Papillary lesions cannot be sampled by FNA at all", "Follicular carcinoma never actually involves follicular cells"], "correct": 0, "explain": "Follicular adenoma and carcinoma look identical at the cellular level; the only distinguishing feature is capsular or vascular invasion, assessable only on the full excised specimen - unlike papillary carcinoma, diagnosed by nuclear features alone."}, {"stem": "A thyroidectomy specimen shows diffuse chronic inflammation, fibrosis, and follicular cells with abundant pink cytoplasm and enlarged nuclei. What is this characteristic cell change called?", "opts": ["Hurthle cell metaplasia", "Psammoma body formation", "Anaplastic transformation", "Follicular adenoma formation"], "correct": 0, "explain": "Hurthle cells are follicular cells that acquire abundant pink (oncocytic) cytoplasm and enlarged nuclei under the chronic inflammatory stress of Hashimoto thyroiditis - a metaplastic change, not a distinct cell population."}, {"stem": "A rapidly expanding, unresectable neck mass in an 80-year-old man is biopsied and shows sheets of malignant cells with no follicular structures and marked local invasion. What is the most likely diagnosis?", "opts": ["Follicular adenoma", "Papillary thyroid carcinoma", "Anaplastic (undifferentiated) carcinoma", "Multinodular hyperplasia"], "correct": 2, "explain": "Anaplastic carcinoma is highly aggressive, often unresectable due to local infiltration, and represents dedifferentiation from a prior well-differentiated cancer - histology shows sheets of cells with no organized follicular architecture."}, {"stem": "A thyroidectomy specimen shows nests and trabeculae of cells with amyloid deposits in the stroma, negative for standard thyroid follicular markers. What cell of origin does this suggest?", "opts": ["Follicular epithelial cells", "Parafollicular (C) cells producing calcitonin", "Hurthle cells from Hashimoto's", "Parathyroid chief cells"], "correct": 1, "explain": "Medullary thyroid carcinoma arises from calcitonin-producing C-cells, showing an infiltrative nest/trabecular pattern with amyloid deposits (deposited calcitonin) - a distinct lineage from the follicular-cell-derived cancers."}, {"stem": "A 30-year-old and a 60-year-old both have the identical extent of thyroid cancer on imaging and biopsy. Why might their AJCC/TNM stage differ significantly?", "opts": ["Thyroid cancer staging does not depend on age", "Staging is age-stratified, with under-55 capped at Stage I or II", "The younger patient is automatically staged higher regardless", "Only nodal status matters for staging, never patient age"], "correct": 1, "explain": "AJCC/TNM staging for differentiated thyroid cancer is uniquely age-stratified - patients under 55 are capped at Stage I or II even with extensive local disease, while those 55 and older are staged by the full set of anatomic factors."}, {"stem": "A thyroidectomy for a suspected toxic nodule instead shows diffusely hyperplastic follicular cells with papillary infoldings into the lumen but no nuclear atypia, in a patient with known TSH-receptor-stimulating antibodies. What is the diagnosis?", "opts": ["Papillary thyroid carcinoma", "Graves' disease (diffuse toxic hyperplasia)", "Follicular carcinoma", "Medullary thyroid carcinoma"], "correct": 1, "explain": "Graves' disease produces diffuse hyperplasia with papillary infoldings driven by TSH-receptor-stimulating antibodies, but critically lacks the nuclear atypia that would define a true papillary carcinoma."}, {"stem": "A follicular carcinoma is noted to spread through the bloodstream to distant sites rather than through lymphatics. Which thyroid cancer type is more classically associated with lymphatic spread to regional nodes instead?", "opts": ["Follicular carcinoma itself", "Papillary thyroid carcinoma", "Anaplastic carcinoma", "Osteosarcoma of the thyroid"], "correct": 1, "explain": "Papillary thyroid carcinoma is often multifocal and classically spreads via lymphatics to regional nodes, sometimes as the presenting finding - a contrast with follicular carcinoma's typical hematogenous spread pattern."}, {"stem": "A pathology report on a thyroid cancer specimen lists tumour size, capsular invasion status, lymphatic invasion, extrathyroidal extension, and nodal metastasis size. Why are all these elements included together?", "opts": ["They are required only for insurance billing purposes", "Together they determine need for further surgery, radioactive iodine, and prognosis", "Only tumour size actually affects management decisions", "These elements are recorded but rarely change clinical decisions"], "correct": 1, "explain": "The full set of pathology reporting elements together determines whether further surgery, radioactive iodine, or radiation is needed, along with recurrence risk and overall prognosis - no single element is assessed in isolation."}, {"stem": "A 6-year-old boy develops a fast-growing thyroid nodule shortly after prior neck irradiation for another condition. Which risk factor combination should raise particular suspicion for malignancy here?", "opts": ["His age alone, since children are lower risk", "His young age plus a history of prior neck radiation", "His sex alone, since males are always higher risk", "Neither factor increases malignancy risk in isolation"], "correct": 1, "explain": "Younger age (especially in children) and prior neck radiation are both established risk factors that raise suspicion for thyroid malignancy, and their combination here is a strong red flag warranting prompt workup."}]}, {"id": "parathyroid-disorders", "title": "Hyper- & Hypoparathyroidism", "group": "Thyroid & Parathyroid", "q": [{"stem": "A patient has a measured serum calcium of 2.3 mmol/L and an albumin of 30 g/L (normal albumin assumed 40). What is the corrected calcium?", "opts": ["2.1 mmol/L", "2.3 mmol/L, no correction needed", "2.5 mmol/L", "2.7 mmol/L"], "correct": 2, "explain": "Corrected Ca = measured Ca + 0.02 x (normal albumin - patient albumin) = 2.3 + 0.02 x 10 = 2.5 mmol/L; a low albumin makes total calcium look falsely low, so correcting raises the true value."}, {"stem": "A 65-year-old woman being worked up for osteoporosis has recurrent fractures, elevated calcium, elevated PTH, and normal 25-OH vitamin D. Which single 24-hour urine test best distinguishes primary hyperparathyroidism from familial hypocalciuric hypercalcemia?", "opts": ["Urine sodium excretion", "Fractional excretion of calcium", "Urine creatinine alone", "Urine phosphate excretion"], "correct": 1, "explain": "Fractional excretion of calcium below 0.01 suggests FHH, since calcium is conserved despite high serum calcium from a calcium-sensing receptor mutation, while above 0.02 suggests primary hyperparathyroidism with higher urinary calcium loss."}, {"stem": "A patient has low calcium, high phosphate, and a HIGH parathyroid hormone level, along with short stature and short metacarpal bones. What does this biochemical and phenotypic pattern suggest?", "opts": ["Primary hyperparathyroidism", "Vitamin D deficiency", "Pseudohypoparathyroidism (PTH resistance)", "True hypoparathyroidism from surgery"], "correct": 2, "explain": "Pseudohypoparathyroidism shows PTH resistance at the end organ - PTH rises appropriately in response to low calcium, but target tissues don't respond, producing the biochemical pattern of hypoparathyroidism despite elevated PTH, plus the Albright phenotype."}, {"stem": "A patient with corrected calcium of 3.2 mmol/L requires acute inpatient treatment. After confirming adequate hydration with normal saline, what is the next appropriate step in acute management?", "opts": ["Immediate parathyroidectomy", "Forced diuresis with saline plus furosemide", "Oral calcium supplementation", "Withholding all fluids to avoid volume overload"], "correct": 1, "explain": "Acute severe hypercalcemia is managed with volume repletion first, then forced diuresis using saline plus furosemide once the patient is adequately hydrated, followed by IV bisphosphonate and calcitonin as needed."}, {"stem": "A 70-year-old man develops symptomatic primary hyperparathyroidism. Which of the following would be a surgical indication rather than a reason for medical management alone?", "opts": ["Age over 50 with mild, asymptomatic disease", "A BMD T-score of -2.6 at the femoral neck", "Serum calcium within 0.1 mmol/L of the upper limit", "Normal creatinine clearance and no stones"], "correct": 1, "explain": "A T-score at or below -2.5 at any of the standard sites is a defined surgical indication in primary hyperparathyroidism, alongside markedly elevated calcium, reduced creatinine clearance, high urinary calcium, nephrolithiasis, or age under 50."}, {"stem": "A patient develops perioral paresthesias, carpopedal spasm, and a prolonged QT interval three days after total thyroidectomy. What is the most appropriate acute treatment?", "opts": ["Oral calcium carbonate alone", "IV calcium gluconate bolus with cardiac monitoring", "High-dose vitamin D without calcium", "Loop diuretic to lower calcium further"], "correct": 1, "explain": "Acute severe hypocalcemia with neurologic or cardiac symptoms (tetany, prolonged QT) is treated with an IV calcium gluconate bolus followed by continuous infusion, under cardiac monitoring, alongside correcting any coexisting hypomagnesemia."}, {"stem": "A patient with chronic hypoparathyroidism is being counseled on which diuretic class helps reduce urinary calcium loss and nephrolithiasis risk, in contrast to a class that would worsen hypocalcemia.", "opts": ["Thiazide diuretics reduce calcium loss; loop diuretics increase it", "Loop diuretics reduce calcium loss; thiazides increase it", "Both diuretic classes have identical effects on calcium", "Neither diuretic class affects urinary calcium excretion"], "correct": 0, "explain": "Thiazide-type diuretics reduce urinary calcium excretion and are used adjunctively in chronic hypoparathyroidism, while loop diuretics increase calcium excretion and would worsen hypocalcemia - an important prescribing distinction."}, {"stem": "A patient with metastatic breast cancer develops hypercalcemia with a suppressed PTH level. What mechanism is most likely driving the hypercalcemia?", "opts": ["A parathyroid adenoma independently secreting excess PTH", "PTHrP or bony metastases acting independently of the parathyroid", "Familial hypocalciuric hypercalcemia from a CaSR mutation", "Chronic thiazide diuretic use raising calcium"], "correct": 1, "explain": "Malignancy-associated hypercalcemia is PTH-independent, driven by bony metastases or humoral PTHrP secretion from the tumour, which appropriately suppresses native PTH - a key distinguishing feature from primary hyperparathyroidism."}, {"stem": "A patient develops hypocalcemia 8 months after thyroid surgery, with a persistently low PTH on repeat testing. How should this be classified?", "opts": ["Transient post-surgical hypoparathyroidism", "Permanent post-surgical hypoparathyroidism", "Pseudohypoparathyroidism", "Vitamin D deficiency alone"], "correct": 1, "explain": "Hypoparathyroidism persisting beyond 6 months post-surgery is classified as permanent rather than transient - the majority of post-surgical hypoparathyroidism (about 75% of all hypoparathyroidism cases) does resolve within that window, but this case has not."}, {"stem": "A patient's hypocalcemia workup shows low calcium and low phosphate together, distinct from the high-phosphate patterns of PTH-deficient or PTH-resistant disease. What is the most common underlying cause of this specific pattern?", "opts": ["Vitamin D deficiency", "Primary hyperparathyroidism", "Pseudohypoparathyroidism", "Tumour lysis syndrome"], "correct": 0, "explain": "The low-calcium, low-phosphate pattern is the vitamin-D-deficient pattern, and it is actually the most common cause of hypocalcemia overall - more common than either PTH-deficient or PTH-resistant disease."}]}, {"id": "calcium-drugs", "title": "Drugs Affecting Calcium Homeostasis", "group": "Thyroid & Parathyroid", "q": [{"stem": "A patient with stage 4 CKD and low 25-OH vitamin D is started on a vitamin D analog with a short half-life of about 19 days, primarily for secondary hyperparathyroidism. Which form is this?", "opts": ["Ergocalciferol (D2)", "Cholecalciferol (D3)", "Calcifediol, 25-(OH)D3", "Calcitriol, 1,25-(OH)2D3"], "correct": 2, "explain": "Calcifediol (25-OH-D3) is renally metabolized, is the major circulating vitamin D metabolite with a half-life around 19 days, and is specifically indicated for secondary hyperparathyroidism in CKD stage 3-4 patients with low 25-OH-D."}, {"stem": "A patient stops denosumab therapy without starting another agent and several months later develops multiple new vertebral fractures. What mechanism explains this outcome?", "opts": ["Denosumab causes permanent osteoclast suppression that shouldn't rebound", "Its effect is fully reversible, causing rapid rebound bone loss after stopping", "Denosumab has no lasting effect once a dose is given", "This must be an unrelated new osteoporosis diagnosis"], "correct": 1, "explain": "Unlike bisphosphonates, which stay retained in bone, denosumab's antiresorptive effect is fully reversible - stopping without a follow-up antiresorptive removes RANKL suppression and can trigger rebound bone loss with clustered vertebral fractures."}, {"stem": "A patient is prescribed daily subcutaneous teriparatide for severe osteoporosis. What dosing principle explains why this produces net bone formation rather than net bone loss?", "opts": ["Continuous exposure is required for an anabolic effect", "Intermittent, pulsatile dosing shifts the balance toward osteoblast-driven formation", "Teriparatide works only by blocking RANKL like denosumab", "The drug has no effect on osteoblasts at all"], "correct": 1, "explain": "Continuous PTH exposure is catabolic, but intermittent once-daily dosing of teriparatide (recombinant PTH 1-34) flips the effect to net anabolic, inhibiting resorption while stimulating osteoblast-driven bone formation."}, {"stem": "A postmenopausal woman with severe osteoporosis and a myocardial infarction eight months ago is being considered for a bone-forming agent with a dual antiresorptive/anabolic mechanism. Why would this specific agent be avoided right now?", "opts": ["It carries osteonecrosis risk unrelated to cardiovascular status", "It carries a boxed cardiovascular warning contraindicated within a year of MI or stroke", "It requires normal renal function that she may lack", "It cannot be combined with any other bone medication ever"], "correct": 1, "explain": "Romosozumab, a sclerostin inhibitor with dual antiresorptive/anabolic action, carries a boxed cardiovascular warning and is contraindicated within one year of an MI or stroke - distinct from the ONJ/AFF risks shared across potent antiresorptives."}, {"stem": "A patient taking oral bisphosphonate therapy is instructed to remain upright and take the medication on an empty stomach. What pharmacologic property explains these specific instructions?", "opts": ["Excellent oral bioavailability that food would waste", "Poor oral absorption and risk of esophageal irritation", "A requirement for co-administration with calcium", "Rapid hepatic metabolism requiring fasting"], "correct": 1, "explain": "Bisphosphonates are poorly absorbed orally and can cause esophageal or gastric irritation, so they are taken empty-stomach with the patient remaining upright afterward to minimize reflux and improve the modest absorption that does occur."}, {"stem": "A patient with severe renal impairment (CrCl less than 30) needs an antiresorptive agent. Which class is preferred specifically because its elimination does not depend on renal function?", "opts": ["Bisphosphonates", "Denosumab (RANKL inhibitor)", "Teriparatide", "Romosozumab"], "correct": 1, "explain": "Denosumab's elimination is independent of renal function, unlike bisphosphonates, which are renally excreted and accumulate in renal impairment - making denosumab a preferred option in patients with significant renal disease."}, {"stem": "A patient asks why calcium and vitamin D supplements alone were not enough to improve her bone density on a recent scan. What is the correct explanation?", "opts": ["Calcium and vitamin D alone rarely improve BMD without an added agent", "Calcium and vitamin D always fully treat osteoporosis alone", "She must have been taking the wrong form of vitamin D", "BMD scans cannot detect any improvement from supplements"], "correct": 0, "explain": "Calcium and vitamin D supplementation alone does not meaningfully improve bone mineral density - they support skeletal health but need to be paired with an antiresorptive or anabolic drug to meaningfully change BMD."}, {"stem": "A patient develops jaw pain and exposed bone after a dental extraction while on long-term IV bisphosphonate therapy for cancer-related bone disease. What is this complication called, and what raises its risk?", "opts": ["Atypical femoral fracture, raised by low-dose oral bisphosphonate", "Osteonecrosis of the jaw, raised by high-dose IV therapy and dental work", "Myxedema coma, raised by untreated severe hypothyroidism", "Rebound vertebral fracture, raised by stopping denosumab abruptly"], "correct": 1, "explain": "Osteonecrosis of the jaw is a rare complication of potent antiresorptive therapy, with risk rising alongside invasive dental procedures, poor oral hygiene, and higher cumulative or IV dosing - much more common at cancer-treatment IV doses than at osteoporosis doses."}, {"stem": "A drug is described as acting via a monoclonal antibody that binds RANKL with high affinity, inhibiting osteoclast formation, function, and survival. Which drug does this describe?", "opts": ["Teriparatide", "Denosumab", "Calcitriol", "Romosozumab"], "correct": 1, "explain": "Denosumab is a human monoclonal antibody against RANKL, the ligand that normally activates osteoclast differentiation and survival via the RANK receptor - blocking it suppresses bone resorption."}, {"stem": "A young patient with a subtrochanteric femur fracture after minimal trauma is found to have been on long-term potent antiresorptive therapy, with a preceding history of thigh pain. What complication does this describe?", "opts": ["Osteonecrosis of the jaw", "Atypical femoral fracture", "Rebound vertebral fracture from denosumab cessation", "Osteosarcoma transformation"], "correct": 1, "explain": "Atypical femoral fracture is a rare complication of long-term antiresorptive therapy, presenting as a transverse or short oblique subtrochanteric or diaphyseal fracture often preceded by thigh pain, and can be bilateral."}]}, {"id": "metabolic-bone-disease", "title": "Metabolic Bone Disease", "group": "Bone", "q": [{"stem": "A 23-year-old woman with celiac disease presents with falls, proximal muscle weakness, and X-ray findings of pseudofractures. What is the most likely diagnosis?", "opts": ["Paget's disease", "Osteomalacia from vitamin D deficiency", "Osteogenesis imperfecta", "Atypical femoral fracture from bisphosphonate use"], "correct": 1, "explain": "Malabsorption, proximal muscle weakness, and pseudofractures on imaging together point specifically to osteomalacia from vitamin D deficiency - pseudofractures are a classic, distinguishing radiologic finding, different from ordinary fragility fractures."}, {"stem": "A patient with known Paget's disease of the femur develops new, severe, disproportionate bone pain, a new lytic lesion, and a rising alkaline phosphatase after years of stable disease. What complication should be suspected?", "opts": ["Simple disease progression requiring no action", "Osteosarcoma", "Osteomalacia", "Atypical femoral fracture"], "correct": 1, "explain": "Osteosarcoma complicates 1-3% of Paget's disease cases, and the classic red flags are new disproportionate pain, a new lytic lesion, and a rising ALP on top of previously stable disease - this combination warrants urgent further workup."}, {"stem": "A 17-year-old girl with osteogenesis imperfecta Type 1 has had 5 fractures of various long bones this year, normal vitamin D, and regular menses. Which treatment is most appropriate?", "opts": ["Teriparatide", "Denosumab", "Zoledronate (IV bisphosphonate)", "Raloxifene"], "correct": 2, "explain": "IV bisphosphonates are the mainstay of OI bone disease treatment, indicated for more than 3 fractures per year - teriparatide is generally avoided in growing patients due to osteosarcoma risk concerns, and denosumab/raloxifene are not first-line here."}, {"stem": "A patient's lab work shows low calcium, low phosphate, high alkaline phosphatase, and low urinary calcium, alongside proximal muscle weakness. What imaging finding would confirm the suspected diagnosis?", "opts": ["Pseudofractures (Looser zones)", "A single expansile lytic skull lesion", "Blue sclerae on physical exam", "Wormian bones on skull X-ray"], "correct": 0, "explain": "This biochemical picture is classic osteomalacia, and pseudofractures (also called Looser zones) are the confirmatory radiologic finding, representing healed microfractures rather than the fragility fractures typical of osteoporosis."}, {"stem": "An elderly man's bloodwork incidentally shows a markedly elevated alkaline phosphatase with normal calcium and phosphate, and imaging reveals expanded, denser-than-normal bone in the pelvis. What is the most likely diagnosis?", "opts": ["Osteomalacia", "Paget's disease of bone", "Osteogenesis imperfecta", "Primary hyperparathyroidism"], "correct": 1, "explain": "Very high alkaline phosphatase with normal calcium and phosphate, alongside expanded, denser bone on imaging, is the classic biochemical and radiologic signature of Paget's disease - a localized disorder of excessive remodeling."}, {"stem": "A newborn with multiple in-utero fractures, blue sclerae, and a family history of easy fractures is diagnosed with a connective tissue disorder. Which gene mutations account for the large majority of these cases?", "opts": ["RET point mutations", "COL1A1 and COL1A2 mutations", "BRAF mutations", "RANKL gene mutations"], "correct": 1, "explain": "Osteogenesis imperfecta is mostly caused by Type 1 collagen gene mutations (COL1A1 and COL1A2), accounting for 85-90% of cases, with at least 16 recognized clinical subtypes and a wide range of severity."}, {"stem": "A patient with Paget's disease is being evaluated for treatment despite having no bone pain currently. Which of the following would still be an indication to treat?", "opts": ["Disease confined entirely to a single asymptomatic phalanx", "Disease involving the skull with a planned unrelated abdominal surgery", "Disease involving the skull, with a planned surgery at the pagetic site", "Any incidental finding on a routine screening X-ray"], "correct": 2, "explain": "Even asymptomatic Paget's disease is treated when it involves the skull, long bones, spine, or a joint-adjacent site, when surgery is planned at the pagetic site itself, or when it coexists with heart failure - not for isolated incidental findings elsewhere."}, {"stem": "A patient with osteogenesis imperfecta is undergoing lifelong multisystem monitoring. Which of the following is part of the recommended surveillance beyond the skeleton itself?", "opts": ["Echocardiogram every couple of years for aortic and valve monitoring", "Annual colonoscopy for polyp screening", "Monthly liver function panel testing", "Quarterly thyroid ultrasound imaging"], "correct": 0, "explain": "Because OI can involve aortic root dilatation and valvular insufficiency, echocardiogram every two years is part of the recommended lifelong monitoring, alongside hearing testing, BMD, skeletal radiographs, and yearly spirometry."}, {"stem": "A patient's 25-OH vitamin D level returns at 25 nmol/L, well below the deficiency threshold, with symptoms of osteomalacia. What is the appropriate initial dosing regimen?", "opts": ["800 IU daily indefinitely with no monitoring", "50,000 IU ergocalciferol weekly for 12 weeks, then maintenance dosing", "A single one-time dose of 10,000 IU", "No treatment needed until symptoms worsen"], "correct": 1, "explain": "For a 25-OH-D level below 30 nmol/L, the regimen is 50,000 IU ergocalciferol weekly for 12 weeks, followed by maintenance dosing of 800-2000 IU daily - a level of 30-75 nmol/L instead gets straight to the lower maintenance dose."}, {"stem": "A patient with Paget's disease develops warmth over the affected tibia along with the bone pain. What explains this local warmth?", "opts": ["A superimposed bacterial infection", "Increased local vascularity from the remodeling process", "Referred pain from an unrelated joint", "Concurrent hyperthyroidism"], "correct": 1, "explain": "The excessive, disorganized remodeling of Paget's disease markedly increases local vascularity in the affected bone, producing warmth over the site - the same increased vascularity can also, in severe disease, contribute to high-output heart failure."}]}, {"id": "osteoporosis", "title": "Osteoporosis", "group": "Bone", "q": [{"stem": "Approximately what proportion of patients in Canada are started on osteoporosis treatment within a year of a hip fracture?", "opts": ["About 80 percent", "About 50 percent", "About 15 to 20 percent", "Essentially 100 percent"], "correct": 2, "explain": "Despite hip fracture being one of the most morbid fragility fracture types, only about 15-20% of patients are appropriately treated afterward, illustrating the substantial secondary-prevention treatment gap this module emphasizes."}, {"stem": "A patient on denosumab for osteoporosis presents with a new vertebral fracture shortly after missing a scheduled dose. What is the most likely explanation?", "opts": ["Denosumab has permanently stopped working and should never restart", "The missed dose caused rebound bone loss from its reversible mechanism", "This is purely coincidental and unrelated to the medication", "Denosumab causes fractures directly as a drug side effect"], "correct": 1, "explain": "Denosumab's antiresorptive effect is fully reversible, so a missed or delayed dose removes RANKL suppression and can trigger a rapid rebound surge in osteoclast activity, often presenting as new vertebral fractures."}, {"stem": "Which osteoporosis drug class is proven to reduce vertebral fracture risk but not hip or non-vertebral fracture risk?", "opts": ["Bisphosphonates", "Denosumab", "Raloxifene, a SERM", "Romosozumab"], "correct": 2, "explain": "Raloxifene's fracture-risk evidence is limited to the vertebral site - it has not been shown to reduce hip or non-vertebral fracture risk, unlike bisphosphonates, denosumab, romosozumab, and HRT, which cover all three sites."}, {"stem": "A postmenopausal woman is diagnosed with osteoporosis based purely on a BMD T-score, with no fracture history. What T-score threshold, and at which sites, meets diagnostic criteria?", "opts": ["-1.0 or lower at the lumbar spine alone", "-2.5 or lower at the spine, femoral neck, hip, or radius", "-3.5 or lower measured at any single site", "T-score alone can never diagnose osteoporosis at all"], "correct": 1, "explain": "A T-score of -2.5 or lower at the lumbar spine, femoral neck, total hip, or 1/3 radius is diagnostic of osteoporosis by BMD criteria alone, one of three recognized routes to diagnosis alongside fragility fracture or high estimated fracture risk."}, {"stem": "A 68-year-old woman on long-term alendronate develops a transverse subtrochanteric femur fracture after preceding thigh pain. What should be evaluated in the contralateral femur, and why?", "opts": ["Nothing, since AFF is always unilateral", "Early AFF changes, since the condition can be bilateral", "Osteosarcoma, since that is the primary concern here", "Nothing beyond routine follow-up is needed"], "correct": 1, "explain": "Atypical femoral fracture can be bilateral, so evaluating the contralateral femur for early changes is a key management step, alongside stopping the bisphosphonate and considering a non-bisphosphonate agent going forward."}, {"stem": "A patient at very high fracture risk is started on an anabolic agent before any antiresorptive therapy. What is the rationale for this treatment sequencing?", "opts": ["Anabolic agents work only if given after an antiresorptive", "Starting with an antiresorptive first would blunt the later anabolic response", "Sequencing has no effect on treatment outcomes", "Antiresorptive agents must never be used after an anabolic agent"], "correct": 1, "explain": "Anabolic agents (teriparatide, romosozumab) are typically used first in very high-risk patients specifically because starting with an antiresorptive first blunts the anabolic response if later switched - and gains must still be locked in with an antiresorptive afterward."}, {"stem": "A 55-year-old woman is counseled on daily calcium and vitamin D intake for osteoporosis prevention. What is the recommended elemental calcium target for her age group?", "opts": ["1000 mg per day", "1200 mg per day", "800 mg per day", "1500 mg per day, per current guidance here"], "correct": 1, "explain": "For postmenopausal women and men over 50, the recommended elemental calcium intake is 1200 mg/day (versus 1000 mg/day for ages 19-50), alongside 800-2000 IU/day of vitamin D, with diet as the preferred source."}, {"stem": "A patient asks why osteoporotic fractures are compared to heart attacks in patient education materials. What is the point of this analogy?", "opts": ["Both conditions have essentially identical drug treatments", "The fracture is the acute event the chronic disease produces, like an MI", "Fractures and heart attacks share the exact same risk factors", "The analogy exists only to simplify insurance billing codes"], "correct": 1, "explain": "The framing 'a fracture is to osteoporosis what a heart attack is to cardiovascular disease' emphasizes that osteoporosis is a chronic disease whose acute, sometimes fatal, endpoint is the fracture itself - which should trigger secondary prevention just as an MI does."}, {"stem": "A 72-year-old woman with a recent hip fracture and known coronary artery disease needs an osteoporosis agent covering vertebral, hip, and non-vertebral fracture sites, without adding cardiovascular risk. Which class fits best?", "opts": ["Romosozumab", "Raloxifene", "A bisphosphonate", "Estrogen-only HRT"], "correct": 2, "explain": "Bisphosphonates cover all three fracture sites (vertebral, hip, non-vertebral) without romosozumab's cardiovascular boxed warning or HRT's competing cardiovascular/breast cancer risks, making them a reasonable broad-coverage choice here."}, {"stem": "A patient asks whether fall-prevention measures actually reduce fracture risk independent of any medication. What is the accurate answer regarding measures like home safety assessment and balance training?", "opts": ["They have no proven effect on fracture risk", "They reduce fracture risk independent of drug therapy", "They only work when combined with an anabolic agent", "They are effective only in men, not women"], "correct": 1, "explain": "Fall prevention measures - home safety assessment, balance and strength training, vision correction, minimizing sedating medications, and correcting vitamin D deficiency - reduce fracture risk independent of any pharmacologic therapy."}]}, {"id": "embryology-histology", "title": "Embryology & Histology of the Female Reproductive Tract", "group": "Reproduction", "q": [{"stem": "A couple undergoing fertility workup asks where fertilization normally occurs within the fallopian tube. What is the correct anatomic site?", "opts": ["The isthmus", "The ampulla", "The infundibulum near the fimbriae", "The interstitial segment nearest the uterus"], "correct": 1, "explain": "Fertilization normally occurs at the ampulla of the fallopian tube, where the male and female gametes meet after ovulation and sperm transport."}, {"stem": "A first-trimester ultrasound at 6 weeks shows an embryo with a bilaminar disc, an amniotic cavity, and a yolk sac, but no third germ layer yet. Which week of development does this correspond to?", "opts": ["Week 1", "Week 2, the \"Rule of Twos\"", "Week 3, gastrulation", "Week 4, neurulation"], "correct": 1, "explain": "Week 2 is defined by the \"Rule of Twos\": a bilaminar disc (epiblast, hypoblast), two cavities (amniotic cavity, yolk sac), and two trophoblast layers - the trilaminar disc doesn't form until gastrulation in week 3."}, {"stem": "A patient exposed to rubella during the first month of pregnancy is counseled on fetal risk. Why is this specific timing associated with the classic triad of deafness, eye defects, and congenital heart disease?", "opts": ["Otic, optic, and cardiac development all begin around week 3 to 4", "The placenta has not formed yet, so no barrier exists", "Rubella only crosses the placenta after week 20 gestation", "This timing carries no particular additional fetal risk"], "correct": 0, "explain": "Otic, optic, and cardiac development all begin around week 3-4, so infection in this early window coincides with active organogenesis in exactly the systems affected by Congenital Rubella Syndrome, explaining the classic triad."}, {"stem": "A newborn is later diagnosed with spina bifida after a pregnancy notable for poor folic acid intake. Which embryologic process, if it fails to close properly, produces this defect?", "opts": ["Failure of gastrulation in week 3", "Failure of caudal neuropore closure around day 26", "Failure of chorionic villus formation in week 2", "Failure of embryonic folding in week 4"], "correct": 1, "explain": "The caudal neuropore normally closes around day 26; failure of this closure produces spina bifida, while failure of the cranial neuropore (around day 24) produces anencephaly instead - both are neural tube defects folic acid helps prevent."}, {"stem": "A patient with a positive pregnancy test has an unexpectedly low quantitative hCG for her dates. What does a persistently low hCG raise concern for?", "opts": ["A completely normal, healthy pregnancy", "Ectopic implantation or early pregnancy loss", "Twin pregnancy with elevated hormone levels", "Post-term pregnancy requiring induction"], "correct": 1, "explain": "hCG, secreted by the syncytiotrophoblast, normally rises predictably in early pregnancy and sustains the corpus luteum's progesterone output; a low or poorly rising level is a recognized red flag for ectopic implantation or an early pregnancy loss."}, {"stem": "A colposcopy is performed to sample the area of the cervix where glandular endocervical epithelium transitions to squamous ectocervical epithelium. Why is this specific zone clinically significant?", "opts": ["It is the most common site for cervical neoplasia to arise", "It is where implantation normally occurs", "It regenerates the endometrial functionalis layer", "It is the primary site of oocyte maturation"], "correct": 0, "explain": "The cervical transformation zone, where squamous metaplasia occurs at the squamocolumnar junction, is the most common site for cervical neoplasia - which is exactly why a Pap smear is designed to sample this area."}, {"stem": "An endometrial biopsy is performed on a postmenopausal woman with new vaginal bleeding. What is the primary purpose of ordering this biopsy in this clinical scenario?", "opts": ["To assess fallopian tube patency", "To rule out malignancy", "To evaluate ovarian follicular reserve", "To diagnose vulvar lichen sclerosus"], "correct": 1, "explain": "Postmenopausal bleeding is a specific indication for endometrial biopsy precisely because malignancy must be ruled out - alongside infertility evaluation, abnormal uterine bleeding, and endometrial cells seen on a Pap smear after age 45."}, {"stem": "A histology slide of the ovary shows a structure with granulosa cells and theca cells that formed from a recently ruptured follicle. What will this structure become if pregnancy does not occur?", "opts": ["A mature Graafian follicle again", "The corpus albicans", "A primordial follicle", "Chorionic villi"], "correct": 1, "explain": "The post-ovulatory follicular remnant (corpus luteum) regresses into the corpus albicans if pregnancy does not occur, ending the luteal phase and allowing the hormonal decline that triggers menstruation."}, {"stem": "A patient's endometrial biopsy shows secretory vacuoles and luminal secretions in the glands, with coiled architecture. Which hormonal phase of the cycle does this histologic picture correspond to?", "opts": ["Proliferative phase, driven by rising estrogen", "Secretory phase, driven by post-ovulatory progesterone", "Menstrual phase, after both hormones fall", "This pattern is not phase-specific"], "correct": 1, "explain": "Secretory vacuoles, luminal secretions, and coiled glands are the histologic signature of the secretory phase, driven by post-ovulatory progesterone - the tissue-level version of the decidual reaction that primes the endometrium for implantation."}, {"stem": "A pregnant patient is found on ultrasound to have an implantation site within the fallopian tube rather than the uterine cavity. What proportion of ectopic pregnancies occur at this specific site?", "opts": ["About 25 percent", "About 50 percent", "About 75 percent", "96 to 98 percent"], "correct": 3, "explain": "The fallopian tube is by far the most common site of ectopic implantation, accounting for 96-98% of cases, with ovarian, cervical, and abdominal sites making up only a small remaining fraction."}]}, {"id": "hpg-axis", "title": "The Hypothalamic-Pituitary-Gonadal Axis", "group": "Reproduction", "q": [{"stem": "A researcher studying hypothalamic anatomy notes that GnRH released into the median eminence can reach the anterior pituitary without crossing a blood-brain barrier. What structural feature of the median eminence explains this?", "opts": ["It has an unusually thick blood-brain barrier", "It is one of only seven brain regions that lack a blood-brain barrier", "It is located entirely within the anterior pituitary gland", "It communicates only via direct neural synapses, not blood vessels"], "correct": 1, "explain": "The median eminence's absence of a blood-brain barrier allows hypophysiotrophic peptides like GnRH, released from parvicellular neurons, to enter the primary capillary plexus and reach the anterior pituitary via portal circulation."}, {"stem": "A patient with hypogonadotropic hypogonadism has GnRH neurons studied in vitro, and they still fire in a coordinated, rhythmic pattern even in isolated culture. What does this finding demonstrate about the GnRH pulse generator?", "opts": ["Pulsatility requires external hypothalamic input to occur", "The pulse-generating capacity is intrinsic to the GnRH neurons themselves", "GnRH neurons cannot fire without kisspeptin present", "Pulsatility only occurs in vivo, never in culture"], "correct": 1, "explain": "The coordinated, pulsatile firing pattern observed even in isolated in vitro cultures of GnRH neurons demonstrates that the pulse-generating capacity is intrinsic to the neurons themselves, not dependent on ongoing external hypothalamic circuitry."}, {"stem": "LH and FSH are both glycoproteins made of two subunits. What accounts for their distinct biologic specificity despite this shared structural framework?", "opts": ["They use completely unrelated receptor families entirely", "They share a common alpha subunit, with specificity from the beta subunit", "LH has three subunits while FSH has only one", "Specificity comes purely from differential subunit glycosylation"], "correct": 1, "explain": "LH and FSH (along with TSH and hCG) share a common alpha subunit; the beta subunit is what differs between them and determines which receptor each hormone activates, producing their distinct biologic specificity."}, {"stem": "A prostate cancer patient is started on a GnRH agonist and experiences a temporary worsening of bone pain from tumor flare before symptoms improve. What pharmacologic property of GnRH agonists explains this initial flare?", "opts": ["Agonists cause an initial stimulatory steroid surge before eventual receptor desensitization", "Agonists have no effect on testosterone at any point", "Agonists work identically to antagonists from the first dose", "The flare is unrelated to the drug and purely coincidental"], "correct": 0, "explain": "GnRH agonists initially stimulate the axis, producing a transient steroid (testosterone) surge before receptor desensitization eventually shuts production down - this early surge can transiently worsen a hormone-sensitive tumor, unlike antagonists."}, {"stem": "A patient undergoing IVF is given a GnRH antagonist during ovarian stimulation. What is the specific purpose of adding this medication to the protocol?", "opts": ["To directly stimulate additional follicle growth further", "To prevent a premature LH surge before egg retrieval", "To increase endogenous testosterone production instead", "To replace the need for FSH injections"], "correct": 1, "explain": "GnRH antagonists (cetrorelix, ganirelix) are added during ovarian stimulation specifically to prevent a premature LH surge and endogenous ovulation, allowing the retrieval procedure to be timed appropriately rather than occurring spontaneously."}, {"stem": "A patient's steroid hormone synthesis is being studied, and the rate-limiting step is identified as occurring inside a specific organelle. Which organelle and which conversion step is this?", "opts": ["The mitochondria, converting cholesterol to pregnenolone", "The Golgi apparatus, converting pregnenolone to progesterone", "The nucleus, converting testosterone to estradiol", "The endoplasmic reticulum, converting cholesterol to cortisol"], "correct": 0, "explain": "The rate-limiting step of steroid hormone synthesis - conversion of cholesterol to pregnenolone - occurs inside the mitochondria, a key mechanistic fact underlying all downstream steroid production from this shared precursor."}, {"stem": "A study shows that in response to FSH stimulation, granulosa and Sertoli cells secrete a glycoprotein hormone that reduces pituitary responsiveness to GnRH. What hormone is this?", "opts": ["Kisspeptin", "Inhibin", "Activin", "Sex hormone binding globulin"], "correct": 1, "explain": "Inhibin is secreted by FSH-stimulated granulosa and Sertoli cells and feeds back to reduce the responsiveness of FSH-producing pituitary cells to GnRH, forming a specific negative feedback loop distinct from steroid-based feedback."}, {"stem": "A steroid hormone is found to require peripheral conversion to a more active metabolite before it can fully exert its effects at target tissue, unlike estradiol or progesterone which act without further metabolism. Which hormone does this describe?", "opts": ["Estradiol", "Progesterone", "Testosterone", "Cortisol"], "correct": 2, "explain": "Testosterone often requires peripheral conversion to DHT or estradiol before exerting its full effects at target tissue, in contrast to estradiol and progesterone, which act directly at the tissue level without needing further metabolism."}, {"stem": "A neuropeptide is identified as the strongest known positive regulator of the GnRH pulse generator, more potent than glutamate, neuropeptide Y, or norepinephrine. Which neuropeptide is this?", "opts": ["GABA", "Kisspeptin", "Endogenous opioids", "Somatostatin"], "correct": 1, "explain": "Kisspeptin is described as the strongest identified positive regulator of the GnRH pulse generator, while GABA and endogenous opioid peptides are negative regulators that suppress pulse generator activity instead."}, {"stem": "A urologist chooses a GnRH antagonist rather than an agonist for a prostate cancer patient specifically to avoid the need for concurrent antiandrogen therapy. What property of antagonists makes this possible?", "opts": ["Antagonists cause a delayed testosterone surge that antiandrogens would treat", "Antagonists provide fast testosterone suppression without any surge, so there is no flare to cover", "Antagonists increase testosterone permanently, requiring no antiandrogen at all", "Antiandrogens are never used with GnRH-targeted therapy regardless of agent"], "correct": 1, "explain": "Because GnRH antagonists provide immediate, surge-free testosterone suppression, there is no initial flare that would otherwise require covering with a concurrent antiandrogen - a practical advantage over agonist therapy in this setting."}]}, {"id": "menstrual-cycle", "title": "Approach to the Menstrual Cycle", "group": "Reproduction", "q": [{"stem": "A patient with Kallmann's syndrome and absent endogenous GnRH is given only an artificial pulsatile GnRH infusion and resumes a fully spontaneous ovulatory cycle. What does this demonstrate?", "opts": ["Estrogen alone can drive ovulation without gonadotropin input", "Pulsatile GnRH release, by itself, is sufficient to drive a normal ovulatory cycle", "Kallmann's syndrome cannot be treated by any means", "FSH must be delivered continuously, not pulsatile, to restore cycling"], "correct": 1, "explain": "This case is direct evidence that pulsatile GnRH release, delivered artificially, is sufficient on its own to drive the downstream gonadotropin and ovarian events of a normal ovulatory cycle."}, {"stem": "A patient undergoing natural cycle monitoring has her estradiol level checked at multiple points. What must happen to estradiol for the mid-cycle LH/FSH surge to be triggered?", "opts": ["It must fall sharply below its baseline", "It must reach a sustained threshold that flips feedback to positive", "It must remain constant throughout the entire cycle", "Progesterone, not estradiol, actually triggers the surge"], "correct": 1, "explain": "Once estradiol reaches roughly 300-500 pg/mL and stays there for about 48 hours, the feedback relationship flips from negative to positive (feed-forward), triggering the LH/FSH surge that causes ovulation."}, {"stem": "A patient in the early follicular phase has rising estradiol from a growing cohort of antral follicles. What effect does this rising estradiol have on FSH at this point in the cycle?", "opts": ["It has no effect on FSH secretion", "It raises FSH further through positive feedback", "It suppresses FSH through negative feedback, narrowing the follicular cohort", "It converts FSH directly into LH"], "correct": 2, "explain": "In the follicular phase, rising estradiol feeds back negatively on FSH, causing it to decline - this narrows the growing cohort of follicles down toward typically a single dominant follicle, since fewer follicles can be supported as FSH falls."}, {"stem": "After ovulation, granulosa and theca cells both convert into a new cell type expressing LH receptors. What allows LH, rather than FSH, to drive hormone production during the luteal phase?", "opts": ["Granulosa and theca cells both lose all hormone receptors after ovulation", "Both cell types convert into corpus luteum cells expressing LH receptors", "FSH receptor expression increases sharply after ovulation instead", "The corpus luteum expresses only GnRH receptors, not LH receptors"], "correct": 1, "explain": "As ovulation nears, granulosa cells swap FSH receptors for LH receptors; after ovulation, both granulosa and theca cells become corpus luteum cells expressing LH receptors, which is why LH drives luteal-phase progesterone production."}, {"stem": "A patient asks why fertility clinics sometimes describe her natural cycle as having 2 or 3 waves of follicle development rather than one continuous process. What does this refinement describe?", "opts": ["A pathologic finding requiring immediate treatment", "The concept of follicular waves, a refinement on the dominant-follicle model", "Evidence of premature ovarian failure occurring", "A sign that ovulation has already failed"], "correct": 1, "explain": "The classic single-dominant-follicle story is a simplification; most women actually experience 2 or 3 follicular waves per cycle rather than one continuous linear process, a normal physiologic nuance rather than a pathologic finding."}, {"stem": "A patient's corpus luteum begins to regress roughly two weeks after ovulation because no pregnancy has occurred. What downstream hormonal and clinical event follows this regression?", "opts": ["A second ovulation occurs immediately", "Steroid levels fall and menstruation occurs, resetting the cycle", "Estradiol rises indefinitely without limit", "FSH permanently shuts down for the remainder of life"], "correct": 1, "explain": "When the corpus luteum regresses without pregnancy, progesterone and estradiol levels fall, triggering menstruation and resetting the cycle - the same endometrial shedding process described histologically as the menstrual phase."}, {"stem": "A pregnant patient's corpus luteum continues producing progesterone well past the point it normally would regress, rescued by a hormone from the developing placenta. Which hormone is responsible for this rescue?", "opts": ["FSH", "hCG from the syncytiotrophoblast", "Kisspeptin", "Inhibin"], "correct": 1, "explain": "If pregnancy occurs, hCG secreted by the syncytiotrophoblast rescues the corpus luteum, maintaining progesterone production until the placenta itself takes over that role around week 8, as covered in the embryology module."}, {"stem": "An ovarian stimulation protocol for assisted reproduction deliberately injects supraphysiological FSH. What natural process is this protocol specifically designed to override?", "opts": ["The natural FSH decline that narrows selection to one dominant follicle", "The natural rise of LH during the luteal phase itself", "The corpus luteum's normal regression after roughly two weeks", "The blood-testis barrier's normal immune function"], "correct": 0, "explain": "Supraphysiological FSH is injected specifically to override the normal negative-feedback-driven decline in FSH, which would otherwise narrow the developing cohort down to a single dominant follicle, allowing several follicles to mature simultaneously instead."}, {"stem": "A rhesus monkey study transplanted ovarian tissue subcutaneously into a castrated male animal, and it produced repeated ovulatory cycles roughly every 28 days. What does this experiment illustrate about the ovary's role in cyclicity?", "opts": ["The ovary requires an intact female hypothalamus to cycle", "The ovary, once properly stimulated, can cycle largely on its own", "Ovarian tissue cannot function once it is transplanted", "Castration abolishes all hormonal cyclicity for good"], "correct": 1, "explain": "This experiment shows that transplanted ovarian tissue, given appropriate gonadotropin stimulation, can independently produce repeated ovulatory cycles - demonstrating that much of cyclic function is intrinsic to the ovary once properly driven."}, {"stem": "A patient's cycle tracking app flags a shift from negative to positive gonadotropin feedback mid-cycle as the single most clinically important event to understand. What immediate physiologic consequence follows this feedback switch?", "opts": ["A gradual decline in all reproductive hormones", "The mid-cycle LH/FSH surge that causes ovulation", "Immediate onset of menstruation", "Permanent suppression of the hypothalamic pulse generator"], "correct": 1, "explain": "The switch from negative to positive (feed-forward) feedback at the estradiol threshold is precisely what triggers the mid-cycle LH/FSH surge, which in turn causes ovulation - the central mechanistic event of the entire cycle."}]}, {"id": "testicular-ovarian-function", "title": "Testicular & Ovarian Function", "group": "Reproduction", "q": [{"stem": "A histology slide of the testis shows cells that form the blood-testis barrier, carry FSH receptors, and secrete inhibin. Which cell type is this?", "opts": ["Leydig cells", "Sertoli cells", "Spermatogonia", "Theca cells"], "correct": 1, "explain": "Sertoli cells support and regulate spermatogenesis, form the blood-testis barrier creating an immune-privileged compartment, carry FSH receptors, and secrete inhibin - the male functional parallel to granulosa cells in the ovary."}, {"stem": "In the ovary, one cell type carries LH receptors and produces androgen precursors, while a neighboring cell type carries FSH receptors and aromatizes those precursors into estrogen. Which cell does the LH-driven step?", "opts": ["Granulosa cells", "Theca cells", "Oocytes directly", "Corpus albicans cells"], "correct": 1, "explain": "In the two-cell, two-gonadotropin model, LH drives theca cells to produce androgen precursors, which diffuse to neighboring granulosa cells, where FSH-driven aromatase activity converts the androgen into estrogen."}, {"stem": "A genetics student is asked why spermatogenesis produces four functional sperm per starting cell while oogenesis produces only one functional egg plus polar bodies. What best explains this asymmetry?", "opts": ["Sperm undergo mitosis while eggs undergo meiosis", "Cytoplasmic division is equal in sperm but unequal in oogenesis, favoring one oocyte", "Oogenesis involves only a single meiotic division", "Sperm cells skip DNA replication entirely before dividing"], "correct": 1, "explain": "Both gametes form via meiosis, but the cytoplasmic division is equal in spermatogenesis (four similarly-sized sperm) and unequal in oogenesis (concentrating cytoplasm and resources into one large, resource-rich oocyte, with the rest discarded as polar bodies)."}, {"stem": "A young man begins puberty, and FSH is required to initiate spermatogenesis in his seminiferous tubules. Once spermatogenesis is well established in adulthood, is ongoing FSH input still required to maintain it?", "opts": ["Yes, FSH is perpetually required at the same level as puberty", "No, testosterone acting locally can sustain the process once established", "FSH is never required at any stage of spermatogenesis", "LH, not FSH, is what initiates puberty in males"], "correct": 1, "explain": "FSH is required to initiate spermatogenesis at puberty, but it is not perpetually required for Sertoli cell function afterward - locally acting (paracrine) testosterone can sustain the process once spermatogenesis is established."}, {"stem": "An ART protocol injects supraphysiological FSH to mature several follicles simultaneously rather than the single dominant follicle of a natural cycle. Which cells in the ovary is this FSH primarily acting on?", "opts": ["Theca cells", "Granulosa cells", "Leydig cells", "Corpus albicans cells"], "correct": 1, "explain": "Granulosa cells carry the FSH receptors in the ovary; supraphysiological FSH acts on them directly to override the normal dominant-follicle-selection process and support multiple follicles to maturity at once."}, {"stem": "A postmenopausal woman with declining estrogen is found to have increasing bone resorption on serial DXA scans. What direct skeletal role does estrogen normally play that explains this finding?", "opts": ["Estrogen supports osteoblast and osteocyte activity and limits resorption", "Estrogen has no direct effect on bone remodeling", "Estrogen stimulates osteoclasts directly to build bone", "Estrogen only affects bone during fetal development"], "correct": 0, "explain": "In adults, estrogen supports osteoblast and osteocyte activity and limits bone resorption - its withdrawal at menopause removes this protective effect, which is a key mechanistic link to postmenopausal osteoporosis."}, {"stem": "A patient tracking ovulation with basal body temperature notices a sustained temperature rise after ovulation each cycle. Which hormone is primarily responsible for this thermogenic effect?", "opts": ["Estrogen", "Progesterone", "FSH", "Inhibin"], "correct": 1, "explain": "Progesterone raises body temperature modestly after ovulation - the physiologic basis of basal body temperature tracking as an indirect way to confirm that ovulation has occurred."}, {"stem": "A breastfeeding counselor explains that estrogen drives duct growth in the breast while a second hormone drives development of the lobules and alveoli, together preparing the breast for lactation. Which hormone completes this pairing?", "opts": ["Testosterone", "Progesterone", "FSH", "Kisspeptin"], "correct": 1, "explain": "Progesterone promotes development of the mammary lobules and alveoli, complementing estrogen's effect on breast duct growth - together the two hormones prepare the breast tissue for eventual lactation."}, {"stem": "A comparative physiology lecture notes that true menstruation, as opposed to estrous cycling with reabsorption of the endometrial lining, is relatively rare among mammals. Which group of animals shares this trait with humans?", "opts": ["Most rodents", "Most carnivores", "Some other primates", "Most marine mammals"], "correct": 2, "explain": "Menstruation, meaning cyclic shedding of the endometrial lining, is essentially unique to humans and a small number of other primates among mammals, most of which instead reabsorb the lining in an estrous cycle."}, {"stem": "A physiology summary describes the same GnRH-driven gonadotropin cascade producing continuous hormone output in males but cyclical, threshold-triggered output in females. What accounts for this difference in output pattern?", "opts": ["Males and females use entirely different sets of gonadotropin hormones", "The same axis produces different patterns via an estrogen-threshold feedback switch", "Females lack any functional LH receptors at all entirely", "Males lack a hypothalamic GnRH pulse generator"], "correct": 1, "explain": "The male axis (Leydig/testosterone, Sertoli/spermatogenesis) runs continuously, while the female axis incorporates the estrogen-threshold feedback switch that produces cyclical, surge-triggered output - the same GnRH-LH/FSH architecture, different downstream dynamics."}]}]</script>
+<script>
+(function(){
+  "use strict";
+  var MODULES = JSON.parse(document.getElementById('data').textContent);
+  var CIRC = 2 * Math.PI * 58;
+
+  var store = { get:function(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+                set:function(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} } };
+  var results = store.get('caseBankResults-v1') || {};
+
+  var dashboard = document.getElementById('dashboard');
+  var quizview = document.getElementById('quizview');
+  var summaryview = document.getElementById('summaryview');
+  var groupsEl = document.getElementById('groups');
+
+  var state = { modIdx:-1, qIdx:0, correctCount:0, answers:[], locked:false };
+
+  function letterFor(i){ return String.fromCharCode(65+i); }
+
+  function renderDashboard(){
+    groupsEl.innerHTML = '';
+    var groups = [];
+    MODULES.forEach(function(m){
+      var g = groups.filter(function(x){ return x.name===m.group; })[0];
+      if(!g){ g = { name:m.group, mods:[] }; groups.push(g); }
+      g.mods.push(m);
+    });
+    groups.forEach(function(g){
+      var h = document.createElement('div');
+      h.className = 'group-heading';
+      h.innerHTML = '<h2>'+g.name+'</h2><div class="rule"></div><span class="count">'+g.mods.length+' module'+(g.mods.length>1?'s':'')+'</span>';
+      groupsEl.appendChild(h);
+
+      var grid = document.createElement('div');
+      grid.className = 'grid';
+      g.mods.forEach(function(m){
+        var idx = MODULES.indexOf(m);
+        var r = results[m.id];
+        var card = document.createElement('button');
+        card.className = 'card';
+        var badge = '<span class="badge new">Not started</span>';
+        var scoreLine = '';
+        if(r){
+          var pct = Math.round(100*r.score/r.total);
+          badge = pct>=80 ? '<span class="badge done">Completed</span>' : '<span class="badge retry">Review again</span>';
+          scoreLine = '<span class="score">Best <b>'+r.score+' / '+r.total+'</b> ('+pct+'%)</span>';
+        } else {
+          scoreLine = '<span class="score">10 questions</span>';
+        }
+        card.innerHTML =
+          '<span class="num">'+String(idx+1).padStart(2,'0')+' / 12</span>'+
+          '<h3>'+m.title+'</h3>'+
+          '<div class="card-foot">'+scoreLine+badge+'</div>';
+        card.addEventListener('click', function(){ startModule(idx); });
+        grid.appendChild(card);
+      });
+      groupsEl.appendChild(grid);
+    });
+  }
+
+  function startModule(idx){
+    state.modIdx = idx; state.qIdx = 0; state.correctCount = 0; state.answers = [];
+    dashboard.hidden = true; summaryview.hidden = true; quizview.hidden = false;
+    var m = MODULES[idx];
+    document.getElementById('quizGroup').textContent = m.group;
+    document.getElementById('quizTitle').textContent = m.title;
+    renderQuestion();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  function renderQuestion(){
+    var m = MODULES[state.modIdx];
+    var q = m.q[state.qIdx];
+    state.locked = false;
+    document.getElementById('progressLabel').textContent = 'Question '+(state.qIdx+1)+' of '+m.q.length;
+    document.getElementById('scoreLabel').textContent = 'Score '+state.correctCount+' / '+state.qIdx;
+    document.getElementById('progressFill').style.width = (100*state.qIdx/m.q.length)+'%';
+    document.getElementById('qTag').textContent = 'Case '+(state.qIdx+1);
+    document.getElementById('qStem').textContent = q.stem;
+
+    var optsEl = document.getElementById('opts');
+    optsEl.innerHTML = '';
+    q.opts.forEach(function(optText, i){
+      var b = document.createElement('button');
+      b.className = 'opt';
+      b.innerHTML = '<span class="letter">'+letterFor(i)+'</span><span>'+optText+'</span>';
+      b.addEventListener('click', function(){ selectOption(i); });
+      optsEl.appendChild(b);
+    });
+
+    document.getElementById('explain').hidden = true;
+    var nextBtn = document.getElementById('nextBtn');
+    nextBtn.disabled = true;
+    nextBtn.textContent = (state.qIdx === m.q.length-1) ? 'See results →' : 'Next question →';
+  }
+
+  function selectOption(i){
+    if(state.locked) return;
+    state.locked = true;
+    var m = MODULES[state.modIdx];
+    var q = m.q[state.qIdx];
+    var correct = (i === q.correct);
+    if(correct) state.correctCount++;
+    state.answers.push({ q:q, chosen:i, correct:correct });
+
+    var opts = document.querySelectorAll('#opts .opt');
+    opts.forEach(function(el, idx){
+      el.disabled = true;
+      if(idx === q.correct) el.classList.add('correct');
+      else if(idx === i) el.classList.add('incorrect');
+      else el.classList.add('dim');
+    });
+
+    var explain = document.getElementById('explain');
+    explain.innerHTML = '<b>'+(correct ? 'Correct. ' : 'Not quite. ')+'</b>'+q.explain;
+    explain.hidden = false;
+
+    document.getElementById('scoreLabel').textContent = 'Score '+state.correctCount+' / '+(state.qIdx+1);
+    document.getElementById('nextBtn').disabled = false;
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    var m = MODULES[state.modIdx];
+    if(state.qIdx < m.q.length-1){
+      state.qIdx++;
+      renderQuestion();
+    } else {
+      finishModule();
+    }
+  });
+
+  function finishModule(){
+    var m = MODULES[state.modIdx];
+    document.getElementById('progressFill').style.width = '100%';
+    quizview.hidden = true; summaryview.hidden = false;
+
+    var total = m.q.length, score = state.correctCount;
+    var pct = Math.round(100*score/total);
+    results[m.id] = { score:score, total:total };
+    var prev = store.get('caseBankResults-v1') || {};
+    var existing = prev[m.id];
+    if(!existing || existing.score < score) prev[m.id] = { score:score, total:total };
+    else results[m.id] = existing;
+    store.set('caseBankResults-v1', prev);
+    results = prev;
+
+    var offset = CIRC * (1 - pct/100);
+    var ring = document.getElementById('ringFg');
+    ring.style.strokeDasharray = CIRC;
+    ring.style.strokeDashoffset = CIRC;
+    requestAnimationFrame(function(){
+      ring.style.transition = 'stroke-dashoffset .6s ease';
+      ring.style.strokeDashoffset = offset;
+    });
+    document.getElementById('ringPct').textContent = pct+'%';
+    document.getElementById('sumTitle').textContent = m.title;
+    document.getElementById('sumSub').textContent = score+' of '+total+' correct — '+(pct>=80?'strong grasp of this module.':pct>=60?'solid, worth a second pass.':'flag this module for review.');
+
+    var reviewList = document.getElementById('reviewList');
+    reviewList.innerHTML = '';
+    var misses = state.answers.filter(function(a){ return !a.correct; });
+    if(misses.length){
+      var h = document.createElement('div');
+      h.style.textAlign = 'left';
+      h.style.fontFamily = "'JetBrains Mono',monospace";
+      h.style.fontSize = '.72rem';
+      h.style.color = 'var(--ink-soft)';
+      h.style.textTransform = 'uppercase';
+      h.style.letterSpacing = '.08em';
+      h.style.margin = '0 0 4px';
+      h.textContent = 'Missed questions';
+      reviewList.appendChild(h);
+    }
+    misses.forEach(function(a){
+      var item = document.createElement('div');
+      item.className = 'review-item';
+      item.innerHTML = '<span class="mark miss">&#10007;</span><div><b>'+a.q.stem+'</b><br>Correct answer: '+a.q.opts[a.q.correct]+'</div>';
+      reviewList.appendChild(item);
+    });
+
+    document.getElementById('retryBtn').onclick = function(){ startModule(state.modIdx); };
+  }
+
+  document.getElementById('dashBtn').addEventListener('click', backToDashboard);
+  document.getElementById('backBtn').addEventListener('click', backToDashboard);
+  function backToDashboard(){
+    quizview.hidden = true; summaryview.hidden = true; dashboard.hidden = false;
+    renderDashboard();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  renderDashboard();
+})();
+</script>

@@ -1,0 +1,1186 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diabetes &amp; Obesity Study Hub</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --paper: #f3f5f4;
+    --paper-raised: #ffffff;
+    --ink: #1b2321;
+    --ink-soft: #4b5651;
+    --ink-faint: #7c8a84;
+    --line: #d8ddda;
+    --line-soft: #e7eae8;
+    --amber: #a8641c;
+    --amber-ink: #7a4712;
+    --amber-wash: #f4e6d3;
+    --teal: #1f6e73;
+    --teal-ink: #17565a;
+    --teal-wash: #dcedee;
+    --good: #2f7a4f;
+    --good-wash: #dcf0e2;
+    --bad: #ae3f34;
+    --bad-wash: #f7ded9;
+    --shadow: 0 1px 2px rgba(27,35,33,0.06), 0 6px 20px -8px rgba(27,35,33,0.12);
+    --radius: 3px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12191a;
+      --paper-raised: #182123;
+      --ink: #e9edea;
+      --ink-soft: #b6c0bb;
+      --ink-faint: #7d8b85;
+      --line: #2c3937;
+      --line-soft: #223030;
+      --amber: #e0a860;
+      --amber-ink: #f0c592;
+      --amber-wash: #33291b;
+      --teal: #6fc2c6;
+      --teal-ink: #9adade;
+      --teal-wash: #16302f;
+      --good: #6fbf8f;
+      --good-wash: #1a3327;
+      --bad: #e2897c;
+      --bad-wash: #3a211d;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12191a;
+    --paper-raised: #182123;
+    --ink: #e9edea;
+    --ink-soft: #b6c0bb;
+    --ink-faint: #7d8b85;
+    --line: #2c3937;
+    --line-soft: #223030;
+    --amber: #e0a860;
+    --amber-ink: #f0c592;
+    --amber-wash: #33291b;
+    --teal: #6fc2c6;
+    --teal-ink: #9adade;
+    --teal-wash: #16302f;
+    --good: #6fbf8f;
+    --good-wash: #1a3327;
+    --bad: #e2897c;
+    --bad-wash: #3a211d;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  h1, h2, h3, h4 { font-family: 'Spectral', Georgia, serif; text-wrap: balance; margin: 0; }
+  a { color: var(--teal-ink); }
+  table { border-collapse: collapse; }
+
+  /* ---------- Shell layout ---------- */
+  .shell { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 280px;
+    flex: none;
+    border-right: 1px solid var(--line);
+    background: var(--paper-raised);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 22px 18px 30px;
+  }
+  .sidebar-head { margin-bottom: 4px; }
+  .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--teal-ink);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .sidebar-head h1 { font-size: 21px; font-weight: 600; line-height: 1.25; }
+  .sidebar-head .sub { color: var(--ink-faint); font-size: 13px; margin-top: 6px; }
+
+  .progress-block { margin: 18px 0 20px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-soft); margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+  .progress-track { height: 6px; background: var(--line-soft); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--amber); width: 0%; transition: width .4s ease; }
+
+  .navlist { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-soft); padding-top: 10px; }
+  .navlist li { margin: 0; }
+  .navlist a {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    padding: 7px 6px;
+    border-radius: var(--radius);
+  }
+  .navlist a:hover { background: var(--line-soft); color: var(--ink); }
+  .navlist a.active { color: var(--ink); font-weight: 600; }
+  .navlist .num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-faint); flex: none; width: 16px; }
+  .navlist .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--line); flex: none; }
+  .navlist .dot.done { background: var(--good); }
+
+  .sidebar-foot { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--line-soft); font-size: 12px; color: var(--ink-faint); }
+  .sidebar-foot code { font-family: 'IBM Plex Mono', monospace; background: var(--line-soft); padding: 1px 5px; border-radius: 2px; }
+
+  main { flex: 1; min-width: 0; }
+  .topbar {
+    position: sticky; top: 0; z-index: 5;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 40px;
+    display: none;
+  }
+
+  .hero {
+    padding: 54px 48px 40px;
+    border-bottom: 1px solid var(--line);
+    max-width: 900px;
+  }
+  .hero .kicker { margin-bottom: 14px; }
+  .hero h1 { font-size: 40px; font-weight: 600; letter-spacing: -0.01em; }
+  .hero .dek { color: var(--ink-soft); font-size: 16.5px; margin-top: 14px; max-width: 62ch; }
+  .hero-meta { display: flex; gap: 26px; margin-top: 26px; flex-wrap: wrap; }
+  .hero-meta div { font-size: 13px; color: var(--ink-faint); }
+  .hero-meta strong { display: block; font-family: 'Spectral', serif; font-size: 20px; color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .content { padding: 8px 48px 90px; max-width: 900px; }
+
+  section.module {
+    padding: 46px 0;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 20px;
+  }
+  section.module:last-of-type { border-bottom: none; }
+
+  .module-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 6px; }
+  .module-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--amber); padding-top: 6px; flex: none; width: 24px; }
+  .module-head h2 { font-size: 25px; font-weight: 600; }
+  .module-meta { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 22px 40px; }
+  .tag { font-size: 11.5px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.03em; color: var(--ink-faint); border: 1px solid var(--line); padding: 3px 8px; border-radius: 99px; }
+  .tag.mcc { color: var(--teal-ink); border-color: var(--teal); background: var(--teal-wash); }
+
+  .module-body { margin-left: 40px; }
+  .module-body p { color: var(--ink-soft); margin: 0 0 14px; max-width: 68ch; }
+  .module-body h3 { font-size: 15px; font-weight: 600; margin: 22px 0 10px; color: var(--ink); }
+  .module-body ul, .module-body ol { margin: 0 0 14px; padding-left: 20px; color: var(--ink-soft); max-width: 66ch; }
+  .module-body li { margin-bottom: 6px; }
+  .module-body li strong { color: var(--ink); }
+  .callout {
+    background: var(--amber-wash);
+    border-left: 3px solid var(--amber);
+    padding: 12px 16px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 14px;
+    color: var(--ink);
+    margin: 16px 0;
+    max-width: 64ch;
+  }
+  .callout strong { color: var(--amber-ink); }
+
+  .data-table { width: 100%; margin: 10px 0 20px; font-size: 13.5px; overflow-x: auto; display: block; }
+  .data-table table { width: 100%; min-width: 480px; }
+  .data-table th, .data-table td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  .data-table th { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); font-weight: 500; }
+  .data-table td.num { font-variant-numeric: tabular-nums; }
+
+  /* ---------- Quiz ---------- */
+  .quiz {
+    margin-top: 26px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .quiz-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--line-soft);
+    background: var(--line-soft);
+  }
+  .quiz-head span { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+  .quiz-score { font-size: 12.5px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+  .quiz-body { padding: 18px; }
+  .q { margin-bottom: 20px; }
+  .q:last-child { margin-bottom: 0; }
+  .q-stem { font-size: 14.5px; color: var(--ink); margin-bottom: 10px; font-weight: 500; }
+  .q-opts { display: flex; flex-direction: column; gap: 7px; }
+  .opt {
+    text-align: left;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    padding: 9px 12px;
+    border-radius: var(--radius);
+    font-size: 13.5px;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    gap: 9px;
+  }
+  .opt:hover { border-color: var(--teal); }
+  .opt:focus-visible { outline: 2px solid var(--teal); outline-offset: 1px; }
+  .opt .letter { font-family: 'IBM Plex Mono', monospace; color: var(--ink-faint); flex: none; }
+  .opt.correct { background: var(--good-wash); border-color: var(--good); }
+  .opt.incorrect { background: var(--bad-wash); border-color: var(--bad); }
+  .opt[disabled] { cursor: default; }
+  .q-explain {
+    display: none;
+    margin-top: 9px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    background: var(--teal-wash);
+    border-left: 3px solid var(--teal);
+    padding: 9px 12px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .q-explain.shown { display: block; }
+  .q-explain strong { color: var(--teal-ink); }
+
+  /* ---------- Footer ---------- */
+  .colophon {
+    max-width: 900px;
+    padding: 34px 48px 70px;
+    color: var(--ink-faint);
+    font-size: 12.5px;
+    border-top: 1px solid var(--line);
+  }
+  .colophon a { color: var(--ink-soft); }
+
+  .theme-toggle {
+    position: fixed; bottom: 18px; right: 18px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    color: var(--ink-soft);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10;
+  }
+
+  .mobile-nav-toggle { display: none; }
+
+  @media (max-width: 880px) {
+    .sidebar { position: fixed; left: -300px; top: 0; z-index: 20; transition: left .25s ease; box-shadow: var(--shadow); }
+    .sidebar.open { left: 0; }
+    .topbar { display: flex; align-items: center; gap: 12px; padding: 12px 20px; }
+    .mobile-nav-toggle {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: var(--radius);
+      border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace; font-size: 13px; cursor: pointer;
+    }
+    .topbar strong { font-family: 'Spectral', serif; font-size: 15px; }
+    .hero { padding: 30px 20px 28px; }
+    .hero h1 { font-size: 30px; }
+    .content { padding: 8px 20px 70px; }
+    .module-meta, .module-body { margin-left: 0; }
+    .module-head { gap: 10px; }
+    .colophon { padding: 26px 20px 60px; }
+  }
+</style>
+
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <span class="kicker">P2 &middot; Endocrinology</span>
+      <h1>Week&nbsp;1 &mdash; Diabetes &amp; Obesity</h1>
+      <div class="sub">Aug 31&ndash;Sep 4, 2026</div>
+    </div>
+
+    <div class="progress-block">
+      <div class="progress-label"><span>Quiz progress</span><span id="progress-count">0 / 38</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+
+    <ul class="navlist" id="navlist"></ul>
+
+    <div class="sidebar-foot">
+      Built from the official Elentra learning objectives for 5260 &middot; PoM&nbsp;II. Content is written for review, not a substitute for the source modules &mdash; cross-check anything <code>flagged</code> against lecture.
+    </div>
+  </nav>
+
+  <main>
+    <div class="topbar">
+      <button class="mobile-nav-toggle" id="navToggle" aria-label="Toggle module list">&#9776;</button>
+      <strong>Week 1 &mdash; Diabetes &amp; Obesity</strong>
+    </div>
+
+    <header class="hero">
+      <span class="kicker">Study Hub</span>
+      <h1>Diabetes &amp; Obesity</h1>
+      <p class="dek">Twelve modules, one throughline: how glucose homeostasis fails, how it's caught, and how it's managed &mdash; from a newly diagnosed six-year-old to a pregnant patient to someone titrating an SGLT2 inhibitor. Read a section, then clear its quiz before moving on.</p>
+      <div class="hero-meta">
+        <div><strong>12</strong>modules</div>
+        <div><strong>38</strong>quiz questions</div>
+        <div><strong>~10h</strong>estimated content time</div>
+      </div>
+    </header>
+
+    <div class="content" id="content"></div>
+
+    <footer class="colophon">
+      Sources: content in every module &mdash; learning objectives, mechanisms, drug tables, clinical cases, and concept-check logic &mdash; is drawn directly from the actual Elentra lesson content and slide decks for each Week 1 lecture (5260 &middot; Endocrinology &amp; Reproduction, Diabetes &amp; Obesity) as of Aug 27&ndash;28, 2026, then rewritten in my own words rather than copied verbatim, out of respect for your instructors' copyright. Quiz stems and explanations are also my own paraphrase, built to test the same concepts and numbers the lectures actually cover &mdash; not the course's original questions. If anything here doesn't match what a professor said in lecture, trust the lecture.
+    </footer>
+  </main>
+</div>
+
+<button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle color theme">&#9788;</button>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var stored = null;
+  try { stored = localStorage.getItem('endo-hub-theme'); } catch(e) {}
+  if (stored) root.setAttribute('data-theme', stored);
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var current = root.getAttribute('data-theme');
+    var next = current === 'dark' ? 'light' : (current === 'light' ? 'dark' : ((window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'light' : 'dark'));
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('endo-hub-theme', next); } catch(e) {}
+  });
+
+  document.getElementById('navToggle').addEventListener('click', function(){
+    document.getElementById('sidebar').classList.toggle('open');
+  });
+})();
+</script>
+
+<script>
+const MODULES = [
+{
+  id: "endo-principles",
+  title: "Clinically Useful Endocrine Principles",
+  instructor: "Hiba Hashmi",
+  duration: "37 min",
+  tags: [],
+  body: `
+    <p>Endocrinology keeps reusing the same two-step reasoning pattern across every gland. Learn it once here and the rest of the block is mostly swapping in new nouns.</p>
+    <h3>Step 1 — structure or function?</h3>
+    <p>Is this a <strong>structural</strong> problem (a gland is enlarged, has a mass/nodule, or is anatomically abnormal) or a <strong>functional</strong> problem (too little or too much hormone)? For structural problems, the clinically important effects depend on <em>location</em> — a benign but large thyroid nodule can still cause exertional dyspnea (tracheal compression), dysphagia (esophageal compression), or dysphonia (recurrent laryngeal nerve compression), purely from where it sits.</p>
+    <h3>Step 2 — for functional problems, localize with the feedback loop</h3>
+    <p>Measure the end-organ hormone <em>and</em> its upstream tropic hormone together (e.g. cortisol + ACTH, free T4 + TSH). The pair tells you whether the lesion is in the end organ itself, the pituitary, an ectopic secreting source, or exogenous (medication).</p>
+    <div class="data-table"><table>
+      <tr><th>Pattern</th><th>Localization</th></tr>
+      <tr><td>&uarr; end-organ hormone + &uarr; tropic hormone</td><td>ACTH-dependent excess — pituitary (Cushing's disease) or an ectopic ACTH-secreting tumour</td></tr>
+      <tr><td>&uarr; end-organ hormone + undetectable tropic hormone</td><td>ACTH-independent excess — adrenal adenoma, or exogenous glucocorticoid (always ask about this first)</td></tr>
+      <tr><td>&darr; end-organ hormone + &uarr; tropic hormone</td><td>Primary gland failure — the axis is intact and shouting louder at a gland that can't respond (e.g. primary adrenal insufficiency)</td></tr>
+      <tr><td>&darr; end-organ hormone + &darr;/inappropriately normal tropic hormone</td><td>Secondary/tertiary failure — pituitary or hypothalamus isn't driving the axis</td></tr>
+    </table></div>
+    <div class="callout"><strong>Two iatrogenic causes worth memorizing outright:</strong> the most common cause of clinically important Cushing's syndrome is a prescribed glucocorticoid, not an endogenous tumour. The most common cause of a low TSH with a high free T4/T3 is over-replacement with levothyroxine, not Graves' disease. Exogenous hormone use should always be near the top of the differential.</div>
+    <h3>Worked example: three cortisol/ACTH scenarios</h3>
+    <ol>
+      <li>24h urine free cortisol 679 nmol/d (high) + ACTH 26.4 pM (high) &rarr; ACTH-dependent excess: pituitary (Cushing's disease) or ectopic ACTH source. An adrenal cause is wrong here — a primary adrenal tumour would suppress ACTH, not raise it.</li>
+      <li>Same high cortisol, but ACTH undetectable &rarr; ACTH-independent excess: adrenal adenoma or exogenous steroid. Pituitary/ectopic sources are wrong — both would push ACTH up, not down.</li>
+      <li>AM cortisol 54.9 nM (low) + ACTH 102.3 pM (high) &rarr; primary adrenal insufficiency. A pituitary cause is wrong — that would produce a <em>low</em> ACTH driving a low cortisol, not a high one.</li>
+    </ol>
+  `,
+  quiz: [
+    {
+      stem: "A patient has a low free T4 and a low TSH. Where does the lesion most likely lie?",
+      opts: ["Thyroid gland (primary)", "Pituitary or hypothalamus (secondary/tertiary)", "Peripheral hormone resistance", "Cannot localize without imaging"],
+      correct: 1,
+      explain: "A low end-organ hormone with a trophic hormone that isn't appropriately elevated points upstream — an intact axis would drive TSH up in response to low T4, so a low TSH alongside low T4 localizes to the pituitary or hypothalamus."
+    },
+    {
+      stem: "24h urine free cortisol comes back elevated and plasma ACTH is undetectable. Which of the following is a correct explanation, and which can be ruled out?",
+      opts: ["Pituitary adenoma (Cushing's disease) — ACTH-dependent", "Adrenal adenoma or exogenous glucocorticoid — ACTH-independent", "Ectopic ACTH-secreting tumour", "Primary adrenal insufficiency"],
+      correct: 1,
+      explain: "High cortisol with a suppressed/undetectable ACTH is ACTH-independent — an autonomously functioning adrenal adenoma, or exogenous glucocorticoid (always excluded first clinically). Pituitary and ectopic ACTH sources are wrong because both would drive ACTH up, not suppress it."
+    },
+    {
+      stem: "What is the single most common cause of clinically important Cushing's syndrome encountered in practice?",
+      opts: ["A pituitary corticotroph adenoma (Cushing's disease)", "An ectopic ACTH-secreting tumour", "Prescribed glucocorticoid medication (iatrogenic)", "A cortisol-secreting adrenal adenoma"],
+      correct: 2,
+      explain: "Iatrogenic glucocorticoid use is more common than any endogenous cause of Cushing's syndrome — the same logic applies to thyrotoxicosis, where over-replacement with levothyroxine is a more common cause of a low TSH/high T4 picture than Graves' disease."
+    }
+  ]
+},
+{
+  id: "diabetes-physiology",
+  title: "Introduction to Diabetes Physiology & Pathophysiology",
+  instructor: "Tayyab Khan",
+  duration: "37 min",
+  tags: [],
+  body: `
+    <p>T1DM pathophysiology is a story of autoimmune destruction; T2DM is a story of many simultaneous mechanical failures. Both end in hyperglycemia, but the routes there — and what you can do about them — are completely different.</p>
+    <h3>Type 1: staged, immune-mediated beta-cell loss</h3>
+    <p>T1DM results from CD3 T-cell-mediated destruction of insulin-producing beta cells, while glucagon-producing alpha cells are spared (Atkinson et al, <em>Lancet</em> 2014). Susceptibility is mostly polygenic (genes within and outside the MHC); risk is roughly 50% for a monozygotic twin, ~5% for a non-monozygotic sibling, and ~0.4% with no family history. Autoantibodies (insulin/proinsulin, GAD, IA-2, ZnT8) are detectable in up to 85% of patients and mark the disease's progression through a defined staged model (Insel et al, <em>Diabetes Care</em> 2015):</p>
+    <div class="data-table"><table>
+      <tr><th>Stage</th><th>Autoantibodies</th><th>Glycemia</th><th>Symptoms</th></tr>
+      <tr><td>1</td><td>Multiple, present</td><td>Normal</td><td>None</td></tr>
+      <tr><td>2</td><td>Multiple, present</td><td>Dysglycemia (prediabetes range)</td><td>None</td></tr>
+      <tr><td>3</td><td>Present</td><td>Meets diagnostic criteria</td><td>New-onset clinical diabetes</td></tr>
+      <tr><td>4</td><td>Present</td><td>Diabetic range</td><td>Established, long-standing T1DM</td></tr>
+    </table></div>
+    <h3>Type 2: DeFronzo's "Ominous Octet"</h3>
+    <p>T2DM ranges from predominantly insulin resistance with relative deficiency, to a predominantly secretory defect with resistance layered on top. DeFronzo's influential framework (<em>Diabetes</em>, 2009) names eight converging mechanisms — worth knowing as a set rather than a list, because modern drug classes each target a different one of these:</p>
+    <ul>
+      <li><strong>&darr; insulin secretion</strong> — beta cells fail to ramp up output as glucose rises; roughly 80% of beta-cell function is already lost by the time a patient reaches the prediabetes range.</li>
+      <li><strong>&darr; incretin effect</strong> — GIP is actually <em>increased</em> in T2DM but its insulin-releasing effect is blunted; GLP-1 itself is decreased.</li>
+      <li><strong>&uarr; lipolysis</strong> — fat cells resist insulin's normal antilipolytic brake, raising free fatty acids, which stimulate gluconeogenesis and further suppress insulin secretion; once adipocyte storage capacity is exceeded, fat spills over into muscle, liver, and the beta cells themselves.</li>
+      <li><strong>&uarr; renal glucose reabsorption</strong> — SGLT2-mediated reabsorption rises with hyperglycemia, which itself worsens hyperglycemia.</li>
+      <li><strong>&darr; peripheral (muscle) glucose uptake.</strong></li>
+      <li><strong>Central/brain effects</strong> — altered hypothalamic and mesolimbic signalling affects appetite and food reward.</li>
+      <li><strong>&uarr; hepatic glucose production.</strong></li>
+      <li><strong>Glucagon dysregulation</strong> — glucagon runs higher (partly from lower GLP-1), and the liver becomes more sensitive to it, driving more gluconeogenesis.</li>
+    </ul>
+    <div class="callout"><strong>Why T1DM is ketosis-prone and T2DM usually isn't:</strong> DKA requires a near-total absence of insulin. Even the reduced insulin secretion of T2DM is typically enough to keep lipolysis and ketogenesis suppressed, even though it can't normalize glucose.</div>
+  `,
+  quiz: [
+    {
+      stem: "True or false: GIP levels are decreased in patients with T2DM.",
+      opts: ["True — GIP secretion falls as beta-cell mass is lost", "False — GIP is actually increased, but its insulin-releasing effect is blunted", "True — GIP and GLP-1 both fall in parallel", "False — GIP is unaffected by T2DM"],
+      correct: 1,
+      explain: "One of the more counterintuitive points in the Ominous Octet: GIP levels are increased, not decreased, in T2DM — the defect is a blunted insulinotropic response to GIP, not reduced GIP secretion. GLP-1, in contrast, is genuinely decreased."
+    },
+    {
+      stem: "A 10-year-old with a sibling with T1DM is found to be anti-GAD and anti-insulin antibody positive, with a fasting glucose of 6.5 mmol/L (below diagnostic threshold). Which stage of T1DM development does this represent?",
+      opts: ["Stage 1 — autoantibody positive, normoglycemic", "Stage 2 — autoantibody positive, dysglycemic, presymptomatic", "Stage 3 — new-onset clinical diabetes", "Stage 4 — established T1DM"],
+      correct: 1,
+      explain: "Multiple autoantibodies plus dysglycemia that doesn't yet meet diagnostic criteria for overt diabetes is Stage 2 — presymptomatic, but past Stage 1 (which requires normoglycemia) and short of Stage 3 (which requires diagnostic hyperglycemia)."
+    },
+    {
+      stem: "Roughly what proportion of beta-cell function has already been lost by the time a patient's glucose reaches the prediabetes range?",
+      opts: ["About 20%", "About 50%", "About 80%", "Essentially none — beta-cell loss only begins after diabetes is diagnosed"],
+      correct: 2,
+      explain: "By the time glucose crosses into the prediabetes range, roughly 80% of beta-cell function is already gone (Gastaldelli et al 2004; Ferrannini et al 2005) — a large fraction of the secretory defect predates the diagnosis itself."
+    }
+  ]
+},
+{
+  id: "t1dm-peds",
+  title: "Diagnosis & Management of Type 1 Diabetes in Children & Adolescents",
+  instructor: "Robert Stein",
+  duration: "59 min",
+  tags: [],
+  body: `
+    <p>The framing case: an 8-year-old boy, previously healthy, with 2–3 weeks of fatigue, polyuria, nocturia, polydipsia, weight loss with no change in appetite, and blurred vision. Mildly dehydrated. Random glucose 18.9 mmol/L, urine glucose ++, ketones +. That constellation — and the physiology behind it — is the spine of this module.</p>
+    <h3>The cascade from "no insulin" to symptoms</h3>
+    <p>Insulin normally promotes glycogenesis, glucose uptake (via GLUT4, in all tissues except liver and brain), fat and protein synthesis, and leptin secretion, while inhibiting gluconeogenesis, glycogenolysis, lipolysis, and hunger. Without it, the body behaves as though it's starving even while glucose is high: glycogenolysis and gluconeogenesis drive glucose further up &rarr; glucosuria &rarr; osmotic diuresis &rarr; dehydration and polyuria; simultaneously, proteolysis and lipolysis drive ketogenesis &rarr; ketosis/acidosis &rarr; nausea and hyperventilation. Rising counter-regulatory hormones and ongoing catabolism produce polydipsia and weight loss.</p>
+    <h3>Diagnosis</h3>
+    <p>Formal criteria: symptoms of diabetes plus a random plasma glucose &gt; 11.1 mmol/L, OR fasting plasma glucose &gt; 7.0 mmol/L, OR 2-hour OGTT &gt; 11.1 mmol/L. In practice, a symptomatic child with glycosuria, ketonuria, and a clearly elevated random glucose rarely needs fasting glucose or A1c to confirm.</p>
+    <h3>Targets and insulin dosing</h3>
+    <div class="data-table"><table>
+      <tr><th>Parameter</th><th>Target (&lt;18y, Diabetes Canada 2018)</th></tr>
+      <tr><td>Fasting BG</td><td class="num">4&ndash;8 mmol/L</td></tr>
+      <tr><td>Postprandial BG</td><td class="num">5&ndash;10 mmol/L</td></tr>
+      <tr><td>A1c</td><td class="num">&lt; 7.5%</td></tr>
+    </table></div>
+    <p>Insulin requirements scale with pubertal stage: &lt; 0.5 units/kg/day in the honeymoon phase, 0.7–1.0 units/kg/day prepuberty, and 1.0–2.0 units/kg/day during puberty (growth hormone surges are physiologically insulin-antagonistic). Regimens range from 3–4 injections/day (basal-bolus, mimicking endogenous secretion) to insulin pump therapy — the latter improving control and reducing hypoglycemia through more precise, adjustable basal/bolus dosing, plus lifestyle flexibility around meal timing and activity.</p>
+    <h3>CGM and "time in range"</h3>
+    <p>CGM reports interstitial glucose roughly every 5 minutes, giving trend data rather than single snapshots, and can alert to (or predict, up to 20 minutes ahead) out-of-range glucose. Two patients can share an identical A1c yet have very different glucose variability — time-in-range captures something A1c alone misses, and newer systems (e.g. hybrid closed-loop pumps) auto-adjust basal delivery from sensor data.</p>
+    <div class="callout"><strong>DCCT (1993):</strong> intensive treatment reduces long-term complications in T1DM — but at the cost of more severe hypoglycemia. Balancing tight control against hypoglycemia risk is the central tension of this whole module.</div>
+  `,
+  quiz: [
+    {
+      stem: "A 9-year-old has a random plasma glucose of 14 mmol/L with 2 weeks of polyuria and weight loss. What is the most appropriate next step?",
+      opts: ["Repeat the test on a separate day before diagnosing", "Diagnose diabetes now — no repeat testing needed", "Order an OGTT to confirm", "Start metformin as a diagnostic trial"],
+      correct: 1,
+      explain: "Symptoms of diabetes plus a random plasma glucose ≥ 11.1 mmol/L is diagnostic on its own — repeat confirmatory testing and fasting/OGTT are reserved for borderline or asymptomatic presentations, not a clearly symptomatic child like this one."
+    },
+    {
+      stem: "Two patients with T1DM have an identical A1c of 7%. Why might their day-to-day glucose management still look very different?",
+      opts: ["A1c is inaccurate and one reading must be wrong", "They can have very different glycemic variability and time-in-range despite the same average", "Identical A1c always means identical glucose patterns", "Time-in-range only matters for adults"],
+      correct: 1,
+      explain: "A1c reflects an average — two patients can land on the same average while one has smooth, stable glucose and the other swings widely between highs and lows. Time-in-range (a CGM-derived metric) captures that variability and its effect on wellbeing, which A1c alone does not."
+    },
+    {
+      stem: "A patient on multiple daily injections shows post-lunch hyperglycemia on repeated days, while other timepoints are in range or low. Which insulin dose is most likely to need adjustment?",
+      opts: ["Bedtime long-acting insulin", "Breakfast rapid-acting insulin", "Supper rapid-acting insulin", "No adjustment needed — this pattern is expected"],
+      correct: 1,
+      explain: "A consistent post-lunch high with otherwise reasonable control points to the rapid-acting insulin covering the pre-lunch interval — the breakfast dose — being too low, since that dose is what's meant to control glucose through to the next meal."
+    }
+  ]
+},
+{
+  id: "insulin-pharm",
+  title: "Pharmacology of Insulin",
+  instructor: "Fabiana Caetano Crowley",
+  duration: "65 min",
+  tags: [{label: "MCC 37, 37-1, 37-2", cls: "mcc"}],
+  body: `
+    <p>Insulin is a peptide hormone made by pancreatic beta cells — synthesized first as preproinsulin, processed to proinsulin, then cleaved into mature insulin plus C-peptide before being secreted into the portal circulation. Every modern insulin analog is a deliberate structural modification of that same molecule, engineered to change one thing: how fast it gets from injection site into the bloodstream as an active monomer.</p>
+    <h3>Why structure controls kinetics</h3>
+    <p>Insulin self-associates in solution: monomers &rarr; dimers &rarr; hexamers. Only the monomer activates the insulin receptor, so onset of action is really a question of how fast a given formulation's hexamers fall back apart after injection. Rapid-acting analogs are engineered with amino acid substitutions that destabilize the hexamer, so they dissociate and absorb faster than regular human insulin. Long-acting analogs do the reverse — forming microprecipitates at the injection site (glargine), self-aggregating into dihexamers plus binding albumin (detemir), or forming multi-hexamer depots plus albumin binding (degludec) — to flatten and prolong the profile.</p>
+    <h3>Preparations by kinetic class</h3>
+    <div class="data-table"><table>
+      <tr><th>Class</th><th>Examples</th><th>Onset</th><th>Duration</th></tr>
+      <tr><td>Rapid-acting analog</td><td>Lispro, aspart, glulisine</td><td class="num">5&ndash;15 min</td><td class="num">3&ndash;6 h</td></tr>
+      <tr><td>Short-acting (regular)</td><td>Human Regular</td><td class="num">30&ndash;60 min</td><td class="num">~6.5 h</td></tr>
+      <tr><td>Intermediate-acting</td><td>NPH (insulin + protamine + zinc)</td><td class="num">3&ndash;4 h</td><td class="num">10&ndash;16 h</td></tr>
+      <tr><td>Long-acting analog</td><td>Glargine, detemir</td><td class="num">0.5&ndash;4 h</td><td class="num">16&ndash;24 h</td></tr>
+      <tr><td>Ultra-long-acting</td><td>Degludec</td><td class="num">0.5&ndash;1.5 h</td><td class="num">&gt; 42 h</td></tr>
+      <tr><td>Once-weekly basal</td><td>Insulin icodec</td><td>&mdash;</td><td>t&frac12; ~196 h; steady state after 3&ndash;4 weekly doses</td></tr>
+    </table></div>
+    <p>Rapid-acting analogs aren't more effective at lowering A1c than regular insulin — their advantage is safety and convenience: faster onset, a better match to the post-meal glucose surge, and lower variability (less overnight hypoglycemia, fewer forced bedtime snacks).</p>
+    <h3>Adverse effects and practical rules</h3>
+    <ul>
+      <li><strong>Hypoglycemia</strong> — the most common ADR, an extension of insulin's own mechanism.</li>
+      <li><strong>Weight gain</strong> — from insulin's anabolic effects.</li>
+      <li><strong>Lipohypertrophy</strong> — from repeated injection at the same site, causing slow, unpredictable absorption; prevented by systematic site rotation.</li>
+      <li><strong>Rare allergic/immune reactions</strong> — usually to formulation additives, not the insulin molecule itself; switching manufacturer is a reasonable first step.</li>
+    </ul>
+    <div class="callout"><strong>Pump-specific rule:</strong> only rapid-acting/bolus insulins go in a pump — basal insulins are never used in pumps. Most basal insulins also should not be mixed with other insulins in the same syringe before injection.</div>
+  `,
+  quiz: [
+    {
+      stem: "Why do rapid-acting insulin analogs (e.g. lispro) act faster than regular human insulin?",
+      opts: ["They are given at a higher concentration", "Amino acid substitutions destabilize the hexamer, allowing faster dissociation into absorbable monomers", "They are injected intramuscularly instead of subcutaneously", "They bind more strongly to the insulin receptor"],
+      correct: 1,
+      explain: "Only the monomer form activates the insulin receptor and is absorbed efficiently. Rapid-acting analogs are engineered so their hexamers are less stable and fall apart into monomers faster than regular insulin's — that's the entire basis for their quicker onset."
+    },
+    {
+      stem: "Which basal insulin achieves an ultra-long, once-weekly dosing profile via a fatty diacid modification that creates an albumin-bound depot plus reduced receptor affinity?",
+      opts: ["Insulin glargine", "Insulin degludec", "Insulin icodec", "NPH"],
+      correct: 2,
+      explain: "Insulin icodec is the once-weekly basal analog — its fatty diacid modification produces an albumin-bound depot with reduced receptor affinity, giving a half-life of roughly 196 hours and steady state after about 3–4 weekly doses."
+    },
+    {
+      stem: "A patient repeatedly injects insulin into the same small area of abdominal skin and develops erratic glucose control. What is the most likely cause?",
+      opts: ["Insulin resistance from obesity", "Lipohypertrophy causing unpredictable absorption", "Degradation of insulin by gastric acid", "An allergic reaction to the injection site"],
+      correct: 1,
+      explain: "Repeated injection into the same site causes lipohypertrophy, which slows and makes absorption unpredictable — patients are counselled to rotate sites specifically to prevent this."
+    }
+  ]
+},
+{
+  id: "t2dm-diagnosis",
+  title: "Type 2 Diabetes Mellitus — Diagnosis & Epidemiology",
+  instructor: "Hiba Hashmi",
+  duration: "50 min",
+  tags: [],
+  body: `
+    <p>T2DM uses the identical glucose/A1c diagnostic thresholds as T1DM — and those thresholds aren't arbitrary: they mark the glycemic level at which the risk of diabetic retinopathy rises sharply (Mayfield 1998), not the level associated with cardiovascular or neuropathic risk.</p>
+    <div class="data-table"><table>
+      <tr><th>Criterion</th><th>Threshold</th></tr>
+      <tr><td>Fasting plasma glucose</td><td class="num">&ge; 7.0 mmol/L</td></tr>
+      <tr><td>A1c</td><td class="num">&ge; 6.5%</td></tr>
+      <tr><td>75g OGTT (2-hr) or random glucose</td><td class="num">&ge; 11.1 mmol/L</td></tr>
+    </table></div>
+    <p>Any one criterion, confirmed on a second occasion, is diagnostic — except when the patient is symptomatic (thirst, polyuria, weight loss), in which case a single abnormal test suffices. Acute illness (recent MI, high-dose steroids, sepsis) can transiently raise glucose, so diabetes should be suspected but confirmed once the patient has recovered.</p>
+    <h3>The grey zone: prediabetes</h3>
+    <div class="data-table"><table>
+      <tr><th>Category</th><th>Test</th><th>Range</th></tr>
+      <tr><td>Impaired fasting glucose (IFG)</td><td>Fasting plasma glucose</td><td class="num">6.1&ndash;6.9 mmol/L</td></tr>
+      <tr><td>Impaired glucose tolerance (IGT)</td><td>2-hr OGTT</td><td class="num">7.8&ndash;11.0 mmol/L</td></tr>
+      <tr><td>Prediabetic A1c</td><td>A1c</td><td class="num">6.0&ndash;6.4%</td></tr>
+    </table></div>
+    <h3>Pathophysiology: which came first is genuinely uncertain</h3>
+    <p>T2DM is a variable mixture of insulin resistance (needing more insulin than normal to move glucose into liver, fat, and muscle) and insulin deficiency (not enough insulin relative to the body's needs). Two competing models both have support: resistance driving excess demand until the pancreas can't keep up, versus an underlying secretory insufficiency causing mild glucose rise that itself becomes toxic and worsens things further. Clinically it rarely matters which came first — by diagnosis, both are typically present.</p>
+    <h3>Epidemiology</h3>
+    <p>About 90% of all diabetes is Type 2. Globally (IDF Diabetes Atlas, 2025): 589 million adults live with diabetes (~1 in 9), projected to reach 853 million by 2050; roughly 43% of cases are currently undiagnosed. In Canada, diagnosed diabetes has risen from 3.77M (10%) in 2020 to roughly 4.01M (10%) in 2024, with diagnosed-plus-undiagnosed reaching ~5.81M (15%) — and diabetes-or-prediabetes affecting close to 30% of Canadian adults. Asian, South Asian, Hispanic, Indigenous, and African-descent populations, along with women with a history of GDM, carry disproportionate risk.</p>
+    <div class="callout"><strong>Is a T2DM diagnosis necessarily permanent?</strong> Not always — the diagnostic threshold is a (somewhat arbitrary) glucose cutoff, so sufficient weight loss, activity, and diet change can push glucose back below it. But it's also not always reversible: if beta-cell insulin deficiency is significant, glucose can remain elevated despite excellent lifestyle change — not all T2DM is attributable to being overweight or inactive.</div>
+  `,
+  quiz: [
+    {
+      stem: "The diagnostic glucose/A1c thresholds for diabetes are set at the level associated with sharply rising risk of which complication?",
+      opts: ["Cardiovascular disease", "Diabetic retinopathy", "Peripheral neuropathy", "Nephropathy"],
+      correct: 1,
+      explain: "The diagnostic thresholds (FPG ≥7.0, A1c ≥6.5%, etc.) were chosen because they mark the glycemic level at which retinopathy risk rises sharply (Mayfield 1998) — not the threshold for cardiovascular or neuropathic risk, which is a common distractor."
+    },
+    {
+      stem: "A 28-year-old with a new glucose of 12 mmol/L and only mild fatigue has a mother with T1DM and a grandfather with T2DM. Which piece of history would most support a T2DM workup direction over T1DM?",
+      opts: ["Sudden, dramatic weight loss", "A large recent drop in physical activity level with modest weight gain", "Presence of ketonuria", "Positive anti-GAD antibodies"],
+      correct: 1,
+      explain: "A recent large drop in activity (with weight gain) fits a T2DM trajectory — insulin resistance tipping borderline glycemia into the diabetic range. Sudden weight loss and positive anti-GAD antibodies would instead raise concern for T1DM."
+    },
+    {
+      stem: "Roughly what fraction of adults living with diabetes worldwide are currently estimated to be undiagnosed?",
+      opts: ["About 10%", "About 25%", "About 43%", "About 75%"],
+      correct: 2,
+      explain: "The IDF Diabetes Atlas (2025, reflecting 2024 data) estimates that roughly 43% of adults with diabetes worldwide are currently undiagnosed — a substantial hidden burden contributing to delayed diagnosis and complication risk."
+    }
+  ]
+},
+{
+  id: "glucose-lowering-drugs",
+  title: "Pharmacology of Glucose-Lowering Drugs",
+  instructor: "Fabiana Caetano Crowley",
+  duration: "88 min",
+  tags: [{label: "MCC 37, 37-1, 37-2", cls: "mcc"}],
+  body: `
+    <p>Seven mechanistically distinct strategies for lowering glucose: delay carbohydrate digestion, increase insulin sensitivity, slow gastric emptying, decrease hepatic glucose output, increase insulin secretion, increase renal glucose excretion, or supply exogenous insulin. Nearly every drug class below is doing exactly one (or two) of these.</p>
+    <div class="data-table"><table>
+      <tr><th>Class</th><th>Example</th><th>Mechanism</th><th>Key adverse effect / caution</th></tr>
+      <tr><td>Biguanide</td><td>Metformin</td><td>AMPK activation &rarr; &darr; gluconeogenesis, &uarr; hepatic insulin sensitivity, &uarr; glucose uptake</td><td>GI upset, &darr;B12; rare lactic acidosis, risk concentrated in acute renal impairment/dehydration (e.g. heart failure + vomiting)</td></tr>
+      <tr><td>Thiazolidinedione</td><td>Pioglitazone, rosiglitazone</td><td>PPAR-&gamma; agonist &rarr; &uarr; adipose differentiation/insulin sensitivity, &darr; ectopic lipid</td><td>Weight gain, fluid retention (contraindicated in heart failure), &darr;bone density/fracture risk, bladder changes</td></tr>
+      <tr><td>Sulfonylurea</td><td>Gliclazide, glyburide, glimepiride</td><td>Closes K<sub>ATP</sub> channels &rarr; insulin release, glucose-independent</td><td>Hypoglycemia, weight gain; avoid in renal/hepatic failure, pregnancy, and generally in the elderly</td></tr>
+      <tr><td>Meglitinide</td><td>Repaglinide</td><td>K<sub>ATP</sub> channel closure, different site/kinetics than SUs</td><td>Hypoglycemia (lower risk than SUs); fast on/off, good for postprandial control, dosed TID</td></tr>
+      <tr><td>GLP-1 receptor agonist</td><td>Semaglutide, liraglutide, dulaglutide</td><td>Glucose-dependent &uarr; insulin, central satiety effects</td><td>GI upset, rare pancreatitis; weight loss benefit; strong cardiorenal evidence (LEADER, SUSTAIN-6, FLOW)</td></tr>
+      <tr><td>GLP-1/GIP agonist</td><td>Tirzepatide</td><td>Dual incretin receptor activation, glucose-dependent</td><td>GI upset; interacts with oral contraceptives; weekly dosing</td></tr>
+      <tr><td>DPP-4 inhibitor</td><td>Sitagliptin, linagliptin</td><td>Blocks GLP-1/GIP breakdown</td><td>Low hypoglycemia risk, weight-neutral, modest efficacy; possible &uarr; respiratory infection risk</td></tr>
+      <tr><td>Alpha-glucosidase inhibitor</td><td>Acarbose</td><td>Inhibits intestinal brush-border enzymes &rarr; slows carb digestion</td><td>Flatulence/GI upset; low hypoglycemia risk; modest efficacy, adjuvant use</td></tr>
+      <tr><td>SGLT2 inhibitor</td><td>Empagliflozin, dapagliflozin, canagliflozin</td><td>Blocks renal SGLT2 &rarr; glucosuria + natriuresis</td><td>Genital infections, hypovolemia, euglycemic DKA risk, possible fracture/amputation signal; strong cardiorenal evidence (EMPA-REG, DAPA-HF, CREDENCE)</td></tr>
+    </table></div>
+    <h3>An "incretin effect" worth understanding, not memorizing</h3>
+    <p>Oral glucose produces a substantially greater insulin response than IV glucose given to match the same blood glucose level — gut-derived incretin hormones (GLP-1, GIP) amplify insulin secretion beyond what blood glucose alone would trigger. Incretin-based drugs (GLP-1 RAs, DPP-4 inhibitors, tirzepatide) exploit this pathway, which is also why their hypoglycemia risk as monotherapy is low: the insulin release they trigger stays glucose-dependent.</p>
+    <h3>Place in therapy</h3>
+    <p>Metformin remains first-line for most patients absent contraindication: cheap, weight-neutral, low hypoglycemia risk. GLP-1 receptor agonists and SGLT2 inhibitors are increasingly chosen as the second agent by comorbidity rather than glucose-lowering potency alone — both classes carry outcome benefits (cardiovascular, renal, heart-failure) independent of glycemic control, and are preferred with established cardiovascular disease, heart failure, or CKD.</p>
+  `,
+  quiz: [
+    {
+      stem: "A patient with T2DM and heart failure is admitted with two days of vomiting and reduced oral intake, on stable-dose metformin. Which factor puts them at greatest risk of metformin-associated lactic acidosis?",
+      opts: ["Metformin at a stable outpatient dose is always high-risk", "The acute dehydration/AKI risk on top of heart failure creates the classic accumulation scenario", "Lactic acidosis is unrelated to renal clearance", "Heart failure alone, without acute illness, is the main risk driver"],
+      correct: 1,
+      explain: "Metformin is renally cleared; lactic acidosis risk concentrates around acute pharmacokinetic disruption — here, acute volume depletion from vomiting on top of heart failure risks acute kidney injury and metformin accumulation, unlike a chronically stable patient with normal or stable renal function."
+    },
+    {
+      stem: "Which adverse effect is a specific concern for thiazolidinediones like pioglitazone but not for metformin?",
+      opts: ["Lactic acidosis", "Fluid retention and worsening heart failure", "B12 deficiency", "Genital mycotic infection"],
+      correct: 1,
+      explain: "Thiazolidinediones are contraindicated in heart failure because of fluid retention — a class-specific risk distinct from metformin's own risk profile (GI upset, B12 deficiency, rare lactic acidosis in renal impairment)."
+    },
+    {
+      stem: "Which of the following adverse effects is actually associated with SGLT2 inhibitors: genital infections, hypovolemia, and weight GAIN?",
+      opts: ["All three are correct", "Genital infections and hypovolemia are correct; weight gain is not — SGLT2 inhibitors promote weight loss", "Only weight gain is correct", "None of the three are associated with this class"],
+      correct: 1,
+      explain: "SGLT2 inhibitors cause glucosuria and natriuresis, which explains genital infections and hypovolemia risk — but the class promotes weight LOSS (via calorie loss through glucosuria), not weight gain, which is a common distractor."
+    },
+    {
+      stem: "Why can SGLT2 inhibitors precipitate diabetic ketoacidosis even when blood glucose is only mildly elevated (\"euglycemic DKA\")?",
+      opts: ["They directly stimulate ketogenesis in the liver", "Glucosuria lowers blood glucose readings while insulin remains too low to suppress lipolysis and ketogenesis", "They cause severe hyperglycemia that is under-recognized", "They block glucagon secretion entirely"],
+      correct: 1,
+      explain: "SGLT2 inhibitors lower glucose through glucosuria rather than by increasing insulin action, so glucose can look reassuringly normal while insulin remains insufficient to suppress lipolysis/ketogenesis — producing DKA with a deceptively normal glucose, especially during acute illness."
+    }
+  ]
+},
+{
+  id: "dka-hhs-complications",
+  title: "Acute (HHS, DKA) & Chronic Complications of Diabetes",
+  instructor: "Aisha Yusuf Ibrahim",
+  duration: "46 min",
+  tags: [{label: "MCC 45 (acid-base)", cls: "mcc"}],
+  body: `
+    <p>DKA and HHS share the same root cause — insufficient insulin action — but the degree of deficiency determines whether the patient acidifies or just dehydrates.</p>
+    <h3>DKA vs. HHS</h3>
+    <div class="data-table"><table>
+      <tr><th>Feature</th><th>DKA</th><th>HHS</th></tr>
+      <tr><td>Typical population</td><td>Younger, T1DM (absolute insulin deficiency)</td><td>Older, T2DM (relative insulin deficiency)</td></tr>
+      <tr><td>Onset</td><td>Hours</td><td>Days</td></tr>
+      <tr><td>Glucose</td><td class="num">&gt; 15 mmol/L</td><td class="num">&gt; 30 mmol/L</td></tr>
+      <tr><td>Ketones</td><td>Positive</td><td>Negative or trace</td></tr>
+      <tr><td>pH</td><td class="num">&le; 7.3</td><td class="num">&gt; 7.3</td></tr>
+      <tr><td>Anion gap</td><td class="num">&gt; 12</td><td class="num">&lt; 12</td></tr>
+      <tr><td>Serum osmolality</td><td>Variable</td><td class="num">&gt; 320 mOsm/kg</td></tr>
+      <tr><td>Water deficit</td><td class="num">~6 L</td><td class="num">~9 L</td></tr>
+      <tr><td>Symptoms</td><td>Abdominal pain, vomiting, Kussmaul breathing, acetone breath</td><td>NO abdominal pain/vomiting, no hyperventilation — a key distinguishing feature</td></tr>
+    </table></div>
+    <p>The mechanistic reason HHS spares the patient acidosis: enough residual insulin remains (typical of T2DM) to inhibit adipose breakdown into ketones, even though it can't prevent hyperglycemia. T1DM patients lack insulin entirely, so nothing restrains lipolysis — hence DKA instead.</p>
+    <h3>Precipitants (both)</h3>
+    <p>Dehydrating or physically stressful illness (gastroenteritis, sepsis, MI, stroke, surgery), medications (steroids), and — worth naming explicitly as a social determinant of health — inability to access medications, including rationing insulin.</p>
+    <h3>Acute management</h3>
+    <ol>
+      <li>ABCs, then IV fluids (normal saline, often many litres) — both are profoundly volume-depleted.</li>
+      <li>IV insulin — definitely in DKA, almost always in HHS.</li>
+      <li>Monitor every 1–2 hours: level of consciousness, sodium, potassium, pH, hourly point-of-care glucose; watch for volume overload, especially in the elderly.</li>
+      <li>Once glucose falls to ~12–14 mmol/L, add dextrose to the IV fluid so the insulin infusion can continue — this is needed to fully resolve the acidosis/close the anion gap in DKA without causing hypoglycemia.</li>
+    </ol>
+    <div class="callout"><strong>The potassium trap:</strong> total body potassium is depleted in DKA even when the initial serum K<sup>+</sup> looks normal or high — acidosis and insulin deficiency shift K<sup>+</sup> out of cells. Once insulin therapy starts, K<sup>+</sup> shifts back intracellularly and serum levels can fall sharply, risking fatal arrhythmia if not anticipated and replaced.</div>
+    <h3>Chronic complications — two buckets</h3>
+    <div class="data-table"><table>
+      <tr><th>Microvascular</th><th>Macrovascular</th></tr>
+      <tr><td>Retinopathy, nephropathy, neuropathy</td><td>MI, stroke, peripheral vascular disease</td></tr>
+    </table></div>
+    <p>Retinopathy progresses through three stages: <strong>background</strong> (microaneurysms, dot hemorrhages — not vision-threatening, must be followed), <strong>pre-proliferative</strong> (cotton wool spots, lipid exudates, macular edema — may advance), and <strong>proliferative</strong> (fragile new vessels, vitreous hemorrhage risk — vision-threatening, must be treated). Peripheral sensorimotor neuropathy (the classic "glove and stocking" pattern) is the most common neuropathy and, combined with poor wound healing from microvascular disease, underlies diabetic foot ulcers, infection risk, and Charcot's arthropathy (undetected repeated injury causing progressive joint deformity).</p>
+  `,
+  quiz: [
+    {
+      stem: "A patient in DKA has a serum potassium of 5.2 mmol/L at presentation. What is the most appropriate interpretation?",
+      opts: ["Total body potassium is elevated and no replacement is needed", "Total body potassium is likely depleted despite a normal/high serum level, and it will fall once insulin therapy begins", "This value indicates renal failure and insulin should be withheld", "Potassium should be given as a rapid IV bolus immediately"],
+      correct: 1,
+      explain: "Acidosis and insulin deficiency shift potassium out of cells, so serum K⁺ can look normal or high in DKA despite depleted total body stores (from osmotic diuresis). Starting insulin drives K⁺ back intracellularly and can precipitate dangerous hypokalemia if not anticipated."
+    },
+    {
+      stem: "Which clinical features most reliably distinguish HHS from DKA at presentation?",
+      opts: ["HHS has abdominal pain and vomiting; DKA does not", "HHS lacks abdominal pain, vomiting, and Kussmaul breathing, which are typical of DKA", "HHS always has a lower glucose than DKA", "HHS has a higher anion gap than DKA"],
+      correct: 1,
+      explain: "HHS characteristically presents WITHOUT abdominal pain, vomiting, or hyperventilation/Kussmaul breathing — those features reflect the acidosis of DKA, which HHS (with its residual insulin suppressing ketogenesis) doesn't develop."
+    },
+    {
+      stem: "What is the correct sequence of initial management steps in a patient presenting with DKA?",
+      opts: ["Insulin infusion first, then IV fluids", "IV fluids/ABCs first, then insulin infusion once resuscitation is underway", "Potassium bolus first, then fluids", "Oral rehydration only, insulin reserved for outpatient follow-up"],
+      correct: 1,
+      explain: "Patients in DKA are profoundly volume-depleted; ABCs and fluid resuscitation come first, with insulin infusion following once resuscitation and potassium status are addressed — starting insulin first risks worsening hypotension and precipitating dangerous hypokalemia."
+    },
+    {
+      stem: "A patient with T1DM has new tingling feet, a foot ulcer that took 1.5 months to heal, and background retinopathy on recent eye exam. They deny chest pain, claudication, or TIA symptoms. Which complication category does this represent?",
+      opts: ["Macrovascular only", "Microvascular only", "Both microvascular and macrovascular", "Neither — these are unrelated to diabetes"],
+      correct: 1,
+      explain: "Sensorimotor neuropathy (the tingling, the slow-healing ulcer) and retinopathy are both microvascular complications. The absence of anginal, claudication, or TIA/stroke symptoms means there's no current evidence of macrovascular disease."
+    }
+  ]
+},
+{
+  id: "pregnancy-diabetes",
+  title: "Pregnancy and Diabetes",
+  instructor: "Aisha Yusuf Ibrahim",
+  duration: "60 min",
+  tags: [{label: "MCC 80-1, 80-2", cls: "mcc"}],
+  body: `
+    <p>Two distinct situations get lumped under "diabetes in pregnancy" and are worth separating cleanly: pre-existing (pre-pregnancy) diabetes, present before conception, and gestational diabetes (GDM), which arises because of pregnancy itself.</p>
+    <h3>Why pregnancy is diabetogenic</h3>
+    <p>Placental hormones (prolactin, cortisol, growth hormone, human placental lactogen) are physiologically insulin-antagonistic and rise through the second and third trimesters — a normal adaptation to shunt glucose toward the fetus. In a patient with limited beta-cell reserve, this unmasks or worsens hyperglycemia; insulin needs often fall in the first trimester (hypoglycemia risk), rise progressively through the second and third, and drop remarkably immediately postpartum.</p>
+    <h3>Why pre-pregnancy DM carries malformation risk that GDM doesn't</h3>
+    <p>Organogenesis happens in the first 6–8 weeks — often before a pregnancy is even recognized. Hyperglycemia during that window (present in poorly-controlled pre-existing DM, since the pancreas is already compromised before conception) raises risk of neural tube defects, specific cardiac malformations (transposition of the great vessels, coarctation, ASD), GI and renal anomalies. Optimal preconception glycemic control (A1c &le; 7.0%, ideally &le; 6.5%) is associated with roughly a 70% reduction in congenital anomalies. GDM, by contrast, is diagnosed at 24–28 weeks — well after organogenesis is complete — so it does <strong>not</strong> raise malformation risk.</p>
+    <h3>Diabetes Canada diagnostic pathway for GDM</h3>
+    <p>Universal screening at 24–28 weeks: non-fasting 50g oral glucose load, serum glucose checked at 1 hour.</p>
+    <div class="data-table"><table>
+      <tr><th>1-hr result</th><th>Next step</th></tr>
+      <tr><td class="num">&lt; 7.8 mmol/L</td><td>Negative screen — stop</td></tr>
+      <tr><td class="num">&ge; 11.1 mmol/L</td><td>GDM diagnosed directly</td></tr>
+      <tr><td class="num">7.8&ndash;11.0 mmol/L</td><td>Proceed to fasting 75g OGTT</td></tr>
+    </table></div>
+    <p>On the follow-up 75g OGTT, GDM is diagnosed if <strong>any one</strong> value meets or exceeds threshold: fasting &ge; 5.3 mmol/L, 1-hr &ge; 10.6 mmol/L, 2-hr &ge; 9.0 mmol/L.</p>
+    <h3>Maternal & fetal risk — pre-pregnancy DM vs. GDM</h3>
+    <div class="data-table"><table>
+      <tr><th></th><th>Pre-pregnancy DM</th><th>GDM</th></tr>
+      <tr><td>Congenital anomalies</td><td>&uarr; risk</td><td>Not increased</td></tr>
+      <tr><td>Macrosomia</td><td>&uarr; risk</td><td>&uarr; risk</td></tr>
+      <tr><td>Neonatal hypoglycemia</td><td>&uarr; risk</td><td>&uarr; risk</td></tr>
+      <tr><td>Pre-eclampsia</td><td>&uarr; risk</td><td>&uarr; risk (lower magnitude)</td></tr>
+      <tr><td>Future maternal T2DM</td><td>Already present</td><td>Up to ~50&ndash;60% within years/decades of follow-up</td></tr>
+    </table></div>
+    <h3>Treatment and targets</h3>
+    <p>GDM is first managed with diet (low simple carbohydrate, spread across 3 meals + 3 snacks) and post-meal activity. If glucose remains elevated: insulin is safe and effective; metformin is safe but less powerful; glyburide is likely safe but crosses the placenta and can cause neonatal hypoglycemia, so it's typically reserved for when metformin isn't enough and the patient prefers to avoid insulin. Glycemic targets are shared across GDM, T1DM, and T2DM in pregnancy: fasting &lt; 5.3 mmol/L, 1-hr post-prandial &lt; 7.8 mmol/L.</p>
+    <div class="callout"><strong>Watch for the impostor:</strong> a patient diagnosed with "GDM" at 24–28 weeks whose glucose does <em>not</em> normalize after delivery may actually have undiagnosed pre-existing T2DM (or rarely early T1DM) that simply wasn't caught until routine pregnancy screening found it. Unusually high glucose values or medication needs are a hint — hence the routine 75g OGTT at 6 weeks to 6 months postpartum for everyone with a GDM diagnosis.</div>
+  `,
+  quiz: [
+    {
+      stem: "Why does pre-pregnancy (pre-existing) diabetes carry a higher risk of fetal congenital anomalies than gestational diabetes?",
+      opts: ["Pre-pregnancy diabetes always involves higher glucose levels overall", "Hyperglycemia is present during organogenesis (weeks 6–8), before GDM has typically developed", "GDM is not associated with any fetal risk", "Congenital anomalies are unrelated to glycemic control"],
+      correct: 1,
+      explain: "Organogenesis occurs in the first 6–8 weeks. Pre-existing diabetes exposes the fetus to hyperglycemia during this window; GDM, diagnosed at 24–28 weeks, develops only after organogenesis is complete, which is exactly why it doesn't raise malformation risk the same way."
+    },
+    {
+      stem: "A patient has a 50g screening glucose challenge with a 1-hour result of 8.8 mmol/L. What is the most appropriate next step?",
+      opts: ["Diagnose GDM immediately and refer to an endocrine pregnancy clinic", "Reassure her — no GDM, no further testing needed", "Check HbA1c to confirm the diagnosis", "Proceed to a fasting 75g OGTT to determine whether she meets GDM criteria"],
+      correct: 3,
+      explain: "A 1-hour value of 7.8–11.0 mmol/L on the 50g screen is the intermediate zone — neither a clean negative (<7.8) nor a direct diagnosis (≥11.1) — and requires the follow-up fasting 75g OGTT to determine whether she actually meets GDM criteria."
+    },
+    {
+      stem: "A patient with GDM on metformin plus diet shows blood glucose readings above target across fasting, post-breakfast, post-lunch, and post-supper checks despite good adherence. What is the most appropriate next step?",
+      opts: ["Stop metformin", "Continue current management unchanged", "Cut carbohydrate intake by half and increase exercise further", "Add insulin, since all readings are above target"],
+      correct: 3,
+      explain: "When glucose remains elevated across the board despite diet and metformin, insulin is the appropriate next step — it's both safe in pregnancy and more powerful than metformin at achieving target control when readings are consistently out of range."
+    }
+  ]
+},
+{
+  id: "prevent-t2dm",
+  title: "Can We Prevent Type 2 Diabetes?",
+  instructor: "Tayyab Khan",
+  duration: "39 min",
+  tags: [],
+  body: `
+    <p>Unlike T1DM, T2DM has a genuinely modifiable prodrome — prediabetes (IFG/IGT) — where intervention measurably changes the trajectory. This module ranks what actually moves the needle, from lifestyle through medication to surgery.</p>
+    <h3>Lifestyle intervention</h3>
+    <p>The Diabetes Prevention Program (DPP; <em>N Engl J Med</em> 2002) randomized 3,234 people with IFG/IGT to placebo, metformin, or intensive lifestyle intervention (calorie/fat restriction, 150 min/week aerobic activity, targeting 7% weight loss — actual average loss was 5%). Over 3 years: lifestyle intervention reduced progression to T2DM by <strong>58%</strong>, versus <strong>31%</strong> for metformin — lifestyle change outperformed medication head-to-head. Several dietary patterns (Mediterranean, DASH, AHEI) were separately associated with a ~20% reduced future T2DM risk.</p>
+    <h3>Pharmacologic prevention — no agent is actually approved for this in Canada</h3>
+    <div class="data-table"><table>
+      <tr><th>Agent</th><th>Effect on progression</th><th>Notes</th></tr>
+      <tr><td>Metformin</td><td>31% relative risk reduction</td><td>More effective in age &lt; 60, BMI &gt; 35, or history of GDM</td></tr>
+      <tr><td>Thiazolidinediones</td><td>Rosiglitazone 62%; pioglitazone 72% (IGT&rarr;diabetes)</td><td>Limited by edema, heart failure, and fracture risk</td></tr>
+      <tr><td>Acarbose</td><td>25&ndash;36% (by OGTT)</td><td>Effect did not persist after discontinuation</td></tr>
+      <tr><td>Orlistat</td><td>37% relative risk reduction</td><td>Via ~5.8 kg weight loss vs. 3 kg placebo</td></tr>
+      <tr><td>GLP-1 agonists (liraglutide, semaglutide)</td><td>Liraglutide: 2% vs. 6% (3yr); Semaglutide: 84% vs. 48% reverted to normoglycemia (68wk)</td><td>Assessed as a secondary outcome within weight-loss trials</td></tr>
+    </table></div>
+    <p>None of these carries a formal Canadian indication for diabetes prevention — the evidence is real, but side effects, long-term safety data, and affordability all limit routine use for prevention specifically (as opposed to treatment of established diabetes).</p>
+    <h3>Bariatric surgery</h3>
+    <p>Roux-en-Y gastric bypass and sleeve gastrectomy (the two most common procedures) each produce roughly 30–35% weight loss, with 10–20% regain over time, and carry real procedural risk (~0.2% mortality). Emerging evidence supports a meaningful role in diabetes prevention among patients with obesity — exceeding both lifestyle and pharmacologic approaches — but cost, invasiveness, and long-term risk remain real barriers to routine use for prevention.</p>
+    <div class="callout"><strong>Ranking the evidence:</strong> bariatric surgery &gt; intensive lifestyle intervention &gt; metformin, in terms of raw magnitude of risk reduction — but accessibility, invasiveness, cost, and patient preference all shape which is appropriate for a given person.</div>
+  `,
+  quiz: [
+    {
+      stem: "In the Diabetes Prevention Program, how did intensive lifestyle intervention compare to metformin for preventing progression from prediabetes to T2DM?",
+      opts: ["Metformin was substantially more effective", "Lifestyle intervention was more effective than metformin", "They were exactly equivalent in effect", "Neither showed any benefit over placebo"],
+      correct: 1,
+      explain: "Intensive lifestyle intervention reduced progression to T2DM by about 58%, versus roughly 31% for metformin, in the same trial population — a clear head-to-head win for lifestyle change."
+    },
+    {
+      stem: "What percent weight loss target did the DPP lifestyle arm aim for, and roughly what was actually achieved?",
+      opts: ["Aimed for 15%, achieved 10%", "Aimed for 7%, achieved roughly 5%", "Aimed for 20%, achieved 15%", "Aimed for 3%, achieved 3%"],
+      correct: 1,
+      explain: "The DPP lifestyle intervention targeted a 7% body weight loss through diet and 150 minutes/week of activity; the actual average weight loss achieved in the study was closer to 5% — still enough to produce the 58% relative risk reduction."
+    },
+    {
+      stem: "Is any medication currently approved in Canada specifically for the prevention of Type 2 diabetes?",
+      opts: ["Yes — metformin", "Yes — semaglutide", "Yes — pioglitazone", "No — none of the medications with prevention evidence carry a formal Canadian prevention indication"],
+      correct: 3,
+      explain: "Despite real evidence for metformin, thiazolidinediones, acarbose, orlistat, and GLP-1 agonists in reducing progression to T2DM, none is formally approved in Canada specifically for diabetes prevention — these agents are used off-label for that purpose, weighing side effects and cost against benefit."
+    }
+  ]
+},
+{
+  id: "glycemic-goals",
+  title: "Glycemic Goals of Care in Adults with Diabetes",
+  instructor: "Aisha Yusuf Ibrahim",
+  duration: "27 min",
+  tags: [{label: "MCC 37, 37-2", cls: "mcc"}],
+  body: `
+    <p>Glycemic targets aren't a single number to memorize — they're individualized, weighing the proven benefit of tighter control (fewer microvascular complications) against its real risk (hypoglycemia, which is immediate and can be fatal). A1c above 7% is associated with rising microvascular and cardiovascular risk regardless of the treatment used to get there — but "lower is always better" is not the correct takeaway.</p>
+    <h3>Two tools, two jobs</h3>
+    <p><strong>A1c</strong> estimates mean plasma glucose over the preceding 8–12 weeks (with the most recent 30 days weighted heaviest) and is the best-validated marker, since its relationship to microvascular complications has been directly assessed in RCTs (DCCT, UKPDS, and others). <strong>Self-monitoring (SMBG/CGM)</strong> is what makes hitting an A1c target achievable and safe day-to-day — confirming and treating hypoglycemia in real time, guiding dose adjustments, and catching situations where A1c doesn't accurately reflect glycemia (e.g. abnormal red cell turnover). SMBG is a means; target A1c is the end.</p>
+    <h3>Setting the target: three worked cases</h3>
+    <div class="data-table"><table>
+      <tr><th>Patient</th><th>Target A1c</th><th>Why</th></tr>
+      <tr><td>35yo, T2DM x2yr, metformin monotherapy, no complications</td><td class="num">&le; 6.5%</td><td>Young, long life expectancy, no structural complications yet (still preventable), low hypoglycemia-drug exposure</td></tr>
+      <tr><td>52yo, T1DM x30yr on insulin, CAD/HTN/dyslipidemia + neuropathy, active, no severe hypo history</td><td class="num">&le; 7.0%</td><td>Long duration and existing complications, but no frailty or limited life expectancy — standard target still appropriate</td></tr>
+      <tr><td>85yo, severe dementia, ADL-dependent, on a sulfonylurea</td><td class="num">7.1&ndash;8.5%</td><td>Dementia + functional dependence + a hypoglycemia-prone drug all argue for prioritizing safety over tight control</td></tr>
+    </table></div>
+    <h3>Guiding principles (Diabetes Canada 2018)</h3>
+    <ul>
+      <li>The minimum goal for everyone: freedom from clinically significant hyper- and hypoglycemia symptoms.</li>
+      <li>Most patients with T1DM or T2DM should aim for A1c around 7.0%.</li>
+      <li>Because the A1c-complication relationship is continuous, <em>any</em> improvement matters — a drop from 9.5% to 8.5% is still worthwhile even if 7.0% isn't reached.</li>
+      <li>In patients with limited life expectancy, the years-long payoff of tight control is harder to justify against its immediate risks — favour more liberal targets.</li>
+      <li>Relax the target (up to 8.5%) specifically for patients on insulin or a secretagogue who have hypoglycemia unawareness, recurrent severe lows, or a comorbidity where hypoglycemia is especially dangerous (dementia, seizure disorder, frailty, fall risk).</li>
+    </ul>
+    <div class="callout"><strong>Evidence base:</strong> DCCT (T1DM) and UKPDS/Kumamoto/ADVANCE/VADT (T2DM) all show tighter control reduces microvascular complications; DCCT, UKPDS, and VADT also show a long-term cardiovascular benefit from early tight control persisting years later — the "metabolic memory"/legacy effect covered in the complications-prevention module.</div>
+  `,
+  quiz: [
+    {
+      stem: "An 85-year-old patient with severe dementia, ADL dependence, and treatment with a sulfonylurea is being started on a diabetes management plan. What glycemic target approach is most appropriate?",
+      opts: ["A1c target < 6.5%, matching young healthy adults", "A relaxed A1c target (roughly 7.1–8.5%), prioritizing avoidance of hypoglycemia over tight control", "No glycemic target is needed at any age", "The same target regardless of comorbidity or medication"],
+      correct: 1,
+      explain: "Dementia, functional dependence, and a hypoglycemia-prone medication (sulfonylurea) together argue for a relaxed target — the years-long payoff of tight control is hard to justify here, while hypoglycemia risk is immediate and, in a frail patient, dangerous."
+    },
+    {
+      stem: "A 35-year-old with T2DM for 2 years, on metformin monotherapy, with no structural complications, is being counselled on a glycemic target. What is the most appropriate A1c goal?",
+      opts: ["≤ 6.5%", "7.1–8.5%", "No specific target — glucose control doesn't matter this early", "≥ 9%, since early T2DM is usually asymptomatic"],
+      correct: 0,
+      explain: "Young age, long expected duration of disease, no structural complications yet (still fully preventable), and low hypoglycemia risk from monotherapy metformin (a drug that doesn't itself cause hypoglycemia) together support a tighter target of ≤ 6.5%."
+    },
+    {
+      stem: "Why is SMBG considered essential even though A1c is the best-validated single marker of glycemic control?",
+      opts: ["SMBG replaces the need for A1c entirely", "SMBG is what allows patients to safely reach an A1c target — confirming/treating hypoglycemia and guiding day-to-day dose decisions", "SMBG and A1c measure completely unrelated things", "SMBG is only useful in Type 1 diabetes"],
+      correct: 1,
+      explain: "SMBG (or CGM) is the day-to-day tool that makes hitting an A1c target both achievable and safe — it catches and treats hypoglycemia in real time, informs dosing decisions, and flags situations where A1c doesn't accurately reflect true glycemia. It's a means to the A1c end, not a replacement for it."
+    }
+  ]
+},
+{
+  id: "prevention-complications",
+  title: "Prevention of Complications of Diabetes",
+  instructor: "Hiba Hashmi",
+  duration: "55 min",
+  tags: [],
+  body: `
+    <p>Two landmark trials define this module: the DCCT in T1DM and the UKPDS in T2DM. Both showed that intensive glucose control meaningfully reduces microvascular complications — and both also showed that glucose control alone is not the whole story for cardiovascular risk.</p>
+    <h3>DCCT (T1DM, n=1441, 6.5 years)</h3>
+    <p>Intensive treatment (&ge; 3 injections/day or pump, target A1c &lt; 7%) vs. conventional treatment (1–2 injections/day, target A1c &lt; 10%):</p>
+    <div class="data-table"><table>
+      <tr><th>Outcome</th><th>Risk reduction, intensive vs. conventional</th></tr>
+      <tr><td>New retinopathy</td><td class="num">76%</td></tr>
+      <tr><td>Worsening of existing retinopathy</td><td class="num">54%</td></tr>
+      <tr><td>Clinical neuropathy</td><td class="num">60%</td></tr>
+      <tr><td>Microalbuminuria</td><td class="num">39%</td></tr>
+    </table></div>
+    <p>Tradeoff: 2–3x increased hypoglycemia risk. In the original 6.5-year trial, intensive control did <em>not</em> significantly reduce MI or stroke — that benefit only emerged years later (see legacy effect, below).</p>
+    <h3>UKPDS (new T2DM, n=3867, 10 years)</h3>
+    <p>Intensive therapy (insulin or sulfonylurea, A1c 7.0% vs. 7.9%) reduced microvascular complications by 25%, with a linear dose-response relationship (any glucose improvement helps) — but showed <em>no</em> significant reduction in macrovascular disease in the original trial. A separate finding is worth remembering on its own: intensive <strong>blood pressure</strong> control (to &lt; 144/82) — not glucose control — reduced strokes, diabetes-related death, heart failure, microvascular complications, and vision loss.</p>
+    <h3>The legacy effect ("metabolic memory")</h3>
+    <p>Long-term (&gt;10yr) follow-up of both trials, after glycemic control between the intensive and conventional groups had converged, found the earlier intensive-control period's benefits persisted or even emerged for the first time:</p>
+    <div class="data-table"><table>
+      <tr><th>Trial</th><th>Long-term finding</th></tr>
+      <tr><td>DCCT</td><td>42% reduction in CV outcomes; 33% reduction in all-cause mortality</td></tr>
+      <tr><td>UKPDS</td><td>24% reduction in microvascular disease; 17% reduction in DM-related death</td></tr>
+    </table></div>
+    <p>The teaching point: early, aggressive glucose control confers durable benefit that outlasts the period of intensive treatment itself — supporting acting early rather than waiting.</p>
+    <h3>Beyond glucose: the other levers</h3>
+    <div class="data-table"><table>
+      <tr><th>Target</th><th>First-line</th><th>Effect</th></tr>
+      <tr><td>Blood pressure &le; 130/80</td><td>ACE inhibitor or ARB</td><td>&darr; CV outcomes, renal impairment, retinopathy</td></tr>
+      <tr><td>LDL &lt; 2.0 mmol/L</td><td>Statin</td><td>&darr; CV outcomes, possibly retinopathy</td></tr>
+    </table></div>
+    <p>Statins are indicated for anyone &gt; 30 years old with diabetes duration &gt; 15 years, or anyone &ge; 40; ACE/ARB for anyone &ge; 55 with another cardiovascular risk factor or renal disease. Lifestyle measures (smoking cessation, activity, annual ophthalmology screening, daily foot checks) round out the picture — this is often summarized clinically as the "ABCDES" of diabetes care.</p>
+    <div class="callout"><strong>Framing note from this lecture:</strong> most patients are already aware of and worried about diabetes complications — the goal of discussing them is informed shared decision-making, not using fear to enforce "compliance."</div>
+  `,
+  quiz: [
+    {
+      stem: "In the original UKPDS trial, which intervention reduced diabetes-related death and stroke: intensive glucose control, or intensive blood pressure control?",
+      opts: ["Intensive glucose control alone", "Intensive blood pressure control", "Neither showed benefit in the original trial", "Both showed identical effect sizes"],
+      correct: 1,
+      explain: "A key and often-missed UKPDS finding: intensive BLOOD PRESSURE control (to <144/82) — not glucose control — was what reduced strokes, diabetes-related death, heart failure, and vision loss in the original trial. Intensive glucose control reduced microvascular complications but not mortality in that trial."
+    },
+    {
+      stem: "What does the \"legacy effect\" observed in long-term DCCT/UKPDS follow-up refer to?",
+      opts: ["Glucose control has no lasting benefit after a trial ends", "Benefits from an earlier period of intensive glycemic control persist or emerge years later, even after glucose control between groups has converged", "Only blood pressure control shows a legacy effect", "Legacy effect refers to genetic inheritance of diabetes risk"],
+      correct: 1,
+      explain: "In both trials, after the intensive and conventional groups' glucose control became statistically similar during long-term follow-up, the group that had earlier received intensive control still showed reduced cardiovascular events and mortality — a durable benefit from the earlier period of tighter control."
+    },
+    {
+      stem: "A 31-year-old woman with T1DM for 20 years has persistent microalbuminuria and does not wish to conceive. Which medication most directly targets prevention of her renal complication?",
+      opts: ["A statin", "An ACE inhibitor", "A GLP-1 receptor agonist", "A thiazide diuretic"],
+      correct: 1,
+      explain: "ACE inhibitors are nephroprotective and specifically indicated for microalbuminuria in diabetes — their teratogenicity is a real consideration in pregnancy-capable patients, which is why her not wishing to conceive is relevant to comfortably choosing this agent."
+    }
+  ]
+},
+{
+  id: "obesity-intro",
+  title: "Introduction to Obesity",
+  instructor: "Tisha Joy",
+  duration: "50 min",
+  tags: [{label: "MCC 118, 118-1", cls: "mcc"}],
+  body: `
+    <p>Obesity is defined as a complex, progressive, and relapsing chronic disease characterized by abnormal or excessive body fat impairing health — deliberately <em>not</em> "energy in vs. energy out" or a failure of willpower. About 1 in 5 Canadians meet criteria (BMI &ge; 30 kg/m&sup2; in most people, with lower ethnicity-specific cutoffs for South and East Asian populations).</p>
+    <h3>Why the body resists weight loss</h3>
+    <ul>
+      <li><strong>Hormonal regulation:</strong> the hypothalamus governs both "wanting" (dopamine signalling) and "liking" (opioid signalling) of food. Ghrelin drives hunger; leptin, GLP-1, GIP, CCK, and insulin mediate satiety — and these hormones actively work to pull weight back toward a person's established setpoint after loss.</li>
+      <li><strong>Genetics</strong> — body habitus is highly heritable.</li>
+      <li><strong>Prenatal environment</strong> — intrauterine growth restriction can predispose to later energy-hoarding and obesity risk.</li>
+      <li><strong>Iatrogenic causes</strong> — steroids, certain antidepressants/antipsychotics.</li>
+      <li><strong>Gut microbiome and circadian disruption</strong> (e.g. shift work).</li>
+      <li><strong>Social determinants of health</strong> — food/income insecurity and housing instability push toward lower-nutrient, calorie-dense food; environmental/cultural factors (park/sidewalk access, recent immigration, loss of social supports, stress) compound this.</li>
+    </ul>
+    <div class="callout"><strong>Why this reframing matters clinically:</strong> because the body actively defends an elevated weight setpoint through compensatory hormonal changes, relapse after weight loss reflects physiology, not a lack of willpower — central to reducing weight stigma and to treating obesity as an ongoing chronic disease rather than a one-time fix.</div>
+    <h3>Management: the 5A's framework</h3>
+    <ol>
+      <li><strong>Ask</strong> permission to discuss weight; examine your own biases; use motivational interviewing to gauge readiness.</li>
+      <li><strong>Assess</strong> contributors and risks — history (weight trajectory, hypothyroid/Cushing's symptoms, lifestyle/SDOH/medications), physical exam (BMI, waist circumference, signs of secondary causes), labs (A1c, lipids, TSH, ALT).</li>
+      <li><strong>Advise</strong> on risks and options, prioritizing health/wellbeing over the number on the scale.</li>
+      <li><strong>Agree</strong> on SMART goals — prevent further gain vs. active loss; a reasonable target if losing is 0.5&ndash;1 kg/week.</li>
+      <li><strong>Assist</strong> with barriers, education, and resources.</li>
+    </ol>
+    <h3>Treatment escalation</h3>
+    <div class="data-table"><table>
+      <tr><th>Approach</th><th>Typical weight loss</th><th>Eligibility / notes</th></tr>
+      <tr><td>Lifestyle (diet, activity, CBT)</td><td class="num">Foundation for all patients</td><td>Universal — 30&ndash;60 min activity most days + resistance training</td></tr>
+      <tr><td>Pharmacotherapy (GLP-1/GIP agonists most effective)</td><td class="num">&ge; 5% at 12wk is the treatment goal</td><td>BMI &ge; 30, or &ge; 27 with a weight-related complication; lifelong adjunct, not a cure</td></tr>
+      <tr><td>Bariatric surgery (Roux-en-Y, sleeve gastrectomy)</td><td class="num">25&ndash;30%</td><td>BMI &ge; 40, or &ge; 35 with complication, or &ge; 30 with suboptimally controlled diabetes</td></tr>
+    </table></div>
+    <p>Bariatric surgery decreases long-term mortality and can induce remission of T2DM, MASLD, PCOS, and OSA — but is a lifelong commitment requiring mandatory smoking cessation, alcohol/carbonated-beverage limits, and ongoing follow-up. The most serious post-operative risk is <strong>thiamine deficiency</strong> (can present 1–3 months post-op, especially with poor intake) — because it can precipitate Wernicke's encephalopathy, thiamine must always be given before glucose in a symptomatic post-bariatric patient.</p>
+  `,
+  quiz: [
+    {
+      stem: "Why is obesity increasingly framed as a chronic, relapsing disease rather than a failure of willpower?",
+      opts: ["Because diet and exercise have no effect on weight", "Because the body physiologically defends an elevated weight setpoint through compensatory hormonal changes, making relapse common after weight loss", "Because obesity is purely genetic with no environmental contribution", "Because medications are the only effective treatment"],
+      correct: 1,
+      explain: "Hormonal signals (ghrelin, leptin, and others) actively work to restore a person's established weight setpoint after loss — this physiological resistance is why obesity is treated as an ongoing chronic disease requiring sustained management, not a one-time behavioural fix."
+    },
+    {
+      stem: "A patient on semaglutide at the maximally tolerated dose for 12 weeks has lost only 2% of initial body weight, against a treatment goal of ≥5%. What is the most appropriate next step?",
+      opts: ["Continue the same dose indefinitely without change", "Consider switching to a different pharmacotherapy (e.g. tirzepatide)", "Refer immediately for bariatric surgery regardless of eligibility criteria", "Add exercise alone and reassess in a year"],
+      correct: 1,
+      explain: "The treatment goal for obesity pharmacotherapy is ≥5% weight loss after 12 weeks at maximally tolerated dose — falling well short of that (as here, at 2%) is the trigger to consider switching agents, not persisting unchanged or jumping straight to surgery without an eligibility assessment."
+    },
+    {
+      stem: "A patient 2 months post Roux-en-Y gastric bypass presents with confusion, poor oral intake, and persistent nausea, and is started on IV fluids. What should be given before any glucose-containing fluid?",
+      opts: ["Iron", "Calcium and vitamin D", "Thiamine", "Vitamin B12"],
+      correct: 2,
+      explain: "Thiamine deficiency is the most serious post-bariatric nutrient deficiency, especially with poor oral intake in the first few months after a malabsorptive procedure — giving glucose before replacing thiamine can precipitate Wernicke's encephalopathy, so thiamine always comes first."
+    }
+  ]
+}
+];
+
+(function(){
+  var navlist = document.getElementById('navlist');
+  var content = document.getElementById('content');
+  var totalQ = 0;
+  MODULES.forEach(function(m){ totalQ += m.quiz.length; });
+  document.getElementById('progress-count').textContent = '0 / ' + totalQ;
+
+  var STORE_KEY = 'endo-hub-answers-v1';
+  var answered = {};
+  try {
+    var raw = localStorage.getItem(STORE_KEY);
+    if (raw) answered = JSON.parse(raw);
+  } catch(e) {}
+
+  function saveAnswered(){
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(answered)); } catch(e) {}
+  }
+
+  function correctCount(){
+    var n = 0;
+    Object.keys(answered).forEach(function(k){ if (answered[k] === 'correct') n++; });
+    return n;
+  }
+
+  function updateProgress(){
+    var c = correctCount();
+    document.getElementById('progress-count').textContent = c + ' / ' + totalQ;
+    document.getElementById('progress-fill').style.width = (totalQ ? (100 * c / totalQ) : 0) + '%';
+  }
+
+  function moduleAnsweredCount(m){
+    var n = 0;
+    m.quiz.forEach(function(q, i){
+      var key = m.id + '-' + i;
+      if (answered[key]) n++;
+    });
+    return n;
+  }
+
+  function markDot(m){
+    var dot = document.querySelector('.navlist a[href="#' + m.id + '"] .dot');
+    if (!dot) return;
+    var done = moduleAnsweredCount(m) === m.quiz.length && m.quiz.length > 0;
+    dot.classList.toggle('done', done);
+  }
+
+  // Build nav
+  MODULES.forEach(function(m, idx){
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + m.id;
+    a.innerHTML = '<span class="num">' + String(idx+1).padStart(2,'0') + '</span><span class="dot"></span><span>' + m.title + '</span>';
+    li.appendChild(a);
+    navlist.appendChild(li);
+  });
+
+  function renderQuiz(m){
+    var wrap = document.createElement('div');
+    wrap.className = 'quiz';
+
+    var head = document.createElement('div');
+    head.className = 'quiz-head';
+    head.innerHTML = '<span>Check yourself</span><span class="quiz-score" id="score-' + m.id + '"></span>';
+    wrap.appendChild(head);
+
+    var scoreEl = head.querySelector('.quiz-score');
+
+    var body = document.createElement('div');
+    body.className = 'quiz-body';
+
+    function updateModuleScore(){
+      var n = moduleAnsweredCount(m);
+      scoreEl.textContent = n + ' / ' + m.quiz.length + ' answered';
+    }
+
+    m.quiz.forEach(function(q, i){
+      var key = m.id + '-' + i;
+      var qd = document.createElement('div');
+      qd.className = 'q';
+      var stem = document.createElement('div');
+      stem.className = 'q-stem';
+      stem.textContent = (i+1) + '. ' + q.stem;
+      qd.appendChild(stem);
+
+      var opts = document.createElement('div');
+      opts.className = 'q-opts';
+
+      var explain = document.createElement('div');
+      explain.className = 'q-explain';
+      explain.innerHTML = '<strong>' + (q.explain.split(' ')[0]) + '</strong> ' + q.explain;
+
+      var alreadyAnswered = !!answered[key];
+
+      q.opts.forEach(function(optText, oi){
+        var btn = document.createElement('button');
+        btn.className = 'opt';
+        btn.innerHTML = '<span class="letter">' + String.fromCharCode(65+oi) + '</span><span>' + optText + '</span>';
+        if (alreadyAnswered) {
+          btn.disabled = true;
+          if (oi === q.correct) btn.classList.add('correct');
+          if (answered[key] === 'incorrect-' + oi) btn.classList.add('incorrect');
+        }
+        btn.addEventListener('click', function(){
+          if (btn.disabled) return;
+          var allOpts = opts.querySelectorAll('.opt');
+          allOpts.forEach(function(o){ o.disabled = true; });
+          if (oi === q.correct) {
+            btn.classList.add('correct');
+            answered[key] = 'correct';
+          } else {
+            btn.classList.add('incorrect');
+            allOpts[q.correct].classList.add('correct');
+            answered[key] = 'incorrect-' + oi;
+          }
+          explain.classList.add('shown');
+          saveAnswered();
+          updateProgress();
+          updateModuleScore();
+          markDot(m);
+        });
+        opts.appendChild(btn);
+      });
+
+      qd.appendChild(opts);
+      qd.appendChild(explain);
+      if (alreadyAnswered) explain.classList.add('shown');
+      body.appendChild(qd);
+    });
+
+    wrap.appendChild(body);
+    updateModuleScore();
+    return wrap;
+  }
+
+  MODULES.forEach(function(m, idx){
+    var sec = document.createElement('section');
+    sec.className = 'module';
+    sec.id = m.id;
+
+    var head = document.createElement('div');
+    head.className = 'module-head';
+    head.innerHTML = '<span class="module-num">' + String(idx+1).padStart(2,'0') + '</span><h2>' + m.title + '</h2>';
+    sec.appendChild(head);
+
+    var meta = document.createElement('div');
+    meta.className = 'module-meta';
+    var tagsHtml = '<span class="tag">' + m.instructor + '</span><span class="tag">' + m.duration + '</span>';
+    (m.tags || []).forEach(function(t){ tagsHtml += '<span class="tag ' + t.cls + '">' + t.label + '</span>'; });
+    meta.innerHTML = tagsHtml;
+    sec.appendChild(meta);
+
+    var bodyDiv = document.createElement('div');
+    bodyDiv.className = 'module-body';
+    bodyDiv.innerHTML = m.body;
+    sec.appendChild(bodyDiv);
+
+    var quizWrap = document.createElement('div');
+    quizWrap.className = 'module-body';
+    quizWrap.appendChild(renderQuiz(m));
+    sec.appendChild(quizWrap);
+
+    content.appendChild(sec);
+    markDot(m);
+  });
+
+  updateProgress();
+
+  // Active-link tracking on scroll
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.module'));
+  var links = Array.prototype.slice.call(document.querySelectorAll('.navlist a'));
+  function onScroll(){
+    var pos = window.scrollY + 120;
+    var current = sections[0];
+    sections.forEach(function(s){ if (s.offsetTop <= pos) current = s; });
+    links.forEach(function(l){ l.classList.toggle('active', l.getAttribute('href') === '#' + current.id); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Close mobile nav on link click
+  links.forEach(function(l){
+    l.addEventListener('click', function(){
+      document.getElementById('sidebar').classList.remove('open');
+    });
+  });
+})();
+</script>

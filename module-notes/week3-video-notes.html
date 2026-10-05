@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 3 Video Notes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper: #f2f0e8;
+    --paper-raised: #fbfaf5;
+    --ink: #1e2a2e;
+    --ink-soft: #55625f;
+    --hairline: #d6d1c2;
+    --accent: #2c5f5a;
+    --accent-soft: #dce8e4;
+    --accent-ink: #163634;
+    --amber: #b5792c;
+    --amber-soft: #f3e6d2;
+    --good: #2f6b3e;
+    --good-soft: #dfeee1;
+    --shadow: 0 1px 2px rgba(30,42,46,.06), 0 8px 24px -12px rgba(30,42,46,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #171d1e; --paper-raised: #1f2729; --ink: #e9eae4; --ink-soft: #a5afab;
+      --hairline: #333e3f; --accent: #7bbbb0; --accent-soft: #223634; --accent-ink: #cdeae4;
+      --amber: #e0b06b; --amber-soft: #3a2f1a; --good: #7fc98d; --good-soft: #1e3324;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #171d1e; --paper-raised: #1f2729; --ink: #e9eae4; --ink-soft: #a5afab;
+    --hairline: #333e3f; --accent: #7bbbb0; --accent-soft: #223634; --accent-ink: #cdeae4;
+    --amber: #e0b06b; --amber-soft: #3a2f1a; --good: #7fc98d; --good-soft: #1e3324;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Public Sans', system-ui, sans-serif; -webkit-font-smoothing:antialiased; }
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  h1,h2,h3{ font-family:'Fraunces', Georgia, serif; text-wrap:balance; margin:0; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+  button{ font-family:inherit; cursor:pointer; }
+  textarea{ font-family:inherit; }
+
+  .shell{ max-width:900px; margin:0 auto; padding:0 24px 96px; }
+  .topbar{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:28px 24px 20px; max-width:900px; margin:0 auto; border-bottom:1px solid var(--hairline); }
+  .brand .kicker{ font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:600; }
+  .brand h1{ font-size:1.5rem; font-weight:600; margin-top:2px; }
+  .topstat{ text-align:right; font-family:'JetBrains Mono', monospace; font-size:.78rem; color:var(--ink-soft); }
+
+  .intro{ padding:28px 0 8px; max-width:620px; }
+  .intro p{ margin:8px 0 0; color:var(--ink-soft); line-height:1.55; font-size:.95rem; }
+
+  .group-heading{ display:flex; align-items:center; gap:12px; margin:32px 0 14px; }
+  .group-heading h2{ font-size:1.02rem; font-weight:600; white-space:nowrap; }
+  .group-heading .rule{ height:1px; background:var(--hairline); flex:1; }
+
+  .list{ display:flex; flex-direction:column; gap:10px; }
+  .row{
+    display:flex; align-items:center; gap:14px; text-align:left; width:100%;
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; box-shadow:var(--shadow); transition:border-color .12s ease, transform .12s ease;
+  }
+  .row:hover{ border-color:var(--accent); transform:translateY(-1px); }
+  .row .num{ font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--ink-soft); width:28px; flex-shrink:0; }
+  .row .body{ flex:1; min-width:0; }
+  .row h3{ font-size:1rem; font-weight:500; line-height:1.3; }
+  .row .meta{ font-size:.76rem; color:var(--ink-soft); margin-top:3px; font-family:'JetBrains Mono',monospace; }
+  .row .status{ flex-shrink:0; }
+  .pill{ font-family:'JetBrains Mono',monospace; font-size:.66rem; font-weight:600; padding:3px 9px; border-radius:99px; white-space:nowrap; }
+  .pill.empty{ background:var(--hairline); color:var(--ink-soft); }
+  .pill.started{ background:var(--amber-soft); color:var(--amber); }
+  .pill.done{ background:var(--good-soft); color:var(--good); }
+
+  .detail-header{ display:flex; align-items:center; gap:14px; padding:26px 0 4px; flex-wrap:wrap; }
+  .back-btn{ background:none; border:1px solid var(--hairline); border-radius:8px; padding:7px 12px; font-size:.82rem; color:var(--ink-soft); }
+  .back-btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .detail-title .kicker{ font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; font-weight:600; }
+  .detail-title h2{ font-size:1.3rem; font-weight:600; margin-top:2px; }
+  .runtime{ font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--ink-soft); }
+  .connects{ margin:14px 0 0; padding:10px 14px; background:var(--accent-soft); border-left:3px solid var(--accent); border-radius:6px; font-size:.85rem; color:var(--accent-ink); }
+
+  .obj-card{ margin-top:22px; background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow); }
+  .obj-card h3{ font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); font-weight:600; margin-bottom:10px; }
+  .obj{ display:flex; align-items:flex-start; gap:10px; padding:6px 0; font-size:.9rem; line-height:1.4; }
+  .obj input{ margin-top:3px; flex-shrink:0; width:16px; height:16px; accent-color:var(--accent); }
+  .obj label.checked{ color:var(--ink-soft); text-decoration:line-through; text-decoration-color:var(--hairline); }
+
+  .section-card{ margin-top:16px; background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow); }
+  .section-card .sh{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
+  .section-card h3{ font-size:1.02rem; font-weight:600; }
+  .section-card .tag{ font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--amber); background:var(--amber-soft); padding:2px 8px; border-radius:99px; white-space:nowrap; }
+  .section-card .hint{ font-size:.85rem; color:var(--ink-soft); margin:2px 0 10px; line-height:1.4; }
+  .section-card textarea{
+    width:100%; min-height:76px; resize:vertical; border:1px solid var(--hairline); border-radius:8px;
+    background:var(--paper); color:var(--ink); padding:10px 12px; font-size:.9rem; line-height:1.5;
+  }
+  .section-card textarea:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .section-card textarea::placeholder{ color:var(--ink-soft); opacity:.6; }
+
+  .detail-actions{ display:flex; gap:10px; justify-content:space-between; align-items:center; margin-top:24px; flex-wrap:wrap; }
+  .save-note{ font-size:.76rem; color:var(--ink-soft); font-family:'JetBrains Mono',monospace; }
+  .btn{ border:1px solid var(--hairline); background:var(--paper-raised); color:var(--ink); border-radius:8px; padding:10px 16px; font-size:.86rem; font-weight:500; }
+  .btn.primary{ background:var(--accent); color:var(--paper-raised); border-color:var(--accent); font-weight:600; }
+  .btn:hover{ border-color:var(--accent); }
+
+  [hidden]{ display:none !important; }
+  footer{ max-width:900px; margin:56px auto 0; padding:20px 24px 0; color:var(--ink-soft); font-size:.78rem; border-top:1px solid var(--hairline); }
+
+  @media print{
+    .topbar .topstat, .back-btn, .detail-actions, footer, #dashboard{ display:none !important; }
+    body{ background:#fff; color:#000; }
+    .section-card, .obj-card{ box-shadow:none; border:1px solid #ccc; break-inside:avoid; }
+    textarea{ border:1px solid #999 !important; }
+  }
+  @media (max-width:560px){
+    .topbar{ flex-direction:column; align-items:flex-start; gap:6px; }
+    .topstat{ text-align:left; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">P2 · Week 3 · Puberty, Growth, Adrenal &amp; Reproductive Development</span>
+    <h1>Video Notes</h1>
+  </div>
+  <div class="topstat">10 videos · fill in as you watch</div>
+</div>
+
+<main class="shell">
+
+  <section id="dashboard">
+    <div class="intro">
+      <p>An outline for each Video Overview, built from its own structure — same section order the video actually follows. Watch, pause at each heading, and jot the point before moving on. Notes save automatically in this browser.</p>
+    </div>
+    <div id="groups"></div>
+  </section>
+
+  <section id="detail" hidden>
+    <div class="detail-header">
+      <button class="back-btn" id="backBtn">&larr; All videos</button>
+      <div class="detail-title">
+        <div class="kicker" id="detKicker"></div>
+        <h2 id="detTitle"></h2>
+      </div>
+      <span class="runtime" id="detRuntime"></span>
+    </div>
+    <div class="connects" id="detConnects" hidden></div>
+
+    <div class="obj-card">
+      <h3>Learning objectives</h3>
+      <div id="objList"></div>
+    </div>
+
+    <div id="sectionList"></div>
+
+    <div class="detail-actions">
+      <span class="save-note" id="saveNote">Notes save automatically</span>
+      <div style="display:flex; gap:10px;">
+        <button class="btn" id="printBtn">Print this outline</button>
+        <button class="btn primary" id="nextBtn">Next video &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Week 3 study material · P2 Puberty, Growth, Adrenal &amp; Reproductive Development · for personal review use</footer>
+
+<script id="data" type="application/json">[{"id": "v1", "num": 1, "title": "Physiologic Changes Leading to Puberty", "group": "Puberty & Growth", "runtime": "9-12 min", "connects": "Foundation video — Videos 3, 6 and 10 all build on this HPO axis physiology", "objectives": ["Describe the changes in GnRH, LH and FSH secretion that occur with the onset of puberty", "Describe the physical changes of puberty in males and females and the hormones responsible", "Describe the role of adrenarche in puberty", "Identify the components of the hypothalamic-pituitary-ovarian (HPO) axis", "Describe the hormonal changes across the menstrual cycle (follicular, ovulatory, luteal phases)", "Describe the endometrial changes across the menstrual cycle", "Describe the mechanism of action of NSAIDs and tranexamic acid in managing menstrual blood loss", "Describe normal and abnormal menstrual blood loss", "Identify a problem at each level of the HPO axis that can lead to abnormal pubertal development", "Recall the mean age of menarche and menopause, and describe the physiology of premenstrual symptoms"], "sections": [{"h": "Triggers for puberty onset", "tag": "GABA→glutamate/kisspeptin — the ‘ignition switch’", "p": "Leptin/critical-weight hypothesis, kisspeptin-GPR54-KNDy signaling, MKRN3"}, {"h": "Pubertal milestones & terminology", "tag": "gonadarche→adrenarche→thelarche→pubarche→menarche", "p": "Sequence, timing, mean age of menarche, estrogen vs androgen effects"}, {"h": "The HPO axis & menstrual cycle phases", "tag": "the LH surge — negative→positive feedback flip", "p": "Follicular, ovulatory, and luteal phases and their hormonal drivers"}, {"h": "Endometrial changes across the cycle", "tag": "", "p": "Proliferative, secretory, and menstrual phases; functional vs basal layer"}, {"h": "Clinical correlates: bleeding, cramps, PMS/PMDD", "tag": "NSAIDs vs tranexamic acid — different mechanisms", "p": "Normal/abnormal menstrual blood loss, dysmenorrhea mechanism, premenstrual symptoms"}, {"h": "Rapid-fire recap checklist", "tag": "", "p": "Run back through the learning objectives above — can you answer each one cold?"}]}, {"id": "v2", "num": 2, "title": "Disorders of Growth", "group": "Puberty & Growth", "runtime": "10-12 min", "connects": "Turner syndrome here reappears in Video 3 as a cause of delayed puberty", "objectives": ["Describe normal growth during childhood", "Identify normal variants of growth in childhood", "Recognize common general Pediatric causes for short stature", "Identify most common endocrinology causes for short stature", "Identify common genetic causes for short stature", "Describe clinical features/complications of Turner syndrome", "Summarize basic concepts of treatment for endocrine causes of short stature"], "sections": [{"h": "Normal childhood growth & how it's measured", "tag": "growth velocity = ‘rate of climb’, not altitude", "p": "Three growth phases, mid-parental height, height-age, bone age"}, {"h": "Normal variants of short stature", "tag": "familial vs constitutional delay", "p": "Familial short stature and CDGP — normal variants, not disease"}, {"h": "General pediatric causes", "tag": "", "p": "SGA, nutritional causes, chronic illness, genetic syndromes, skeletal dysplasias"}, {"h": "Endocrine causes: GH deficiency", "tag": "the ‘chubby, not thin’ discriminator", "p": "Genetic/congenital/acquired causes, clinical features, diagnosis, treatment"}, {"h": "Other endocrine & metabolic causes", "tag": "", "p": "Hypothyroidism case, glucocorticoid excess, rickets, pseudohypoparathyroidism"}, {"h": "Turner syndrome", "tag": "the most common single feature: short stature", "p": "Genetics, presentation, GH treatment, hypogonadism, associated conditions"}, {"h": "Evaluation of a short child — take-home", "tag": "", "p": "History, exam, initial investigations, when to get a karyotype"}]}, {"id": "v3", "num": 3, "title": "Disorders of Puberty", "group": "Puberty & Growth", "runtime": "11-13 min", "connects": "Builds directly on Video 1's HPO axis; revisits Turner syndrome from Video 2", "objectives": ["Describe normal stages of pubertal development for boys and girls", "Describe the normal ages for pubertal development for boys and girls", "Define precocious puberty and delayed puberty in boys and girls", "Outline the main causes for precocious puberty and for delayed puberty in girls and boys", "Classify disorders of precocious puberty", "Classify disorders of delayed puberty", "Interpret clinical findings and laboratory results for disorders of puberty", "Summarize basic concepts of treatment for disorders of puberty"], "sections": [{"h": "Normal puberty timing & Tanner staging", "tag": "girls 8-13, boys 9-14", "p": "Sequence of pubertal milestones in girls vs boys"}, {"h": "Delayed puberty — definitions & framework", "tag": "primary (hypergonadotropic) vs secondary (hypogonadotropic)", "p": "CDGP as the most common cause; where the HPG axis defect sits"}, {"h": "Turner & Klinefelter syndromes", "tag": "revisits Video 2's Turner content", "p": "Primary hypogonadism in girls vs boys"}, {"h": "Precocious puberty — definitions & variants", "tag": "before age 8 (girls) / 9 (boys)", "p": "Benign variants: premature thelarche and premature pubarche"}, {"h": "Central vs peripheral precocious puberty", "tag": "the alarm firing early vs someone bypassing it", "p": "GnRH-dependent vs GnRH-independent; McCune-Albright, CAH"}, {"h": "Assessment & treatment", "tag": "GnRH stimulation test — the gold standard", "p": "Workup algorithm and GnRH analog therapy"}]}, {"id": "v4", "num": 4, "title": "Clinical Pituitary Gland Disease", "group": "Pituitary & Adrenal", "runtime": "13-15 min", "connects": "Cross-references Video 1's HPO axis and Video 5's adrenal Cushing's content", "objectives": ["Recognize the clinical presentation of Anterior Pituitary Insufficiency", "Describe the main diagnostic steps of Anterior Pituitary Insufficiency", "Globally discuss management of Anterior Pituitary Insufficiency", "Recognize and describe signs and symptoms of pituitary hormone overproduction", "Describe initial screening test for overproduction of each pituitary hormone"], "sections": [{"h": "Anterior pituitary insufficiency — framework", "tag": "mass effect vs hormonal deficiency", "p": "The systematic two-question approach, walked through the 53-year-old man case"}, {"h": "Assessing each hormonal axis", "tag": "TSH is unreliable in secondary disease", "p": "Adrenal, thyroid, gonadal, and GH axes; dynamic (insulin tolerance) testing"}, {"h": "Treatment principles", "tag": "treat adrenal insufficiency before thyroid — always", "p": "Sequencing of replacement therapy and monitoring"}, {"h": "Cushing's disease", "tag": "two-stage diagnostic logic", "p": "ACTH-dependent pituitary source; screening tests and their caveats; the 26-year-old case"}, {"h": "Prolactinoma / hyperprolactinemia", "tag": "prolactin ‘jams the ignition’ of the HPG axis", "p": "Mechanism of PRL-induced secondary hypogonadism; causes; treatment"}]}, {"id": "v5", "num": 5, "title": "Clinical Adrenal Gland Disease", "group": "Pituitary & Adrenal", "runtime": "13-15 min", "connects": "Complements Video 4's pituitary Cushing's content; CAH here connects to Video 6", "objectives": ["Recognize and describe signs, symptoms and main etiology of acute adrenal insufficiency", "Recognize and describe signs, symptoms and main etiology of chronic adrenal insufficiency", "Describe treatment of adrenal insufficiency", "Recognize and describe signs and symptoms of primary hyperaldosteronism", "Describe initial tests for primary hyperaldosteronism", "Recognize and describe signs and symptoms of pheochromocytoma", "Describe initial diagnostic tests for pheochromocytoma", "Describe an approach to adrenal incidentaloma", "Recognize and describe presenting signs and symptoms of Cushing syndrome", "Describe the various screening tests for Cushing syndrome"], "sections": [{"h": "Adrenal anatomy & the HPA stress axis", "tag": "three zones — three floors of a factory", "p": "Zona glomerulosa/fasciculata/reticularis and the CRH-ACTH-cortisol axis"}, {"h": "Adrenal insufficiency", "tag": "primary vs secondary — the factory failing vs losing its orders", "p": "Etiology, screening labs, diagnosis, acute and chronic treatment"}, {"h": "Primary hyperaldosteronism", "tag": "low renin, high aldosterone", "p": "When to suspect it; the three-step diagnostic workup"}, {"h": "Pheochromocytoma & adrenal incidentaloma", "tag": "alpha-blockade BEFORE beta-blockade", "p": "Classic triad, metanephrine testing, workup sequence"}, {"h": "Cushing syndrome — the adrenal perspective", "tag": "two positive screening tests required", "p": "Screening tests and the ACTH-dependence logic"}]}, {"id": "v6", "num": 6, "title": "Disorders of Sexual Differentiation", "group": "Sexual Differentiation & Gender", "runtime": "9-11 min", "connects": "Connects to Video 8's gonadal embryology and Video 5's adrenal steroidogenesis", "objectives": ["Develop an approach to the work-up of a newborn with a Disorder of Sexual Development", "List the causes of incomplete virilization in an individual with an XY karyotype", "List the causes of virilization in an individual with an XX karyotype", "Understand the presentation of congenital adrenal hyperplasia (CAH)", "Understand the management of CAH", "Describe the appropriate clinical and laboratory assessment of an infant with ambiguous genitalia", "Develop an approach to communicating physical exam findings to the new parents of a child with a Disorder of Sexual Development", "Understand the factors that should be considered when assigning a sex to a newborn with a DSD"], "sections": [{"h": "What is a DSD & the newborn evaluation", "tag": "neutral terminology — gonads, phallus, labio-scrotal folds", "p": "Definition, genital exam, and the teaching case of Baby A.H."}, {"h": "Classification: 46,XY DSD vs 46,XX DSD", "tag": "incomplete virilization vs virilization", "p": "Causes on each side; 5-alpha-reductase deficiency and androgen insensitivity"}, {"h": "Congenital adrenal hyperplasia", "tag": "cortisol synthesis blocked partway down an assembly line", "p": "Steroidogenic pathway, 21-hydroxylase deficiency, the three clinical forms"}, {"h": "Neonatal presentation & lifelong management of CAH", "tag": "", "p": "Salt-wasting crisis, glucocorticoid/mineralocorticoid replacement"}, {"h": "Gender assignment", "tag": "outcome data by diagnosis", "p": "Factors to consider, ESPE/LWPES consensus principles"}]}, {"id": "v7", "num": 7, "title": "Introduction to Transgender Medicine", "group": "Sexual Differentiation & Gender", "runtime": "9-11 min", "connects": "Distinguishes gender identity from the DSD/sex framework of Video 6", "objectives": ["Develop an approach to the management of a patient looking for support in social and medical transitioning, considering both adult and pediatric individuals", "Compare the risks of other health issues in the transgender population to those of the general population", "Develop a plan to have a gender-inclusive environment in your clinic area", "Review diagnostic criteria for gender incongruence and gender dysphoria", "Understand an approach to care for the pediatric transgender individual", "Review pediatric guidelines for initiation of gender-affirming hormone therapy"], "sections": [{"h": "Terminology", "tag": "sex vs gender vs gender identity vs orientation", "p": "Precise definitions and the diagnostic ‘three I's’"}, {"h": "Pediatric approach & mental health data", "tag": "family support: 4% vs 60% suicide risk", "p": "Clinical interview approach and epidemiology"}, {"h": "Staged treatment framework", "tag": "fully reversible → partially reversible → irreversible", "p": "Puberty blockers, hormone therapy, surgery criteria"}, {"h": "Adult hormone therapy", "tag": "WPATH's four criteria", "p": "Two goals of therapy, monitoring, testosterone delivery options"}, {"h": "Benefits & risks of gender-affirming hormones", "tag": "", "p": "Masculinizing (testosterone) vs feminizing (estrogen) regimens"}]}, {"id": "v8", "num": 8, "title": "Development of the Female Reproductive Tract", "group": "Reproductive Anatomy & Ovarian Disorders", "runtime": "8-10 min", "connects": "Grounds Video 9's clinical anatomy; elaborates Video 6's SRY embryology", "objectives": ["Describe the underlying anatomical and embryological basis of common OB/GYN clinical presentations and routine examinations", "Describe the development of the gonads, ducts, and external genitalia from indifferent stages to definitive structures", "Describe the anatomical bases for abnormal development of the female reproductive tract"], "sections": [{"h": "Overview & the SRY switch", "tag": "female is the default pathway", "p": "Genetic vs phenotypic sex, the urogenital development timeline"}, {"h": "The indifferent stage", "tag": "two parallel duct systems", "p": "Gonadal ridge, primordial germ cells, Wolffian vs Müllerian ducts"}, {"h": "Female gonadal & duct fate", "tag": "", "p": "Ovary development; Wolffian duct regression and its remnants (Gartner's duct)"}, {"h": "Uterus, cervix & vagina formation", "tag": "the sinovaginal bulbs", "p": "Müllerian fusion and the clinical anomalies that result"}, {"h": "Ovarian descent & external genitalia", "tag": "round ligament = adult gubernaculum", "p": "Gubernaculum derivatives; genital tubercle to clitoris/labia"}]}, {"id": "v9", "num": 9, "title": "Anatomy of the Female Pelvis and Perineum", "group": "Reproductive Anatomy & Ovarian Disorders", "runtime": "12-15 min", "connects": "Direct application of Video 8's embryology to adult anatomy", "objectives": ["Identify the uterus, cervix, Fallopian tubes, ovaries, bladder, vagina, and vulva", "Describe the structures that support and stabilize the uterus and vagina and propose possible complications if these structures are compromised", "Trace the arterial supply, venous drainage, and lymphatic drainage of the pelvis and perineum", "Describe the nervous supply to the female pelvis and associated challenges with diagnoses", "Describe the fascial layers of the perineum and how this relates to the accumulation of fluid", "Compare the male and female erectile bodies and external genitalia and how these structures are involved in the sexual response cycle", "Create an approach for a 20 year old woman presenting with RLQ pain, including the structures in the RLQ and the nerve supply to the area"], "sections": [{"h": "Pelvic viscera", "tag": "uterus, tubes, ovaries, vagina", "p": "Structure and relations of each pelvic organ"}, {"h": "Supporting structures", "tag": "cardinal & uterosacral ligaments do the real work", "p": "Ligaments, pelvic floor, and prolapse when support fails"}, {"h": "Vascular & lymphatic supply", "tag": "ovarian vessels trace back to the aorta", "p": "Arterial, venous, and lymphatic drainage, by embryologic origin"}, {"h": "Nerve supply", "tag": "visceral = poorly localized, pudendal = well localized", "p": "Autonomic vs somatic innervation of the pelvis and perineum"}, {"h": "Perineum & fascial layers", "tag": "nested compartments", "p": "Urogenital vs anal triangle; where fluid and infection track"}, {"h": "Functional sexual anatomy", "tag": "", "p": "Erectile body homologues and the sexual response cycle"}, {"h": "Clinical anchor: RLQ pain in a 20-year-old woman", "tag": "", "p": "Structures and nerve supply of the RLQ — why localization is difficult"}]}, {"id": "v10", "num": 10, "title": "Polyendocrine Metabolic Ovarian Syndrome (PMOS/PCOS)", "group": "Reproductive Anatomy & Ovarian Disorders", "runtime": "10-12 min", "connects": "Capstone — ties together Video 1's HPO axis, Video 3's premature adrenarche, and Video 6's CAH differential", "objectives": ["List the major diagnostic criteria for PMOS", "List the conditions that mimic PMOS symptoms", "Outline biochemical options for distinguishing these conditions from PMOS", "List implications for PMOS diagnosis on fertility, metabolic syndrome, DM risk, carcinoma risk and associated emotional overlay", "Distinguish treatment options for PMOS: lifestyle and medications"], "sections": [{"h": "From PCOS to PMOS — the Rotterdam criteria", "tag": "2 of 3, not all 3", "p": "Hyperandrogenism, ovulatory dysfunction, polycystic ovarian morphology"}, {"h": "Conditions that mimic PMOS", "tag": "a diagnosis of exclusion", "p": "Non-classic CAH, thyroid disease, hyperprolactinemia, Cushing's syndrome"}, {"h": "Biochemical workup", "tag": "", "p": "17-OHP, TSH, prolactin, cortisol screening, androgens, pelvic ultrasound"}, {"h": "Treatment options", "tag": "", "p": "Lifestyle, combined oral contraceptives, metformin, anti-androgens, ovulation induction"}, {"h": "Implications of diagnosis", "tag": "‘fertilizer without pruning’", "p": "Fertility, metabolic syndrome/T2DM, endometrial carcinoma risk, emotional overlay"}]}]</script>
+<script>
+(function(){
+  "use strict";
+  var MODULES = JSON.parse(document.getElementById('data').textContent);
+  var store = {
+    get: function(){ try{ return JSON.parse(localStorage.getItem('wk3VideoNotes-v1')) || {}; }catch(e){ return {}; } },
+    set: function(v){ try{ localStorage.setItem('wk3VideoNotes-v1', JSON.stringify(v)); }catch(e){} }
+  };
+  var data = store.get();
+
+  var dashboard = document.getElementById('dashboard');
+  var detail = document.getElementById('detail');
+  var groupsEl = document.getElementById('groups');
+  var currentIdx = -1;
+  var saveTimer = null;
+
+  function moduleState(m){
+    var d = data[m.id] || {};
+    var notesFilled = (m.sections || []).filter(function(s,i){ return d['note'+i] && d['note'+i].trim().length; }).length;
+    var objChecked = (m.objectives || []).filter(function(o,i){ return d['obj'+i]; }).length;
+    if(notesFilled === 0 && objChecked === 0) return 'empty';
+    if(notesFilled === (m.sections||[]).length && objChecked === (m.objectives||[]).length) return 'done';
+    return 'started';
+  }
+
+  function renderDashboard(){
+    groupsEl.innerHTML = '';
+    var groups = [];
+    MODULES.forEach(function(m){
+      var g = groups.filter(function(x){ return x.name===m.group; })[0];
+      if(!g){ g = {name:m.group, mods:[]}; groups.push(g); }
+      g.mods.push(m);
+    });
+    groups.forEach(function(g){
+      var h = document.createElement('div');
+      h.className = 'group-heading';
+      h.innerHTML = '<h2>'+g.name+'</h2><div class="rule"></div>';
+      groupsEl.appendChild(h);
+
+      var list = document.createElement('div');
+      list.className = 'list';
+      g.mods.forEach(function(m){
+        var idx = MODULES.indexOf(m);
+        var st = moduleState(m);
+        var row = document.createElement('button');
+        row.className = 'row';
+        var pillLabel = st==='done' ? 'Notes complete' : st==='started' ? 'In progress' : 'Not started';
+        row.innerHTML =
+          '<span class="num">'+String(m.num).padStart(2,'0')+'</span>'+
+          '<span class="body"><h3>'+m.title+'</h3><span class="meta">'+m.runtime+' · '+m.sections.length+' sections</span></span>'+
+          '<span class="status"><span class="pill '+st+'">'+pillLabel+'</span></span>';
+        row.addEventListener('click', function(){ openModule(idx); });
+        list.appendChild(row);
+      });
+      groupsEl.appendChild(list);
+    });
+  }
+
+  function openModule(idx){
+    currentIdx = idx;
+    var m = MODULES[idx];
+    var d = data[m.id] || (data[m.id] = {});
+    dashboard.hidden = true; detail.hidden = false;
+
+    document.getElementById('detKicker').textContent = 'Video '+m.num+' of 10';
+    document.getElementById('detTitle').textContent = m.title;
+    document.getElementById('detRuntime').textContent = m.runtime;
+    var connEl = document.getElementById('detConnects');
+    if(m.connects){ connEl.hidden = false; connEl.textContent = m.connects; }
+    else { connEl.hidden = true; }
+
+    var objList = document.getElementById('objList');
+    objList.innerHTML = '';
+    m.objectives.forEach(function(o, i){
+      var row = document.createElement('div');
+      row.className = 'obj';
+      var checked = !!d['obj'+i];
+      row.innerHTML = '<input type="checkbox" id="obj_'+i+'" '+(checked?'checked':'')+'><label for="obj_'+i+'"'+(checked?' class="checked"':'')+'>'+o+'</label>';
+      var cb = row.querySelector('input');
+      var lbl = row.querySelector('label');
+      cb.addEventListener('change', function(){
+        d['obj'+i] = cb.checked;
+        lbl.classList.toggle('checked', cb.checked);
+        persist();
+      });
+      objList.appendChild(row);
+    });
+
+    var sectionList = document.getElementById('sectionList');
+    sectionList.innerHTML = '';
+    m.sections.forEach(function(s, i){
+      var card = document.createElement('div');
+      card.className = 'section-card';
+      var tagHtml = s.tag ? '<span class="tag">'+s.tag+'</span>' : '';
+      var hintHtml = s.p ? '<div class="hint">'+s.p+'</div>' : '';
+      card.innerHTML =
+        '<div class="sh"><h3>'+(i+1)+'. '+s.h+'</h3>'+tagHtml+'</div>'+
+        hintHtml+
+        '<textarea placeholder="Notes on this section...">'+(d['note'+i]||'')+'</textarea>';
+      var ta = card.querySelector('textarea');
+      ta.addEventListener('input', function(){
+        d['note'+i] = ta.value;
+        persist();
+      });
+      sectionList.appendChild(card);
+    });
+
+    document.getElementById('nextBtn').textContent = (idx === MODULES.length-1) ? 'Back to all videos' : 'Next video →';
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  function persist(){
+    store.set(data);
+    var note = document.getElementById('saveNote');
+    note.textContent = 'Saved';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ note.textContent = 'Notes save automatically'; }, 1200);
+  }
+
+  document.getElementById('backBtn').addEventListener('click', function(){
+    detail.hidden = true; dashboard.hidden = false;
+    renderDashboard();
+    window.scrollTo({top:0, behavior:'instant'});
+  });
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    if(currentIdx === MODULES.length-1){
+      detail.hidden = true; dashboard.hidden = false;
+      renderDashboard();
+      window.scrollTo({top:0, behavior:'instant'});
+    } else {
+      openModule(currentIdx+1);
+    }
+  });
+  document.getElementById('printBtn').addEventListener('click', function(){ window.print(); });
+
+  renderDashboard();
+})();
+</script>

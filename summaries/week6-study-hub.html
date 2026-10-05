@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pregnancy &amp; Obstetrics Study Hub</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --paper: #f3f5f4;
+    --paper-raised: #ffffff;
+    --ink: #1b2321;
+    --ink-soft: #4b5651;
+    --ink-faint: #7c8a84;
+    --line: #d8ddda;
+    --line-soft: #e7eae8;
+    --amber: #a8641c;
+    --amber-ink: #7a4712;
+    --amber-wash: #f4e6d3;
+    --teal: #1f6e73;
+    --teal-ink: #17565a;
+    --teal-wash: #dcedee;
+    --good: #2f7a4f;
+    --good-wash: #dcf0e2;
+    --bad: #ae3f34;
+    --bad-wash: #f7ded9;
+    --shadow: 0 1px 2px rgba(27,35,33,0.06), 0 6px 20px -8px rgba(27,35,33,0.12);
+    --radius: 3px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12191a;
+      --paper-raised: #182123;
+      --ink: #e9edea;
+      --ink-soft: #b6c0bb;
+      --ink-faint: #7d8b85;
+      --line: #2c3937;
+      --line-soft: #223030;
+      --amber: #e0a860;
+      --amber-ink: #f0c592;
+      --amber-wash: #33291b;
+      --teal: #6fc2c6;
+      --teal-ink: #9adade;
+      --teal-wash: #16302f;
+      --good: #6fbf8f;
+      --good-wash: #1a3327;
+      --bad: #e2897c;
+      --bad-wash: #3a211d;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12191a;
+    --paper-raised: #182123;
+    --ink: #e9edea;
+    --ink-soft: #b6c0bb;
+    --ink-faint: #7d8b85;
+    --line: #2c3937;
+    --line-soft: #223030;
+    --amber: #e0a860;
+    --amber-ink: #f0c592;
+    --amber-wash: #33291b;
+    --teal: #6fc2c6;
+    --teal-ink: #9adade;
+    --teal-wash: #16302f;
+    --good: #6fbf8f;
+    --good-wash: #1a3327;
+    --bad: #e2897c;
+    --bad-wash: #3a211d;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  h1, h2, h3, h4 { font-family: 'Spectral', Georgia, serif; text-wrap: balance; margin: 0; }
+  a { color: var(--teal-ink); }
+  table { border-collapse: collapse; }
+
+  .shell { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 280px;
+    flex: none;
+    border-right: 1px solid var(--line);
+    background: var(--paper-raised);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 22px 18px 30px;
+  }
+  .sidebar-head { margin-bottom: 4px; }
+  .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--teal-ink);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .sidebar-head h1 { font-size: 21px; font-weight: 600; line-height: 1.25; }
+  .sidebar-head .sub { color: var(--ink-faint); font-size: 13px; margin-top: 6px; }
+
+  .progress-block { margin: 18px 0 20px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-soft); margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+  .progress-track { height: 6px; background: var(--line-soft); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--amber); width: 0%; transition: width .4s ease; }
+
+  .navlist { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-soft); padding-top: 10px; }
+  .navlist li { margin: 0; }
+  .navlist a {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    padding: 7px 6px;
+    border-radius: var(--radius);
+  }
+  .navlist a:hover { background: var(--line-soft); color: var(--ink); }
+  .navlist a.active { color: var(--ink); font-weight: 600; }
+  .navlist .num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-faint); flex: none; width: 16px; }
+  .navlist .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--line); flex: none; }
+  .navlist .dot.done { background: var(--good); }
+
+  .sidebar-foot { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--line-soft); font-size: 12px; color: var(--ink-faint); }
+  .sidebar-foot code { font-family: 'IBM Plex Mono', monospace; background: var(--line-soft); padding: 1px 5px; border-radius: 2px; }
+
+  main { flex: 1; min-width: 0; }
+  .topbar {
+    position: sticky; top: 0; z-index: 5;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 40px;
+    display: none;
+  }
+
+  .hero {
+    padding: 54px 48px 40px;
+    border-bottom: 1px solid var(--line);
+    max-width: 900px;
+  }
+  .hero .kicker { margin-bottom: 14px; }
+  .hero h1 { font-size: 40px; font-weight: 600; letter-spacing: -0.01em; }
+  .hero .dek { color: var(--ink-soft); font-size: 16.5px; margin-top: 14px; max-width: 62ch; }
+  .hero-meta { display: flex; gap: 26px; margin-top: 26px; flex-wrap: wrap; }
+  .hero-meta div { font-size: 13px; color: var(--ink-faint); }
+  .hero-meta strong { display: block; font-family: 'Spectral', serif; font-size: 20px; color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .content { padding: 8px 48px 90px; max-width: 900px; }
+
+  section.module {
+    padding: 46px 0;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 20px;
+  }
+  section.module:last-of-type { border-bottom: none; }
+
+  .module-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 6px; }
+  .module-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--amber); padding-top: 6px; flex: none; width: 24px; }
+  .module-head h2 { font-size: 25px; font-weight: 600; }
+  .module-meta { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 22px 40px; }
+  .tag { font-size: 11.5px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.03em; color: var(--ink-faint); border: 1px solid var(--line); padding: 3px 8px; border-radius: 99px; }
+  .tag.mcc { color: var(--teal-ink); border-color: var(--teal); background: var(--teal-wash); }
+
+  .module-body { margin-left: 40px; }
+  .module-body p { color: var(--ink-soft); margin: 0 0 14px; max-width: 68ch; }
+  .module-body h3 { font-size: 15px; font-weight: 600; margin: 22px 0 10px; color: var(--ink); }
+  .module-body ul, .module-body ol { margin: 0 0 14px; padding-left: 20px; color: var(--ink-soft); max-width: 66ch; }
+  .module-body li { margin-bottom: 6px; }
+  .module-body li strong { color: var(--ink); }
+  .callout {
+    background: var(--amber-wash);
+    border-left: 3px solid var(--amber);
+    padding: 12px 16px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 14px;
+    color: var(--ink);
+    margin: 16px 0;
+    max-width: 64ch;
+  }
+  .callout strong { color: var(--amber-ink); }
+
+  .data-table { width: 100%; margin: 10px 0 20px; font-size: 13.5px; overflow-x: auto; display: block; }
+  .data-table table { width: 100%; min-width: 480px; }
+  .data-table th, .data-table td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  .data-table th { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); font-weight: 500; }
+  .data-table td.num { font-variant-numeric: tabular-nums; }
+
+  .quiz {
+    margin-top: 26px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .quiz-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--line-soft);
+    background: var(--line-soft);
+  }
+  .quiz-head span { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+  .quiz-score { font-size: 12.5px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+  .quiz-body { padding: 18px; }
+  .q { margin-bottom: 20px; }
+  .q:last-child { margin-bottom: 0; }
+  .q-stem { font-size: 14.5px; color: var(--ink); margin-bottom: 10px; font-weight: 500; }
+  .q-opts { display: flex; flex-direction: column; gap: 7px; }
+  .opt {
+    text-align: left;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    padding: 9px 12px;
+    border-radius: var(--radius);
+    font-size: 13.5px;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    gap: 9px;
+  }
+  .opt:hover { border-color: var(--teal); }
+  .opt:focus-visible { outline: 2px solid var(--teal); outline-offset: 1px; }
+  .opt .letter { font-family: 'IBM Plex Mono', monospace; color: var(--ink-faint); flex: none; }
+  .opt.correct { background: var(--good-wash); border-color: var(--good); }
+  .opt.incorrect { background: var(--bad-wash); border-color: var(--bad); }
+  .opt[disabled] { cursor: default; }
+  .q-explain {
+    display: none;
+    margin-top: 9px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    background: var(--teal-wash);
+    border-left: 3px solid var(--teal);
+    padding: 9px 12px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .q-explain.shown { display: block; }
+  .q-explain strong { color: var(--teal-ink); }
+
+  .colophon {
+    max-width: 900px;
+    padding: 34px 48px 70px;
+    color: var(--ink-faint);
+    font-size: 12.5px;
+    border-top: 1px solid var(--line);
+  }
+  .colophon a { color: var(--ink-soft); }
+
+  .theme-toggle {
+    position: fixed; bottom: 18px; right: 18px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    color: var(--ink-soft);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10;
+  }
+
+  .mobile-nav-toggle { display: none; }
+
+  @media (max-width: 880px) {
+    .sidebar { position: fixed; left: -300px; top: 0; z-index: 20; transition: left .25s ease; box-shadow: var(--shadow); }
+    .sidebar.open { left: 0; }
+    .topbar { display: flex; align-items: center; gap: 12px; padding: 12px 20px; }
+    .mobile-nav-toggle {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: var(--radius);
+      border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace; font-size: 13px; cursor: pointer;
+    }
+    .topbar strong { font-family: 'Spectral', serif; font-size: 15px; }
+    .hero { padding: 30px 20px 28px; }
+    .hero h1 { font-size: 30px; }
+    .content { padding: 8px 20px 70px; }
+    .module-meta, .module-body { margin-left: 0; }
+    .module-head { gap: 10px; }
+    .colophon { padding: 26px 20px 60px; }
+  }
+</style>
+
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <span class="kicker">P2 &middot; Pregnancy &amp; Obstetrics</span>
+      <h1>Week&nbsp;6 &mdash; Antepartum, Intrapartum &amp; Postpartum Care</h1>
+      <div class="sub">Oct 5&ndash;9, 2026</div>
+    </div>
+
+    <div class="progress-block">
+      <div class="progress-label"><span>Quiz progress</span><span id="progress-count">0 / 27</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+
+    <ul class="navlist" id="navlist"></ul>
+
+    <div class="sidebar-foot">
+      Built from the official Elentra learning objectives for 5260 &middot; PoM&nbsp;II. Content is written for review, not a substitute for the source modules &mdash; cross-check anything <code>flagged</code> against lecture.
+    </div>
+  </nav>
+
+  <main>
+    <div class="topbar">
+      <button class="mobile-nav-toggle" id="navToggle" aria-label="Toggle module list">&#9776;</button>
+      <strong>Week 6 &mdash; Antepartum, Intrapartum &amp; Postpartum Care</strong>
+    </div>
+
+    <header class="hero">
+      <span class="kicker">Study Hub</span>
+      <h1>Antepartum, Intrapartum &amp; Postpartum Care</h1>
+      <p class="dek">Nine modules tracing pregnancy from third-trimester complications through labour and delivery to the six weeks after birth &mdash; antepartum hemorrhage, fetal growth restriction, and preterm labour; the physiology of normal and abnormal labour plus hemorrhagic shock; and the postpartum period for both mother and newborn, including lactation and neonatal care. Read a section, then clear its quiz before moving on.</p>
+      <div class="hero-meta">
+        <div><strong>9</strong>modules</div>
+        <div><strong>27</strong>quiz questions</div>
+        <div><strong>~5.5h</strong>estimated content time</div>
+      </div>
+    </header>
+
+    <div class="content" id="content"></div>
+
+    <footer class="colophon">
+      Sources: content in every module &mdash; learning objectives, mechanisms, diagnostic pathways, drug tables, clinical cases, and concept-check logic &mdash; is drawn directly from the actual Elentra lesson content, slide decks, and video overviews for each Week 6 lecture (5260 &middot; Pregnancy &amp; Obstetrics) as of Oct 2026, then rewritten in my own words rather than copied verbatim, out of respect for your instructors' copyright. Quiz stems and explanations are also my own paraphrase, built to test the same concepts and numbers the lectures actually cover &mdash; not the course's original questions. If anything here doesn't match what a professor said in lecture, trust the lecture.
+    </footer>
+  </main>
+</div>
+
+<button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle color theme">&#9788;</button>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var stored = null;
+  try { stored = localStorage.getItem('ob-hub-theme'); } catch(e) {}
+  if (stored) root.setAttribute('data-theme', stored);
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var current = root.getAttribute('data-theme');
+    var next = current === 'dark' ? 'light' : (current === 'light' ? 'dark' : ((window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'light' : 'dark'));
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('ob-hub-theme', next); } catch(e) {}
+  });
+
+  document.getElementById('navToggle').addEventListener('click', function(){
+    document.getElementById('sidebar').classList.toggle('open');
+  });
+})();
+</script>
+
+<script>
+const MODULES = [
+{
+  "id": "antepartum-hemorrhage",
+  "title": "Antepartum Hemorrhage / Abnormal Placentation",
+  "instructor": "Jordan Schmidt",
+  "duration": "~9 min",
+  "tags": [{"label": "Foundation video", "cls": "mcc"}],
+  "body": "\n<p>Second- and third-trimester bleeding is a symptom, not a single disease, and the job at the bedside is twofold: find the source and continuously track how mom and baby are tolerating it. Before jumping to the \"big three\" placental causes, remember that hemorrhoids, vulvar varicosities, UTIs, kidney stones, and cervical lesions can all mimic obstetric bleeding, and the single most common reason for bleeding late in pregnancy is entirely physiologic &mdash; the blood-tinged mucus of labour itself, \"bloody show.\"</p>\n<h3>Placental abruption vs placenta previa</h3>\n<p>Abruption is premature separation of the placenta from the uterine wall, affecting roughly 1 in 200&ndash;300 pregnancies, most often late in the third trimester. It classically presents with <strong>painful</strong> bleeding and a tender, sometimes rigid uterus &mdash; though a concealed abruption (bleeding trapped centrally rather than escaping through the cervix) can show little or no visible blood despite severe, disproportionate pain and a higher rate of fetal distress. Previa, by contrast, is placental implantation over or near the internal os, presenting with <strong>painless</strong> bleeding, often a \"sentinel bleed\" around 26&ndash;28 weeks. A complete previa mandates cesarean delivery; a marginal previa more than 1cm from the os may still allow a vaginal attempt.</p>\n<div class=\"callout\"><strong>Pain is the discriminator.</strong> Painful bleeding with a tender uterus points to abruption; painless bleeding points to previa. Either way, prior cesarean sections raise the risk of abnormal placental invasion (accreta spectrum) when previa is present, since the scarred segment lacks normal endometrium to stop the placenta invading too deep.</div>\n<h3>Vasa previa</h3>\n<p>Here unprotected fetal umbilical vessels run across or near the cervix. Any bleeding is <strong>fetal</strong> blood, not maternal &mdash; and because total fetal blood volume is small, even a modest bleed can be catastrophic. It's rare (~1 in 2,500) but a true emergency, arising from a velamentous cord insertion (Type 1) or a succenturiate placental lobe (Type 2).</p>\n<h3>Workup and management</h3>\n<p>Maternal and fetal assessment happen in parallel from the first moment: ABCs and a non-stress test, then a history for risk factors and prior placental problems, then stat bloodwork &mdash; CBC, coagulation studies, creatinine, group and screen. A Kleihauer-Betke test looks for fetal cells in maternal circulation (useful after trauma); an Apt test looks for fetal blood within vaginal bleeding when vasa previa is suspected. Active bleeding with prematurity means admission, steroids, magnesium sulfate, and possible NICU transfer; bleeding at or near term favours active delivery. Ongoing bleeding of any cause can trigger a consumptive coagulopathy, which is the physiologic reason behind aggressive transfusion support in severe abruption or previa.</p>\n",
+  "quiz": [
+    {"stem": "A 34-week pregnant patient presents with painless vaginal bleeding. Ultrasound at 19 weeks had shown the placenta partially covering the internal os. What is the most likely diagnosis?", "opts": ["Placenta previa", "Vasa previa with fetal hemorrhage", "A cervical laceration from intercourse", "Placental abruption with concealed hemorrhage"], "correct": 0, "explain": "Painless bleeding with a known low-lying placenta is the classic pattern for placenta previa, distinguishing it from the painful, tender-uterus presentation of abruption."},
+    {"stem": "Why can a concealed placental abruption present with little or no visible vaginal bleeding despite severe pain?", "opts": ["Because the bleeding pools centrally behind the placenta instead of escaping through the cervix", "Because concealed abruption only occurs before 20 weeks", "Because the cervix is closed and blocks all bleeding types equally", "Because concealed abruption never involves real blood loss"], "correct": 0, "explain": "When separation starts centrally rather than at the placental edge, blood collects behind the placenta rather than tracking out through the cervix, so severe pain can occur with minimal visible bleeding."},
+    {"stem": "A patient with a known velamentous cord insertion develops sudden vaginal bleeding with a concerning fetal heart tracing. What is the key danger in this scenario?", "opts": ["The bleeding is fetal blood, and even a small volume can be catastrophic for the baby", "The bleeding is always from a coexisting UTI", "This pattern always indicates placenta previa instead", "The mother is at immediate risk of hysterectomy but the fetus is not at risk"], "correct": 0, "explain": "A velamentous cord insertion is a risk factor for vasa previa, where exposed fetal vessels can rupture; because total fetal blood volume is small, even modest bleeding can be life-threatening to the fetus."}
+  ]
+},
+{
+  "id": "approach-small-fetus",
+  "title": "Approach to the Small Fetus",
+  "instructor": "Jordan Schmidt",
+  "duration": "~8 min",
+  "tags": [{"label": "Cross-refs Module 1", "cls": "mcc"}],
+  "body": "\n<p>When a fetus measures small, the first task is deciding whether it's a naturally small baby or one whose growth is being actively limited by an underlying problem &mdash; a distinction that changes how closely the pregnancy needs to be watched. Estimated fetal weight is calculated from ultrasound measurements (the Hadlock formula, combining head circumference, abdominal circumference, biparietal diameter, and femur length) and plotted against gestational-age norms: 10th&ndash;90th percentile is normal, and risk climbs further once a fetus drops below the 3rd percentile.</p>\n<h3>SGA vs IUGR</h3>\n<p>Small for gestational age (SGA) is a size label &mdash; a baby measuring under the 10th percentile who may simply be constitutionally small and entirely healthy. Intrauterine growth restriction (IUGR) is a functional label &mdash; an actual pathological process interfering with the fetus reaching its genetic growth potential. The two overlap but aren't the same: a fetus tracking at the 15th percentile that should have been on the 70th can still be growth-restricted despite technically sitting within the \"normal\" range.</p>\n<div class=\"callout\"><strong>Size label vs pathology label.</strong> Just as with a pelvic mass or an endometrial finding, the label alone doesn't tell you the mechanism &mdash; SGA describes where the baby sits on a curve, while IUGR describes why it might be there.</div>\n<h3>Causes and investigation</h3>\n<p>Causes sort into three buckets: maternal (hypertension, autoimmune disease, smoking), fetal (chromosomal conditions, intrauterine infection), and placental (often overlapping with the other two, via damaged microvasculature or disrupted implantation). Most IUGR isn't caught by a lagging symphysis-fundal height &mdash; it's caught because a known risk factor already put the patient on a surveillance protocol. Once suspected, workup includes chromosomal and infection screening plus umbilical artery Doppler studies, amniotic fluid volume, and a non-stress test. Doppler findings track severity: reduced end-diastolic flow, then absent (around 50% microvascular damage), then reversed (around 70%).</p>\n<h3>Management</h3>\n<p>Management weighs severity, gestational age, and whether the cause is reversible. Growth restriction rarely \"catches up,\" but fixing a reversible contributor (smoking cessation, blood pressure control) can stop things worsening. Past 37 weeks, delivery is favoured regardless; between 32&ndash;37 weeks, oligohydramnios or abnormal Dopplers push toward delivery; before 32 weeks, close monitoring continues unless there's frank fetal distress. Delivery is the only definitive way to improve nutrient delivery to a growth-restricted fetus.</p>\n",
+  "quiz": [
+    {"stem": "A fetus is measuring at the 8th percentile for gestational age with normal umbilical artery Dopplers, normal amniotic fluid, and no maternal risk factors. What is the most likely explanation?", "opts": ["A constitutionally small, healthy fetus (SGA without IUGR)", "Severe intrauterine growth restriction requiring immediate delivery", "A fetal chromosomal abnormality until proven otherwise", "Reversed end-diastolic flow"], "correct": 0, "explain": "A small fetus with reassuring Dopplers, fluid, and no risk factors is more consistent with a constitutionally small but healthy baby than with a pathological growth-restriction process."},
+    {"stem": "On umbilical artery Doppler, end-diastolic flow becomes absent at approximately what degree of placental microvascular damage?", "opts": ["Around 50%", "Around 5%", "Around 95%", "Around 20%"], "correct": 0, "explain": "As placental microvasculature is progressively damaged, end-diastolic flow first drops, becomes absent around roughly half the microvasculature being affected, and becomes reversed once damage is more extensive, around 70%."},
+    {"stem": "Why can a fetus tracking along the 15th percentile still be considered growth-restricted?", "opts": ["Because it should have been tracking along a higher percentile (e.g. the 70th) based on its genetic growth potential", "Because any fetus below the 50th percentile is automatically IUGR", "Because the 15th percentile is below the SGA cutoff of 10%", "Because IUGR is defined purely by absolute birth weight, not percentile"], "correct": 0, "explain": "IUGR is a functional label describing failure to reach genetic growth potential, so a fetus can fall from a higher expected trajectory and still be growth-restricted even while remaining above the 10th-percentile SGA cutoff."}
+  ]
+},
+{
+  "id": "approach-preterm-labour",
+  "title": "Approach to Preterm Labour",
+  "instructor": "Harrison Banner",
+  "duration": "~13 min",
+  "tags": [{"label": "Cross-refs Modules 1-2", "cls": "mcc"}],
+  "body": "\n<p>This module builds around a running case &mdash; Jennifer, 25F G3P2 at 29+2 weeks with regular contractions &mdash; to walk through how preterm labour is defined, why it matters, who's at risk, and what to do about it.</p>\n<h3>Definitions and risk</h3>\n<p>Preterm labour means regular contractions actually dilating the cervix before 37 weeks; threatened preterm labour (TPTL) is symptoms suggestive of labour that may or may not progress. The single strongest risk predictor is a prior spontaneous preterm birth; other factors include maternal-age extremes, multiples, prior cervical surgery, uterine anomalies, chronic disease, smoking, and a short cervix or active infection. Preterm birth drives newborn morbidity and mortality &mdash; respiratory distress syndrome, intraventricular hemorrhage, hypoglycemia, necrotizing enterocolitis, retinopathy of prematurity, and sepsis &mdash; with risk rising steeply the earlier the birth.</p>\n<div class=\"callout\"><strong>Jennifer's workup.</strong> Two prior preterm deliveries, a prior cone biopsy, and a pack-a-day smoking habit already flagged her as high-risk, which is why she was already on vaginal progesterone this pregnancy. Cervical exam &mdash; 2cm dilated, soft, contracting every 5&ndash;6 minutes &mdash; confirmed true preterm labour, not just TPTL.</div>\n<h3>The four interventions</h3>\n<p>Once labour is confirmed or threatening: first rule out simple reversible triggers (dehydration, UTI). If contractions persist, tocolytics (indomethacin, nifedipine, terbutaline) buy roughly 48 hours &mdash; not to stop labour permanently, but to allow transfer to a NICU-capable centre and to get antenatal corticosteroids on board (two doses of betamethasone, 24 hours apart) before 34 weeks, which accelerates fetal lung maturity and lowers the risk of brain bleeds and gut injury.</p>\n<h3>PPROM and imminent delivery</h3>\n<p>Preterm prelabour rupture of membranes (PPROM) is membrane rupture before labour and before 37 weeks &mdash; diagnosed by pooling, a positive nitrazine and fern test, and low fluid on ultrasound. Left untreated before 32 weeks, roughly half of patients deliver within 48 hours; antibiotics extend the latency period, and every extra day in utero tends to help the baby. As delivery becomes imminent, magnesium sulfate is given for fetal neuroprotection (lowering cerebral palsy risk before 34 weeks) alongside GBS antibiotic prophylaxis if indicated.</p>\n",
+  "quiz": [
+    {"stem": "A patient at 30 weeks has irregular cramping but a closed, firm cervix on exam. How should this be classified?", "opts": ["Threatened preterm labour (TPTL)", "True preterm labour requiring immediate tocolysis", "PPROM", "Normal Braxton Hicks contractions requiring no follow-up at all"], "correct": 0, "explain": "Symptoms suggestive of labour without confirmed cervical change define threatened preterm labour, which may resolve or progress, as distinct from true preterm labour, which requires documented cervical dilation."},
+    {"stem": "What is the primary purpose of tocolytic therapy in threatened or true preterm labour?", "opts": ["To buy roughly 48 hours for transfer to a NICU-capable centre and completion of antenatal corticosteroids", "To permanently halt labour until term", "To replace the need for antibiotics in PPROM", "To eliminate the need for any further fetal monitoring"], "correct": 0, "explain": "Tocolysis is not expected to stop labour indefinitely; its realistic goal is a roughly 48-hour window to transfer care and administer corticosteroids, which is what meaningfully improves neonatal outcomes."},
+    {"stem": "A patient with PPROM at 30 weeks has no signs of infection. What is an appropriate component of her management, and why?", "opts": ["Antibiotics, because they extend the latency period between membrane rupture and delivery", "Immediate cesarean delivery regardless of gestational age", "Withholding corticosteroids since membranes have already ruptured", "Discontinuing all fetal monitoring since PPROM is a self-limited condition"], "correct": 0, "explain": "Even without overt infection, antibiotics in PPROM have been shown to prolong the interval before delivery, and every extra day in utero tends to improve neonatal outcomes, which is why they are used here alongside completing the steroid course."}
+  ]
+},
+{
+  "id": "process-labour-birth",
+  "title": "Process of Labour and Birth",
+  "instructor": "Laura Sovran",
+  "duration": "~11 min",
+  "tags": [{"label": "Foundation video", "cls": "mcc"}],
+  "body": "\n<p>Labour is a hormonally triggered process with a predictable set of mechanical steps and a defined endpoint. Near term, oxytocin receptors on the uterus switch on, progesterone (which had kept the uterus quiet) drops relative to estrogen, and fetal adrenal and prostaglandin signals contribute. Braxton Hicks contractions (from ~28 weeks) don't change the cervix; true labour does.</p>\n<h3>Assessing the cervix and the first stage</h3>\n<p>A vaginal exam checks dilation (0&ndash;10cm), effacement (0&ndash;100%), station (relative to the ischial spines), and fetal position. The first stage runs from true labour onset to full dilation, split into a slow latent phase (0&ndash;4cm) and a more predictable active phase (4&ndash;10cm) &mdash; the Friedman curves (~1.2cm/hr nulliparous, ~1.5cm/hr multiparous) remain a useful benchmark, not a hard rule.</p>\n<div class=\"callout\"><strong>Leopold's maneuvers.</strong> Four sequential palpations determine what's at the fundus, which side the fetal back is on, what's presenting at the pelvic inlet, and how far it has descended &mdash; confirming that ~99% of fetuses are longitudinal, and of those, most are cephalic.</div>\n<h3>Fetal monitoring</h3>\n<p>Intermittent auscultation (every 15 min in first stage, every 5 min once pushing) suits low-risk labours; continuous monitoring is used for higher-risk situations (preeclampsia, bleeding, oxytocin augmentation, prior cesarean). Tracings are sorted normal / atypical / abnormal based on baseline, variability, decelerations, and accelerations; an atypical or abnormal tracing triggers an intrauterine resuscitation bundle &mdash; confirm the source, rule out cord prolapse, reposition left lateral, stop oxytocin, give oxygen and fluids.</p>\n<h3>The cardinal movements and beyond</h3>\n<p>The second stage (full dilation to delivery) is tracked by station, and the fetus performs seven cardinal movements in order: engagement, descent, flexion, internal rotation, extension, external rotation (restitution), and expulsion. The third stage delivers the placenta (2&ndash;30 min), signalled by uterine globular firming, a gush of blood, uterine rise, and cord lengthening &mdash; active management (uterotonic, controlled cord traction, fundal massage) reduces hemorrhage risk. The fourth stage, the first hour postpartum, is the highest-risk window for postpartum hemorrhage as blood autotransfuses back from the uteroplacental circulation.</p>\n",
+  "quiz": [
+    {"stem": "A first-time mother is 6cm dilated and has been progressing at roughly 1.2cm per hour. Which phase of labour is she in?", "opts": ["The active phase of the first stage", "The latent phase of the first stage", "The second stage", "The fourth stage"], "correct": 0, "explain": "The active phase spans roughly 4-10cm dilation and progresses at a more predictable rate (about 1.2cm/hr in a first-time mother per the Friedman benchmark), distinguishing it from the slower, less predictable latent phase."},
+    {"stem": "Put the cardinal movements of labour in the correct order: (1) internal rotation, (2) engagement, (3) flexion, (4) expulsion, (5) descent.", "opts": ["2, 5, 3, 1, 4", "1, 2, 3, 4, 5", "4, 3, 2, 1, 5", "5, 2, 1, 3, 4"], "correct": 0, "explain": "The correct sequence is engagement, descent, flexion, internal rotation, extension, external rotation, and expulsion — so among the five listed, the order is engagement, descent, flexion, internal rotation, expulsion."},
+    {"stem": "What is the earliest sign that the placenta has separated from the uterine wall in the third stage of labour?", "opts": ["The uterus becomes firm and rounds into a globular shape", "The umbilical cord retracts upward into the vagina", "Maternal blood pressure rises sharply", "The fetal heart rate becomes undetectable"], "correct": 0, "explain": "A firm, globular uterus is described as the earliest classic sign of placental separation, occurring before the gush of blood, uterine rise, and cord lengthening that follow."}
+  ]
+},
+{
+  "id": "abnormal-labour",
+  "title": "Abnormal Labour",
+  "instructor": "Laura Sovran",
+  "duration": "~11 min",
+  "tags": [{"label": "Cross-refs Module 4", "cls": "mcc"}],
+  "body": "\n<p>Labour dystocia &mdash; abnormally slow progress in dilation (failure to progress) or descent (failure to descend) &mdash; is the leading reason for cesarean section, and is a distinct problem from shoulder dystocia, an acute intrapartum emergency measured in minutes rather than hours.</p>\n<h3>The four P's</h3>\n<p>Power (contraction strength and pushing effort), passage (the bony pelvis), passenger (fetal presentation, position, size), and psyche (emotional/practical support) frame every case of stalled labour. Power is the most directly modifiable &mdash; artificial rupture of membranes or oxytocin can strengthen contractions. Passage is essentially fixed; passenger is only partly modifiable (external cephalic version for breech, manual rotation for malposition, but fetal size itself can't be changed &mdash; true cephalopelvic disproportion means cesarean). Psyche matters more than it might seem: continuous labour support improves outcomes and the chance of spontaneous vaginal delivery, independent of the specific pain-control approach chosen.</p>\n<div class=\"callout\"><strong>Same names, different problems.</strong> Labour dystocia (slow progress over hours) is not shoulder dystocia (a delivery emergency over minutes, risking fracture, brachial plexus injury, or death) &mdash; don't let the similar names blur the distinction.</div>\n<h3>Induction and augmentation</h3>\n<p>Induction starts labour artificially when continuing the pregnancy poses more risk than delivering &mdash; indications include post-dates, preeclampsia, diabetes, fetal growth restriction, PPROM, and more; the ARRIVE trial also supports inducing low-risk pregnancies at 39 weeks to lower cesarean rates. Contraindications include previa, abnormal fetal lie, and prior classical cesarean. A preinduction Bishop score (cervical position, consistency, effacement, dilation, station) under 6 predicts a longer induction and often needs cervical ripening first (prostaglandins or a Foley catheter) before artificial rupture of membranes and oxytocin. Augmentation uses the same tools &mdash; ARM plus titrated oxytocin &mdash; when labour has already started but stalled.</p>\n",
+  "quiz": [
+    {"stem": "A labouring patient has adequate cervical dilation progress but the fetal head is not descending despite strong, frequent contractions. Which of the four P's is most likely the primary problem?", "opts": ["Passage or passenger", "Power", "Psyche", "None of the four P's — this always indicates infection"], "correct": 0, "explain": "With contraction strength (power) already adequate but descent stalled, the problem more likely lies with the largely fixed factors — the bony pelvis (passage) or fetal size/position (passenger) — rather than with power itself."},
+    {"stem": "A patient at 39 weeks with a low-risk pregnancy is considering elective induction. What does evidence from the ARRIVE trial suggest about this choice?", "opts": ["Induction at 39 weeks in low-risk pregnancies is associated with a lower cesarean rate and improved outcomes", "Induction before 41 weeks is never appropriate in low-risk pregnancies", "The ARRIVE trial showed induction increases cesarean rates in all patients", "Induction is only studied in high-risk pregnancies"], "correct": 0, "explain": "The ARRIVE trial found that inducing low-risk pregnancies at 39 weeks lowered the cesarean rate and reduced adverse neonatal and maternal outcomes, shifting induction from a complication-only intervention to one also offered electively."},
+    {"stem": "A patient has a preinduction Bishop score of 3. What does this predict, and what is the next step?", "opts": ["An unfavourable cervix likely needing cervical ripening before further induction steps", "A favourable cervix ready for immediate oxytocin without ripening", "That induction is absolutely contraindicated", "That augmentation, not induction, is the appropriate term for her situation"], "correct": 0, "explain": "A Bishop score under 6 signals an unripe, unfavourable cervix associated with a longer, less successful induction, so cervical ripening agents are used first rather than proceeding straight to oxytocin or ARM."}
+  ]
+},
+{
+  "id": "hemorrhagic-shock",
+  "title": "Hemorrhagic Shock",
+  "instructor": "Laura Sovran",
+  "duration": "~7 min",
+  "tags": [],
+  "body": "\n<p>Shock is a cellular oxygen-delivery mismatch. Hypovolemic shock occurs when lost intravascular volume drops preload and, with it, cardiac output; hemorrhagic causes (bleeding) are distinguished from nonhemorrhagic ones (dehydration, third-spacing).</p>\n<h3>Recognizing and staging shock</h3>\n<p>Shock presents as a constellation rather than one abnormal number: low blood pressure, tachycardia, oliguria, altered mental status, tachypnea, cool clammy skin, metabolic acidosis, and elevated lactate. A four-class staging system tracks worsening vitals as blood loss increases &mdash; but blood pressure is one of the <strong>last</strong> things to drop, so a frankly hypotensive patient has often already lost a large fraction of blood volume.</p>\n<div class=\"callout\"><strong>Pregnancy can hide shock.</strong> Young, healthy obstetric patients compensate well, and pregnancy itself expands blood volume as a built-in reserve for delivery-related blood loss. That means a postpartum patient can lose a large volume of blood and still look deceptively well right up until sudden decompensation &mdash; trust the clinical scenario and estimated blood loss, not reassuring-looking vitals alone.</div>\n<h3>Management and the lethal triad</h3>\n<p>Initial management follows ABCs with early escalation for help: full vitals, two large-bore IVs with crystalloid or colloid, a Foley catheter to track urine output, supplemental oxygen, and bloodwork (CBC, group and screen, coagulation studies, fibrinogen, creatinine) to guide transfusion. Severe hemorrhage may require a massive transfusion protocol, and the underlying bleeding source must be actively treated in parallel with resuscitation. The three interconnected complications to prevent &mdash; acidosis, hypothermia, and coagulopathy, the \"lethal triad\" &mdash; all worsen outcomes together; acidosis impairs clotting factor activity, hypothermia is countered with warmed fluids and forced-air warming, and coagulopathy from dilution worsens as transfusion volume climbs. Limiting ongoing blood loss as early as possible is the single best way to prevent all three.</p>\n",
+  "quiz": [
+    {"stem": "A young, previously healthy postpartum patient has lost an estimated 1500mL of blood but her blood pressure and heart rate remain within normal limits. What is the most appropriate interpretation?", "opts": ["She may still be in a significant stage of shock — young, healthy patients and pregnancy-expanded blood volume can mask early signs", "Her vitals prove she has not lost clinically significant blood", "Blood pressure is the most sensitive early indicator of hemorrhagic shock", "No further monitoring or intervention is needed since her vitals are reassuring"], "correct": 0, "explain": "Blood pressure is one of the last parameters to drop in hemorrhagic shock, and young, healthy, pregnant/postpartum physiology compensates unusually well — so normal vitals do not rule out significant ongoing blood loss."},
+    {"stem": "Which three interconnected complications make up the \"lethal triad\" in major hemorrhage?", "opts": ["Acidosis, hypothermia, and coagulopathy", "Hypertension, hyperthermia, and thrombosis", "Hyperglycemia, tachycardia, and edema", "Sepsis, seizures, and renal failure"], "correct": 0, "explain": "Acidosis, hypothermia, and coagulopathy feed into and worsen each other in major hemorrhage, and preventing all three — chiefly by limiting ongoing blood loss — is a central management goal."},
+    {"stem": "Why does acidosis worsen coagulopathy in a patient with major hemorrhage?", "opts": ["A low pH significantly impairs calcium-dependent clotting factor activity", "Acidosis has no direct effect on clotting factors", "Acidosis only affects platelet count, not clotting factor function", "Acidosis improves clotting by increasing calcium availability"], "correct": 0, "explain": "A low pH directly impairs calcium-dependent clotting factor complexes, with clotting activity dropping substantially around a pH of 7.0, which is why correcting acidosis is part of preventing the lethal triad."}
+  ]
+},
+{
+  "id": "lactation",
+  "title": "Lactation",
+  "instructor": "Laura Sovran",
+  "duration": "~10 min",
+  "tags": [{"label": "Cross-refs Module 8", "cls": "mcc"}],
+  "body": "\n<p>Lactation is a tightly regulated hormonal and mechanical system, best understood in four phases: mammogenesis (breast development), lactogenesis (milk synthesis, in two sub-stages), galactokinesis (the let-down reflex), and galactopoiesis (maintaining supply). Alveoli drain into lactiferous ducts that widen into sinuses under the areola before the nipple &mdash; picturing this branching system explains why a blockage anywhere backs milk up behind it.</p>\n<h3>The hormonal switch</h3>\n<p>High progesterone during pregnancy primes the breast but suppresses full milk production. When the placenta delivers, progesterone drops sharply &mdash; the trigger that frees prolactin to drive milk synthesis, which is why copious milk \"coming in\" happens around 30&ndash;40 hours after birth, not immediately. Control shifts over the first few days from endocrine (driven by circulating prolactin regardless of removal) to autocrine by day 3 (locally regulated by how well and how often milk is actually removed) &mdash; the biological reason \"more removal equals more milk,\" and why poor early removal can suppress supply long-term.</p>\n<div class=\"callout\"><strong>Benefits, briefly.</strong> For the infant: fewer acute infections, faster gastric emptying, lower NEC risk in preemies, and longer-term protective associations. For the mother: faster uterine involution, blunted stress response, prolonged (though unreliable) postpartum anovulation, and reduced lifetime breast/ovarian cancer risk. For society: essentially a zero-waste food source.</div>\n<h3>Common problems</h3>\n<p>Nipple/breast pain has a broad differential &mdash; poor latch, vasoconstriction, engorgement, plugged ducts, infection, oversupply, dermatitis &mdash; so don't assume \"it's just mastitis.\" Engorgement (interstitial edema as milk isn't adequately removed) and plugged ducts both resolve with more frequent, effective removal, not restriction. Mastitis, usually Staph aureus, presents with a red, tender, warm area plus systemic symptoms; management is continued nursing, massage, and antibiotics (cloxacillin 500mg QID for 7&ndash;10 days) &mdash; untreated, it can progress to an abscess needing drainage. Low milk supply splits into inadequate production (insufficient glandular development, PCOS, retained placental fragments, dopamine antagonists) versus poor extraction (poor latch, oral malformations, prematurity, mother-infant separation).</p>\n<h3>Contraindications and storage</h3>\n<p>True contraindications are a short list: untreated HIV (context-dependent), active untreated psychosis risking harm to the baby, active TB, herpetic breast lesions, chemotherapy, infant galactosemia or PKU, or maternal choice. Estrogen-containing contraception is avoided while breastfeeding since it reduces milk quality and quantity. For storage, the \"rule of 6s\": ~6 hours at room temperature, ~6 days refrigerated, ~6 months frozen.</p>\n",
+  "quiz": [
+    {"stem": "A breastfeeding patient at day 5 postpartum presents with a red, warm, tender area of one breast and a fever of 38.5°C. What is the most likely diagnosis and first-line treatment?", "opts": ["Mastitis, treated with continued nursing plus antibiotics such as cloxacillin", "Engorgement, treated by restricting feeds on the affected side", "A normal finding requiring only reassurance", "Breastmilk jaundice, requiring infant treatment only"], "correct": 0, "explain": "Fever plus a red, tender, warm area of breast is classic for mastitis, most often from Staph aureus; management is continued nursing/pumping (which does not harm the infant) plus antibiotics, not stopping feeds."},
+    {"stem": "Why does milk supply shift from being maintained mainly by circulating prolactin to being maintained by how often milk is actually removed?", "opts": ["Control shifts from endocrine to autocrine (locally regulated) by around day 3 postpartum", "Prolactin stops being produced entirely after the first week", "Oxytocin permanently replaces prolactin's role by day 3", "This shift only happens in mothers who exclusively pump"], "correct": 0, "explain": "Lactation control is initially endocrine, driven by circulating prolactin regardless of milk removal, but becomes autocrine (locally regulated within the breast) by about day 3, meaning ongoing supply depends on how well and how often milk is removed."},
+    {"stem": "Which of the following is a true contraindication to breastfeeding?", "opts": ["Maternal chemotherapy with antineoplastic drugs", "A maternal cold or mild upper respiratory infection", "Maternal use of the progesterone-only pill", "A maternal history of mastitis in a prior pregnancy"], "correct": 0, "explain": "Antineoplastic (chemotherapy) drugs are on the short, defined list of true breastfeeding contraindications, unlike a mild cold, a prior resolved mastitis episode, or progesterone-only contraception, none of which contraindicate breastfeeding."}
+  ]
+},
+{
+  "id": "postpartum-care",
+  "title": "Postpartum Care",
+  "instructor": "Laura Sovran",
+  "duration": "~11 min",
+  "tags": [{"label": "Cross-refs Module 7", "cls": "mcc"}],
+  "body": "\n<p>The puerperium is the roughly six weeks after delivery during which the body returns toward a non-pregnant baseline. The uterus undergoes involution, essentially back to pre-pregnancy size by four weeks, while lochia progresses from bright red (rubra) to pink-brown (serosa) to whitish-yellow (alba) over up to eight weeks. The urinary tract, blood volume, and cardiac output all readjust over the first one to two weeks, and the postpartum period is a relatively low-estrogen state until cycling resumes.</p>\n<h3>Discharge readiness</h3>\n<p>Length of stay is roughly 1&ndash;2 days after uncomplicated vaginal birth, 2&ndash;3 days after cesarean. Maternal criteria include a normal perineum, controlled pain, adequate bowel/bladder function, indicated immunizations, ability to feed the baby, contraception counseling, and a safe discharge plan; newborn criteria include appropriate size, no sepsis signs, stable temperature, feeding, and completed metabolic screening. Preeclampsia, postpartum hemorrhage, fever, or any unstable condition are hard stops to discharge.</p>\n<div class=\"callout\"><strong>Delayed postpartum hemorrhage.</strong> Bleeding doesn't only happen in the first 24 hours &mdash; a return of bright red bleeding after that, especially with fever or a tender uterus, points to a differential of endometritis, retained products of conception, or an infected tear, worked up with antibiotics and ultrasound.</div>\n<h3>Infection, clots, and mood</h3>\n<p>A puerperal infection is a fever &ge;38&deg;C on any two of the first ten days postpartum (excluding the first 24h), remaining the most common postpartum complication. Endometritis is more likely after cesarean, prolonged labour/ROM, or manual placental removal. Separately, venous thromboembolism risk is at its <strong>highest</strong> in the postpartum period &mdash; higher than in pregnancy itself. On mood: baby blues affect up to 85% of new mothers, peak days 2&ndash;4, and resolve within two weeks; postpartum depression (10&ndash;20%) is diagnosed when symptoms persist past two weeks or appear within six months, screened with the Edinburgh Postnatal Depression Scale and the MSIGECAPS checklist; postpartum psychosis is rare (1&ndash;4 per 1,000 births) but represents a true break from reality requiring urgent psychiatric involvement.</p>\n<h3>Contraception and follow-up</h3>\n<p>Counseling starts around six weeks postpartum, since ovulation can return before menstruation does. Estrogen-containing contraception is not started before 21 days postpartum given elevated clotting risk, and may reduce milk supply in breastfeeding patients &mdash; barrier methods, progestin-only options, and IUDs are the safer early choices.</p>\n",
+  "quiz": [
+    {"stem": "A patient at postpartum day 8 develops a fever of 38.3°C and a return of bright red vaginal bleeding with a tender uterus. What does this presentation most suggest?", "opts": ["Delayed postpartum hemorrhage, likely from endometritis or retained products of conception", "A normal variant of lochia serosa requiring no further workup", "Postpartum psychosis", "An expected finding of the fourth stage of labour"], "correct": 0, "explain": "A return of bright red bleeding after the first 24 hours, especially with fever and uterine tenderness, points toward delayed postpartum hemorrhage from causes like endometritis, retained products, or an infected tear."},
+    {"stem": "Why is postpartum venous thromboembolism risk particularly important to recognize?", "opts": ["VTE risk is actually higher in the postpartum period than during pregnancy itself", "VTE risk drops to zero immediately after delivery", "VTE only becomes a concern more than six months postpartum", "VTE risk is unrelated to the postpartum period"], "correct": 0, "explain": "Venous thromboembolism risk is at its highest in the postpartum period, even higher than during pregnancy, which is why it remains a key differential for postpartum leg swelling, chest pain, or shortness of breath."},
+    {"stem": "A patient at postpartum day 10 reports persistent low mood, poor concentration, and guilt that has lasted more than two weeks. How should this be classified compared to the typical \"baby blues\"?", "opts": ["This should be evaluated for postpartum depression rather than dismissed as baby blues", "This is expected and requires no further evaluation since all postpartum mood change is baby blues", "This can only be postpartum psychosis given the duration", "This is unrelated to postpartum physiology and should not be screened for"], "correct": 0, "explain": "Baby blues typically resolve within about two weeks; symptoms persisting beyond that window, or that are severe even earlier, should prompt evaluation for postpartum depression rather than being written off as blues."}
+  ]
+},
+{
+  "id": "approach-neonatal-care",
+  "title": "Approach to Neonatal Care",
+  "instructor": "Anita Cheng",
+  "duration": "~17 min",
+  "tags": [{"label": "Cross-refs Modules 7-8", "cls": "mcc"}],
+  "body": "\n<p>The newborn's first hours to days are about transition &mdash; from a warm, glucose-supplied, oxygen-via-placenta environment to breathing, thermoregulating, and feeding independently. Most neonatal problems are hiccups in that adaptation.</p>\n<h3>Apgar and the newborn exam</h3>\n<p>The Apgar score (color, heart rate, reflex irritability, tone, breathing effort, each 0&ndash;2) is a rapid physiologic check at 1 and 5 minutes (and 10 if still low) &mdash; not a diagnostic tool, and a low score signals a need for resuscitation, not a specific diagnosis. Every neonate gets a full exam within 24 hours (about 3% have a major structural malformation), plotting weight, length, and head circumference against growth curves; the Ballard score can clinically confirm gestational age when dates are uncertain.</p>\n<div class=\"callout\"><strong>Pink, warm, and sweet.</strong> The overarching clinical mantra for every newborn: well-oxygenated, thermally stable, and with adequate glucose. Newborns can't shiver to generate heat, losing it through conduction, convection, evaporation, and radiation &mdash; so drying, wrapping, and warmers matter immediately after birth.</div>\n<h3>Hypoglycemia</h3>\n<p>Fat is the largest neonatal energy reserve at term (~16% of body weight vs ~1% at 27 weeks), which is exactly why prematurity is such a strong hypoglycemia risk factor. After birth, glycogenolysis covers roughly 8&ndash;10 hours before the baby must switch to gluconeogenesis, a transition not fully mature until 2&ndash;4 days. At-risk babies (infants of diabetic mothers, SGA/LGA, preterm) are screened; the phrase \"2.6, no more sticks\" marks the general threshold (rising to 3.3 after 72h) below which symptomatic hypoglycemia is a true emergency treated with IV dextrose.</p>\n<h3>Jaundice</h3>\n<p>Bilirubin travels heme &rarr; biliverdin &rarr; unconjugated (bound to albumin) &rarr; conjugated (water-soluble, excretable) &mdash; and enterohepatic recirculation partly explains the physiologic rise seen in the first days. Universal screening happens at 24&ndash;48 hours against gestational-age-adjusted curves. The most common cause is exaggerated physiologic or breastfeeding-related jaundice, but sepsis, hemolytic disease (ABO/Rh, G6PD), birth trauma, and rarer metabolism disorders must be ruled out. Jaundice in the <strong>first 24 hours</strong> is always pathologic. Untreated, severe hyperbilirubinemia risks acute bilirubin encephalopathy progressing to kernicterus &mdash; permanent basal ganglia and brainstem injury. Treatment is phototherapy (blue light, 460&ndash;490nm) converting bilirubin to excretable isomers, plus treating the underlying cause.</p>\n<h3>The global picture</h3>\n<p>Neonatal deaths make up roughly 44% of all under-five deaths worldwide (~2.5 million per year), driven by prematurity, birth asphyxia, and sepsis, with sub-Saharan Africa and South Asia disproportionately affected. Simple interventions &mdash; drying, warming, checking breathing, skin-to-skin care &mdash; save lives everywhere; Helping Babies Breathe training alone is linked to a ~47% reduction in early neonatal mortality where studied.</p>\n",
+  "quiz": [
+    {"stem": "A term newborn appears jaundiced at 14 hours of life. What does this timing indicate?", "opts": ["This is always pathologic and requires immediate workup", "This is normal physiologic jaundice and can be observed without further testing", "This can only represent breastmilk jaundice", "This is expected and resolves without any evaluation by 48 hours"], "correct": 0, "explain": "Jaundice appearing within the first 24 hours of life is always considered pathologic and requires prompt investigation, unlike the more common physiologic or breastfeeding-related jaundice that typically appears later."},
+    {"stem": "Why is prematurity such a strong risk factor for neonatal hypoglycemia?", "opts": ["Preterm infants have not had time to lay down adequate fat and glycogen stores", "Preterm infants produce excess insulin compared to term infants", "Preterm infants cannot perform gluconeogenesis at any point after birth", "Hypoglycemia risk is unrelated to gestational age"], "correct": 0, "explain": "Fat and glycogen stores build up mainly in the third trimester, so infants born early simply haven't had time to accumulate these reserves, leaving them with less buffer once glycogenolysis is exhausted."},
+    {"stem": "What is the mechanism by which phototherapy treats neonatal hyperbilirubinemia?", "opts": ["Blue light converts bilirubin into water-soluble isomers that can be excreted without needing conjugation", "Phototherapy directly increases hepatic conjugation enzyme levels", "Phototherapy works by inducing vomiting to clear excess bilirubin", "Phototherapy treats jaundice by lowering the infant's core temperature"], "correct": 0, "explain": "Phototherapy at 460-490nm converts bilirubin into water-soluble isomers through geometric isomerization, structural cyclization, and photo-oxidation, allowing excretion without requiring hepatic conjugation."}
+  ]
+}
+];
+</script>
+<script>
+(function(){
+  var navlist = document.getElementById('navlist');
+  var content = document.getElementById('content');
+  var totalQ = 0;
+  MODULES.forEach(function(m){ totalQ += m.quiz.length; });
+  document.getElementById('progress-count').textContent = '0 / ' + totalQ;
+
+  var STORE_KEY = 'ob-hub-wk6-answers-v1';
+  var answered = {};
+  try {
+    var raw = localStorage.getItem(STORE_KEY);
+    if (raw) answered = JSON.parse(raw);
+  } catch(e) {}
+
+  function saveAnswered(){
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(answered)); } catch(e) {}
+  }
+
+  function correctCount(){
+    var n = 0;
+    Object.keys(answered).forEach(function(k){ if (answered[k] === 'correct') n++; });
+    return n;
+  }
+
+  function updateProgress(){
+    var c = correctCount();
+    document.getElementById('progress-count').textContent = c + ' / ' + totalQ;
+    document.getElementById('progress-fill').style.width = (totalQ ? (100 * c / totalQ) : 0) + '%';
+  }
+
+  function moduleAnsweredCount(m){
+    var n = 0;
+    m.quiz.forEach(function(q, i){
+      var key = m.id + '-' + i;
+      if (answered[key]) n++;
+    });
+    return n;
+  }
+
+  function markDot(m){
+    var dot = document.querySelector('.navlist a[href="#' + m.id + '"] .dot');
+    if (!dot) return;
+    var done = moduleAnsweredCount(m) === m.quiz.length && m.quiz.length > 0;
+    dot.classList.toggle('done', done);
+  }
+
+  // Build nav
+  MODULES.forEach(function(m, idx){
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + m.id;
+    a.innerHTML = '<span class="num">' + String(idx+1).padStart(2,'0') + '</span><span class="dot"></span><span>' + m.title + '</span>';
+    li.appendChild(a);
+    navlist.appendChild(li);
+  });
+
+  function renderQuiz(m){
+    var wrap = document.createElement('div');
+    wrap.className = 'quiz';
+
+    var head = document.createElement('div');
+    head.className = 'quiz-head';
+    head.innerHTML = '<span>Check yourself</span><span class="quiz-score" id="score-' + m.id + '"></span>';
+    wrap.appendChild(head);
+
+    var scoreEl = head.querySelector('.quiz-score');
+
+    var body = document.createElement('div');
+    body.className = 'quiz-body';
+
+    function updateModuleScore(){
+      var n = moduleAnsweredCount(m);
+      scoreEl.textContent = n + ' / ' + m.quiz.length + ' answered';
+    }
+
+    m.quiz.forEach(function(q, i){
+      var key = m.id + '-' + i;
+      var qd = document.createElement('div');
+      qd.className = 'q';
+      var stem = document.createElement('div');
+      stem.className = 'q-stem';
+      stem.textContent = (i+1) + '. ' + q.stem;
+      qd.appendChild(stem);
+
+      var opts = document.createElement('div');
+      opts.className = 'q-opts';
+
+      var explain = document.createElement('div');
+      explain.className = 'q-explain';
+      explain.innerHTML = '<strong>' + (q.explain.split(' ')[0]) + '</strong> ' + q.explain;
+
+      var alreadyAnswered = !!answered[key];
+
+      q.opts.forEach(function(optText, oi){
+        var btn = document.createElement('button');
+        btn.className = 'opt';
+        btn.innerHTML = '<span class="letter">' + String.fromCharCode(65+oi) + '</span><span>' + optText + '</span>';
+        if (alreadyAnswered) {
+          btn.disabled = true;
+          if (oi === q.correct) btn.classList.add('correct');
+          if (answered[key] === 'incorrect-' + oi) btn.classList.add('incorrect');
+        }
+        btn.addEventListener('click', function(){
+          if (btn.disabled) return;
+          var allOpts = opts.querySelectorAll('.opt');
+          allOpts.forEach(function(o){ o.disabled = true; });
+          if (oi === q.correct) {
+            btn.classList.add('correct');
+            answered[key] = 'correct';
+          } else {
+            btn.classList.add('incorrect');
+            allOpts[q.correct].classList.add('correct');
+            answered[key] = 'incorrect-' + oi;
+          }
+          explain.classList.add('shown');
+          saveAnswered();
+          updateProgress();
+          updateModuleScore();
+          markDot(m);
+        });
+        opts.appendChild(btn);
+      });
+
+      qd.appendChild(opts);
+      qd.appendChild(explain);
+      if (alreadyAnswered) explain.classList.add('shown');
+      body.appendChild(qd);
+    });
+
+    wrap.appendChild(body);
+    updateModuleScore();
+    return wrap;
+  }
+
+  MODULES.forEach(function(m, idx){
+    var sec = document.createElement('section');
+    sec.className = 'module';
+    sec.id = m.id;
+
+    var head = document.createElement('div');
+    head.className = 'module-head';
+    head.innerHTML = '<span class="module-num">' + String(idx+1).padStart(2,'0') + '</span><h2>' + m.title + '</h2>';
+    sec.appendChild(head);
+
+    var meta = document.createElement('div');
+    meta.className = 'module-meta';
+    var tagsHtml = '<span class="tag">' + m.instructor + '</span><span class="tag">' + m.duration + '</span>';
+    (m.tags || []).forEach(function(t){ tagsHtml += '<span class="tag ' + t.cls + '">' + t.label + '</span>'; });
+    meta.innerHTML = tagsHtml;
+    sec.appendChild(meta);
+
+    var bodyDiv = document.createElement('div');
+    bodyDiv.className = 'module-body';
+    bodyDiv.innerHTML = m.body;
+    sec.appendChild(bodyDiv);
+
+    var quizWrap = document.createElement('div');
+    quizWrap.className = 'module-body';
+    quizWrap.appendChild(renderQuiz(m));
+    sec.appendChild(quizWrap);
+
+    content.appendChild(sec);
+    markDot(m);
+  });
+
+  updateProgress();
+
+  // Active-link tracking on scroll
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.module'));
+  var links = Array.prototype.slice.call(document.querySelectorAll('.navlist a'));
+  function onScroll(){
+    var pos = window.scrollY + 120;
+    var current = sections[0];
+    sections.forEach(function(s){ if (s.offsetTop <= pos) current = s; });
+    links.forEach(function(l){ l.classList.toggle('active', l.getAttribute('href') === '#' + current.id); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Close mobile nav on link click
+  links.forEach(function(l){
+    l.addEventListener('click', function(){
+      document.getElementById('sidebar').classList.remove('open');
+    });
+  });
+})();
+</script>

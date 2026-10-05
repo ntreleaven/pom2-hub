@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 6 Case Bank</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper: #f2f0e8;
+    --paper-raised: #fbfaf5;
+    --ink: #1e2a2e;
+    --ink-soft: #55625f;
+    --hairline: #d6d1c2;
+    --accent: #2c5f5a;
+    --accent-soft: #dce8e4;
+    --accent-ink: #163634;
+    --good: #2f6b3e;
+    --good-soft: #dfeee1;
+    --bad: #a03f37;
+    --bad-soft: #f6e3df;
+    --amber: #b5792c;
+    --amber-soft: #f3e6d2;
+    --shadow: 0 1px 2px rgba(30,42,46,.06), 0 8px 24px -12px rgba(30,42,46,.18);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #171d1e;
+      --paper-raised: #1f2729;
+      --ink: #e9eae4;
+      --ink-soft: #a5afab;
+      --hairline: #333e3f;
+      --accent: #7bbbb0;
+      --accent-soft: #223634;
+      --accent-ink: #cdeae4;
+      --good: #7fc98d;
+      --good-soft: #1e3324;
+      --bad: #e19489;
+      --bad-soft: #3a2320;
+      --amber: #e0b06b;
+      --amber-soft: #3a2f1a;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #171d1e;
+    --paper-raised: #1f2729;
+    --ink: #e9eae4;
+    --ink-soft: #a5afab;
+    --hairline: #333e3f;
+    --accent: #7bbbb0;
+    --accent-soft: #223634;
+    --accent-ink: #cdeae4;
+    --good: #7fc98d;
+    --good-soft: #1e3324;
+    --bad: #e19489;
+    --bad-soft: #3a2320;
+    --amber: #e0b06b;
+    --amber-soft: #3a2f1a;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Public Sans', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+  }
+
+  h1,h2,h3{ font-family:'Fraunces', Georgia, serif; text-wrap:balance; margin:0; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+
+  a{ color:inherit; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  /* ---------- shell ---------- */
+  .shell{ max-width:1040px; margin:0 auto; padding:0 24px 96px; }
+  .topbar{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:16px; padding:28px 24px 20px; max-width:1040px; margin:0 auto;
+    border-bottom:1px solid var(--hairline);
+  }
+  .brand{ display:flex; flex-direction:column; gap:2px; }
+  .brand .kicker{
+    font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--accent); font-weight:600;
+  }
+  .brand h1{ font-size:1.5rem; font-weight:600; }
+  .topstat{ text-align:right; font-family:'JetBrains Mono', monospace; font-size:.78rem; color:var(--ink-soft); }
+  .topstat b{ color:var(--ink); font-weight:600; }
+
+  /* ---------- dashboard ---------- */
+  .intro{ padding:32px 0 8px; max-width:640px; }
+  .intro p{ margin:10px 0 0; color:var(--ink-soft); line-height:1.55; font-size:.97rem; }
+
+  .group-heading{
+    display:flex; align-items:center; gap:12px;
+    margin:36px 0 14px;
+  }
+  .group-heading h2{ font-size:1.05rem; font-weight:600; color:var(--ink); white-space:nowrap; }
+  .group-heading .rule{ height:1px; background:var(--hairline); flex:1; }
+  .group-heading .count{ font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--ink-soft); }
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:14px; }
+
+  .card{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:18px 18px 16px; text-align:left; box-shadow:var(--shadow);
+    display:flex; flex-direction:column; gap:12px; min-height:150px;
+    transition:transform .15s ease, border-color .15s ease;
+    position:relative; overflow:hidden;
+  }
+  .card:hover{ transform:translateY(-2px); border-color:var(--accent); }
+  .card:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .card .num{
+    font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--ink-soft);
+    letter-spacing:.06em;
+  }
+  .card h3{ font-size:1.05rem; font-weight:500; line-height:1.28; flex:1; }
+  .card-foot{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .badge{
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; font-weight:600;
+    padding:3px 8px; border-radius:99px; letter-spacing:.02em;
+  }
+  .badge.new{ background:var(--accent-soft); color:var(--accent-ink); }
+  .badge.done{ background:var(--good-soft); color:var(--good); }
+  .badge.retry{ background:var(--amber-soft); color:var(--amber); }
+  .score{ font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--ink-soft); }
+  .score b{ color:var(--ink); }
+
+  /* ---------- quiz view ---------- */
+  .quiz-header{
+    display:flex; align-items:center; gap:14px; padding:26px 0 6px; flex-wrap:wrap;
+  }
+  .back-btn{
+    background:none; border:1px solid var(--hairline); border-radius:8px;
+    padding:7px 12px; font-size:.82rem; color:var(--ink-soft); display:flex; align-items:center; gap:6px;
+  }
+  .back-btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .quiz-title{ flex:1; min-width:200px; }
+  .quiz-title .kicker{ font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; font-weight:600;}
+  .quiz-title h2{ font-size:1.25rem; font-weight:600; margin-top:2px; }
+
+  .progress-wrap{ padding:14px 0 30px; }
+  .progress-meta{ display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--ink-soft); margin-bottom:6px; }
+  .progress-track{ height:6px; background:var(--hairline); border-radius:99px; overflow:hidden; }
+  .progress-fill{ height:100%; background:var(--accent); border-radius:99px; transition:width .3s ease; }
+
+  .stem-card{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:12px;
+    padding:26px 28px; box-shadow:var(--shadow); margin-bottom:20px;
+  }
+  .stem-card .vignette-tag{
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--ink-soft);
+    text-transform:uppercase; letter-spacing:.08em; margin-bottom:10px; display:block;
+  }
+  .stem{ font-size:1.14rem; line-height:1.55; font-weight:400; }
+
+  .opts{ display:flex; flex-direction:column; gap:10px; }
+  .opt{
+    display:flex; align-items:flex-start; gap:12px; text-align:left;
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; font-size:.98rem; line-height:1.45; color:var(--ink);
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .opt:hover:not(:disabled){ border-color:var(--accent); }
+  .opt:disabled{ cursor:default; }
+  .opt .letter{
+    font-family:'JetBrains Mono',monospace; font-weight:600; font-size:.82rem;
+    width:22px; height:22px; border-radius:6px; background:var(--accent-soft); color:var(--accent-ink);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;
+  }
+  .opt.correct{ background:var(--good-soft); border-color:var(--good); }
+  .opt.correct .letter{ background:var(--good); color:var(--paper-raised); }
+  .opt.incorrect{ background:var(--bad-soft); border-color:var(--bad); }
+  .opt.incorrect .letter{ background:var(--bad); color:var(--paper-raised); }
+  .opt.dim{ opacity:.55; }
+
+  .explain{
+    margin-top:16px; padding:16px 18px; border-radius:10px; background:var(--accent-soft);
+    border-left:3px solid var(--accent); font-size:.92rem; line-height:1.55; color:var(--ink);
+  }
+  .explain b{ color:var(--accent-ink); }
+
+  .quiz-nav{ display:flex; justify-content:flex-end; margin-top:20px; }
+  .next-btn{
+    background:var(--accent); color:var(--paper-raised); border:none; border-radius:8px;
+    padding:11px 22px; font-size:.92rem; font-weight:600; display:flex; align-items:center; gap:8px;
+    box-shadow:var(--shadow);
+  }
+  .next-btn:disabled{ background:var(--hairline); color:var(--ink-soft); box-shadow:none; cursor:not-allowed; }
+  .next-btn:not(:disabled):hover{ filter:brightness(1.06); }
+
+  /* ---------- summary ---------- */
+  .summary{ padding:40px 0; text-align:center; }
+  .summary .ring{
+    width:132px; height:132px; margin:0 auto 20px; position:relative;
+  }
+  .summary .ring svg{ transform:rotate(-90deg); }
+  .summary .ring .pct{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-size:1.7rem; font-weight:600;
+  }
+  .summary h2{ font-size:1.4rem; margin-bottom:6px; }
+  .summary p{ color:var(--ink-soft); margin:0 0 26px; }
+  .summary-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .btn{
+    border:1px solid var(--hairline); background:var(--paper-raised); color:var(--ink);
+    border-radius:8px; padding:10px 18px; font-size:.9rem; font-weight:500;
+  }
+  .btn.primary{ background:var(--accent); color:var(--paper-raised); border-color:var(--accent); font-weight:600; }
+  .btn:hover{ border-color:var(--accent); }
+
+  .review-list{ text-align:left; max-width:640px; margin:30px auto 0; display:flex; flex-direction:column; gap:10px; }
+  .review-item{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; font-size:.88rem; display:flex; gap:10px; align-items:flex-start;
+  }
+  .review-item .mark{ font-size:.85rem; margin-top:1px; }
+  .review-item .mark.miss{ color:var(--bad); }
+  .review-item .mark.hit{ color:var(--good); }
+  .review-item div{ line-height:1.5; color:var(--ink-soft); }
+  .review-item b{ color:var(--ink); font-weight:500; }
+
+  [hidden]{ display:none !important; }
+
+  footer{
+    max-width:1040px; margin:0 auto; padding:40px 24px 0; color:var(--ink-soft);
+    font-size:.78rem; border-top:1px solid var(--hairline); margin-top:56px; padding-top:20px;
+  }
+
+  @media (max-width:560px){
+    .stem-card{ padding:20px; }
+    .topbar{ flex-direction:column; align-items:flex-start; gap:6px; }
+    .topstat{ text-align:left; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">P2 &middot; Week 6 &middot; Pregnancy &amp; Obstetrics</span>
+    <h1>Case Bank</h1>
+  </div>
+  <div class="topstat" id="topstat">54 questions &middot; 9 modules</div>
+</div>
+
+<main class="shell">
+
+  <section id="dashboard">
+    <div class="intro">
+      <p>Six clinical-vignette questions per module, drawn from the Week 6 Pregnancy &amp; Obstetrics block (antepartum complications, labour and delivery, and postpartum/newborn care). Options are written to similar length, and the correct answer's position is shuffled per question &mdash; work the case, don't read the answer key by eye.</p>
+    </div>
+    <div id="groups"></div>
+  </section>
+
+  <section id="quizview" hidden>
+    <div class="quiz-header">
+      <button class="back-btn" id="backBtn">&larr; All modules</button>
+      <div class="quiz-title">
+        <div class="kicker" id="quizGroup"></div>
+        <h2 id="quizTitle"></h2>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="progressLabel">Question 1 of 6</span>
+        <span id="scoreLabel">Score 0 / 0</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="stem-card">
+      <span class="vignette-tag" id="qTag">Case</span>
+      <div class="stem" id="qStem"></div>
+    </div>
+
+    <div class="opts" id="opts"></div>
+    <div class="explain" id="explain" hidden></div>
+
+    <div class="quiz-nav">
+      <button class="next-btn" id="nextBtn" disabled>Next question &rarr;</button>
+    </div>
+  </section>
+
+  <section id="summaryview" hidden>
+    <div class="summary">
+      <div class="ring">
+        <svg width="132" height="132" viewBox="0 0 132 132">
+          <circle cx="66" cy="66" r="58" fill="none" stroke="var(--hairline)" stroke-width="10"/>
+          <circle id="ringFg" cx="66" cy="66" r="58" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round"/>
+        </svg>
+        <div class="pct" id="ringPct">0%</div>
+      </div>
+      <h2 id="sumTitle"></h2>
+      <p id="sumSub"></p>
+      <div class="summary-actions">
+        <button class="btn primary" id="retryBtn">Retry module</button>
+        <button class="btn" id="dashBtn">Back to modules</button>
+      </div>
+      <div class="review-list" id="reviewList"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Week 6 study material &middot; P2 Pregnancy &amp; Obstetrics Block &middot; for personal review use</footer>
+
+<script id="data" type="application/json">[{"id":"antepartum-hemorrhage","title":"Antepartum Hemorrhage / Abnormal Placentation","group":"Antepartum & Fetal Complications","q":[{"stem":"A 32-year-old G2P1 at 34 weeks presents with sudden painless vaginal bleeding. Her uterus is soft and non-tender, and a 20-week ultrasound noted a low-lying placenta. What is the most likely diagnosis?","opts":["Placenta previa","Placental abruption","Vasa previa","Uterine rupture"],"correct":0,"explain":"Painless bleeding with a soft, non-tender uterus and a known low-lying placenta is the classic pattern for placenta previa, in contrast to the painful, tender or rigid uterus typical of abruption."},{"stem":"A patient at 32 weeks develops sudden severe abdominal pain and a rigid, tender uterus, but only minimal vaginal bleeding. The fetal heart tracing shows late decelerations. What best explains the mismatch between severe pain and minimal visible bleeding?","opts":["A concealed placental abruption, where blood collects behind the placenta instead of escaping through the cervix","A complete placenta previa with a fully closed cervix trapping the blood","A ruptured ovarian cyst unrelated to the pregnancy","Normal Braxton Hicks contractions with incidental spotting"],"correct":0,"explain":"In a concealed abruption, separation is central and bleeding is trapped behind the placenta rather than escaping visibly, producing severe, disproportionate pain with little external bleeding and a higher rate of fetal distress."},{"stem":"A term patient with a known velamentous cord insertion develops sudden vaginal bleeding right after spontaneous rupture of membranes, along with fetal bradycardia. What is the most urgent concern?","opts":["A routine finding requiring only observation","Vasa previa, since the bleeding vessel is exposed fetal vasculature","Maternal anemia from chronic blood loss","A urinary tract infection"],"correct":1,"explain":"A velamentous cord insertion is a risk factor for vasa previa; because the bleeding is fetal blood from exposed, unprotected vessels, even a small volume can be catastrophic for the baby and this is a true obstetric emergency."},{"stem":"Which test is most useful when trauma is the suspected cause of antepartum bleeding, to detect fetal red blood cells that have entered the maternal circulation?","opts":["Nitrazine test","Fern test","Apt test","Kleihauer-Betke test"],"correct":3,"explain":"The Kleihauer-Betke test looks for fetal blood cells in the maternal circulation and is used mainly when trauma is a possible cause of bleeding, distinguishing it from the Apt test (fetal blood within vaginal bleeding) and the nitrazine/fern tests (used for ruptured membranes)."},{"stem":"A patient with a prior cesarean section and a current complete placenta previa is found on ultrasound to have loss of the normal hypoechoic zone between placenta and myometrium. What is this finding most concerning for?","opts":["A benign succenturiate placental lobe","Placenta accreta spectrum, requiring a coordinated delivery plan and likely hysterectomy","Vasa previa type 1","Normal placental aging near term"],"correct":1,"explain":"Loss of the normal placental-myometrial interface in a patient with a prior cesarean and previa raises concern for abnormal placental invasion (accreta spectrum), which usually requires a planned, multidisciplinary delivery and often hysterectomy."},{"stem":"What is the primary purpose of ordering coagulation studies (INR, PTT, fibrinogen) in a patient with active antepartum hemorrhage?","opts":["To diagnose gestational diabetes","To assess fetal lung maturity","To screen for a developing consumptive coagulopathy from ongoing bleeding","To rule out a urinary tract infection"],"correct":2,"explain":"Ongoing obstetric hemorrhage can trigger a consumptive coagulopathy as clotting factors are used up faster than they can be replaced, so coagulation studies help catch this developing complication early."}]},{"id":"approach-small-fetus","title":"Approach to the Small Fetus","group":"Antepartum & Fetal Complications","q":[{"stem":"Estimated fetal weight on ultrasound is calculated using the Hadlock formula, which combines which set of measurements?","opts":["Head circumference, abdominal circumference, biparietal diameter, and femur length","Maternal weight, height, and blood pressure only","Amniotic fluid index and cervical length","Symphysis-fundal height and estimated date of confinement"],"correct":0,"explain":"The Hadlock formula estimates fetal weight from four ultrasound measurements — head circumference, abdominal circumference, biparietal diameter, and femur length — not from maternal measurements or fundal height alone."},{"stem":"A fetus is measuring at the 6th percentile for gestational age, but serial growth has tracked a consistent curve with normal umbilical artery Dopplers and normal amniotic fluid. What is the most likely explanation?","opts":["A pathological process limiting growth potential, requiring urgent delivery","A constitutionally small but healthy fetus (SGA without IUGR)","Placental abruption","Vasa previa"],"correct":1,"explain":"A small fetus with a consistent growth curve, reassuring Dopplers, and normal fluid is more consistent with a constitutionally small, healthy baby than with true growth restriction."},{"stem":"Umbilical artery Doppler in a growth-restricted fetus shows absent end-diastolic flow. Approximately what proportion of the placental microvasculature is estimated to be damaged at this stage?","opts":["About 10%","About 50%","About 90%","Damage cannot be estimated from Doppler findings"],"correct":1,"explain":"As placental microvascular damage progresses, end-diastolic flow first drops, then becomes absent at roughly half the microvasculature affected, and becomes reversed once damage is more extensive, around 70%."},{"stem":"Which of the following is best classified as a placental cause of IUGR, distinct from a primary maternal or fetal cause?","opts":["Trisomy 18 (a fetal chromosomal cause)","Damaged placental microvasculature from small clots, as seen in conditions like lupus","Chronic maternal hypertension (a maternal cause)","An intrauterine infection damaging fetal tissue directly (a fetal cause)"],"correct":1,"explain":"Placental causes of IUGR often come down to damaged microvasculature or disrupted implantation, distinct from primarily maternal causes (like hypertension) or fetal causes (like chromosomal or infectious causes)."},{"stem":"Past what gestational age is there generally little benefit to prolonging a pregnancy complicated by IUGR, even without other red flags?","opts":["28 weeks","32 weeks","37 weeks","40 weeks"],"correct":2,"explain":"Past 37 weeks, there is little benefit to continued expectant management even in the absence of other concerning findings, so delivery is generally favoured at that point."},{"stem":"A fetus with IUGR shows reversed end-diastolic flow on umbilical artery Doppler at 30 weeks. What does this finding most strongly suggest?","opts":["Mild, early placental insufficiency not requiring any change in management","Advanced placental damage warranting close surveillance and likely delivery planning","A normal Doppler variant with no clinical significance","That the estimated fetal weight calculation must be inaccurate"],"correct":1,"explain":"Reversed end-diastolic flow reflects advanced placental microvascular damage (around 70%) and is a red flag prompting intensified surveillance and consideration of delivery, balanced against the risks of prematurity."}]},{"id":"approach-preterm-labour","title":"Approach to Preterm Labour","group":"Antepartum & Fetal Complications","q":[{"stem":"A patient at 28 weeks presents with regular contractions and is found to be 3cm dilated with a soft cervix. How should this be classified?","opts":["Threatened preterm labour","True preterm labour, since there is documented cervical dilation","Braxton Hicks contractions","Normal labour at term"],"correct":1,"explain":"Documented cervical dilation accompanying regular contractions before 37 weeks defines true preterm labour, distinct from threatened preterm labour, which lacks confirmed cervical change."},{"stem":"What is the single strongest risk factor for a spontaneous preterm birth?","opts":["Maternal age between 25 and 30","A previous spontaneous preterm birth","A single prior uncomplicated cesarean section","Maternal height over 165cm"],"correct":1,"explain":"A prior spontaneous preterm birth is described as the single strongest predictor of a future preterm birth, outweighing the other listed factors."},{"stem":"A patient in preterm labour at 30 weeks receives betamethasone. What is the primary mechanism by which antenatal corticosteroids reduce neonatal respiratory distress syndrome?","opts":["They directly increase amniotic fluid volume","They accelerate fetal lung maturity by promoting surfactant production","They act as tocolytics that stop uterine contractions","They prevent chorioamnionitis from developing"],"correct":1,"explain":"Corticosteroids given before 34 weeks push fetal lung cells to begin producing surfactant, accelerating lung maturity and reducing the risk of respiratory distress syndrome."},{"stem":"A patient with PPROM at 29 weeks has fluid pooling on speculum exam, a positive nitrazine test, and a positive fern test but no signs of infection. Which management step specifically helps prolong the interval before delivery?","opts":["Immediate induction of labour","Administration of antibiotics to extend the latency period","Discontinuing all fetal monitoring","Withholding corticosteroids until 34 weeks"],"correct":1,"explain":"In PPROM without overt infection, antibiotics have been shown to extend the gap between membrane rupture and delivery, and every extra day in utero tends to improve neonatal outcomes."},{"stem":"Magnesium sulfate is given to a patient in active preterm labour at 31 weeks who is now 6cm dilated. What is its primary intended benefit here?","opts":["Tocolysis, to stop labour entirely","Fetal neuroprotection, lowering the risk of cerebral palsy","Treatment of maternal hypertension","Prevention of postpartum hemorrhage"],"correct":1,"explain":"As delivery becomes imminent, magnesium sulfate is given specifically for fetal neuroprotection, shown to lower the risk of cerebral palsy when birth occurs before 34 weeks."},{"stem":"Before escalating to tocolytic medications for uterine irritability in a patient with possible preterm labour, which two simple, reversible causes should be addressed first?","opts":["Dehydration and urinary tract infection","Placenta previa and vasa previa","A chromosomal abnormality and a structural fetal malformation","Postpartum hemorrhage and endometritis"],"correct":0,"explain":"Dehydration and urinary tract infection are both common, easily reversible causes of uterine irritability, so rehydration and a urine sample are checked before moving to tocolytic medications."}]},{"id":"process-labour-birth","title":"Process of Labour and Birth","group":"Labour & Delivery","q":[{"stem":"On vaginal exam, a patient's fetal head is noted to be at station 0. What does this mean?","opts":["The head is well above the ischial spines","The head is at the level of the ischial spines","The head is at the vaginal introitus","The head has not yet entered the pelvis"],"correct":1,"explain":"Station 0 means the fetal head is level with the ischial spines; negative stations are higher up, and positive stations are further down the birth canal."},{"stem":"A first-time mother has been in the active phase of the first stage for several hours. Using the Friedman curve as a benchmark, approximately what rate of cervical dilation is expected?","opts":["About 0.5 cm/hour","About 1.2 cm/hour","About 3 cm/hour","About 5 cm/hour"],"correct":1,"explain":"The Friedman benchmark estimates roughly 1.2cm/hour of active-phase dilation for a first-time mother (faster, around 1.5cm/hour, for someone who has delivered before)."},{"stem":"During the second stage, immediately after the fetal head has been delivered by extension, what is the next cardinal movement?","opts":["Engagement","Internal rotation","External rotation (restitution)","Flexion"],"correct":2,"explain":"After extension delivers the head, external rotation (restitution) follows, realigning the head with the shoulders, which are still rotating inside the pelvis, before expulsion of the shoulders and body."},{"stem":"A continuous fetal heart tracing shows a baseline of 145 bpm, moderate variability, spontaneous accelerations, and no decelerations. How should this tracing be categorized?","opts":["Abnormal, requiring immediate delivery","Atypical, requiring closer monitoring","Normal, allowing less intensive monitoring","Uninterpretable, requiring a scalp electrode"],"correct":2,"explain":"A baseline in the 110-160 range with good variability and spontaneous accelerations and no decelerations is the definition of a normal tracing, which allows for less intensive ongoing monitoring."},{"stem":"Immediately after delivery of the placenta, the uterus is noted to be soft and boggy with ongoing bleeding. What is the most appropriate immediate intervention, consistent with active management of the third stage?","opts":["Uterine massage and administration of a uterotonic medication","Immediate hysterectomy","Delayed cord clamping","Discontinuing all monitoring since the placenta has already delivered"],"correct":0,"explain":"Active management of the third stage — uterotonic medication, controlled cord traction, and fundal massage — reduces the risk of heavy bleeding and is the first response to a boggy, atonic uterus."},{"stem":"The first hour after delivery, sometimes called the fourth stage of labour, is clinically significant primarily because it is:","opts":["The window of highest risk for postpartum hemorrhage","The period of lowest risk for any maternal complication","A period when breastfeeding is contraindicated","A period when the newborn exam must be delayed by protocol"],"correct":0,"explain":"The fourth stage is when postpartum hemorrhage most often shows up, partly due to a significant autotransfusion of blood back into maternal circulation increasing cardiac workload, making it the highest-risk early postpartum window."}]},{"id":"abnormal-labour","title":"Abnormal Labour","group":"Labour & Delivery","q":[{"stem":"A labouring patient has strong, frequent contractions, but her cervix has not changed in four hours. Her pelvis is thought adequate and the fetus is appropriately sized and well-positioned. What is the most appropriate next step?","opts":["Reassess all four P's, since failure to progress persists despite apparently adequate power","Conclude this is a normal variant requiring no further evaluation","Diagnose definite cephalopelvic disproportion based on contraction pattern alone","Manage this as shoulder dystocia"],"correct":0,"explain":"When progress stalls despite seemingly adequate power, passage, and passenger, a systematic reassessment of all four P's — including psyche — is the appropriate next step rather than assuming one single cause."},{"stem":"Which of the four P's of abnormal labour is considered essentially fixed and cannot be meaningfully modified through medical intervention?","opts":["Power","Psyche","Passage, the bony pelvis","Passenger position, which can sometimes be rotated"],"correct":2,"explain":"Passage — the shape and size of the bony pelvis — is essentially fixed and cannot be changed without breaking bone, unlike power (modifiable with oxytocin/ARM), psyche (modifiable with support), or passenger position (sometimes modifiable by rotation)."},{"stem":"A 39-week low-risk patient is considering elective induction of labour. Based on findings from the ARRIVE trial, what is a reasonable counseling point?","opts":["Induction at 39 weeks in low-risk patients is associated with a lower cesarean delivery rate","Induction should never be offered before 41 weeks in low-risk patients","The ARRIVE trial showed no benefit to induction under any circumstance","Induction at 39 weeks significantly increases neonatal complications"],"correct":0,"explain":"The ARRIVE trial found that electively inducing low-risk pregnancies at 39 weeks was associated with a lower cesarean section rate and improved neonatal/maternal outcomes, supporting it as a reasonable option rather than only a last resort."},{"stem":"A patient being considered for induction has a history of a prior classical cesarean section. What does this history represent?","opts":["An indication for induction","A contraindication to induction, due to uterine rupture risk","A factor that improves the Bishop score","An irrelevant historical detail"],"correct":1,"explain":"A prior classical cesarean or other major uterine surgery is a contraindication to induction (and to labour generally), given the elevated risk of uterine rupture."},{"stem":"A patient's preinduction cervical exam yields a Bishop score of 4. What does this predict?","opts":["A favourable cervix ready for oxytocin alone","An unfavourable cervix likely to need cervical ripening before other induction steps","That induction is medically contraindicated","That spontaneous labour is imminent regardless of intervention"],"correct":1,"explain":"A Bishop score under 6 indicates an unripe, unfavourable cervix associated with a longer, less successful induction, prompting cervical ripening (prostaglandins or a Foley catheter) before proceeding further."},{"stem":"Labour has been progressing spontaneously but has now stalled due to inadequate contractions. What is the correct term for using oxytocin and artificial rupture of membranes to correct this?","opts":["Induction of labour","Augmentation of labour","Tocolysis","Cervical ripening"],"correct":1,"explain":"Augmentation is used when labour has already started spontaneously but has stalled, using the same tools (ARM, titrated oxytocin) that induction uses to start labour that hasn't begun."}]},{"id":"hemorrhagic-shock","title":"Hemorrhagic Shock","group":"Labour & Delivery","q":[{"stem":"A postpartum patient has an estimated blood loss of 1800mL. Her heart rate is 118 bpm, blood pressure is 100/70, and she is mildly anxious but alert. Which best describes her status?","opts":["An early-to-moderate stage of shock, with compensatory tachycardia and still-preserved blood pressure","Class I shock, with entirely normal vital signs","A terminal stage of shock with imminent cardiac arrest","She cannot be in hemorrhagic shock since her blood pressure is not yet low"],"correct":0,"explain":"Rising heart rate with blood pressure still relatively preserved is typical of an early-to-moderate stage of hemorrhagic shock — blood pressure is one of the last parameters to drop, so normal-ish BP does not rule out significant shock."},{"stem":"Why can a young, healthy postpartum patient lose a large volume of blood while maintaining deceptively normal vital signs?","opts":["Postpartum patients cannot develop hemorrhagic shock","Young, healthy physiology plus pregnancy-expanded blood volume compensates well before sudden decompensation","Blood pressure always rises during hemorrhagic shock","Postpartum blood loss is never clinically significant"],"correct":1,"explain":"Young, healthy patients compensate for blood loss unusually well, and pregnancy itself expands blood volume as a built-in reserve — meaning significant blood loss can occur with deceptively normal-looking vitals until sudden decompensation."},{"stem":"Initial management of a patient in hypovolemic shock includes establishing two large-bore IV lines and starting fluids. What is the purpose of also placing a Foley catheter early?","opts":["To directly stop the source of bleeding","To track urine output as a real-time marker of end-organ perfusion","To administer blood products more efficiently","To measure central venous pressure directly"],"correct":1,"explain":"A Foley catheter connected to a urometer allows urine output to be tracked in real time, serving as a practical bedside marker of how well organs are being perfused during resuscitation."},{"stem":"Which combination of complications makes up the \"lethal triad\" that worsens outcomes in major obstetric hemorrhage?","opts":["Hypertension, tachycardia, and fever","Acidosis, hypothermia, and coagulopathy","Hyperglycemia, edema, and sepsis","Anemia, thrombocytosis, and hypernatremia"],"correct":1,"explain":"Acidosis, hypothermia, and coagulopathy feed into and worsen each other in major hemorrhage, together dramatically worsening outcomes if not actively prevented."},{"stem":"Why does dilutional coagulopathy worsen as large volumes of IV fluids and blood products are given during resuscitation?","opts":["Because fluids and blood products progressively dilute the patient's own clotting factors","Because IV fluids directly destroy circulating platelets","Because blood products always contain therapeutic anticoagulants","Dilutional coagulopathy is unrelated to the volume transfused"],"correct":0,"explain":"The more IV fluid and blood product given, the more the patient's own clotting factors are diluted relative to the expanded circulating volume, and this effect worsens progressively as transfusion volumes climb."},{"stem":"What is described as the single best way to prevent the lethal triad from developing in a hemorrhaging patient?","opts":["Limiting ongoing blood loss as early as possible","Avoiding all IV fluid administration entirely","Delaying transfusion until vital signs are critically abnormal","Deliberately keeping the patient in a cold environment"],"correct":0,"explain":"Because acidosis, hypothermia, and coagulopathy all stem from and are worsened by ongoing hemorrhage, limiting blood loss as early as possible is the single best way to prevent all three from developing together."}]},{"id":"lactation","title":"Lactation","group":"Postpartum & Newborn Care","q":[{"stem":"A patient is 2 days postpartum and asks why her milk hasn't \"come in\" yet despite frequent breastfeeding. What is the most accurate explanation?","opts":["Copious milk production typically begins around 30-40 hours after delivery, triggered by the drop in progesterone","This is abnormal, and she should stop breastfeeding immediately","Milk normally comes in immediately at the moment of birth","She needs to switch to exclusive pumping instead of breastfeeding"],"correct":0,"explain":"Copious milk secretion (lactogenesis stage 2) typically kicks in around 30-40 hours after birth, once the sharp drop in progesterone at delivery frees prolactin to drive milk synthesis — so this timing is expected, not a problem."},{"stem":"By approximately what postpartum day does control of milk supply shift from endocrine (prolactin-driven) to autocrine (locally regulated by how well milk is removed)?","opts":["Day 1","Day 3","Day 14","Day 30"],"correct":1,"explain":"Control shifts from endocrine to autocrine, locally regulated, control by around day 3 postpartum — the biological basis for why ongoing, effective milk removal is what sustains supply after this point."},{"stem":"A breastfeeding patient develops a red, warm, tender wedge-shaped area of one breast with fever and myalgias. What is the most likely diagnosis and appropriate next step?","opts":["Simple engorgement; she should stop nursing on that side until it resolves","Mastitis; she should continue nursing/pumping and start an antibiotic such as cloxacillin","A normal plugged duct requiring only massage and no medication","Breast cancer, requiring urgent biopsy before any other management"],"correct":1,"explain":"Fever and systemic symptoms with a red, tender, warm area of breast point to mastitis, usually from Staph aureus; management is continued nursing/pumping (which doesn't harm the infant) plus antibiotics, not stopping feeds."},{"stem":"Which organism is most commonly responsible for lactational mastitis?","opts":["Escherichia coli","Group B Streptococcus","Staphylococcus aureus","Candida albicans"],"correct":2,"explain":"Staph aureus is identified as the most common organism behind lactational mastitis, guiding the typical choice of antibiotic (such as cloxacillin)."},{"stem":"A mother with low milk supply is found to have a poor latch and infrequent feeding as the primary issues, with normal glandular development on history. How should her low supply be classified?","opts":["Inadequate production","A problem of poor milk extraction rather than inadequate production","Breastmilk jaundice","A failure of lactational amenorrhea"],"correct":1,"explain":"Poor latch and infrequent feeding are extraction problems (the milk isn't being removed effectively), distinct from inadequate production problems like insufficient glandular development, PCOS, or certain medications."},{"stem":"Which of the following is a true contraindication to breastfeeding?","opts":["A maternal cold with mild nasal congestion","Maternal use of a progesterone-only contraceptive pill","Active, untreated maternal tuberculosis","A prior episode of mastitis that has since fully resolved"],"correct":2,"explain":"Active untreated tuberculosis is on the short list of true breastfeeding contraindications, unlike a mild cold, progesterone-only contraception, or a resolved prior mastitis episode, none of which contraindicate breastfeeding."}]},{"id":"postpartum-care","title":"Postpartum Care","group":"Postpartum & Newborn Care","q":[{"stem":"A patient at postpartum day 3 has lochia that has changed from bright red to a thinner, pinkish-brown discharge. What stage of lochia does this represent?","opts":["Lochia rubra","Lochia serosa","Lochia alba","This pattern is abnormal and requires investigation"],"correct":1,"explain":"Lochia progresses from bright red and heavy (rubra) to a pinkish-brown, thinner discharge (serosa) and finally whitish-yellow (alba); the day-3 pinkish-brown pattern described here is the expected lochia serosa stage."},{"stem":"A patient at postpartum day 9 develops a fever of 38.4°C with uterine tenderness and foul-smelling discharge. What is the most likely diagnosis?","opts":["Normal postpartum recovery","Endometritis","Breastmilk jaundice","Isolated lactational mastitis"],"correct":1,"explain":"Fever with uterine tenderness and foul discharge in the postpartum period is classic for endometritis, one of the most common sources of puerperal infection, especially after cesarean or prolonged labour."},{"stem":"When is estrogen-containing contraception generally considered safe to start postpartum, given elevated clotting risk?","opts":["Immediately after delivery","Not before 21 days postpartum","Only after 6 months postpartum","Estrogen-containing methods are always contraindicated postpartum"],"correct":1,"explain":"Estrogen-containing contraception is avoided before 21 days postpartum because of the elevated clotting risk in the early postpartum period, regardless of breastfeeding status."},{"stem":"A patient describes tearfulness, mood swings, and difficulty concentrating starting on postpartum day 3, which resolves on its own by day 12. How should this be classified?","opts":["Postpartum psychosis","Postpartum depression requiring antidepressants","Baby blues, a common and self-limited pattern","An abnormal finding requiring hospitalization"],"correct":2,"explain":"Symptoms starting a few days after delivery, peaking around days 2-4, and resolving within about two weeks fit the very common, self-limited \"baby blues\" pattern rather than depression or psychosis."},{"stem":"A patient's low mood, guilt, and poor sleep persist beyond two weeks and are affecting her ability to care for her newborn. What is the most appropriate next step?","opts":["Reassure her this is normal baby blues and needs no follow-up","Screen for postpartum depression using a validated tool such as the Edinburgh Postnatal Depression Scale","Diagnose postpartum psychosis and arrange immediate hospitalization","No action is needed since all postpartum mood symptoms self-resolve"],"correct":1,"explain":"Symptoms persisting beyond two weeks, or significantly impairing function, should prompt screening for postpartum depression with a validated tool, rather than being dismissed as baby blues or jumped to psychosis."},{"stem":"Postpartum venous thromboembolism risk, compared to the risk during pregnancy itself, is:","opts":["Lower than during pregnancy","About the same as during pregnancy","Higher than during pregnancy","VTE risk does not meaningfully exist postpartum"],"correct":2,"explain":"VTE risk is actually at its highest in the postpartum period, higher than during pregnancy itself, which is why it remains an important differential for postpartum leg swelling or respiratory symptoms."}]},{"id":"approach-neonatal-care","title":"Approach to Neonatal Care","group":"Postpartum & Newborn Care","q":[{"stem":"A newborn's Apgar score at 1 minute is 4. What does this score primarily indicate?","opts":["A specific diagnosis, such as a congenital heart defect","The need for resuscitation, rather than a diagnosis of what is specifically wrong","That the baby will definitely have long-term neurological impairment","That no further assessment of the baby is needed"],"correct":1,"explain":"The Apgar score is a rapid physiologic check, not a diagnostic tool — a low score tells you resuscitation is needed, not what specific underlying problem (if any) is present."},{"stem":"Why are preterm infants at particularly high risk for hypoglycemia compared to term infants?","opts":["They have not had adequate time to lay down fat and glycogen stores","They produce excess insulin at birth compared to term infants","They are unable to perform glycogenolysis at all","Preterm infants have higher metabolic reserves than term infants"],"correct":0,"explain":"Fat and glycogen stores build up mainly in the third trimester, so preterm infants simply haven't had time to accumulate adequate reserves, making them especially vulnerable to hypoglycemia after birth."},{"stem":"A term newborn's screening glucose is 2.8 mmol/L at 12 hours of life, and the infant is asymptomatic and feeding well. Using the \"2.6, no more sticks\" guideline, what is the appropriate next step?","opts":["An immediate IV dextrose bolus","Routine screening can generally stop, since the level is at or above the threshold","Proceed to exchange transfusion","Discontinue breastfeeding entirely"],"correct":1,"explain":"Once a baby's glucose is consistently at or above 2.6 mmol/L (in the first 72 hours), routine screening can generally stop — this asymptomatic, feeding-well infant does not need an emergency dextrose bolus."},{"stem":"A newborn develops visible jaundice at 18 hours of life. How should this be interpreted?","opts":["Normal physiologic jaundice, requiring no workup","Always pathologic, since jaundice within the first 24 hours warrants investigation","Only significant if the baby is also premature","Breastmilk jaundice, which is never a concerning finding"],"correct":1,"explain":"Jaundice appearing within the first 24 hours of life is always considered pathologic and requires prompt workup, unlike the more common, later-appearing physiologic or breastfeeding-related jaundice."},{"stem":"What is the mechanism by which phototherapy reduces bilirubin levels in a jaundiced newborn?","opts":["It suppresses bilirubin production entirely","It converts bilirubin into water-soluble isomers that can be excreted without needing hepatic conjugation","It directly stimulates hepatic glucuronosyl transferase production","It works by inducing vomiting to help clear bilirubin"],"correct":1,"explain":"Phototherapy at 460-490nm converts bilirubin into water-soluble isomers via geometric isomerization, structural cyclization, and photo-oxidation, allowing excretion without requiring hepatic conjugation."},{"stem":"Untreated, severe, and progressive hyperbilirubinemia carries the risk of which permanent, devastating complication?","opts":["Kernicterus, from bilirubin deposition in the basal ganglia and brainstem","Simple physiologic jaundice with no lasting effect","Transient tachypnea of the newborn","Necrotizing enterocolitis"],"correct":0,"explain":"Untreated severe hyperbilirubinemia can progress from acute bilirubin encephalopathy to kernicterus, permanent, pathologically visible neuronal injury in the basal ganglia and brainstem — the key reason for aggressive jaundice screening."}]}]</script>
+<script>
+(function(){
+  "use strict";
+  var MODULES = JSON.parse(document.getElementById('data').textContent);
+  var CIRC = 2 * Math.PI * 58;
+
+  var store = { get:function(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+                set:function(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} } };
+  var results = store.get('caseBankResultsWk6-v1') || {};
+
+  var dashboard = document.getElementById('dashboard');
+  var quizview = document.getElementById('quizview');
+  var summaryview = document.getElementById('summaryview');
+  var groupsEl = document.getElementById('groups');
+
+  var state = { modIdx:-1, qIdx:0, correctCount:0, answers:[], locked:false };
+
+  function letterFor(i){ return String.fromCharCode(65+i); }
+
+  function renderDashboard(){
+    groupsEl.innerHTML = '';
+    var groups = [];
+    MODULES.forEach(function(m){
+      var g = groups.filter(function(x){ return x.name===m.group; })[0];
+      if(!g){ g = { name:m.group, mods:[] }; groups.push(g); }
+      g.mods.push(m);
+    });
+    groups.forEach(function(g){
+      var h = document.createElement('div');
+      h.className = 'group-heading';
+      h.innerHTML = '<h2>'+g.name+'</h2><div class="rule"></div><span class="count">'+g.mods.length+' module'+(g.mods.length>1?'s':'')+'</span>';
+      groupsEl.appendChild(h);
+
+      var grid = document.createElement('div');
+      grid.className = 'grid';
+      g.mods.forEach(function(m){
+        var idx = MODULES.indexOf(m);
+        var r = results[m.id];
+        var card = document.createElement('button');
+        card.className = 'card';
+        var badge = '<span class="badge new">Not started</span>';
+        var scoreLine = '';
+        if(r){
+          var pct = Math.round(100*r.score/r.total);
+          badge = pct>=80 ? '<span class="badge done">Completed</span>' : '<span class="badge retry">Review again</span>';
+          scoreLine = '<span class="score">Best <b>'+r.score+' / '+r.total+'</b> ('+pct+'%)</span>';
+        } else {
+          scoreLine = '<span class="score">6 questions</span>';
+        }
+        card.innerHTML =
+          '<span class="num">'+String(idx+1).padStart(2,'0')+' / 9</span>'+
+          '<h3>'+m.title+'</h3>'+
+          '<div class="card-foot">'+scoreLine+badge+'</div>';
+        card.addEventListener('click', function(){ startModule(idx); });
+        grid.appendChild(card);
+      });
+      groupsEl.appendChild(grid);
+    });
+  }
+
+  function startModule(idx){
+    state.modIdx = idx; state.qIdx = 0; state.correctCount = 0; state.answers = [];
+    dashboard.hidden = true; summaryview.hidden = true; quizview.hidden = false;
+    var m = MODULES[idx];
+    document.getElementById('quizGroup').textContent = m.group;
+    document.getElementById('quizTitle').textContent = m.title;
+    renderQuestion();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  function renderQuestion(){
+    var m = MODULES[state.modIdx];
+    var q = m.q[state.qIdx];
+    state.locked = false;
+    document.getElementById('progressLabel').textContent = 'Question '+(state.qIdx+1)+' of '+m.q.length;
+    document.getElementById('scoreLabel').textContent = 'Score '+state.correctCount+' / '+state.qIdx;
+    document.getElementById('progressFill').style.width = (100*state.qIdx/m.q.length)+'%';
+    document.getElementById('qTag').textContent = 'Case '+(state.qIdx+1);
+    document.getElementById('qStem').textContent = q.stem;
+
+    var optsEl = document.getElementById('opts');
+    optsEl.innerHTML = '';
+    q.opts.forEach(function(optText, i){
+      var b = document.createElement('button');
+      b.className = 'opt';
+      b.innerHTML = '<span class="letter">'+letterFor(i)+'</span><span>'+optText+'</span>';
+      b.addEventListener('click', function(){ selectOption(i); });
+      optsEl.appendChild(b);
+    });
+
+    document.getElementById('explain').hidden = true;
+    var nextBtn = document.getElementById('nextBtn');
+    nextBtn.disabled = true;
+    nextBtn.textContent = (state.qIdx === m.q.length-1) ? 'See results →' : 'Next question →';
+  }
+
+  function selectOption(i){
+    if(state.locked) return;
+    state.locked = true;
+    var m = MODULES[state.modIdx];
+    var q = m.q[state.qIdx];
+    var correct = (i === q.correct);
+    if(correct) state.correctCount++;
+    state.answers.push({ q:q, chosen:i, correct:correct });
+
+    var opts = document.querySelectorAll('#opts .opt');
+    opts.forEach(function(el, idx){
+      el.disabled = true;
+      if(idx === q.correct) el.classList.add('correct');
+      else if(idx === i) el.classList.add('incorrect');
+      else el.classList.add('dim');
+    });
+
+    var explain = document.getElementById('explain');
+    explain.innerHTML = '<b>'+(correct ? 'Correct. ' : 'Not quite. ')+'</b>'+q.explain;
+    explain.hidden = false;
+
+    document.getElementById('scoreLabel').textContent = 'Score '+state.correctCount+' / '+(state.qIdx+1);
+    document.getElementById('nextBtn').disabled = false;
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    var m = MODULES[state.modIdx];
+    if(state.qIdx < m.q.length-1){
+      state.qIdx++;
+      renderQuestion();
+    } else {
+      finishModule();
+    }
+  });
+
+  function finishModule(){
+    var m = MODULES[state.modIdx];
+    document.getElementById('progressFill').style.width = '100%';
+    quizview.hidden = true; summaryview.hidden = false;
+
+    var total = m.q.length, score = state.correctCount;
+    var pct = Math.round(100*score/total);
+    results[m.id] = { score:score, total:total };
+    var prev = store.get('caseBankResultsWk6-v1') || {};
+    var existing = prev[m.id];
+    if(!existing || existing.score < score) prev[m.id] = { score:score, total:total };
+    else results[m.id] = existing;
+    store.set('caseBankResultsWk6-v1', prev);
+    results = prev;
+
+    var offset = CIRC * (1 - pct/100);
+    var ring = document.getElementById('ringFg');
+    ring.style.strokeDasharray = CIRC;
+    ring.style.strokeDashoffset = CIRC;
+    requestAnimationFrame(function(){
+      ring.style.transition = 'stroke-dashoffset .6s ease';
+      ring.style.strokeDashoffset = offset;
+    });
+    document.getElementById('ringPct').textContent = pct+'%';
+    document.getElementById('sumTitle').textContent = m.title;
+    document.getElementById('sumSub').textContent = score+' of '+total+' correct — '+(pct>=80?'strong grasp of this module.':pct>=60?'solid, worth a second pass.':'flag this module for review.');
+
+    var reviewList = document.getElementById('reviewList');
+    reviewList.innerHTML = '';
+    var misses = state.answers.filter(function(a){ return !a.correct; });
+    if(misses.length){
+      var h = document.createElement('div');
+      h.style.textAlign = 'left';
+      h.style.fontFamily = "'JetBrains Mono',monospace";
+      h.style.fontSize = '.72rem';
+      h.style.color = 'var(--ink-soft)';
+      h.style.textTransform = 'uppercase';
+      h.style.letterSpacing = '.08em';
+      h.style.margin = '0 0 4px';
+      h.textContent = 'Missed questions';
+      reviewList.appendChild(h);
+    }
+    misses.forEach(function(a){
+      var item = document.createElement('div');
+      item.className = 'review-item';
+      item.innerHTML = '<span class="mark miss">&#10007;</span><div><b>'+a.q.stem+'</b><br>Correct answer: '+a.q.opts[a.q.correct]+'</div>';
+      reviewList.appendChild(item);
+    });
+
+    document.getElementById('retryBtn').onclick = function(){ startModule(state.modIdx); };
+  }
+
+  document.getElementById('dashBtn').addEventListener('click', backToDashboard);
+  document.getElementById('backBtn').addEventListener('click', backToDashboard);
+  function backToDashboard(){
+    quizview.hidden = true; summaryview.hidden = true; dashboard.hidden = false;
+    renderDashboard();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  renderDashboard();
+})();
+</script>
