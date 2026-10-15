@@ -232,6 +232,31 @@
 
   // kind: hub | quiz | notes (open as pages); md | docx (open in reader); pdf (opens in tab)
   var WEEKS = [
+    { n: 8, title: "Musculoskeletal Medicine", items: [
+      { kind: "hub", t: "MSK Study Hub", f: "summaries/week8-study-hub.html", d: "Brachial plexus, shoulder and arm, elbow, forearm, wrist and hand." },
+      { kind: "quiz", t: "Week 8 Case Bank", f: "quizzes/week8-case-bank.html", d: "80 vignettes across 8 modules." },
+      { kind: "notes", t: "Week 8 Video Notes", f: "module-notes/week8-video-notes.html", d: "Fill-in outlines for 8 videos." },
+      { group: "Video scripts", items: [
+        { kind: "md", t: "Brachial Plexus", f: "scripts/week8/01-brachial-plexus.html" },
+        { kind: "md", t: "Muscles of the Shoulder", f: "scripts/week8/02-muscles-of-the-shoulder.html" },
+        { kind: "md", t: "Muscles of the Arm", f: "scripts/week8/03-muscles-of-the-arm.html" },
+        { kind: "md", t: "Neurovascular Supply of the Proximal Upper Extremity", f: "scripts/week8/04-neurovascular-proximal-upper-extremity.html" },
+        { kind: "md", t: "Distal Upper Extremity Osteology and the Elbow", f: "scripts/week8/05-distal-osteology-and-elbow.html" },
+        { kind: "md", t: "Muscles of the Distal Upper Extremity", f: "scripts/week8/06-muscles-of-the-distal-upper-extremity.html" },
+        { kind: "md", t: "Neurovascular Supply of the Distal Upper Extremity", f: "scripts/week8/07-neurovascular-distal-upper-extremity.html" },
+        { kind: "md", t: "Wrist and Hand, Part 1", f: "scripts/week8/08-wrist-and-hand-part-1.html" }
+      ]},
+      { group: "NotebookLM videos", unit: "videos", items: [
+        { kind: "video", label: "Video", t: "Brachial Plexus Blueprint", f: "https://notebook.google.com/notebook/f30dd894-8c96-4d4b-af0f-88d42115562b/artifact/10c0104d-9c54-4fb7-9065-d07540108935", dur: "8:01 · Explainer" },
+        { kind: "video", label: "Video", t: "Shoulder Clinical Exam", f: "https://notebook.google.com/notebook/f30dd894-8c96-4d4b-af0f-88d42115562b/artifact/919d02e8-9b88-4796-8f76-8b4a961724c0", dur: "9:07 · Explainer" },
+        { kind: "video", label: "Video", t: "Arm Muscles Clinical", f: "https://notebook.google.com/notebook/f30dd894-8c96-4d4b-af0f-88d42115562b/artifact/633dcdb0-b376-4c97-ac2c-7b755a73c670", dur: "8:48 · Explainer" },
+        { kind: "video", label: "Video", t: "Proximal Upper Limb", f: "https://notebook.google.com/notebook/f30dd894-8c96-4d4b-af0f-88d42115562b/artifact/8879f40f-43ea-4114-b4f8-63a1e4a79250", dur: "8:16 · Explainer" },
+        { kind: "video", label: "Video", t: "Elbow Osteology & Approach", f: "https://notebook.google.com/notebook/f30dd894-8c96-4d4b-af0f-88d42115562b/artifact/9b82bcec-30e6-493e-a77e-c1c8a1e1bbc6", dur: "11:05 · Explainer" },
+        { kind: "video", label: "Video", t: "Clinical Approach UE", f: "https://notebook.google.com/notebook/f30dd894-8c96-4d4b-af0f-88d42115562b/artifact/e43f8bd6-d160-4a43-bcf2-415be9e5c40c", dur: "8:18 · Explainer" },
+        { kind: "video", label: "Video", t: "Neurovascular Supply", f: "https://notebook.google.com/notebook/f30dd894-8c96-4d4b-af0f-88d42115562b/artifact/fe582532-ea6e-4063-acfa-eb4370d2295a", dur: "8:50 · Explainer" },
+        { kind: "video", label: "Video", t: "Wrist & Hand Clinical Approach", f: "https://notebook.google.com/notebook/f30dd894-8c96-4d4b-af0f-88d42115562b/artifact/add129e7-8097-44bb-92a3-41ca29ca1efe", dur: "9:32 · Explainer" }
+      ]}
+    ]},
     { n: 7, title: "Musculoskeletal Medicine", items: [
       { kind: "hub", t: "MSK Study Hub", f: "summaries/week7-study-hub.html", d: "Intro anatomy, back and neck pain, spine radiology, proximal upper limb." },
       { kind: "quiz", t: "Week 7 Case Bank", f: "quizzes/week7-case-bank.html", d: "50 vignettes across 5 modules." },
@@ -525,7 +550,7 @@
     WEEKS.forEach(function (w) { w.items.forEach(function (it) {
       if (it.group) it.items.forEach(function (x) { if (x.kind === "video") counts.video++; else counts.doc++; }); else if (counts[it.kind] != null) counts[it.kind]++; else counts.doc++;
     }); });
-    [["7", "weeks"], [counts.hub, "study hubs"], [counts.quiz, "case banks"], [counts.notes, "video outlines"], [counts.video, "NotebookLM videos"], [counts.doc, "scripts"]].forEach(function (p) {
+    [[String(WEEKS.length), "weeks"], [counts.hub, "study hubs"], [counts.quiz, "case banks"], [counts.notes, "video outlines"], [counts.video, "NotebookLM videos"], [counts.doc, "scripts"]].forEach(function (p) {
       var s = el("span"); s.appendChild(el("b", { text: String(p[0]) })); s.appendChild(document.createTextNode(" " + p[1]));
       document.getElementById("stats").appendChild(s);
     });

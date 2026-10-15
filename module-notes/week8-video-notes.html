@@ -1,0 +1,748 @@
+<title>Week 8 Video Notes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper: #f2f0e8;
+    --paper-raised: #fbfaf5;
+    --ink: #1e2a2e;
+    --ink-soft: #55625f;
+    --hairline: #d6d1c2;
+    --accent: #2c5f5a;
+    --accent-soft: #dce8e4;
+    --accent-ink: #163634;
+    --amber: #b5792c;
+    --amber-soft: #f3e6d2;
+    --good: #2f6b3e;
+    --good-soft: #dfeee1;
+    --shadow: 0 1px 2px rgba(30,42,46,.06), 0 8px 24px -12px rgba(30,42,46,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #171d1e; --paper-raised: #1f2729; --ink: #e9eae4; --ink-soft: #a5afab;
+      --hairline: #333e3f; --accent: #7bbbb0; --accent-soft: #223634; --accent-ink: #cdeae4;
+      --amber: #e0b06b; --amber-soft: #3a2f1a; --good: #7fc98d; --good-soft: #1e3324;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #171d1e; --paper-raised: #1f2729; --ink: #e9eae4; --ink-soft: #a5afab;
+    --hairline: #333e3f; --accent: #7bbbb0; --accent-soft: #223634; --accent-ink: #cdeae4;
+    --amber: #e0b06b; --amber-soft: #3a2f1a; --good: #7fc98d; --good-soft: #1e3324;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Public Sans', system-ui, sans-serif; -webkit-font-smoothing:antialiased; }
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  h1,h2,h3{ font-family:'Fraunces', Georgia, serif; text-wrap:balance; margin:0; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+  button{ font-family:inherit; cursor:pointer; }
+  textarea{ font-family:inherit; }
+
+  .shell{ max-width:900px; margin:0 auto; padding:0 24px 96px; }
+  .topbar{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:28px 24px 20px; max-width:900px; margin:0 auto; border-bottom:1px solid var(--hairline); }
+  .brand .kicker{ font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:600; }
+  .brand h1{ font-size:1.5rem; font-weight:600; margin-top:2px; }
+  .topstat{ text-align:right; font-family:'JetBrains Mono', monospace; font-size:.78rem; color:var(--ink-soft); }
+
+  .intro{ padding:28px 0 8px; max-width:620px; }
+  .intro p{ margin:8px 0 0; color:var(--ink-soft); line-height:1.55; font-size:.95rem; }
+
+  .group-heading{ display:flex; align-items:center; gap:12px; margin:32px 0 14px; }
+  .group-heading h2{ font-size:1.02rem; font-weight:600; white-space:nowrap; }
+  .group-heading .rule{ height:1px; background:var(--hairline); flex:1; }
+
+  .list{ display:flex; flex-direction:column; gap:10px; }
+  .row{
+    display:flex; align-items:center; gap:14px; text-align:left; width:100%;
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; box-shadow:var(--shadow); transition:border-color .12s ease, transform .12s ease;
+  }
+  .row:hover{ border-color:var(--accent); transform:translateY(-1px); }
+  .row .num{ font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--ink-soft); width:28px; flex-shrink:0; }
+  .row .body{ flex:1; min-width:0; }
+  .row h3{ font-size:1rem; font-weight:500; line-height:1.3; }
+  .row .meta{ font-size:.76rem; color:var(--ink-soft); margin-top:3px; font-family:'JetBrains Mono',monospace; }
+  .row .status{ flex-shrink:0; }
+  .pill{ font-family:'JetBrains Mono',monospace; font-size:.66rem; font-weight:600; padding:3px 9px; border-radius:99px; white-space:nowrap; }
+  .pill.empty{ background:var(--hairline); color:var(--ink-soft); }
+  .pill.started{ background:var(--amber-soft); color:var(--amber); }
+  .pill.done{ background:var(--good-soft); color:var(--good); }
+
+  .detail-header{ display:flex; align-items:center; gap:14px; padding:26px 0 4px; flex-wrap:wrap; }
+  .back-btn{ background:none; border:1px solid var(--hairline); border-radius:8px; padding:7px 12px; font-size:.82rem; color:var(--ink-soft); }
+  .back-btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .detail-title .kicker{ font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; font-weight:600; }
+  .detail-title h2{ font-size:1.3rem; font-weight:600; margin-top:2px; }
+  .runtime{ font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--ink-soft); }
+  .connects{ margin:14px 0 0; padding:10px 14px; background:var(--accent-soft); border-left:3px solid var(--accent); border-radius:6px; font-size:.85rem; color:var(--accent-ink); }
+
+  .obj-card{ margin-top:22px; background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow); }
+  .obj-card h3{ font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); font-weight:600; margin-bottom:10px; }
+  .obj{ display:flex; align-items:flex-start; gap:10px; padding:6px 0; font-size:.9rem; line-height:1.4; }
+  .obj input{ margin-top:3px; flex-shrink:0; width:16px; height:16px; accent-color:var(--accent); }
+  .obj label.checked{ color:var(--ink-soft); text-decoration:line-through; text-decoration-color:var(--hairline); }
+
+  .section-card{ margin-top:16px; background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow); }
+  .section-card .sh{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
+  .section-card h3{ font-size:1.02rem; font-weight:600; }
+  .section-card .tag{ font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--amber); background:var(--amber-soft); padding:2px 8px; border-radius:99px; white-space:nowrap; }
+  .section-card .hint{ font-size:.85rem; color:var(--ink-soft); margin:2px 0 10px; line-height:1.4; }
+  .section-card textarea{
+    width:100%; min-height:76px; resize:vertical; border:1px solid var(--hairline); border-radius:8px;
+    background:var(--paper); color:var(--ink); padding:10px 12px; font-size:.9rem; line-height:1.5;
+  }
+  .section-card textarea:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .section-card textarea::placeholder{ color:var(--ink-soft); opacity:.6; }
+
+  .detail-actions{ display:flex; gap:10px; justify-content:space-between; align-items:center; margin-top:24px; flex-wrap:wrap; }
+  .save-note{ font-size:.76rem; color:var(--ink-soft); font-family:'JetBrains Mono',monospace; }
+  .btn{ border:1px solid var(--hairline); background:var(--paper-raised); color:var(--ink); border-radius:8px; padding:10px 16px; font-size:.86rem; font-weight:500; }
+  .btn.primary{ background:var(--accent); color:var(--paper-raised); border-color:var(--accent); font-weight:600; }
+  .btn:hover{ border-color:var(--accent); }
+
+  [hidden]{ display:none !important; }
+  footer{ max-width:900px; margin:56px auto 0; padding:20px 24px 0; color:var(--ink-soft); font-size:.78rem; border-top:1px solid var(--hairline); }
+
+  @media print{
+    .topbar .topstat, .back-btn, .detail-actions, footer, #dashboard{ display:none !important; }
+    body{ background:#fff; color:#000; }
+    .section-card, .obj-card{ box-shadow:none; border:1px solid #ccc; break-inside:avoid; }
+    textarea{ border:1px solid #999 !important; }
+  }
+  @media (max-width:560px){
+    .topbar{ flex-direction:column; align-items:flex-start; gap:6px; }
+    .topstat{ text-align:left; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">P2 &middot; Week 8 &middot; Musculoskeletal Medicine</span>
+    <h1>Video Notes</h1>
+  </div>
+  <div class="topstat">8 videos &middot; fill in as you watch</div>
+</div>
+
+<main class="shell">
+
+  <section id="dashboard">
+    <div class="intro">
+      <p>An outline for each Week 8 NotebookLM Explainer video, following the order of the script it was made from. Tick off each learning objective as the video covers it, pause at each heading, and jot the point before moving on. Notes save automatically in this browser.</p>
+    </div>
+    <div id="groups"></div>
+  </section>
+
+  <section id="detail" hidden>
+    <div class="detail-header">
+      <button class="back-btn" id="backBtn">&larr; All videos</button>
+      <div class="detail-title">
+        <div class="kicker" id="detKicker"></div>
+        <h2 id="detTitle"></h2>
+      </div>
+      <span class="runtime" id="detRuntime"></span>
+    </div>
+    <div class="connects" id="detConnects" hidden></div>
+
+    <div class="obj-card">
+      <h3>Learning objectives</h3>
+      <div id="objList"></div>
+    </div>
+
+    <div id="sectionList"></div>
+
+    <div class="detail-actions">
+      <span class="save-note" id="saveNote">Notes save automatically</span>
+      <div style="display:flex; gap:10px;">
+        <button class="btn" id="printBtn">Print this outline</button>
+        <button class="btn primary" id="nextBtn">Next video &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Week 8 study material &middot; P2 Musculoskeletal Block &middot; for personal review use</footer>
+
+<script id="data" type="application/json">[
+ {
+  "id": "brachial-plexus",
+  "num": 1,
+  "title": "Brachial Plexus",
+  "group": "Shoulder & Arm",
+  "runtime": "8:01 · Brachial Plexus Blueprint",
+  "connects": "",
+  "objectives": [
+   "Identify the important functional anatomy of the upper extremity as it pertains to arm pathology",
+   "Identify the components of the brachial plexus and its relationships to surrounding structures (the cords around the axillary artery)",
+   "Determine the sensory and motor loss expected with injuries at the roots and at each terminal branch"
+  ],
+  "sections": [
+   {
+    "h": "Why the Plexus Matters",
+    "tag": "work backwards from the deficit",
+    "p": "From the muscles and skin that are lost, decide whether the lesion is a root (one level) or a terminal branch (one nerve)."
+   },
+   {
+    "h": "Roots: Ventral Rami of C5–T1",
+    "tag": "not the spinal nerve roots",
+    "p": "Dorsal scapular (C5) to the rhomboids; long thoracic (C5–C7) to serratus anterior."
+   },
+   {
+    "h": "Trunks and Divisions",
+    "tag": "C5–6 / C7 / C8–T1",
+    "p": "Only the superior trunk branches (suprascapular nerve). Divisions give no branches: anterior = flexors, posterior = extensors."
+   },
+   {
+    "h": "Cords and Their Branches",
+    "tag": "named around the axillary artery",
+    "p": "Lateral (pectoral), medial (pectoral, medial cutaneous nerves of arm and forearm), posterior (upper and lower subscapular, thoracodorsal)."
+   },
+   {
+    "h": "The Terminal Five and the 'M'",
+    "tag": "3-2-5-5-2 root counts",
+    "p": "Musculocutaneous, median, ulnar make the M; axillary and radial end the posterior cord."
+   },
+   {
+    "h": "Predicting the Deficit",
+    "tag": "winged scapula, wrist drop",
+    "p": "Motor and sensory loss for each terminal branch; median and ulnar do nothing in the arm."
+   },
+   {
+    "h": "Recap",
+    "tag": "draw it in under a minute",
+    "p": "Practise the '3 Wise Men go bowling' drawing until it is automatic."
+   }
+  ]
+ },
+ {
+  "id": "shoulder",
+  "num": 2,
+  "title": "Clinical Approach to the Muscles of the Shoulder",
+  "group": "Shoulder & Arm",
+  "runtime": "9:07 · Shoulder Clinical Exam",
+  "connects": "Uses the plexus nerves from Video 1 to explain each muscle's supply.",
+  "objectives": [
+   "Identify the major muscles of the shoulder girdle: pectoral muscles, serratus anterior, deltoid, teres major and the rotator cuff",
+   "Describe the anatomic basis of AC joint separation, rotator cuff disease, biceps tendinopathy, arthritis, instability and adhesive capsulitis",
+   "Outline diagnosis and management (non-pharmacologic, pharmacologic, surgical) for these shoulder conditions"
+  ],
+  "sections": [
+   {
+    "h": "Pectoral Region",
+    "tag": "winged scapula",
+    "p": "Pec major and minor on the pectoral nerves; serratus anterior on the long thoracic."
+   },
+   {
+    "h": "Deltoid and Teres Major",
+    "tag": "teres major is not in the cuff",
+    "p": "Deltoid's three fibre groups; both teres muscles and their nerves."
+   },
+   {
+    "h": "The Rotator Cuff (SITS)",
+    "tag": "subscapularis = lesser tubercle",
+    "p": "Origins, insertions, nerves and actions; stabilizing the glenohumeral joint."
+   },
+   {
+    "h": "Rotator Cuff Disease: Why It Happens",
+    "tag": "intrinsic > extrinsic",
+    "p": "Vascularity, tension overload and degeneration versus acromion shape."
+   },
+   {
+    "h": "Examining the Cuff",
+    "tag": "active << passive",
+    "p": "Neer, Hawkins, painful arc; empty can, external rotation and lift-off tests."
+   },
+   {
+    "h": "Staging and Treatment",
+    "tag": "I, II, III, arthropathy",
+    "p": "Most are non-surgical; when to operate and what each stage gets."
+   },
+   {
+    "h": "Other Shoulder Conditions",
+    "tag": "is passive motion lost?",
+    "p": "AC separation, glenohumeral arthritis, instability (axillary nerve) and adhesive capsulitis."
+   },
+   {
+    "h": "Recap"
+   }
+  ]
+ },
+ {
+  "id": "arm",
+  "num": 3,
+  "title": "Clinical Approach to the Muscles of the Arm",
+  "group": "Shoulder & Arm",
+  "runtime": "8:48 · Arm Muscles Clinical",
+  "connects": "",
+  "objectives": [
+   "Identify the muscles of the arm and the joints each one crosses",
+   "Describe the anatomic basis of proximal biceps tendinopathy",
+   "Outline the differential diagnosis, investigation and management of anterior shoulder pain from the biceps"
+  ],
+  "sections": [
+   {
+    "h": "Two Compartments, Two Nerves",
+    "tag": "musculocutaneous vs radial",
+    "p": "Brachial fascia and intermuscular septa; what each compartment does."
+   },
+   {
+    "h": "Anterior Compartment",
+    "tag": "brachialis = prime elbow flexor",
+    "p": "Biceps (supinator), coracobrachialis (pierced by the musculocutaneous nerve), brachialis."
+   },
+   {
+    "h": "Triceps",
+    "tag": "supra- vs infraglenoid",
+    "p": "Three heads, the radial groove, and why the long head extends the shoulder."
+   },
+   {
+    "h": "Why the Long Head of Biceps Is Vulnerable",
+    "tag": "location, location, location",
+    "p": "Next to the cuff, tight groove, labral origin, hypovascular."
+   },
+   {
+    "h": "History and Exam",
+    "tag": "groove tenderness, Popeye sign",
+    "p": "Pain with shoulder and elbow flexion in supination; weakness and defect if torn."
+   },
+   {
+    "h": "Differential and Investigations",
+    "tag": "US first, MR arthrogram for SLAP",
+    "p": "Cuff tendinopathy, bursitis, SLAP, arthritis, radiculopathy, referred pain."
+   },
+   {
+    "h": "Management",
+    "tag": "active physio is the mainstay",
+    "p": "Education, relative rest, analgesia, surgery for refractory cases."
+   },
+   {
+    "h": "Recap"
+   }
+  ]
+ },
+ {
+  "id": "nv-proximal",
+  "num": 4,
+  "title": "Neurovascular Supply of the Proximal Upper Extremity",
+  "group": "Neurovascular",
+  "runtime": "8:16 · Proximal Upper Limb",
+  "connects": "Builds on the plexus (Video 1); the fracture-nerve pairs come back in the elbow and wrist videos.",
+  "objectives": [
+   "Identify the major arteries and veins of the upper extremity and their relationships to surrounding structures",
+   "Determine the sensory and motor loss expected with injuries to the terminal branches in the arm",
+   "Predict which nerve or vessel each humerus fracture puts at risk"
+  ],
+  "sections": [
+   {
+    "h": "Subclavian Artery",
+    "tag": "dorsal scapular, suprascapular",
+    "p": "Origins on each side and the branches that feed the scapular anastomosis."
+   },
+   {
+    "h": "Axillary Artery",
+    "tag": "rib 1 to teres major",
+    "p": "Three parts around pectoralis minor and their branches; circumflex humerals at the surgical neck."
+   },
+   {
+    "h": "Brachial Artery and Profunda Brachii",
+    "tag": "BP cuff, radial groove",
+    "p": "Course, collateral branches, and fracture risk."
+   },
+   {
+    "h": "Veins",
+    "tag": "median cubital = blood draws",
+    "p": "Cephalic, basilic, median cubital; paired deep veins."
+   },
+   {
+    "h": "Nerves of the Arm",
+    "tag": "median and ulnar supply nothing here",
+    "p": "Course of each terminal branch; biceps reflex C5–C6."
+   },
+   {
+    "h": "Fracture → Nerve",
+    "tag": "neck, shaft, supracondylar, epicondyle",
+    "p": "Axillary, radial + profunda, brachial + median, ulnar."
+   },
+   {
+    "h": "Skin of the Arm",
+    "p": "Which nerve supplies each patch of skin."
+   },
+   {
+    "h": "Recap"
+   }
+  ]
+ },
+ {
+  "id": "elbow",
+  "num": 5,
+  "title": "Osteology of the Distal Upper Extremity & the Elbow",
+  "group": "Elbow",
+  "runtime": "11:05 · Elbow Osteology & Approach",
+  "connects": "",
+  "objectives": [
+   "Identify the distinguishing features of the bones and joints of the distal upper extremity and relate them to plain X-rays",
+   "Describe the anatomic basis of elbow arthritis, subluxation/dislocation, UCL injury and olecranon bursitis",
+   "Outline diagnosis and management for these elbow conditions"
+  ],
+  "sections": [
+   {
+    "h": "Bones of the Elbow",
+    "tag": "capitulum ↔ radial head",
+    "p": "Humeral landmarks, radius and ulna features, and what attaches where."
+   },
+   {
+    "h": "Elbow and Radioulnar Joints",
+    "tag": "hinge + two pivots",
+    "p": "Collateral and annular ligaments, carrying angle, interosseous membrane."
+   },
+   {
+    "h": "Wrist and Hand Bones",
+    "tag": "Some Lovers Try Positions…",
+    "p": "Carpals, most fractured (scaphoid) and most dislocated (lunate)."
+   },
+   {
+    "h": "A Clinical Approach to the Elbow",
+    "tag": "by structure and by location",
+    "p": "OLDCARS, look-feel-move, don't forget the nerves; the differential grid."
+   },
+   {
+    "h": "Elbow Arthritis",
+    "tag": "grumbling, no cure",
+    "p": "OA presentation, X-ray, and step-wise management."
+   },
+   {
+    "h": "Two Dislocations",
+    "tag": "posterior dislocation vs nursemaid's",
+    "p": "Red flags of an adult dislocation; pronation-extension reduction in a child."
+   },
+   {
+    "h": "Ulnar Collateral Ligament Injury",
+    "tag": "Tommy John",
+    "p": "Pitchers, valgus laxity, management."
+   },
+   {
+    "h": "Olecranon Bursitis",
+    "tag": "spot the septic one",
+    "p": "Causes, red flags, aspiration, and conservative care."
+   },
+   {
+    "h": "Recap"
+   }
+  ]
+ },
+ {
+  "id": "forearm-muscles",
+  "num": 6,
+  "title": "Clinical Approach to the Muscles of the Distal Upper Extremity",
+  "group": "Elbow",
+  "runtime": "8:18 · Clinical Approach UE",
+  "connects": "Completes the elbow differential from Video 5 with the tendon problems.",
+  "objectives": [
+   "Identify the forearm muscles originating from the medial and lateral epicondyles and their nerve supply",
+   "Describe the anatomic basis of medial and lateral epicondylitis and distal biceps rupture",
+   "Outline diagnosis and management of elbow tendon problems"
+  ],
+  "sections": [
+   {
+    "h": "Forearm Organization",
+    "tag": "median vs radial",
+    "p": "Two compartments, common origins, and the palmar carpal ligament vs flexor retinaculum."
+   },
+   {
+    "h": "Anterior Compartment",
+    "tag": "the 1½ ulnar muscles",
+    "p": "Superficial, intermediate and deep layers; FDP is the only DIP flexor."
+   },
+   {
+    "h": "Posterior Compartment",
+    "tag": "brachioradialis flexes",
+    "p": "Superficial and deep extensors, supinator, the outcropping thumb muscles and snuffbox."
+   },
+   {
+    "h": "Hand Clinical Notes",
+    "tag": "ganglion, mallet finger",
+    "p": "Extensor expansion, synovial cysts, and splinting a mallet finger."
+   },
+   {
+    "h": "Tendinitis vs Tendinosis",
+    "tag": "100+ days for new collagen",
+    "p": "Why most elbow tendon pain isn't inflammatory."
+   },
+   {
+    "h": "Tennis and Golfer's Elbow",
+    "tag": "ECRB vs flexor origin",
+    "p": "Where it hurts and which resisted movement reproduces it."
+   },
+   {
+    "h": "Biceps Ruptures",
+    "tag": "distal = call ortho fast",
+    "p": "Proximal vs distal rupture and what each needs."
+   },
+   {
+    "h": "Managing Tendinopathy",
+    "tag": "eccentric BID × 12 weeks",
+    "p": "Education, activity modification, bracing, PT, limited role of drugs."
+   },
+   {
+    "h": "Recap"
+   }
+  ]
+ },
+ {
+  "id": "nv-distal",
+  "num": 7,
+  "title": "Clinical Approach to the Neurovascular Supply of the Distal Upper Extremity",
+  "group": "Neurovascular",
+  "runtime": "8:50 · Neurovascular Supply",
+  "connects": "",
+  "objectives": [
+   "Identify the arteries and veins of the forearm and the contents of the cubital fossa",
+   "Determine the sensory and motor loss expected with injury to the median, ulnar and radial nerves, and test myotomes and dermatomes",
+   "Outline diagnosis and management of ulnar neuropathy at the elbow"
+  ],
+  "sections": [
+   {
+    "h": "Forearm Arteries and Veins",
+    "tag": "radial pulse, collateral network",
+    "p": "Radial and ulnar arteries and branches; superficial and deep veins."
+   },
+   {
+    "h": "The Cubital Fossa",
+    "tag": "TAN",
+    "p": "Borders, contents, and why it matters clinically."
+   },
+   {
+    "h": "Median Nerve",
+    "tag": "pronator syndrome, carpal tunnel",
+    "p": "Course, anterior interosseous branch, sites at risk."
+   },
+   {
+    "h": "Ulnar Nerve",
+    "tag": "funny bone, Guyon's canal",
+    "p": "Course, the 1½ muscles, sites at risk, handlebar neuropathy."
+   },
+   {
+    "h": "Radial Nerve",
+    "tag": "supinator, snuffbox",
+    "p": "Superficial vs deep branch; posterior interosseous nerve."
+   },
+   {
+    "h": "Myotomes and Dermatomes",
+    "tag": "C6 thumb, C7 middle, C8 little",
+    "p": "Testing C5–T1."
+   },
+   {
+    "h": "Ulnar Neuropathy at the Elbow",
+    "tag": "Tinel's at the elbow",
+    "p": "Causes, features, and what the sensory pattern should (and shouldn't) include."
+   },
+   {
+    "h": "Management",
+    "tag": "neuritis is reversible",
+    "p": "Avoid pressure and night flexion, EMG/NCS, surgery if progressive."
+   },
+   {
+    "h": "Recap"
+   }
+  ]
+ },
+ {
+  "id": "wrist-hand",
+  "num": 8,
+  "title": "Clinical Approach to the Wrist & Hand, Part 1",
+  "group": "Wrist & Hand",
+  "runtime": "9:32 · Wrist & Hand Clinical Approach",
+  "connects": "Part 2 continues in week 9.",
+  "objectives": [
+   "Identify the joints of the hand, the carpal tunnel and the structures passing through it",
+   "Identify the intrinsic hand muscles and the arterial arches of the hand",
+   "Explain the mechanism, management principles and complications of distal radius and scaphoid fractures",
+   "List the features of carpal tunnel syndrome and describe its management"
+  ],
+  "sections": [
+   {
+    "h": "Joints of the Hand",
+    "tag": "saddle thumb CMC",
+    "p": "CMC, MCP and IP joint types and what they allow."
+   },
+   {
+    "h": "Distal Radius Fractures: Reading the X-ray",
+    "tag": "crooked, short, smooth",
+    "p": "Volar tilt, ulnar variance, and the 1 mm step."
+   },
+   {
+    "h": "Distal Radius Fractures: Treatment",
+    "tag": "exaggerate, then correct",
+    "p": "Analgesia, traction, reduction, three-point mould, surgery if needed."
+   },
+   {
+    "h": "Scaphoid Fractures",
+    "tag": "retrograde blood supply",
+    "p": "Snuffbox tenderness, suspicion with a normal X-ray, cast vs surgery, complications."
+   },
+   {
+    "h": "Fascia and the Carpal Tunnel",
+    "tag": "9 tendons + median nerve",
+    "p": "Palmar aponeurosis, flexor retinaculum, what passes over and through."
+   },
+   {
+    "h": "Intrinsic Muscles",
+    "tag": "PAD / DAB",
+    "p": "Thenar, hypothenar, central, adductor and interosseous compartments and nerves."
+   },
+   {
+    "h": "Digital Sheaths and Arteries",
+    "tag": "superficial = ulnar, deep = radial",
+    "p": "Pulleys, tenosynovitis, and the palmar arches."
+   },
+   {
+    "h": "Carpal Tunnel Syndrome",
+    "tag": "palm spared",
+    "p": "Features and management."
+   },
+   {
+    "h": "Recap"
+   }
+  ]
+ }
+]</script>
+<script>
+(function(){
+  "use strict";
+  var MODULES = JSON.parse(document.getElementById('data').textContent);
+  var store = {
+    get: function(){ try{ return JSON.parse(localStorage.getItem('wk8VideoNotes-v1')) || {}; }catch(e){ return {}; } },
+    set: function(v){ try{ localStorage.setItem('wk8VideoNotes-v1', JSON.stringify(v)); }catch(e){} }
+  };
+  var data = store.get();
+
+  var dashboard = document.getElementById('dashboard');
+  var detail = document.getElementById('detail');
+  var groupsEl = document.getElementById('groups');
+  var currentIdx = -1;
+  var saveTimer = null;
+
+  function moduleState(m){
+    var d = data[m.id] || {};
+    var notesFilled = (m.sections || []).filter(function(s,i){ return d['note'+i] && d['note'+i].trim().length; }).length;
+    var objChecked = (m.objectives || []).filter(function(o,i){ return d['obj'+i]; }).length;
+    if(notesFilled === 0 && objChecked === 0) return 'empty';
+    if(notesFilled === (m.sections||[]).length && objChecked === (m.objectives||[]).length) return 'done';
+    return 'started';
+  }
+
+  function renderDashboard(){
+    groupsEl.innerHTML = '';
+    var groups = [];
+    MODULES.forEach(function(m){
+      var g = groups.filter(function(x){ return x.name===m.group; })[0];
+      if(!g){ g = {name:m.group, mods:[]}; groups.push(g); }
+      g.mods.push(m);
+    });
+    groups.forEach(function(g){
+      var h = document.createElement('div');
+      h.className = 'group-heading';
+      h.innerHTML = '<h2>'+g.name+'</h2><div class="rule"></div>';
+      groupsEl.appendChild(h);
+
+      var list = document.createElement('div');
+      list.className = 'list';
+      g.mods.forEach(function(m){
+        var idx = MODULES.indexOf(m);
+        var st = moduleState(m);
+        var row = document.createElement('button');
+        row.className = 'row';
+        var pillLabel = st==='done' ? 'Notes complete' : st==='started' ? 'In progress' : 'Not started';
+        row.innerHTML =
+          '<span class="num">'+String(m.num).padStart(2,'0')+'</span>'+
+          '<span class="body"><h3>'+m.title+'</h3><span class="meta">'+m.runtime+' · '+m.sections.length+' sections</span></span>'+
+          '<span class="status"><span class="pill '+st+'">'+pillLabel+'</span></span>';
+        row.addEventListener('click', function(){ openModule(idx); });
+        list.appendChild(row);
+      });
+      groupsEl.appendChild(list);
+    });
+  }
+
+  function openModule(idx){
+    currentIdx = idx;
+    var m = MODULES[idx];
+    var d = data[m.id] || (data[m.id] = {});
+    dashboard.hidden = true; detail.hidden = false;
+
+    document.getElementById('detKicker').textContent = 'Video '+m.num+' of 5';
+    document.getElementById('detTitle').textContent = m.title;
+    document.getElementById('detRuntime').textContent = m.runtime;
+    var connEl = document.getElementById('detConnects');
+    if(m.connects){ connEl.hidden = false; connEl.textContent = m.connects; }
+    else { connEl.hidden = true; }
+
+    var objList = document.getElementById('objList');
+    objList.innerHTML = '';
+    m.objectives.forEach(function(o, i){
+      var row = document.createElement('div');
+      row.className = 'obj';
+      var checked = !!d['obj'+i];
+      row.innerHTML = '<input type="checkbox" id="obj_'+i+'" '+(checked?'checked':'')+'><label for="obj_'+i+'"'+(checked?' class="checked"':'')+'>'+o+'</label>';
+      var cb = row.querySelector('input');
+      var lbl = row.querySelector('label');
+      cb.addEventListener('change', function(){
+        d['obj'+i] = cb.checked;
+        lbl.classList.toggle('checked', cb.checked);
+        persist();
+      });
+      objList.appendChild(row);
+    });
+
+    var sectionList = document.getElementById('sectionList');
+    sectionList.innerHTML = '';
+    m.sections.forEach(function(s, i){
+      var card = document.createElement('div');
+      card.className = 'section-card';
+      var tagHtml = s.tag ? '<span class="tag">'+s.tag+'</span>' : '';
+      var hintHtml = s.p ? '<div class="hint">'+s.p+'</div>' : '';
+      card.innerHTML =
+        '<div class="sh"><h3>'+(i+1)+'. '+s.h+'</h3>'+tagHtml+'</div>'+
+        hintHtml +
+        '<textarea placeholder="Notes on this section...">'+(d['note'+i]||'')+'</textarea>';
+      var ta = card.querySelector('textarea');
+      ta.addEventListener('input', function(){
+        d['note'+i] = ta.value;
+        persist();
+      });
+      sectionList.appendChild(card);
+    });
+
+    document.getElementById('nextBtn').textContent = (idx === MODULES.length-1) ? 'Back to all videos' : 'Next video →';
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  function persist(){
+    store.set(data);
+    var note = document.getElementById('saveNote');
+    note.textContent = 'Saved';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ note.textContent = 'Notes save automatically'; }, 1200);
+  }
+
+  document.getElementById('backBtn').addEventListener('click', function(){
+    detail.hidden = true; dashboard.hidden = false;
+    renderDashboard();
+    window.scrollTo({top:0, behavior:'instant'});
+  });
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    if(currentIdx === MODULES.length-1){
+      detail.hidden = true; dashboard.hidden = false;
+      renderDashboard();
+      window.scrollTo({top:0, behavior:'instant'});
+    } else {
+      openModule(currentIdx+1);
+    }
+  });
+  document.getElementById('printBtn').addEventListener('click', function(){ window.print(); });
+
+  renderDashboard();
+})();
+</script>

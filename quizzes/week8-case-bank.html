@@ -1,0 +1,504 @@
+<title>Week 8 Case Bank</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper: #f2f0e8;
+    --paper-raised: #fbfaf5;
+    --ink: #1e2a2e;
+    --ink-soft: #55625f;
+    --hairline: #d6d1c2;
+    --accent: #2c5f5a;
+    --accent-soft: #dce8e4;
+    --accent-ink: #163634;
+    --good: #2f6b3e;
+    --good-soft: #dfeee1;
+    --bad: #a03f37;
+    --bad-soft: #f6e3df;
+    --amber: #b5792c;
+    --amber-soft: #f3e6d2;
+    --shadow: 0 1px 2px rgba(30,42,46,.06), 0 8px 24px -12px rgba(30,42,46,.18);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #171d1e;
+      --paper-raised: #1f2729;
+      --ink: #e9eae4;
+      --ink-soft: #a5afab;
+      --hairline: #333e3f;
+      --accent: #7bbbb0;
+      --accent-soft: #223634;
+      --accent-ink: #cdeae4;
+      --good: #7fc98d;
+      --good-soft: #1e3324;
+      --bad: #e19489;
+      --bad-soft: #3a2320;
+      --amber: #e0b06b;
+      --amber-soft: #3a2f1a;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #171d1e;
+    --paper-raised: #1f2729;
+    --ink: #e9eae4;
+    --ink-soft: #a5afab;
+    --hairline: #333e3f;
+    --accent: #7bbbb0;
+    --accent-soft: #223634;
+    --accent-ink: #cdeae4;
+    --good: #7fc98d;
+    --good-soft: #1e3324;
+    --bad: #e19489;
+    --bad-soft: #3a2320;
+    --amber: #e0b06b;
+    --amber-soft: #3a2f1a;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Public Sans', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+  }
+
+  h1,h2,h3{ font-family:'Fraunces', Georgia, serif; text-wrap:balance; margin:0; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+
+  a{ color:inherit; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  /* ---------- shell ---------- */
+  .shell{ max-width:1040px; margin:0 auto; padding:0 24px 96px; }
+  .topbar{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:16px; padding:28px 24px 20px; max-width:1040px; margin:0 auto;
+    border-bottom:1px solid var(--hairline);
+  }
+  .brand{ display:flex; flex-direction:column; gap:2px; }
+  .brand .kicker{
+    font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--accent); font-weight:600;
+  }
+  .brand h1{ font-size:1.5rem; font-weight:600; }
+  .topstat{ text-align:right; font-family:'JetBrains Mono', monospace; font-size:.78rem; color:var(--ink-soft); }
+  .topstat b{ color:var(--ink); font-weight:600; }
+
+  /* ---------- dashboard ---------- */
+  .intro{ padding:32px 0 8px; max-width:640px; }
+  .intro p{ margin:10px 0 0; color:var(--ink-soft); line-height:1.55; font-size:.97rem; }
+
+  .group-heading{
+    display:flex; align-items:center; gap:12px;
+    margin:36px 0 14px;
+  }
+  .group-heading h2{ font-size:1.05rem; font-weight:600; color:var(--ink); white-space:nowrap; }
+  .group-heading .rule{ height:1px; background:var(--hairline); flex:1; }
+  .group-heading .count{ font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--ink-soft); }
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:14px; }
+
+  .card{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:18px 18px 16px; text-align:left; box-shadow:var(--shadow);
+    display:flex; flex-direction:column; gap:12px; min-height:150px;
+    transition:transform .15s ease, border-color .15s ease;
+    position:relative; overflow:hidden;
+  }
+  .card:hover{ transform:translateY(-2px); border-color:var(--accent); }
+  .card:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .card .num{
+    font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--ink-soft);
+    letter-spacing:.06em;
+  }
+  .card h3{ font-size:1.05rem; font-weight:500; line-height:1.28; flex:1; }
+  .card-foot{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .badge{
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; font-weight:600;
+    padding:3px 8px; border-radius:99px; letter-spacing:.02em;
+  }
+  .badge.new{ background:var(--accent-soft); color:var(--accent-ink); }
+  .badge.done{ background:var(--good-soft); color:var(--good); }
+  .badge.retry{ background:var(--amber-soft); color:var(--amber); }
+  .score{ font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--ink-soft); }
+  .score b{ color:var(--ink); }
+
+  /* ---------- quiz view ---------- */
+  .quiz-header{
+    display:flex; align-items:center; gap:14px; padding:26px 0 6px; flex-wrap:wrap;
+  }
+  .back-btn{
+    background:none; border:1px solid var(--hairline); border-radius:8px;
+    padding:7px 12px; font-size:.82rem; color:var(--ink-soft); display:flex; align-items:center; gap:6px;
+  }
+  .back-btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .quiz-title{ flex:1; min-width:200px; }
+  .quiz-title .kicker{ font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; font-weight:600;}
+  .quiz-title h2{ font-size:1.25rem; font-weight:600; margin-top:2px; }
+
+  .progress-wrap{ padding:14px 0 30px; }
+  .progress-meta{ display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--ink-soft); margin-bottom:6px; }
+  .progress-track{ height:6px; background:var(--hairline); border-radius:99px; overflow:hidden; }
+  .progress-fill{ height:100%; background:var(--accent); border-radius:99px; transition:width .3s ease; }
+
+  .stem-card{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:12px;
+    padding:26px 28px; box-shadow:var(--shadow); margin-bottom:20px;
+  }
+  .stem-card .vignette-tag{
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--ink-soft);
+    text-transform:uppercase; letter-spacing:.08em; margin-bottom:10px; display:block;
+  }
+  .stem{ font-size:1.14rem; line-height:1.55; font-weight:400; }
+
+  .opts{ display:flex; flex-direction:column; gap:10px; }
+  .opt{
+    display:flex; align-items:flex-start; gap:12px; text-align:left;
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; font-size:.98rem; line-height:1.45; color:var(--ink);
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .opt:hover:not(:disabled){ border-color:var(--accent); }
+  .opt:disabled{ cursor:default; }
+  .opt .letter{
+    font-family:'JetBrains Mono',monospace; font-weight:600; font-size:.82rem;
+    width:22px; height:22px; border-radius:6px; background:var(--accent-soft); color:var(--accent-ink);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;
+  }
+  .opt.correct{ background:var(--good-soft); border-color:var(--good); }
+  .opt.correct .letter{ background:var(--good); color:var(--paper-raised); }
+  .opt.incorrect{ background:var(--bad-soft); border-color:var(--bad); }
+  .opt.incorrect .letter{ background:var(--bad); color:var(--paper-raised); }
+  .opt.dim{ opacity:.55; }
+
+  .explain{
+    margin-top:16px; padding:16px 18px; border-radius:10px; background:var(--accent-soft);
+    border-left:3px solid var(--accent); font-size:.92rem; line-height:1.55; color:var(--ink);
+  }
+  .explain b{ color:var(--accent-ink); }
+
+  .quiz-nav{ display:flex; justify-content:flex-end; margin-top:20px; }
+  .next-btn{
+    background:var(--accent); color:var(--paper-raised); border:none; border-radius:8px;
+    padding:11px 22px; font-size:.92rem; font-weight:600; display:flex; align-items:center; gap:8px;
+    box-shadow:var(--shadow);
+  }
+  .next-btn:disabled{ background:var(--hairline); color:var(--ink-soft); box-shadow:none; cursor:not-allowed; }
+  .next-btn:not(:disabled):hover{ filter:brightness(1.06); }
+
+  /* ---------- summary ---------- */
+  .summary{ padding:40px 0; text-align:center; }
+  .summary .ring{
+    width:132px; height:132px; margin:0 auto 20px; position:relative;
+  }
+  .summary .ring svg{ transform:rotate(-90deg); }
+  .summary .ring .pct{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-size:1.7rem; font-weight:600;
+  }
+  .summary h2{ font-size:1.4rem; margin-bottom:6px; }
+  .summary p{ color:var(--ink-soft); margin:0 0 26px; }
+  .summary-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .btn{
+    border:1px solid var(--hairline); background:var(--paper-raised); color:var(--ink);
+    border-radius:8px; padding:10px 18px; font-size:.9rem; font-weight:500;
+  }
+  .btn.primary{ background:var(--accent); color:var(--paper-raised); border-color:var(--accent); font-weight:600; }
+  .btn:hover{ border-color:var(--accent); }
+
+  .review-list{ text-align:left; max-width:640px; margin:30px auto 0; display:flex; flex-direction:column; gap:10px; }
+  .review-item{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; font-size:.88rem; display:flex; gap:10px; align-items:flex-start;
+  }
+  .review-item .mark{ font-size:.85rem; margin-top:1px; }
+  .review-item .mark.miss{ color:var(--bad); }
+  .review-item .mark.hit{ color:var(--good); }
+  .review-item div{ line-height:1.5; color:var(--ink-soft); }
+  .review-item b{ color:var(--ink); font-weight:500; }
+
+  [hidden]{ display:none !important; }
+
+  footer{
+    max-width:1040px; margin:0 auto; padding:40px 24px 0; color:var(--ink-soft);
+    font-size:.78rem; border-top:1px solid var(--hairline); margin-top:56px; padding-top:20px;
+  }
+
+  @media (max-width:560px){
+    .stem-card{ padding:20px; }
+    .topbar{ flex-direction:column; align-items:flex-start; gap:6px; }
+    .topstat{ text-align:left; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">P2 &middot; Week 8 &middot; Musculoskeletal Medicine</span>
+    <h1>Case Bank</h1>
+  </div>
+  <div class="topstat" id="topstat">80 questions &middot; 8 modules</div>
+</div>
+
+<main class="shell">
+
+  <section id="dashboard">
+    <div class="intro">
+      <p>Ten clinical-vignette questions per module, built from the Week 8 Elentra slides and learning objectives (brachial plexus, shoulder and arm muscles, the neurovascular supply of the arm and forearm, the elbow, forearm tendons, and the wrist and hand). Options are written to similar length, and the correct answer&#39;s position varies &mdash; work the case, don&#39;t read the answer key by eye.</p>
+    </div>
+    <div id="groups"></div>
+  </section>
+
+  <section id="quizview" hidden>
+    <div class="quiz-header">
+      <button class="back-btn" id="backBtn">&larr; All modules</button>
+      <div class="quiz-title">
+        <div class="kicker" id="quizGroup"></div>
+        <h2 id="quizTitle"></h2>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="progressLabel">Question 1 of 10</span>
+        <span id="scoreLabel">Score 0 / 0</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="stem-card">
+      <span class="vignette-tag" id="qTag">Case</span>
+      <div class="stem" id="qStem"></div>
+    </div>
+
+    <div class="opts" id="opts"></div>
+    <div class="explain" id="explain" hidden></div>
+
+    <div class="quiz-nav">
+      <button class="next-btn" id="nextBtn" disabled>Next question &rarr;</button>
+    </div>
+  </section>
+
+  <section id="summaryview" hidden>
+    <div class="summary">
+      <div class="ring">
+        <svg width="132" height="132" viewBox="0 0 132 132">
+          <circle cx="66" cy="66" r="58" fill="none" stroke="var(--hairline)" stroke-width="10"/>
+          <circle id="ringFg" cx="66" cy="66" r="58" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round"/>
+        </svg>
+        <div class="pct" id="ringPct">0%</div>
+      </div>
+      <h2 id="sumTitle"></h2>
+      <p id="sumSub"></p>
+      <div class="summary-actions">
+        <button class="btn primary" id="retryBtn">Retry module</button>
+        <button class="btn" id="dashBtn">Back to modules</button>
+      </div>
+      <div class="review-list" id="reviewList"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Week 8 study material &middot; P2 Musculoskeletal Block &middot; for personal review use</footer>
+
+<script id="data" type="application/json">[{"id": "brachial-plexus", "title": "Brachial Plexus", "group": "Shoulder & Arm", "q": [{"stem": "A first-year resident sketches the brachial plexus and labels its five 'roots' as the dorsal and ventral roots of C5–T1. What should the attending correct?", "opts": ["The roots are actually the cords of the plexus", "The roots are the ventral rami of C5–T1", "The roots are the dorsal rami of C5–T1", "The roots begin at C4 rather than C5"], "correct": 1, "explain": "The 'roots' of the brachial plexus are the ventral rami of C5–T1, each already a mixed motor and sensory nerve, not the dorsal and ventral roots of a spinal nerve."}, {"stem": "After a radical mastectomy with axillary dissection, a patient's scapula lifts off the chest wall when she pushes against a wall. Which nerve, arising directly from the roots, was injured?", "opts": ["Thoracodorsal nerve (C6–C8)", "Suprascapular nerve (C5, C6)", "Dorsal scapular nerve (C5)", "Long thoracic nerve (C5–C7)"], "correct": 3, "explain": "Winged scapula is loss of serratus anterior, which holds the medial border of the scapula against the chest wall. Its nerve, the long thoracic, comes straight off the C5–C7 roots and runs along the muscle's surface."}, {"stem": "Which branch of the brachial plexus arises from a trunk rather than a root or cord?", "opts": ["Suprascapular nerve to supraspinatus and infraspinatus", "Lateral pectoral nerve to pectoralis major", "Upper subscapular nerve to subscapularis", "Medial cutaneous nerve of the forearm"], "correct": 0, "explain": "The suprascapular nerve (C5, C6) is the only named branch of the trunks, coming off the superior trunk. The middle and inferior trunks give no nerves, and the divisions give none at all."}, {"stem": "A student asks which structure the cords of the brachial plexus are named after. What is the answer?", "opts": ["Their position relative to the clavicle", "Their position relative to pectoralis major", "Their position relative to the axillary artery", "Their position relative to the humeral head"], "correct": 2, "explain": "The lateral, medial and posterior cords are named for where they sit around the axillary artery, the key anatomic relationship of the plexus in the axilla."}, {"stem": "A patient has weakness of elbow flexion and supination with numbness over the lateral forearm, but normal deltoid and wrist extension. Which terminal branch is most likely injured?", "opts": ["Radial nerve", "Axillary nerve", "Median nerve", "Musculocutaneous nerve"], "correct": 3, "explain": "The musculocutaneous nerve (C5–C7, lateral cord) supplies the anterior arm (coracobrachialis, biceps, brachialis) and ends as the lateral cutaneous nerve of the forearm."}, {"stem": "Why does the radial nerve carry fibres from all five roots, C5 to T1?", "opts": ["It takes one root from each of the lateral and medial cords", "It arises from the posterior cord, which is formed by all three posterior divisions", "It is a direct continuation of the middle trunk", "It receives an extra contribution from the cervical plexus"], "correct": 1, "explain": "The posterior cord is the union of the posterior divisions of all three trunks, so its terminal branch, the radial nerve, carries C5–T1. The median gets all five roots by a different route: one root from each of the lateral and medial cords."}, {"stem": "Using the 'M' of the terminal branches, which nerve forms the middle of the M by taking a root from both the lateral and medial cords?", "opts": ["Median nerve", "Ulnar nerve", "Musculocutaneous nerve", "Radial nerve"], "correct": 0, "explain": "The lateral and medial cords make an M: musculocutaneous off the lateral cord, ulnar off the medial cord, and the median in the middle, formed by a lateral root and a medial root."}, {"stem": "A patient has a pure lesion of the medial cord. Which pair of muscles would you expect to be affected by loss of the medial pectoral nerve?", "opts": ["Latissimus dorsi and teres major", "Pectoralis major and pectoralis minor", "Supraspinatus and infraspinatus", "Deltoid and teres minor"], "correct": 1, "explain": "The medial pectoral nerve (C8, T1) pierces pectoralis minor and goes on to pectoralis major. Latissimus dorsi and teres major are posterior cord, the supraspinatus pair is the suprascapular nerve, and deltoid and teres minor are axillary."}, {"stem": "Which statement about the divisions of the brachial plexus is correct?", "opts": ["They give off the subscapular nerves", "There are three divisions, one per trunk", "Anterior divisions generally supply the flexor compartments", "Posterior divisions form the medial cord"], "correct": 2, "explain": "Each trunk splits into an anterior and posterior division (six in all), and no nerves arise from them. Anterior divisions generally supply flexor (anterior) compartments and posterior divisions the extensor compartments."}, {"stem": "Using the mnemonic '3 Musketeers Assassinate: 5 Mice, 5 Rats, and 2 Unicorns', how many roots contribute to the axillary nerve, and which are they?", "opts": ["Three roots: C5, C6, C7", "Five roots: C5 to T1", "Two roots: C8, T1", "Two roots: C5, C6"], "correct": 3, "explain": "Musculocutaneous 3 (C5–C7), axillary 2 (C5, C6), median 5, radial 5, ulnar 2 (C8, T1)."}]}, {"id": "shoulder", "title": "Muscles of the Shoulder", "group": "Shoulder & Arm", "q": [{"stem": "A 50-year-old painter has 4 months of shoulder pain. He can't actively lift his arm above shoulder height, but the examiner can move it through a full range passively. Neer and Hawkins tests are positive. What is the most likely diagnosis?", "opts": ["Adhesive capsulitis", "Rotator cuff disease", "Degenerative glenohumeral arthritis", "Acromioclavicular joint separation"], "correct": 1, "explain": "Active motion much worse than passive motion, plus positive impingement signs, is the classic picture of rotator cuff disease. In adhesive capsulitis and degenerative arthritis passive motion is lost too."}, {"stem": "Which rotator cuff muscle initiates the first 15° of arm abduction?", "opts": ["Supraspinatus", "Infraspinatus", "Deltoid (middle fibres)", "Teres minor"], "correct": 0, "explain": "Supraspinatus (suprascapular nerve) starts abduction for the first 15°, after which the deltoid's middle fibres take over. It also helps stabilize the glenohumeral joint."}, {"stem": "A patient has weak medial rotation and a positive lift-off test. Which muscle is weak, and where does it insert?", "opts": ["Teres major, medial lip of the intertubercular groove", "Infraspinatus, greater tubercle", "Pectoralis major, lateral lip of the intertubercular groove", "Subscapularis, lesser tubercle"], "correct": 3, "explain": "Subscapularis is the only rotator cuff muscle that inserts on the lesser tubercle, and the only one that medially rotates. The lift-off test isolates it."}, {"stem": "Which muscle supplied by the axillary nerve is part of the rotator cuff?", "opts": ["Teres minor", "Teres major", "Deltoid", "Infraspinatus"], "correct": 0, "explain": "The axillary nerve (C5, C6) supplies the deltoid and teres minor. Teres minor is in the cuff (lateral rotation). Teres major is not part of the cuff, and infraspinatus is supplied by the suprascapular nerve."}, {"stem": "According to Dr. Faber, what is the main driver of rotator cuff disease in most patients?", "opts": ["Repeated acute traumatic tears in young athletes", "Inflammatory arthritis of the glenohumeral joint", "Intrinsic tendon change: reduced vascularity, tension overload and degeneration", "A congenitally hooked acromion in every case"], "correct": 2, "explain": "Rotator cuff disease is usually intrinsic: the tendon loses its blood supply, is overloaded and degenerates. Extrinsic factors (acromion morphology, subacromial space) contribute in some patients."}, {"stem": "An MRI shows a full-thickness rotator cuff tear without superior migration of the humeral head. Which stage is this, and what is the usual operative treatment if conservative care fails?", "opts": ["Stage I, subacromial decompression", "Stage II, observation only", "Rotator cuff arthropathy, shoulder replacement", "Stage III, rotator cuff repair"], "correct": 3, "explain": "Stage I is inflammation (impingement), stage II a partial-thickness defect, and stage III a full-thickness defect, treated with rotator cuff repair. Arthropathy (a massive tear with the humerus riding up and arthritis) is treated with replacement."}, {"stem": "A 45-year-old office worker has early rotator cuff disease with pain but good strength. What is the mainstay of treatment?", "opts": ["Urgent rotator cuff repair", "Physiotherapy for muscle reconditioning, with activity modification and NSAIDs", "Immobilization in a sling for 6 weeks", "Repeated steroid injections every month"], "correct": 1, "explain": "Most rotator cuff disease is managed non-surgically: education, activity modification, NSAIDs, physiotherapy and sometimes an injection. Surgery is for persistent pain, weakness or an acute traumatic tear."}, {"stem": "A 54-year-old with type 2 diabetes has 3 months of shoulder stiffness. Active and passive motion are both reduced in every direction, and the X-ray is normal. What is the most likely diagnosis?", "opts": ["Rotator cuff tendinopathy", "Anterior glenohumeral instability", "Adhesive capsulitis", "AC joint arthritis"], "correct": 2, "explain": "Spontaneous global loss of active and passive motion with a normal X-ray is adhesive capsulitis (frozen shoulder), strongly associated with diabetes."}, {"stem": "After reduction of an anterior shoulder dislocation, which nerve should be specifically re-examined, and how?", "opts": ["Long thoracic, by checking for scapular winging", "Musculocutaneous, by checking the biceps reflex", "Ulnar, by checking little-finger sensation", "Axillary, by checking deltoid power and skin over the deltoid"], "correct": 3, "explain": "Most dislocations are anterior-inferior, where the humeral head stretches the axillary nerve. Check deltoid power and the 'regimental badge' patch of skin before and after reduction."}, {"stem": "Which muscle protracts the scapula and is supplied by the long thoracic nerve?", "opts": ["Serratus anterior", "Pectoralis minor", "Rhomboid major", "Trapezius"], "correct": 0, "explain": "Serratus anterior (ribs 1–8 to the medial border of the scapula) protracts the scapula and holds it against the chest wall. Pectoralis minor pulls the scapula down and forward but is supplied by the pectoral nerves."}]}, {"id": "arm", "title": "Muscles of the Arm", "group": "Shoulder & Arm", "q": [{"stem": "Which muscle is the primary flexor of the elbow?", "opts": ["Biceps brachii", "Brachialis", "Coracobrachialis", "Brachioradialis"], "correct": 1, "explain": "Brachialis (distal anterior humerus to the coronoid process of the ulna) crosses only the elbow and is its primary flexor. The biceps' signature action is supination."}, {"stem": "In the anatomy lab, students find a nerve passing straight through a muscle that runs from the coracoid process to the middle of the medial humerus. Which nerve and muscle are these?", "opts": ["Musculocutaneous nerve piercing coracobrachialis", "Median nerve piercing pronator teres", "Radial nerve piercing supinator", "Axillary nerve piercing teres minor"], "correct": 0, "explain": "The musculocutaneous nerve pierces coracobrachialis, then runs between biceps and brachialis to supply the whole anterior compartment."}, {"stem": "Where does the long head of triceps originate, and what extra action does that give it?", "opts": ["Supraglenoid tubercle; shoulder flexion", "Coracoid process; shoulder adduction", "Proximal posterior humerus; forearm supination", "Infraglenoid tubercle; shoulder extension"], "correct": 3, "explain": "The long head of triceps starts on the infraglenoid tubercle, so it crosses the shoulder and extends it (and resists dislocation). The biceps long head is the one on the supraglenoid tubercle."}, {"stem": "A 28-year-old baseball pitcher has deep anterior shoulder pain. The intertubercular groove is tender, and resisted shoulder and elbow flexion with the forearm supinated reproduces the pain. There is no deformity. What is the most likely diagnosis?", "opts": ["Distal biceps rupture", "Acromioclavicular separation", "Proximal biceps tendinopathy", "Anterior shoulder dislocation"], "correct": 2, "explain": "Groove tenderness and pain on resisted shoulder and elbow flexion with supination point to the long head of biceps. With no weakness or visible defect, this is tendinopathy rather than a tear."}, {"stem": "Why do labral problems so often involve the long head of the biceps?", "opts": ["The tendon originates partly from the superior glenoid labrum", "The labrum and biceps share the musculocutaneous nerve", "The biceps inserts on the labrum", "The labrum lies inside the intertubercular groove"], "correct": 0, "explain": "The long head arises from the supraglenoid tubercle and the superior labrum, so a labral (SLAP) tear drags the tendon in. It also sits next to the cuff, runs in a tight groove and is relatively hypovascular."}, {"stem": "A patient with suspected biceps tendinopathy has an equivocal exam. Which investigation is most helpful next, and why?", "opts": ["Plain X-ray, to show tendon thickening", "Ultrasound, which also assesses the rotator cuff tendons and subacromial bursa", "Nerve conduction studies, to exclude radiculopathy", "CT arthrogram, as the first-line test"], "correct": 1, "explain": "Ultrasound is useful when the diagnosis is unclear and assesses the cuff and bursa at the same time. An MR arthrogram is reserved for suspected SLAP lesions."}, {"stem": "Which condition should prompt an MR arthrogram in a patient with anterior shoulder pain?", "opts": ["Suspected subacromial bursitis", "Suspected AC joint arthritis", "Suspected cervical radiculopathy", "Suspected SLAP lesion of the superior labrum"], "correct": 3, "explain": "An MR arthrogram is used when a SLAP lesion (a superior labral tear running front to back) is suspected."}, {"stem": "A 60-year-old has chronic biceps tendinopathy. What is the mainstay of management?", "opts": ["Active physiotherapy with relative rest from overhead activity", "Immediate surgical tenodesis", "Strict immobilization for 6 weeks", "Oral steroids for 2 weeks"], "correct": 0, "explain": "Most cases are chronic and improve with conservative care. Physiotherapy is the mainstay (modalities can help acute pain, but active therapy is necessary), plus relative rest from overhead work and analgesia. Surgery is for refractory cases."}, {"stem": "A man lifting a heavy box feels a pop in his anterior shoulder and now has a bulge in the lower arm when he flexes his elbow. Which finding would you expect?", "opts": ["Complete loss of elbow flexion", "Numbness over the lateral forearm", "Weakness and a visible defect from the retracted muscle", "Winging of the scapula"], "correct": 2, "explain": "A frank tear of the long head causes weakness and a visible defect as the muscle retracts (the 'Popeye' sign). Brachialis and the short head still flex the elbow."}, {"stem": "Which nerve supplies the only muscle of the posterior compartment of the arm?", "opts": ["Axillary nerve", "Musculocutaneous nerve", "Ulnar nerve", "Radial nerve"], "correct": 3, "explain": "The posterior compartment contains only triceps brachii, supplied by the radial nerve, which runs in the radial groove between the lateral and medial head origins."}]}, {"id": "nv-proximal", "title": "Neurovascular Supply of the Proximal Upper Extremity", "group": "Neurovascular", "q": [{"stem": "At which landmark does the subclavian artery become the axillary artery?", "opts": ["The lateral border of the first rib", "The lower border of teres major", "The medial border of the scapula", "The upper border of pectoralis minor"], "correct": 0, "explain": "The subclavian becomes the axillary artery at the lateral border of rib 1. The axillary becomes the brachial artery at the lower border of teres major."}, {"stem": "Which muscle divides the axillary artery into its three parts?", "opts": ["Pectoralis major", "Subscapularis", "Pectoralis minor", "Teres major"], "correct": 2, "explain": "Pectoralis minor crosses in front of the axillary artery: the 1st part is above it, the 2nd behind it and the 3rd below it."}, {"stem": "A 32-year-old falls off a ladder and fractures the mid-shaft of the humerus. He cannot extend his wrist. Which structures run together in the groove at the fracture site?", "opts": ["Axillary nerve and posterior circumflex humeral artery", "Median nerve and brachial artery", "Ulnar nerve and superior ulnar collateral artery", "Radial nerve and profunda brachii artery"], "correct": 3, "explain": "The radial nerve and profunda brachii run together in the radial groove on the back of the humeral shaft, so a mid-shaft fracture threatens both. Wrist drop is the classic sign."}, {"stem": "A 78-year-old with osteoporosis falls on her outstretched hand and fractures the surgical neck of the humerus. Which nerve is most at risk?", "opts": ["Axillary nerve", "Radial nerve", "Ulnar nerve", "Musculocutaneous nerve"], "correct": 0, "explain": "The axillary nerve and posterior circumflex humeral artery wrap around the surgical neck. Check deltoid power and sensation over the deltoid."}, {"stem": "A child has a displaced supracondylar fracture of the humerus. Which pair of structures is most at risk?", "opts": ["Radial nerve and profunda brachii", "Axillary nerve and circumflex arteries", "Brachial artery and median nerve", "Ulnar nerve and basilic vein"], "correct": 2, "explain": "The brachial artery lies against the medial humerus down to the cubital fossa, and the median nerve runs with it, so mid-shaft and supracondylar fractures put the artery (and median nerve) at risk."}, {"stem": "Which two terminal branches of the brachial plexus pass through the arm without supplying any muscle there?", "opts": ["Musculocutaneous and radial", "Radial and axillary", "Ulnar and axillary", "Median and ulnar"], "correct": 3, "explain": "The median and ulnar nerves run the length of the arm without branching. Their muscles are all in the forearm and hand."}, {"stem": "A nurse is drawing blood from the antecubital fossa. Which superficial vein is the usual choice?", "opts": ["Cephalic vein", "Median cubital vein", "Basilic vein", "Brachial vein"], "correct": 1, "explain": "The median cubital vein crosses the cubital fossa obliquely, joining the cephalic and basilic veins, and is the usual vein for blood draws and IV access."}, {"stem": "Where does the ulnar nerve leave the anterior compartment of the arm?", "opts": ["It pierces the medial intermuscular septum at about mid-shaft", "It passes through the quadrangular space", "It pierces the lateral intermuscular septum", "It passes deep to the bicipital aponeurosis"], "correct": 0, "explain": "The ulnar nerve runs medially in the anterior compartment, then pierces the medial intermuscular septum around mid-shaft to reach the posterior compartment and the back of the medial epicondyle."}, {"stem": "Which spinal levels does the biceps (bicipital myotatic) reflex test?", "opts": ["C7 and C8", "C8 and T1", "C5 and C6", "C6 and C7 only"], "correct": 2, "explain": "The biceps reflex is carried by the musculocutaneous nerve and tests the integrity of C5 and C6."}, {"stem": "Which artery travels with the axillary nerve around the surgical neck of the humerus?", "opts": ["Anterior circumflex humeral artery", "Thoracodorsal artery", "Lateral thoracic artery", "Posterior circumflex humeral artery"], "correct": 3, "explain": "Both circumflex humeral arteries (from the 3rd part of the axillary) encircle the surgical neck, but the posterior one runs with the axillary nerve through the quadrangular space."}]}, {"id": "elbow", "title": "Distal Upper Extremity Osteology & the Elbow", "group": "Elbow", "q": [{"stem": "On an elbow X-ray, which part of the distal humerus articulates with the radial head?", "opts": ["Trochlea", "Capitulum", "Medial epicondyle", "Olecranon fossa"], "correct": 1, "explain": "The capitulum (lateral condyle) meets the radial head. The trochlea (medial condyle) meets the trochlear notch of the ulna."}, {"stem": "A 3-year-old is brought in after her father lifted her by the hand. She holds her arm flexed against her body and won't use it. There is no swelling. What is the appropriate management?", "opts": ["X-ray, then a long-arm cast", "Urgent open reduction in the OR", "Sling and review in a week", "Closed reduction by pronation and extension, with no cast"], "correct": 3, "explain": "This is radial head subluxation (nursemaid's elbow): the radial head slips through the annular ligament, which is thinner and weaker in children. It is reduced by pronation and extension, with no cast or orthosis. Imaging is only needed to rule out a fracture."}, {"stem": "A 25-year-old falls on an outstretched hand and has a deformed, very painful elbow. X-ray shows a posterior elbow dislocation. Which nerve is particularly at risk?", "opts": ["Ulnar nerve", "Radial nerve", "Axillary nerve", "Musculocutaneous nerve"], "correct": 0, "explain": "Posterior dislocation is the most common type and a red flag. The ulnar nerve, sitting behind the medial epicondyle, is particularly at risk. Watch for compartment syndrome as well."}, {"stem": "What is the initial management of a simple posterior elbow dislocation?", "opts": ["Physiotherapy and early range of motion", "Closed reduction and a splint at 90°", "Arthroplasty", "Cast in full extension for 6 weeks"], "correct": 1, "explain": "Treat with closed reduction and a splint at 90°. If soft tissue is interposed or the reduction can't be held, the patient needs open reduction and internal fixation."}, {"stem": "A professional pitcher has medial elbow pain, felt a pop on his last throw, and on valgus stress there is no firm end point. Which structure is injured?", "opts": ["Radial collateral ligament", "Annular ligament", "Common extensor origin", "Ulnar collateral ligament"], "correct": 3, "explain": "The ulnar (medial) collateral ligament stabilizes the medial elbow against valgus stress and is injured by repetitive throwing. Reconstruction ('Tommy John' surgery) is only for functional goals, followed by long physiotherapy."}, {"stem": "Which band of the ulnar collateral ligament is the strongest?", "opts": ["Posterior band", "Oblique band", "Anterior band", "Annular band"], "correct": 2, "explain": "The anterior band is cord-like and the strongest. The posterior band is fan-like and weakest, and the oblique band deepens the socket for the trochlea."}, {"stem": "A plumber has a swollen posterior elbow. It is red and hot, there is a small scrape over it, and he has a low-grade fever. What is the next step?", "opts": ["Aspirate the bursa and start appropriate antibiotics", "Reassure him: olecranon bursitis is self-limiting", "Steroid injection into the bursa", "MRI to assess the ulnar collateral ligament"], "correct": 0, "explain": "Erythema and systemic features with a skin break suggest septic olecranon bursitis. Aspirate it and choose antibiotics (± incision and drainage). Only non-infected bursitis is managed with padding and time."}, {"stem": "Which carpal bone is the most commonly fractured?", "opts": ["Lunate", "Hamate", "Pisiform", "Scaphoid"], "correct": 3, "explain": "The scaphoid is the most commonly fractured carpal bone. The lunate is the most commonly dislocated, and it can compress the median nerve in the carpal tunnel."}, {"stem": "A 60-year-old carpenter has a gradually worsening, achy elbow with stiffness, loss of range of motion and occasional locking. X-ray shows joint-space loss and osteophytes. What is the expected course to explain to him?", "opts": ["A short self-limiting illness that resolves in weeks", "A 'grumbling', long-term condition with no cure, managed to keep range and function", "An emergency that needs urgent surgery", "An infection needing IV antibiotics"], "correct": 1, "explain": "Elbow OA is a long-term, grumbling condition. Manage it with ice, PT for range of motion, OT for function, topical or oral analgesics and steroid injection, and keep debridement or arthroplasty for intolerable end-stage disease."}, {"stem": "Which joint lets the radial head rotate during pronation and supination, and what holds it?", "opts": ["Humeroradial joint, held by the radial collateral ligament", "Distal radioulnar joint, held by the interosseous membrane", "Humeroulnar joint, held by the ulnar collateral ligament", "Proximal radioulnar joint, held by the annular ligament"], "correct": 3, "explain": "The proximal radioulnar joint is a synovial pivot inside the elbow capsule. The radial head turns within the ring-like annular ligament."}]}, {"id": "forearm-muscles", "title": "Muscles of the Distal Upper Extremity", "group": "Elbow", "q": [{"stem": "Which anterior forearm muscles are supplied by the ulnar nerve?", "opts": ["Flexor carpi ulnaris and the medial half of flexor digitorum profundus", "Pronator teres and flexor carpi ulnaris", "Flexor digitorum superficialis and palmaris longus", "Flexor pollicis longus and pronator quadratus"], "correct": 0, "explain": "The ulnar nerve supplies 1½ anterior forearm muscles: flexor carpi ulnaris and the part of FDP to digits 4–5. Everything else in the front is median (or its anterior interosseous branch)."}, {"stem": "Which is the only muscle that can flex the distal interphalangeal joints of digits 2–5?", "opts": ["Flexor digitorum superficialis", "Lumbricals", "Flexor carpi ulnaris", "Flexor digitorum profundus"], "correct": 3, "explain": "FDP inserts on the distal phalanges and is the only DIP flexor. FDS splits and inserts on the middle phalanges."}, {"stem": "A 40-year-old electrician has 3 months of pain just below the lateral epicondyle, worse with gripping. Resisted middle-finger extension reproduces it, and range of motion is full. Which tendon is predominantly involved?", "opts": ["Extensor carpi ulnaris", "Brachioradialis", "Extensor carpi radialis brevis", "Supinator"], "correct": 2, "explain": "Lateral epicondylosis (tennis elbow) is a tendinopathy of the common extensor origin, predominantly ECRB. Pain is on resisted middle-finger or wrist extension, gripping and supination."}, {"stem": "A golfer has pain at the medial elbow. Which manoeuvre would most likely reproduce it?", "opts": ["Resisted wrist extension", "Resisted wrist flexion and pronation", "Resisted supination with the elbow flexed", "Valgus stress at 30° of flexion"], "correct": 1, "explain": "Medial epicondylosis affects the common flexor-pronator origin, so pain comes with resisted wrist flexion and pronation and with passive stretch (wrist extension)."}, {"stem": "Compared with tendinitis, which feature best describes tendinosis?", "opts": ["Acute inflammation that settles quickly with NSAIDs", "Infection of the tendon sheath", "Collagen degeneration from chronic overuse, with slow recovery over 100+ days", "A complete tendon rupture"], "correct": 2, "explain": "Tendinosis is more common than we think: degeneration of collagen (immature, disorganized, with abnormal vessels) from chronic overuse without enough recovery. There is little inflammation to treat, and new collagen takes 100+ days."}, {"stem": "What physiotherapy regimen does the module recommend for chronic lateral epicondylosis?", "opts": ["Eccentric strengthening twice a day for 12 weeks", "Complete rest in a cast for 6 weeks", "Passive stretching only, once a week", "Ultrasound therapy alone for 2 weeks"], "correct": 0, "explain": "Eccentric strengthening twice daily for 12 weeks stimulates and aligns new collagen. Add activity modification, a counterforce strap and ice. NSAIDs may not help much in chronic tendinosis."}, {"stem": "A 42-year-old felt a pop in his anterior elbow while lifting a fridge. He has bruising, a change in biceps contour and weak supination. What is the key management point?", "opts": ["Non-operative care, since the short head compensates", "Steroid injection", "Physiotherapy for 12 weeks first", "Prompt orthopaedic referral, because a distal biceps rupture is time-sensitive"], "correct": 3, "explain": "Distal biceps rupture is rare but consequential (poor supination, weak flexion) and needs prompt surgical repair: the slide's '1-800-ORTHO, limited time offer'. Proximal ruptures are usually managed non-operatively."}, {"stem": "Which posterior compartment muscle flexes the elbow, most strongly in the mid-pronated position?", "opts": ["Extensor carpi radialis longus", "Anconeus", "Brachioradialis", "Supinator"], "correct": 2, "explain": "Brachioradialis (lateral supracondylar ridge to distal radius) is supplied by the radial nerve but weakly flexes the elbow, maximally in mid-pronation: the 'drinking muscle'."}, {"stem": "A volleyball player jams a fingertip and now cannot actively extend the distal interphalangeal joint. X-ray shows no fracture. What is the treatment?", "opts": ["Surgical pinning", "Splinting the DIP in extension", "Buddy taping and early motion", "Steroid injection"], "correct": 1, "explain": "This is mallet (baseball) finger: the extensor tendon has torn from the base of the distal phalanx. Treat with RICE and splinting. Only a complete avulsion fracture needs surgery to pin the fragment."}, {"stem": "Which wrist movement is produced by flexor carpi ulnaris acting together with extensor carpi ulnaris?", "opts": ["Radial deviation (abduction)", "Pure wrist flexion", "Pronation", "Ulnar deviation (adduction)"], "correct": 3, "explain": "Side-to-side wrist movement needs a flexor and an extensor together: FCU + ECU give ulnar deviation, and FCR + ECRL + ECRB give radial deviation."}]}, {"id": "nv-distal", "title": "Neurovascular Supply of the Distal Upper Extremity", "group": "Neurovascular", "q": [{"stem": "What are the contents of the cubital fossa, from lateral to medial?", "opts": ["Median nerve, brachial artery, biceps tendon", "Biceps tendon, brachial artery, median nerve", "Brachial artery, biceps tendon, ulnar nerve", "Radial artery, median nerve, biceps tendon"], "correct": 1, "explain": "Lateral to medial: biceps Tendon, brachial Artery, median Nerve (TAN). The median cubital vein lies superficially, and the radial nerve sits at the lateral edge."}, {"stem": "Where is the radial pulse felt at the wrist?", "opts": ["Between the flexor carpi radialis and abductor pollicis longus tendons", "Lateral to the pisiform", "Over the hook of the hamate", "Between palmaris longus and flexor carpi ulnaris"], "correct": 0, "explain": "The radial artery is felt distally between the FCR and APL tendons, and also in the floor of the anatomical snuffbox."}, {"stem": "A competitive cyclist has numbness in the medial 1½ digits and weak intrinsic hand muscles, but normal fingertip flexion of the ring and little fingers. Where is the lesion?", "opts": ["Behind the medial epicondyle", "Between the two heads of flexor carpi ulnaris", "The carpal tunnel", "Ulnar (Guyon's) canal at the wrist"], "correct": 3, "explain": "Guyon's canal (pisiform, hook of hamate and overlying ligament) compression, or 'handlebar neuropathy', spares FDP to digits 4–5 because those branches leave in the forearm. An elbow lesion would weaken them."}, {"stem": "A carpenter who does repetitive pronation has proximal anterior forearm pain and tingling over the palmar lateral 3½ digits and the adjacent palm. Where is the median nerve most likely compressed?", "opts": ["Under the flexor retinaculum", "Between the two heads of pronator teres", "In Guyon's canal", "Where it pierces supinator"], "correct": 1, "explain": "Pronator syndrome compresses the median nerve between the heads of pronator teres, often from muscle hypertrophy. The palm is involved too, unlike carpal tunnel syndrome."}, {"stem": "Which branch of the radial nerve pierces supinator, and what does it become?", "opts": ["The superficial branch, becoming the dorsal digital nerves", "The posterior cutaneous nerve, becoming the nerve to anconeus", "The deep branch, becoming the posterior interosseous nerve", "The anterior interosseous nerve, supplying pronator quadratus"], "correct": 2, "explain": "In the cubital fossa the radial nerve splits. The deep (motor) branch pierces supinator and becomes the posterior interosseous nerve. The superficial branch is sensory to the dorsum of the hand lateral to the 4th digit."}, {"stem": "A patient cannot spread or close her fingers against resistance. Which myotome is weak?", "opts": ["C6", "C7", "C8", "T1"], "correct": 3, "explain": "T1 powers finger abduction and adduction (the interossei). C6 is wrist extension, C7 finger extension and elbow extension, and C8 finger flexion."}, {"stem": "Which dermatome is tested at the tip of the middle finger?", "opts": ["C7", "C6", "C8", "T1"], "correct": 0, "explain": "C5 lateral elbow, C6 thumb tip, C7 middle finger tip, C8 little finger tip, T1 medial elbow."}, {"stem": "An office worker who leans on her elbows has medial elbow pain and tingling in the ring and little fingers. Tapping behind the medial epicondyle reproduces the tingling. What is the most likely diagnosis?", "opts": ["Medial epicondylosis", "Ulnar neuropathy at the elbow (cubital tunnel syndrome)", "C8 radiculopathy", "Carpal tunnel syndrome"], "correct": 1, "explain": "Medial elbow pain, ulnar-distribution tingling and a positive Tinel's sign behind the medial epicondyle point to ulnar neuropathy at the elbow. Repeated pressure and prolonged flexion are classic triggers."}, {"stem": "A patient with suspected ulnar neuropathy at the elbow has numbness over the medial forearm as well as the little finger. What does the medial forearm finding suggest?", "opts": ["It confirms an ulnar nerve lesion behind the epicondyle", "It suggests compression in Guyon's canal", "It is typical of pronator syndrome", "It points to the medial cord or C8 root rather than the ulnar nerve"], "correct": 3, "explain": "The medial forearm is supplied by the medial cutaneous nerve of the forearm (medial cord), not the ulnar nerve. The slide's warning is that ulnar sensory loss should be 'NOT MCNFA and NOT C8'."}, {"stem": "A patient with mild ulnar neuritis at the elbow and no weakness asks about treatment. What is the best initial plan?", "opts": ["Education, avoiding pressure on the elbow, and a towel splint to prevent night-time hyperflexion", "Urgent ulnar nerve transposition", "A course of oral gabapentin", "Long-arm cast in full flexion"], "correct": 0, "explain": "Neuritis and mild neuropathy are fully reversible. Avoid leaning on the elbow, fix ergonomics and stop full flexion at night. Medication adds little. Get EMG/NCS and consider neurolysis or transposition if weakness is significant or progressive."}]}, {"id": "wrist-hand", "title": "Wrist & Hand Part 1", "group": "Wrist & Hand", "q": [{"stem": "Which structures pass through the carpal tunnel?", "opts": ["Ulnar nerve, ulnar artery and flexor carpi ulnaris", "Palmaris longus tendon and the palmar branch of the median nerve", "The four FDS tendons, four FDP tendons, flexor pollicis longus and the median nerve", "Flexor carpi radialis and the radial artery"], "correct": 2, "explain": "The carpal tunnel (carpal bones roofed by the flexor retinaculum) holds 9 tendons plus the median nerve. The ulnar nerve and artery, the palmar branch of the median nerve and palmaris longus pass superficial to the retinaculum."}, {"stem": "What type of joint is the carpometacarpal joint of the thumb, and what does it allow?", "opts": ["Saddle joint, which allows opposition", "Plane joint, allowing gliding only", "Hinge joint, allowing flexion and extension", "Condyloid joint, without rotation"], "correct": 0, "explain": "The thumb CMC is a saddle joint, which permits opposition. The CMCs of digits 2–5 are plane joints, the MCPs condyloid, and the IPs hinges."}, {"stem": "A 22-year-old falls on an outstretched hand and is tender in the anatomical snuffbox. The wrist X-ray is normal. What is the correct next step?", "opts": ["Reassure and discharge as a sprain", "Immediate screw fixation", "Physiotherapy for range of motion", "Treat as a scaphoid fracture and get further imaging (CT or MRI)"], "correct": 3, "explain": "Be suspicious: scaphoid fractures can be invisible on early X-rays. Treat as fractured and obtain additional imaging, because delayed diagnosis risks non-union and osteonecrosis."}, {"stem": "Why is the proximal pole of a fractured scaphoid at risk of osteonecrosis?", "opts": ["Its blood supply enters distally and flows retrograde to the proximal pole", "It has no periosteum", "It is supplied only by synovial fluid", "The ulnar artery is torn in most fractures"], "correct": 0, "explain": "The scaphoid has a retrograde blood supply. A fracture can cut the proximal fragment off from it, leading to non-union and osteonecrosis."}, {"stem": "A 30-year-old has a displaced fracture of the proximal pole of the scaphoid. What is the recommended treatment?", "opts": ["Cast until union", "Splint for 2 weeks then mobilize", "Surgical fixation", "No treatment, because it will remodel"], "correct": 2, "explain": "Undisplaced or distal-pole fractures are casted until union. Displaced or proximal-pole fractures need surgery (e.g. screw fixation)."}, {"stem": "On a lateral wrist X-ray after a distal radius fracture, which parameter answers 'Is it crooked?', and what is normal?", "opts": ["Ulnar variance; normally +5 mm", "Volar (palmar) tilt of the articular surface; about 12°", "Radial height; normally 2 mm", "Scapholunate angle; normally 90°"], "correct": 1, "explain": "'Is it crooked?' is the articular angle on the lateral view, normally about 12° of palmar (volar) tilt. A crooked radius alters the distal radioulnar joint and restricts forearm rotation."}, {"stem": "A distal radius fracture healed with an articular step of 2 mm. What long-term complication is most likely?", "opts": ["Ulnar impaction syndrome", "Carpal tunnel syndrome", "Restricted forearm rotation only", "Post-traumatic radiocarpal arthritis"], "correct": 3, "explain": "A joint-surface step of more than 1 mm is associated with post-traumatic arthrosis (pain and stiffness, sometimes treated by fusion). A short radius causes ulnar impaction, and a crooked one restricts rotation."}, {"stem": "What is the correct sequence for closed reduction of a dorsally angulated distal radius fracture?", "opts": ["Analgesia, traction, increase the deformity to unlock the fragments, then correct it, and apply a three-point moulded cast", "Cast first, then traction, then analgesia", "Correct the deformity directly without traction, then splint loosely", "Traction only, then a tight circumferential cast"], "correct": 0, "explain": "Give adequate analgesia (hematoma block, regional or sedation), apply traction, exaggerate the deformity to unlock the fragments, correct it, and hold it with a three-point mould. 'Well moulded doesn't mean tight.'"}, {"stem": "Which hand muscle is supplied by the deep branch of the ulnar nerve rather than the recurrent branch of the median, despite acting on the thumb?", "opts": ["Abductor pollicis brevis", "Opponens pollicis", "Superficial head of flexor pollicis brevis", "Adductor pollicis"], "correct": 3, "explain": "Adductor pollicis (not a true thenar muscle) is supplied by the deep ulnar branch, as is the deep head of FPB. Abductor pollicis brevis, opponens pollicis and the superficial head of FPB are recurrent median."}, {"stem": "A patient has numbness of the lateral 3½ digits that wakes her at night, but sensation over the central palm is normal. Why is the palm spared?", "opts": ["The palm is supplied by the ulnar nerve", "The palmar branch of the median nerve passes superficial to the flexor retinaculum", "The radial nerve supplies the central palm", "The palm is supplied by the C8 dermatome"], "correct": 1, "explain": "In carpal tunnel syndrome the palmar cutaneous branch of the median nerve passes over the flexor retinaculum, so it isn't compressed. The palm is numb in pronator syndrome, where compression is higher up."}]}]</script>
+<script>
+(function(){
+  "use strict";
+  var MODULES = JSON.parse(document.getElementById('data').textContent);
+  var CIRC = 2 * Math.PI * 58;
+
+  var store = { get:function(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+                set:function(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} } };
+  var results = store.get('caseBankResultsWk8-v1') || {};
+
+  var dashboard = document.getElementById('dashboard');
+  var quizview = document.getElementById('quizview');
+  var summaryview = document.getElementById('summaryview');
+  var groupsEl = document.getElementById('groups');
+
+  var state = { modIdx:-1, qIdx:0, correctCount:0, answers:[], locked:false };
+
+  function letterFor(i){ return String.fromCharCode(65+i); }
+
+  function renderDashboard(){
+    groupsEl.innerHTML = '';
+    var groups = [];
+    MODULES.forEach(function(m){
+      var g = groups.filter(function(x){ return x.name===m.group; })[0];
+      if(!g){ g = { name:m.group, mods:[] }; groups.push(g); }
+      g.mods.push(m);
+    });
+    groups.forEach(function(g){
+      var h = document.createElement('div');
+      h.className = 'group-heading';
+      h.innerHTML = '<h2>'+g.name+'</h2><div class="rule"></div><span class="count">'+g.mods.length+' module'+(g.mods.length>1?'s':'')+'</span>';
+      groupsEl.appendChild(h);
+
+      var grid = document.createElement('div');
+      grid.className = 'grid';
+      g.mods.forEach(function(m){
+        var idx = MODULES.indexOf(m);
+        var r = results[m.id];
+        var card = document.createElement('button');
+        card.className = 'card';
+        var badge = '<span class="badge new">Not started</span>';
+        var scoreLine = '';
+        if(r){
+          var pct = Math.round(100*r.score/r.total);
+          badge = pct>=80 ? '<span class="badge done">Completed</span>' : '<span class="badge retry">Review again</span>';
+          scoreLine = '<span class="score">Best <b>'+r.score+' / '+r.total+'</b> ('+pct+'%)</span>';
+        } else {
+          scoreLine = '<span class="score">'+m.q.length+' questions</span>';
+        }
+        card.innerHTML =
+          '<span class="num">'+String(idx+1).padStart(2,'0')+' / 8</span>'+
+          '<h3>'+m.title+'</h3>'+
+          '<div class="card-foot">'+scoreLine+badge+'</div>';
+        card.addEventListener('click', function(){ startModule(idx); });
+        grid.appendChild(card);
+      });
+      groupsEl.appendChild(grid);
+    });
+  }
+
+  function startModule(idx){
+    state.modIdx = idx; state.qIdx = 0; state.correctCount = 0; state.answers = [];
+    dashboard.hidden = true; summaryview.hidden = true; quizview.hidden = false;
+    var m = MODULES[idx];
+    document.getElementById('quizGroup').textContent = m.group;
+    document.getElementById('quizTitle').textContent = m.title;
+    renderQuestion();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  function renderQuestion(){
+    var m = MODULES[state.modIdx];
+    var q = m.q[state.qIdx];
+    state.locked = false;
+    document.getElementById('progressLabel').textContent = 'Question '+(state.qIdx+1)+' of '+m.q.length;
+    document.getElementById('scoreLabel').textContent = 'Score '+state.correctCount+' / '+state.qIdx;
+    document.getElementById('progressFill').style.width = (100*state.qIdx/m.q.length)+'%';
+    document.getElementById('qTag').textContent = 'Case '+(state.qIdx+1);
+    document.getElementById('qStem').textContent = q.stem;
+
+    var optsEl = document.getElementById('opts');
+    optsEl.innerHTML = '';
+    q.opts.forEach(function(optText, i){
+      var b = document.createElement('button');
+      b.className = 'opt';
+      b.innerHTML = '<span class="letter">'+letterFor(i)+'</span><span>'+optText+'</span>';
+      b.addEventListener('click', function(){ selectOption(i); });
+      optsEl.appendChild(b);
+    });
+
+    document.getElementById('explain').hidden = true;
+    var nextBtn = document.getElementById('nextBtn');
+    nextBtn.disabled = true;
+    nextBtn.textContent = (state.qIdx === m.q.length-1) ? 'See results →' : 'Next question →';
+  }
+
+  function selectOption(i){
+    if(state.locked) return;
+    state.locked = true;
+    var m = MODULES[state.modIdx];
+    var q = m.q[state.qIdx];
+    var correct = (i === q.correct);
+    if(correct) state.correctCount++;
+    state.answers.push({ q:q, chosen:i, correct:correct });
+
+    var opts = document.querySelectorAll('#opts .opt');
+    opts.forEach(function(el, idx){
+      el.disabled = true;
+      if(idx === q.correct) el.classList.add('correct');
+      else if(idx === i) el.classList.add('incorrect');
+      else el.classList.add('dim');
+    });
+
+    var explain = document.getElementById('explain');
+    explain.innerHTML = '<b>'+(correct ? 'Correct. ' : 'Not quite. ')+'</b>'+q.explain;
+    explain.hidden = false;
+
+    document.getElementById('scoreLabel').textContent = 'Score '+state.correctCount+' / '+(state.qIdx+1);
+    document.getElementById('nextBtn').disabled = false;
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    var m = MODULES[state.modIdx];
+    if(state.qIdx < m.q.length-1){
+      state.qIdx++;
+      renderQuestion();
+    } else {
+      finishModule();
+    }
+  });
+
+  function finishModule(){
+    var m = MODULES[state.modIdx];
+    document.getElementById('progressFill').style.width = '100%';
+    quizview.hidden = true; summaryview.hidden = false;
+
+    var total = m.q.length, score = state.correctCount;
+    var pct = Math.round(100*score/total);
+    results[m.id] = { score:score, total:total };
+    var prev = store.get('caseBankResultsWk8-v1') || {};
+    var existing = prev[m.id];
+    if(!existing || existing.score < score) prev[m.id] = { score:score, total:total };
+    else results[m.id] = existing;
+    store.set('caseBankResultsWk8-v1', prev);
+    results = prev;
+
+    var offset = CIRC * (1 - pct/100);
+    var ring = document.getElementById('ringFg');
+    ring.style.strokeDasharray = CIRC;
+    ring.style.strokeDashoffset = CIRC;
+    requestAnimationFrame(function(){
+      ring.style.transition = 'stroke-dashoffset .6s ease';
+      ring.style.strokeDashoffset = offset;
+    });
+    document.getElementById('ringPct').textContent = pct+'%';
+    document.getElementById('sumTitle').textContent = m.title;
+    document.getElementById('sumSub').textContent = score+' of '+total+' correct — '+(pct>=80?'strong grasp of this module.':pct>=60?'solid, worth a second pass.':'flag this module for review.');
+
+    var reviewList = document.getElementById('reviewList');
+    reviewList.innerHTML = '';
+    var misses = state.answers.filter(function(a){ return !a.correct; });
+    if(misses.length){
+      var h = document.createElement('div');
+      h.style.textAlign = 'left';
+      h.style.fontFamily = "'JetBrains Mono',monospace";
+      h.style.fontSize = '.72rem';
+      h.style.color = 'var(--ink-soft)';
+      h.style.textTransform = 'uppercase';
+      h.style.letterSpacing = '.08em';
+      h.style.margin = '0 0 4px';
+      h.textContent = 'Missed questions';
+      reviewList.appendChild(h);
+    }
+    misses.forEach(function(a){
+      var item = document.createElement('div');
+      item.className = 'review-item';
+      item.innerHTML = '<span class="mark miss">&#10007;</span><div><b>'+a.q.stem+'</b><br>Correct answer: '+a.q.opts[a.q.correct]+'</div>';
+      reviewList.appendChild(item);
+    });
+
+    document.getElementById('retryBtn').onclick = function(){ startModule(state.modIdx); };
+  }
+
+  document.getElementById('dashBtn').addEventListener('click', backToDashboard);
+  document.getElementById('backBtn').addEventListener('click', backToDashboard);
+  function backToDashboard(){
+    quizview.hidden = true; summaryview.hidden = true; dashboard.hidden = false;
+    renderDashboard();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  renderDashboard();
+})();
+</script>
