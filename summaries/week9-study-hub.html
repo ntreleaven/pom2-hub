@@ -1,0 +1,945 @@
+<title>Week 9 MSK Study Hub</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --paper: #f3f5f4;
+    --paper-raised: #ffffff;
+    --ink: #1b2321;
+    --ink-soft: #4b5651;
+    --ink-faint: #7c8a84;
+    --line: #d8ddda;
+    --line-soft: #e7eae8;
+    --amber: #a8641c;
+    --amber-ink: #7a4712;
+    --amber-wash: #f4e6d3;
+    --teal: #1f6e73;
+    --teal-ink: #17565a;
+    --teal-wash: #dcedee;
+    --good: #2f7a4f;
+    --good-wash: #dcf0e2;
+    --bad: #ae3f34;
+    --bad-wash: #f7ded9;
+    --shadow: 0 1px 2px rgba(27,35,33,0.06), 0 6px 20px -8px rgba(27,35,33,0.12);
+    --radius: 3px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12191a;
+      --paper-raised: #182123;
+      --ink: #e9edea;
+      --ink-soft: #b6c0bb;
+      --ink-faint: #7d8b85;
+      --line: #2c3937;
+      --line-soft: #223030;
+      --amber: #e0a860;
+      --amber-ink: #f0c592;
+      --amber-wash: #33291b;
+      --teal: #6fc2c6;
+      --teal-ink: #9adade;
+      --teal-wash: #16302f;
+      --good: #6fbf8f;
+      --good-wash: #1a3327;
+      --bad: #e2897c;
+      --bad-wash: #3a211d;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12191a;
+    --paper-raised: #182123;
+    --ink: #e9edea;
+    --ink-soft: #b6c0bb;
+    --ink-faint: #7d8b85;
+    --line: #2c3937;
+    --line-soft: #223030;
+    --amber: #e0a860;
+    --amber-ink: #f0c592;
+    --amber-wash: #33291b;
+    --teal: #6fc2c6;
+    --teal-ink: #9adade;
+    --teal-wash: #16302f;
+    --good: #6fbf8f;
+    --good-wash: #1a3327;
+    --bad: #e2897c;
+    --bad-wash: #3a211d;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  h1, h2, h3, h4 { font-family: 'Spectral', Georgia, serif; text-wrap: balance; margin: 0; }
+  a { color: var(--teal-ink); }
+  table { border-collapse: collapse; }
+
+  .shell { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 280px;
+    flex: none;
+    border-right: 1px solid var(--line);
+    background: var(--paper-raised);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 22px 18px 30px;
+  }
+  .sidebar-head { margin-bottom: 4px; }
+  .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--teal-ink);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .sidebar-head h1 { font-size: 21px; font-weight: 600; line-height: 1.25; }
+  .sidebar-head .sub { color: var(--ink-faint); font-size: 13px; margin-top: 6px; }
+
+  .progress-block { margin: 18px 0 20px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-soft); margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+  .progress-track { height: 6px; background: var(--line-soft); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--amber); width: 0%; transition: width .4s ease; }
+
+  .navlist { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-soft); padding-top: 10px; }
+  .navlist li { margin: 0; }
+  .navlist a {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    padding: 7px 6px;
+    border-radius: var(--radius);
+  }
+  .navlist a:hover { background: var(--line-soft); color: var(--ink); }
+  .navlist a.active { color: var(--ink); font-weight: 600; }
+  .navlist .num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-faint); flex: none; width: 16px; }
+  .navlist .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--line); flex: none; }
+  .navlist .dot.done { background: var(--good); }
+
+  .sidebar-foot { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--line-soft); font-size: 12px; color: var(--ink-faint); }
+  .sidebar-foot code { font-family: 'IBM Plex Mono', monospace; background: var(--line-soft); padding: 1px 5px; border-radius: 2px; }
+
+  main { flex: 1; min-width: 0; }
+  .topbar {
+    position: sticky; top: 0; z-index: 5;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 40px;
+    display: none;
+  }
+
+  .hero {
+    padding: 54px 48px 40px;
+    border-bottom: 1px solid var(--line);
+    max-width: 900px;
+  }
+  .hero .kicker { margin-bottom: 14px; }
+  .hero h1 { font-size: 40px; font-weight: 600; letter-spacing: -0.01em; }
+  .hero .dek { color: var(--ink-soft); font-size: 16.5px; margin-top: 14px; max-width: 62ch; }
+  .hero-meta { display: flex; gap: 26px; margin-top: 26px; flex-wrap: wrap; }
+  .hero-meta div { font-size: 13px; color: var(--ink-faint); }
+  .hero-meta strong { display: block; font-family: 'Spectral', serif; font-size: 20px; color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .content { padding: 8px 48px 90px; max-width: 900px; }
+
+  section.module {
+    padding: 46px 0;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 20px;
+  }
+  section.module:last-of-type { border-bottom: none; }
+
+  .module-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 6px; }
+  .module-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--amber); padding-top: 6px; flex: none; width: 24px; }
+  .module-head h2 { font-size: 25px; font-weight: 600; }
+  .module-meta { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 22px 40px; }
+  .tag { font-size: 11.5px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.03em; color: var(--ink-faint); border: 1px solid var(--line); padding: 3px 8px; border-radius: 99px; }
+  .tag.mcc { color: var(--teal-ink); border-color: var(--teal); background: var(--teal-wash); }
+
+  .module-body { margin-left: 40px; }
+  .module-body p { color: var(--ink-soft); margin: 0 0 14px; max-width: 68ch; }
+  .module-body h3 { font-size: 15px; font-weight: 600; margin: 22px 0 10px; color: var(--ink); }
+  .module-body ul, .module-body ol { margin: 0 0 14px; padding-left: 20px; color: var(--ink-soft); max-width: 66ch; }
+  .module-body li { margin-bottom: 6px; }
+  .module-body li strong { color: var(--ink); }
+  .callout {
+    background: var(--amber-wash);
+    border-left: 3px solid var(--amber);
+    padding: 12px 16px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 14px;
+    color: var(--ink);
+    margin: 16px 0;
+    max-width: 64ch;
+  }
+  .callout strong { color: var(--amber-ink); }
+
+  .data-table { width: 100%; margin: 10px 0 20px; font-size: 13.5px; overflow-x: auto; display: block; }
+  .data-table table { width: 100%; min-width: 480px; }
+  .data-table th, .data-table td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  .data-table th { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); font-weight: 500; }
+  .module-body p.flag { font-size: 13px; color: var(--ink-faint); font-style: italic; }
+  .data-table td.num { font-variant-numeric: tabular-nums; }
+
+  .quiz {
+    margin-top: 26px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .quiz-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--line-soft);
+    background: var(--line-soft);
+  }
+  .quiz-head span { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+  .quiz-score { font-size: 12.5px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+  .quiz-body { padding: 18px; }
+  .q { margin-bottom: 20px; }
+  .q:last-child { margin-bottom: 0; }
+  .q-stem { font-size: 14.5px; color: var(--ink); margin-bottom: 10px; font-weight: 500; }
+  .q-opts { display: flex; flex-direction: column; gap: 7px; }
+  .opt {
+    text-align: left;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    padding: 9px 12px;
+    border-radius: var(--radius);
+    font-size: 13.5px;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    gap: 9px;
+  }
+  .opt:hover { border-color: var(--teal); }
+  .opt:focus-visible { outline: 2px solid var(--teal); outline-offset: 1px; }
+  .opt .letter { font-family: 'IBM Plex Mono', monospace; color: var(--ink-faint); flex: none; }
+  .opt.correct { background: var(--good-wash); border-color: var(--good); }
+  .opt.incorrect { background: var(--bad-wash); border-color: var(--bad); }
+  .opt[disabled] { cursor: default; }
+  .q-explain {
+    display: none;
+    margin-top: 9px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    background: var(--teal-wash);
+    border-left: 3px solid var(--teal);
+    padding: 9px 12px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .q-explain.shown { display: block; }
+  .q-explain strong { color: var(--teal-ink); }
+
+  .colophon {
+    max-width: 900px;
+    padding: 34px 48px 70px;
+    color: var(--ink-faint);
+    font-size: 12.5px;
+    border-top: 1px solid var(--line);
+  }
+  .colophon a { color: var(--ink-soft); }
+
+  .theme-toggle {
+    position: fixed; bottom: 18px; right: 18px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    color: var(--ink-soft);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10;
+  }
+
+  .mobile-nav-toggle { display: none; }
+
+  @media (max-width: 880px) {
+    .sidebar { position: fixed; left: -300px; top: 0; z-index: 20; transition: left .25s ease; box-shadow: var(--shadow); }
+    .sidebar.open { left: 0; }
+    .topbar { display: flex; align-items: center; gap: 12px; padding: 12px 20px; }
+    .mobile-nav-toggle {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: var(--radius);
+      border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace; font-size: 13px; cursor: pointer;
+    }
+    .topbar strong { font-family: 'Spectral', serif; font-size: 15px; }
+    .hero { padding: 30px 20px 28px; }
+    .hero h1 { font-size: 30px; }
+    .content { padding: 8px 20px 70px; }
+    .module-meta, .module-body { margin-left: 0; }
+    .module-head { gap: 10px; }
+    .colophon { padding: 26px 20px 60px; }
+  }
+</style>
+
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <span class="kicker">PoM2 &middot; Musculoskeletal Medicine</span>
+      <h1>Week&nbsp;9 &mdash; Hand Nerves, UE Radiology, Hip, Thigh, Knee &amp; Leg</h1>
+      <div class="sub">Musculoskeletal Block</div>
+    </div>
+
+    <div class="progress-block">
+      <div class="progress-label"><span>Quiz progress</span><span id="progress-count">0 / 32</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+
+    <ul class="navlist" id="navlist"></ul>
+
+    <div class="sidebar-foot">
+      Built from this week\'s Elentra slides, Mini-text notes and learning objectives (the same material as the week 9 NotebookLM video scripts). Written for review, not a substitute for the modules &mdash; cross-check anything that doesn\'t match the lecture.
+    </div>
+  </nav>
+
+  <main>
+    <div class="topbar">
+      <button class="mobile-nav-toggle" id="navToggle" aria-label="Toggle module list">&#9776;</button>
+      <strong>Week 9 &mdash; Musculoskeletal Medicine</strong>
+    </div>
+
+    <header class="hero">
+      <span class="kicker">Study Hub</span>
+      <h1>Musculoskeletal Medicine</h1>
+      <p class="dek">Eight modules that finish the hand and move into the lower limb: the nerves of the hand with carpal tunnel and Guyon&#39;s canal, a systematic read of upper limb X-rays, the hip joint and hip fractures, the gluteal region and thigh, hip pain, the knee (ligaments, menisci, anterior knee pain) and the leg. Read a section, then clear its quiz before moving on.</p>
+      <div class="hero-meta">
+        <div><strong>8</strong>modules</div>
+        <div><strong>32</strong>quiz questions</div>
+        <div><strong>~8h</strong>module time on Elentra</div>
+      </div>
+    </header>
+
+    <div class="content" id="content"></div>
+
+    <footer class="colophon">
+      Sources: Week 9 Elentra digital modules (Drs. Charys Martin, Jordan VanderEnde, Caitlin Cassidy, Ken Faber and V. Kalia) &mdash; the Detailed slides, Mini-text notes, the Upper Limb Radiology module PDF and each module\'s learning objectives &mdash; condensed and rewritten in my own words. Content greyed out on Dr. Martin\'s slides (fibularis tertius) is marked as nice to know. Quiz stems and explanations are my own, not the course\'s questions. If anything here doesn\'t match what a professor said, trust the lecture.
+    </footer>
+  </main>
+</div>
+
+<button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle color theme">&#9788;</button>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var stored = null;
+  try { stored = localStorage.getItem('msk-hub-theme'); } catch(e) {}
+  if (stored) root.setAttribute('data-theme', stored);
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var current = root.getAttribute('data-theme');
+    var next = current === 'dark' ? 'light' : (current === 'light' ? 'dark' : ((window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'light' : 'dark'));
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('msk-hub-theme', next); } catch(e) {}
+  });
+
+  document.getElementById('navToggle').addEventListener('click', function(){
+    document.getElementById('sidebar').classList.toggle('open');
+  });
+})();
+</script>
+
+<script>
+const MODULES = [
+{
+  "id": "wrist-hand-2",
+  "title": "Wrist & Hand Part 2: Nerves of the Hand & Wrist Neuropathies",
+  "instructor": "Elentra module 01",
+  "duration": "~51 min",
+  "tags": [{"label": "Bread-and-butter neuropathy", "cls": "mcc"}],
+  "body": `
+<p>Part 2 maps the nerves of the hand, then uses that map for the two wrist neuropathies: <strong>carpal tunnel syndrome</strong> and <strong>ulnar neuropathy in Guyon's canal</strong>. The key detail is which branches leave <em>before</em> the wrist.</p>
+<h3>Nerve supply of the hand</h3>
+<div class="data-table"><table>
+<tr><th>Nerve</th><th>Branch</th><th>Supplies</th></tr>
+<tr><td rowspan="3">Median</td><td>Palmar cutaneous (leaves <strong>above</strong> the tunnel)</td><td>Skin of the central palm</td></tr>
+<tr><td>Recurrent (superficial, just past the tunnel)</td><td><strong>Thenar muscles</strong>: OP, APB, superficial FPB</td></tr>
+<tr><td>Common and proper palmar digital</td><td>Lumbricals 1&ndash;2; skin of the lateral 3&frac12; digits (palmar + nail beds)</td></tr>
+<tr><td rowspan="3">Ulnar</td><td>Palmar and dorsal cutaneous (leave above the wrist)</td><td>Medial palm; medial dorsal hand</td></tr>
+<tr><td>Superficial (after Guyon's canal)</td><td>Skin of the medial 1&frac12; digits</td></tr>
+<tr><td>Deep</td><td><strong>Hypothenars, lumbricals 3&ndash;4, all interossei, adductor pollicis, deep FPB</strong></td></tr>
+<tr><td>Radial</td><td>Superficial</td><td>Dorsolateral hand only. No hand muscles</td></tr>
+</table></div>
+<ul>
+<li><strong>Median nerve at the wrist</strong> (laceration, carpal tunnel): thenar wasting, loss of opposition, numb thumb and the adjacent 2&frac12; fingers. A shallow thenar cut can sever the recurrent branch alone. <strong>At the elbow</strong>: add the long finger flexors, giving the <strong>"hand of benediction"</strong>.</li>
+<li><strong>Ulnar nerve, proximal</strong>: claw hand, weak flexion of the fingertips of digits 4&ndash;5, and radial drift. <strong>At Guyon's canal</strong>: possible clawing, but finger flexion is kept and there is no radial deviation.</li>
+<li><strong>Erb-Duchenne (C5&ndash;C6)</strong> gives the "waiter's tip" posture. <strong>Klumpke (C8&ndash;T1)</strong> gives a claw hand.</li>
+</ul>
+<div class="callout"><strong>Carpal tunnel:</strong> carpal-bone floor, flexor retinaculum roof. Inside: FPL + 4 FDS + 4 FDP + the <strong>median nerve</strong>. Outside: the ulnar nerve and artery, FCR, palmaris longus, and the palmar cutaneous branch of the median nerve.</div>
+<h3>Carpal tunnel syndrome</h3>
+<ul>
+<li><strong>Causes:</strong> extrinsic (fracture, flexor tenosynovitis, ganglia, inflammation, <strong>pregnancy</strong>, acromegaly), intrinsic (<strong>diabetes</strong>, amyloidosis, alcohol), and very often idiopathic.</li>
+<li><strong>Features:</strong> median-territory numbness and tingling, <strong>worse at night</strong> and with a flexed or extended wrist (driving, holding a phone), possible <strong>APB weakness</strong>, <strong>normal median forearm muscles</strong>, perhaps positive Tinel's or Phalen's signs. <strong>The central palm is spared.</strong></li>
+<li><strong>Differential:</strong> mainly <strong>C6 radiculopathy</strong>, plus tendinopathy and thumb CMC OA. <strong>EMG/NCS</strong> confirms the diagnosis and shows severity.</li>
+<li><strong>Management:</strong> education (reversible early), a <strong>rigid night splint</strong>, avoiding vibration and aggravating positions, a <strong>steroid injection</strong>, then <strong>carpal tunnel release</strong>.</li>
+</ul>
+<h3>Ulnar neuropathy at the wrist</h3>
+<p>Guyon's canal (pisiform + hook of hamate + ligament) carries the ulnar nerve and artery. Causes are fracture, ganglion, inflammation and compression (<strong>"handlebar neuropathy"</strong>). It gives <strong>hypoesthesia of the medial 1&frac12; digits and weak intrinsic muscles</strong>. The differential is mainly <strong>C8 radiculopathy</strong> or ulnar neuropathy at the elbow, and EMG/NCS tells them apart. Treat by relieving pressure (padded gloves, different handlebars), then a <strong>Guyon's release</strong>.</p>
+`,
+  "quiz": [
+    {"stem": "A 45-year-old pregnant woman has numbness of the thumb, index and middle fingers that wakes her at night. Sensation over the central palm is normal. Why is the palm spared?", "opts": ["The palm is supplied by the ulnar nerve", "The palmar cutaneous branch of the median nerve leaves before the carpal tunnel", "The palm is supplied by the C8 dermatome", "Night symptoms never involve the palm"], "correct": 1, "explain": "The palmar cutaneous branch of the median nerve branches proximal to the carpal tunnel and passes over the flexor retinaculum, so it isn't compressed in carpal tunnel syndrome."},
+    {"stem": "What is the main item on the differential for carpal tunnel syndrome?", "opts": ["C8 radiculopathy", "Ulnar neuropathy at the elbow", "C6 radiculopathy", "Lateral epicondylosis"], "correct": 2, "explain": "C6 radiculopathy can also give thumb and index numbness. EMG/NCS helps distinguish it from CTS. For ulnar neuropathy at the wrist, the main differential is C8."},
+    {"stem": "Which muscles does the deep branch of the ulnar nerve supply?", "opts": ["Abductor pollicis brevis and opponens pollicis", "Lumbricals 1 and 2", "Flexor carpi radialis and palmaris longus", "Hypothenar muscles, lumbricals 3–4, all interossei and adductor pollicis"], "correct": 3, "explain": "The deep ulnar branch supplies most intrinsic hand muscles: the hypothenars, the medial two lumbricals, all interossei, adductor pollicis and the deep head of FPB. The thenar muscles are recurrent median."},
+    {"stem": "A cyclist has numbness of the medial 1½ digits and weak intrinsic hand muscles, but normal fingertip flexion of the ring and little fingers. What is the next step after relieving the handlebar pressure?", "opts": ["EMG/NCS to separate a wrist lesion from an elbow lesion or C8", "Carpal tunnel release", "Urgent ulnar nerve transposition at the elbow", "Long-arm cast for 6 weeks"], "correct": 0, "explain": "This is ulnar neuropathy at the wrist (Guyon's canal). EMG/NCS distinguishes it from an elbow lesion or C8 radiculopathy and shows severity. A Guyon's release is the surgical option if needed."}
+  ]
+},
+{
+  "id": "ue-radiology",
+  "title": "Upper Extremity Radiology",
+  "instructor": "Elentra module 02",
+  "duration": "~35 min",
+  "tags": [{"label": "Systematic X-ray read", "cls": "mcc"}],
+  "body": `
+<p>Dr. Kalia's module has one objective: recognize the bones and joints of the upper limb on plain films. That needs a <strong>systematic read</strong> and a few <strong>alignment lines</strong>.</p>
+<h3>Every film, every time</h3>
+<ol>
+<li><strong>Skeletal maturity</strong>: open physis (lucent line) or fused?</li>
+<li><strong>Bone</strong>: cortex, medullary cavity, density.</li>
+<li><strong>Alignment</strong>.</li>
+<li><strong>Joints</strong>: narrowing, inflammation, degeneration.</li>
+<li><strong>Soft tissues</strong>: e.g. a lipoma on a "normal" elbow film.</li>
+</ol>
+<p>Categorize pathology with <strong>TIMS-C</strong>: Trauma/Tumour, Infection/Inflammatory/Idiopathic, Metabolic/Malignancy, Systemic/Senile (OA), Congenital. <strong>OA on X-ray = joint space narrowing + subchondral sclerosis + marginal osteophytes.</strong></p>
+<h3>Shoulder: AP, axillary, Y-view</h3>
+<ul>
+<li><strong>AP:</strong> the <strong>labrum is fibrocartilage and invisible</strong>. The anatomical and surgical necks are reference lines for describing fractures.</li>
+<li><strong>Axillary:</strong> the <strong>coracoid and lesser tuberosity are anterior</strong> (use them to orient). The AC joint is seen here. Don't mistake an <strong>os acromiale</strong> for a fracture.</li>
+<li><strong>Y-view:</strong> the Y is formed by the coracoid (anterior), the spine/acromion (posterior) and the body (vertical). The humeral head should be <strong>centred on the glenoid</strong>. Anterior (subcoracoid) or posterior displacement means dislocation. Subluxation is partial contact.</li>
+</ul>
+<h3>Elbow: AP and lateral</h3>
+<ul>
+<li><strong>AP:</strong> orient by the <strong>larger medial epicondyle</strong> and the medial ulna. From medial to lateral: medial epicondyle, trochlea, capitellum, lateral epicondyle. The <strong>sublime tubercle</strong> is where the UCL attaches.</li>
+<li><strong>Lateral:</strong> humeral shaft, then the proximal ulna (olecranon, trochlear notch, coronoid), then the radius (head, neck, tuberosity), then the fat pads.</li>
+</ul>
+<div class="callout"><strong>The posterior fat pad sign is always abnormal</strong> (effusion). It points to a <strong>supracondylar fracture in a child</strong> or a <strong>radial head or neck fracture in an adult</strong>. A small anterior fat pad is normal.</div>
+<ul>
+<li><strong>Anterior humeral line</strong> (lateral view): should cross the <strong>centre of the capitellum</strong>. If it passes anteriorly in a child, think supracondylar fracture.</li>
+<li><strong>Radiocapitellar line</strong>: the radial shaft axis should hit the centre of the capitellum on <strong>every view</strong>. If it misses, think radial head dislocation.</li>
+</ul>
+<h3>Wrist: AP and lateral</h3>
+<ul>
+<li>Distal radius and ulna (DRUJ), the radial and ulnar styloids, the radiocarpal joint. The <strong>TFCC is invisible</strong>, but calcification there hints at TFCC pathology.</li>
+<li>Carpals, <strong>radial to ulnar</strong>: scaphoid, lunate, triquetrum, pisiform; trapezium, trapezoid, capitate, hamate. On the lateral, find <strong>Lister's tubercle</strong>. The AP is better for carpal fractures because the bones overlap on the lateral.</li>
+<li><strong>Arcs of Gilula:</strong> (1) proximal surface of the proximal row, (2) distal surface of the proximal row, (3) proximal surface of the distal row. A break or step-off means carpal injury or instability.</li>
+</ul>
+`,
+  "quiz": [
+    {"stem": "A 6-year-old falls on an outstretched arm. The lateral elbow X-ray shows a visible posterior fat pad, and the anterior humeral line passes through the anterior third of the capitellum. What is the most likely injury?", "opts": ["Radial head fracture", "Supracondylar fracture of the humerus", "Olecranon bursitis", "Normal variant in a child"], "correct": 1, "explain": "A posterior fat pad is always abnormal. In an immature skeleton, with the anterior humeral line missing the centre of the capitellum, a supracondylar fracture is most likely. In adults the usual cause is a radial head or neck fracture."},
+    {"stem": "On a shoulder Y-view, which finding indicates an anterior dislocation?", "opts": ["The humeral head centred over the glenoid", "The humeral head displaced posteriorly, away from the coracoid", "Widening of the acromioclavicular joint", "The humeral head displaced anteriorly into a subcoracoid position"], "correct": 3, "explain": "On a normal Y-view the humeral head overlaps the glenoid at the centre of the Y. Anterior displacement into a subcoracoid position means anterior dislocation; posterior displacement means posterior dislocation."},
+    {"stem": "Which three radiographic findings define osteoarthritis?", "opts": ["Joint space narrowing, subchondral sclerosis and marginal osteophytes", "Periarticular osteopenia, erosions and symmetric narrowing", "Lytic lesion, thinned cortex and expansion", "Fat pad elevation, a lucent line and soft tissue swelling"], "correct": 0, "explain": "OA shows joint space narrowing (radiolucent cartilage lost), subchondral sclerosis (denser but not stronger bone) and marginal osteophytes. Severity is graded mild, moderate or severe."},
+    {"stem": "When assessing carpal alignment on an AP wrist X-ray, what should you trace?", "opts": ["The anterior humeral line", "Lister's tubercle on the dorsal radius", "The three arcs of Gilula", "The radiocapitellar line"], "correct": 2, "explain": "The three Gilula arcs trace the proximal and distal surfaces of the proximal row and the proximal surface of the distal row. Any break or step-off suggests carpal injury or instability."}
+  ]
+},
+{
+  "id": "hip-joint",
+  "title": "Clinical Approach to the Hip Joint & Hip Fractures",
+  "instructor": "Elentra module 03",
+  "duration": "~56 min",
+  "tags": [{"label": "High yield: femoral head blood supply", "cls": "mcc"}],
+  "body": `
+<p>The hip anatomy explains the management of the most consequential fracture in older adults. The key fact: <strong>the femoral head depends on the medial circumflex femoral artery</strong>.</p>
+<h3>Osteology</h3>
+<p>The hip bone is the <strong>ilium + ischium + pubis</strong>, which all meet at the acetabulum.</p>
+<ul>
+<li><strong>Iliac crest top = L4</strong> (lumbar puncture). ASIS, AIIS, PSIS, PIIS.</li>
+<li><strong>Greater and lesser sciatic notches</strong> become foramina via the sacrotuberous and sacrospinous ligaments.</li>
+<li><strong>Ischial tuberosity</strong> (sitting, hamstring origin). <strong>Pubic tubercle</strong> (inguinal ligament). <strong>Obturator foramen</strong> (obturator nerve).</li>
+<li><strong>Femur:</strong> head, neck, greater and lesser trochanters, intertrochanteric line and crest, gluteal tuberosity, linea aspera, condyles.</li>
+<li><strong>Tibia:</strong> the plateau, the tibial tuberosity, Gerdy's tubercle (IT band), the soleal line. The fibula bears no weight.</li>
+</ul>
+<h3>Stability: hip vs glenohumeral joint</h3>
+<div class="data-table"><table>
+<tr><th></th><th>Hip</th><th>Glenohumeral</th></tr>
+<tr><td>Trade-off</td><td>Gives up some mobility <strong>for stability</strong></td><td>Gives up stability <strong>for mobility</strong></td></tr>
+<tr><td>Bony fit</td><td>&gt;50% of the head in a deep acetabulum + labrum</td><td>Shallow glenoid + labrum</td></tr>
+<tr><td>Ligaments</td><td><strong>Iliofemoral "Y of Bigelow"</strong> (strongest in the body, limits extension), pubofemoral (limits abduction), ischiofemoral</td><td>Weaker; relies on the rotator cuff</td></tr>
+</table></div>
+<p>The capsule attaches to the intertrochanteric line in front but <strong>not to the femur behind</strong>, and its spiral fibres screw the head in on extension. The <strong>ligament of the head of the femur adds no strength</strong>; it carries a small artery.</p>
+<h3>Blood supply of the femoral head</h3>
+<ul>
+<li>Mostly the <strong>medial (the most important) and lateral circumflex femoral arteries</strong> via retinacular branches, with collaterals from the inferior gluteal artery.</li>
+<li>The <strong>artery of the ligament of the head</strong> matters in children but is minor in adults.</li>
+</ul>
+<div class="callout"><strong>Displaced femoral neck fracture</strong> tears the circumflex supply, leaving <strong>avascular necrosis</strong> of the head. It is common in older women with osteoporosis. A <strong>posterior hip dislocation</strong> gives a shortened, medially rotated limb and puts the <strong>sciatic nerve</strong> at risk.</div>
+<h3>Hip fracture: a five-step approach</h3>
+<ol>
+<li><strong>Is it a hip fracture?</strong> Fall, groin or lateral thigh pain, can't bear weight. The leg is <strong>shortened, externally rotated and abducted</strong>. Keep high suspicion in the elderly even with minimal trauma. Get an <strong>AP pelvis + hip X-ray</strong>, then <strong>CT if it's negative but suspicion stays high</strong>. Types: femoral neck (subcapital), intertrochanteric, subtrochanteric.</li>
+<li><strong>Is the patient stable?</strong> ABCs in high-energy trauma. Pelvic, vascular and nerve injury: check distal pulses and the sciatic nerve.</li>
+<li><strong>Why did it happen?</strong> Why did they fall (syncope, illness, arrhythmia: CBC, electrolytes, troponin, ECG, chest X-ray)? Why did the bone break (pathologic fracture; a fragility fracture means osteoporosis)?</li>
+<li><strong>Plan:</strong> almost all are treated surgically, <strong>within 24&ndash;48 h</strong>. Femoral neck fractures get screws if non-displaced, or <strong>hemi- or total arthroplasty</strong> (always arthroplasty if displaced). Intertrochanteric and subtrochanteric fractures get an <strong>intramedullary nail</strong>.</li>
+<li><strong>After surgery:</strong> VTE prophylaxis (LMWH 14&ndash;30 days); watch for pneumonia, delirium, pressure sores and UTI; mobilize early; prevent falls; treat osteoporosis (vitamin D, calcium, antiresorptives).</li>
+</ol>
+`,
+  "quiz": [
+    {"stem": "Which artery supplies most of the blood to the adult femoral head?", "opts": ["Artery of the ligament of the head of the femur", "Superior gluteal artery", "Medial circumflex femoral artery", "Obturator artery"], "correct": 2, "explain": "The medial circumflex femoral artery (via retinacular branches) is the main supply. The artery of the ligament of the head matters in children but is minor in adults, which is why displaced neck fractures risk AVN."},
+    {"stem": "An 82-year-old falls and can't bear weight. Her leg is shortened and externally rotated, but the AP pelvis and hip X-ray is normal. What is the next step?", "opts": ["CT of the hip", "Discharge with analgesia and physiotherapy", "Repeat X-ray in 6 weeks", "MRI of the lumbar spine"], "correct": 0, "explain": "If the X-ray is negative but suspicion of hip fracture remains high, consider CT. Keep a high index of suspicion in the elderly even when pain or trauma is minimal."},
+    {"stem": "Which ligament is the strongest in the body and limits hip extension?", "opts": ["Pubofemoral ligament", "Ischiofemoral ligament", "Ligament of the head of the femur", "Iliofemoral ligament"], "correct": 3, "explain": "The iliofemoral 'Y ligament of Bigelow' reinforces the hip anteriorly and superiorly, is the strongest ligament in the body, and limits extension. The pubofemoral ligament limits abduction."},
+    {"stem": "A 79-year-old has a displaced femoral neck fracture. What is the usual operative treatment?", "opts": ["Intramedullary nail", "Hemiarthroplasty or total hip arthroplasty", "Non-operative bed rest for 6 weeks", "Cast immobilization"], "correct": 1, "explain": "Displaced femoral neck fractures are treated with arthroplasty (hemi or total) because the femoral head's blood supply is compromised. Intertrochanteric and subtrochanteric fractures get an intramedullary nail."}
+  ]
+},
+{
+  "id": "gluteal-thigh",
+  "title": "Anatomy of the Gluteal Region & Thigh",
+  "instructor": "Elentra module 04",
+  "duration": "~112 min",
+  "tags": [{"label": "Trendelenburg + femoral triangle", "cls": "mcc"}],
+  "body": `
+<p>A big anatomy module, organized by one rule: <strong>each thigh compartment has one job and one nerve</strong>. Piriformis is the landmark in the buttock.</p>
+<h3>Gluteal region</h3>
+<ul>
+<li>The <strong>sacrotuberous and sacrospinous ligaments</strong> create the greater sciatic foramen (pelvis &rarr; buttock) and the lesser sciatic foramen (buttock &rarr; perineum). The pudendal nerve, internal pudendal vessels and nerve to obturator internus pass through both.</li>
+<li><strong>Only the superior gluteal nerve and artery exit above piriformis.</strong> The inferior gluteal nerve and artery, the <strong>sciatic nerve (L4&ndash;S3)</strong>, the pudendal nerve and the posterior cutaneous nerve of the thigh all exit below.</li>
+</ul>
+<div class="data-table"><table>
+<tr><th>Muscle</th><th>Nerve</th><th>Action</th></tr>
+<tr><td>Gluteus maximus</td><td>Inferior gluteal (S1)</td><td>Hip extension; rising from a chair</td></tr>
+<tr><td>Gluteus medius + minimus</td><td>Superior gluteal</td><td><strong>Abduct + medially rotate; stabilize gait</strong></td></tr>
+<tr><td>Tensor fasciae latae</td><td>Superior gluteal (L5)</td><td>Flexes hip; tenses the IT band</td></tr>
+<tr><td>Piriformis, obturator internus, gemelli, quadratus femoris</td><td>Own small nerves</td><td>Lateral rotation; hold the head in the socket</td></tr>
+</table></div>
+<div class="callout"><strong>Trendelenburg:</strong> a superior gluteal nerve injury (e.g. hip replacement) weakens gluteus medius and minimus. On single-leg stance the <strong>pelvis drops on the unsupported side</strong>, so the <strong>weakness is on the stance side</strong>. The patient lurches the trunk toward that side to clear the swing foot.</div>
+<p><strong>IM injections go in the upper outer quadrant</strong> to avoid the sciatic nerve. Sciatic injury comes from a herniated disc, hip surgery, piriformis syndrome or a misplaced injection.</p>
+<h3>Thigh compartments</h3>
+<div class="data-table"><table>
+<tr><th>Compartment</th><th>Job</th><th>Nerve</th><th>Muscles</th></tr>
+<tr><td>Anterior</td><td>Flex hip, extend knee</td><td><strong>Femoral (L2&ndash;L4)</strong></td><td>Iliopsoas (&rarr; lesser trochanter), pectineus, sartorius, quadriceps (&rarr; tibial tuberosity; rectus femoris also flexes the hip)</td></tr>
+<tr><td>Medial</td><td>Adduct hip</td><td><strong>Obturator (L2&ndash;L4)</strong></td><td>Adductors longus, brevis, magnus (hamstring part = tibial nerve), gracilis, obturator externus</td></tr>
+<tr><td>Posterior</td><td>Extend hip, flex knee</td><td><strong>Sciatic</strong></td><td>Biceps femoris (short head = <strong>common peroneal</strong>), semitendinosus, semimembranosus</td></tr>
+</table></div>
+<ul>
+<li><strong>Pes anserinus = Sartorius, Gracilis, semiTendinosus.</strong> The <strong>patellar reflex tests the femoral nerve and L3&ndash;L4</strong>. The saphenous nerve (from the femoral nerve) supplies the medial leg.</li>
+<li><strong>Injuries:</strong> a <strong>hamstring strain</strong> or ischial tuberosity avulsion (the hurdler); a <strong>groin pull</strong> (adductors, treated with RICE and NSAIDs); an <strong>ASIS avulsion</strong> in teens.</li>
+<li><strong>Popliteal fossa:</strong> biceps femoris, semimembranosus/semitendinosus, and the gastrocnemius heads form the borders. From deep to superficial: <strong>artery, vein, nerve</strong>. A popliteal aneurysm is the commonest peripheral aneurysm.</li>
+</ul>
+<h3>Vessels, lymph and the femoral triangle</h3>
+<ul>
+<li>The <strong>femoral artery</strong> (pulse at the mid-inguinal point) gives the <strong>profunda femoris</strong>, which gives the medial and lateral circumflex arteries and the <strong>perforating branches</strong>. The femoral artery then runs through the <strong>adductor canal</strong> and <strong>adductor hiatus</strong> to become the <strong>popliteal artery</strong>.</li>
+<li><strong>Collaterals:</strong> the <strong>cruciate anastomosis</strong> around the hip (inferior gluteal + both circumflexes + the first perforator) and the <strong>genicular anastomosis</strong> around the knee.</li>
+<li>The <strong>great saphenous vein</strong> runs superficial to the fascia lata and through the saphenous opening into the femoral vein; it is used for bypass grafts. The <strong>superficial inguinal nodes</strong> drain the thigh, medial leg, perineum and abdominal wall below the umbilicus.</li>
+</ul>
+<div class="callout"><strong>Femoral triangle:</strong> inguinal ligament, sartorius and adductor longus. Lateral to medial: <strong>NAVEL</strong> (Nerve, Artery, Vein, Empty canal, Lymphatics). The femoral sheath encloses the artery, vein and canal, but <strong>not the nerve</strong>. A bulge below the inguinal ligament means a <strong>femoral hernia</strong> through the femoral ring.</div>
+`,
+  "quiz": [
+    {"stem": "Two weeks after a right total hip replacement, a patient's pelvis drops on the left whenever she stands on her right leg. Which nerve is injured?", "opts": ["Left superior gluteal nerve", "Right inferior gluteal nerve", "Right superior gluteal nerve", "Right sciatic nerve"], "correct": 2, "explain": "The stance-side gluteus medius and minimus normally keep the pelvis level. A drop on the unsupported (left) side means the right abductors, supplied by the right superior gluteal nerve, are weak."},
+    {"stem": "Which structure is the only one to leave the pelvis through the greater sciatic foramen above piriformis?", "opts": ["Sciatic nerve", "Pudendal nerve", "Inferior gluteal nerve", "Superior gluteal nerve and artery"], "correct": 3, "explain": "Piriformis is the landmark. Only the superior gluteal nerve and artery pass above it; the inferior gluteal vessels and nerve, the sciatic, pudendal and posterior femoral cutaneous nerves pass below."},
+    {"stem": "What are the contents of the femoral triangle, from lateral to medial?", "opts": ["Femoral nerve, artery, vein, canal (empty space) and lymphatics", "Femoral vein, artery, nerve, lymphatics", "Femoral artery, nerve, vein, canal", "Obturator nerve, femoral artery, femoral vein"], "correct": 0, "explain": "NAVEL: Nerve, Artery, Vein, Empty space (femoral canal), Lymphatics. The femoral sheath holds the artery, vein and canal, but not the nerve."},
+    {"stem": "Which part of the hamstrings is supplied by the common peroneal (fibular) division of the sciatic nerve?", "opts": ["Long head of biceps femoris", "Short head of biceps femoris", "Semitendinosus", "Semimembranosus"], "correct": 1, "explain": "All hamstrings are supplied by the tibial division except the short head of biceps femoris (from the linea aspera), which is supplied by the common peroneal division."}
+  ]
+},
+{
+  "id": "hip-pain",
+  "title": "Clinical Approach to Hip Pain",
+  "instructor": "Elentra module 05",
+  "duration": "~26 min",
+  "tags": [{"label": "Where does 'hip' mean?", "cls": "mcc"}],
+  "body": `
+<p>The first move in every hip pain visit is to <strong>clarify where the patient means</strong>. True intra-articular hip pain is <strong>anterior, in the groin</strong>. Patients often point to the lateral buttock or greater trochanter, or to the buttock itself.</p>
+<h3>Anterior / groin: usually intra-articular</h3>
+<p><strong>Differential:</strong> OA (or RA or septic arthritis), labral tear, avascular necrosis, iliopsoas tendinopathy.</p>
+<ul>
+<li><strong>Hip OA</strong> (primary in older adults, secondary after trauma in younger people):
+  <ul>
+    <li>Groin pain with the <strong>"C sign"</strong>, worse with activity, night pain.</li>
+    <li><strong>Morning stiffness under 30 minutes</strong>, and stiffness after sitting.</li>
+    <li>Crepitus and locking, difficulty getting in and out of the car, an antalgic gait.</li>
+    <li>Exam: <strong>internal rotation is lost first</strong>; FABER, Stinchfield and FADDIR tests.</li>
+  </ul>
+</li>
+<li><strong>OA is a clinical diagnosis confirmed by X-ray</strong>. X-ray changes don't always match symptoms. MRI and CT are only for secondary causes or surgical planning.</li>
+<li><strong>Treatment:</strong> education, exercise and physio, weight management, Tai Chi, a cane, functional supports; then NSAIDs, acetaminophen, duloxetine, an image-guided intra-articular injection; then replacement.</li>
+<li><strong>Labral tear:</strong> active females; vague groin pain with clicking, catching or locking; FABER/FADIR positive; <strong>MR arthrogram is the study of choice</strong>; arthroscopic debridement or repair.</li>
+<li><strong>Osteonecrosis (AVN):</strong> loss of blood supply to the femoral head. Causes: <strong>trauma, steroids, alcohol, lupus, sickle cell disease, radiation</strong>.</li>
+</ul>
+<h3>Lateral</h3>
+<ul>
+<li><strong>Greater trochanteric bursitis:</strong> female &gt; male; ITB friction over the GT. <strong>Point tenderness over the GT</strong>, can't lie on that side, no swelling; Ober's test positive. Treat with ITB stretching, abductor strengthening, PRICE, NSAIDs and an injection.</li>
+<li><strong>Greater trochanteric pain syndrome (GTPS):</strong> bursitis is only half the story; there is usually <strong>gluteus medius and minimus tendinopathy</strong>. It is more chronic and recalcitrant, and <strong>single leg stance is painful</strong>. Manage load and weight; adjuncts like shockwave have weak evidence.</li>
+</ul>
+<div class="callout"><strong>"Can you put your socks on?"</strong> Putting socks on while seated is basically a FABER. That hurts in <strong>hip OA</strong> but is fine in <strong>GTPS</strong>, where hip range of motion is relatively pain-free. Putting them on standing loads the abductors, so that is painful in GTPS.</div>
+<h3>Posterior (buttock)</h3>
+<ul>
+<li><strong>Piriformis syndrome:</strong> a buttock strain or tendinopathy, sometimes with <strong>sciatic irritation</strong>. Causes: trauma, prolonged sitting, anatomic variants. Worse getting out of bed, with sitting and with hip movement. Tests: <strong>Pace, Beatty, FAIR, Freiberg</strong>. EMG if nerve involvement is suspected. Treat with piriformis stretches, deep massage, NSAIDs and a US-guided injection.</li>
+<li><strong>Snapping hip:</strong> if it isn't painful, ignore it. If it is, treat the structure at that site (deep: labrum or loose body; anterior: iliopsoas; lateral: ITB or gluteus maximus over the GT; posterior: hamstrings).</li>
+</ul>
+<p class="flag">⚠ SI joint dysfunction is in the objectives but not on the slides; check it against the course.</p>
+`,
+  "quiz": [
+    {"stem": "A 65-year-old has 2 years of groin pain, loss of internal rotation and a positive FABER. He asks for an MRI to confirm hip arthritis. What should you do?", "opts": ["Order an MRI, the best test for arthritis", "Order a CT and an X-ray together", "Order an ultrasound, which is faster", "Start with a plain X-ray"], "correct": 3, "explain": "Hip OA is a clinical diagnosis, confirmed by X-ray. MRI adds a wait and no diagnostic benefit, CT adds radiation, and ultrasound is poor for a deep joint."},
+    {"stem": "A 71-year-old woman has lateral hip pain, point tenderness over the greater trochanter, and no trouble putting her socks on while seated. Which diagnosis is most likely?", "opts": ["Greater trochanteric pain syndrome", "Hip osteoarthritis", "Labral tear", "Avascular necrosis"], "correct": 0, "explain": "Putting socks on while seated is essentially a FABER, which hurts in hip OA. GTPS has relatively pain-free hip range of motion. It hurts on single leg stance instead, because of gluteal tendinopathy."},
+    {"stem": "What is the imaging study of choice for a suspected hip labral tear?", "opts": ["Plain X-ray", "Bone scan", "MR arthrogram", "CT"], "correct": 2, "explain": "An X-ray excludes other pathology, but the MR arthrogram is the imaging study of choice for a labral tear."},
+    {"stem": "A 40-year-old on long-term oral prednisone for lupus develops groin pain. Which diagnosis must be considered?", "opts": ["Piriformis syndrome", "Osteonecrosis (avascular necrosis) of the femoral head", "Greater trochanteric bursitis", "Snapping hip syndrome"], "correct": 1, "explain": "Steroids, lupus, alcohol, trauma, sickle cell disease and radiation all cause osteonecrosis, most commonly of the femoral head, which presents as groin pain."}
+  ]
+},
+{
+  "id": "knee-1",
+  "title": "Knee Part 1: Ligaments & Menisci",
+  "instructor": "Elentra module 06",
+  "duration": "~65 min",
+  "tags": [{"label": "Mechanism + swelling timing", "cls": "mcc"}],
+  "body": `
+<p>Most acute sports knee injuries are ligament or meniscus injuries. The <strong>mechanism</strong>, the <strong>timing of the swelling</strong> and a handful of tests usually name the torn structure before any imaging.</p>
+<h3>Anatomy</h3>
+<ul>
+<li>The knee has 3 articulations (medial and lateral tibiofemoral, patellofemoral). Views: AP, lateral, <strong>skyline</strong> (patellofemoral joint, patellar fracture), <strong>tunnel</strong> (loose bodies).</li>
+<li><strong>Stability comes mainly from the quadriceps.</strong> The MCL's deep fibres are attached to the medial meniscus. The LCL is cord-like. Posteriorly, the oblique popliteal ligament (semimembranosus) and the arcuate ligament reinforce the capsule.</li>
+</ul>
+<div class="data-table"><table>
+<tr><th></th><th>ACL</th><th>PCL</th></tr>
+<tr><td>Strength</td><td>Thinner</td><td><strong>Stronger</strong></td></tr>
+<tr><td>Taut in</td><td>Extension</td><td>Flexion</td></tr>
+<tr><td>Prevents</td><td>The tibia sliding <strong>anteriorly</strong> under the femur</td><td>The tibia sliding <strong>posteriorly</strong> under the femur</td></tr>
+<tr><td>Test</td><td><strong>Lachman</strong> (gold standard), anterior drawer, pivot shift</td><td><strong>Posterior drawer</strong>, sag sign, reverse Lachman</td></tr>
+</table></div>
+<div class="data-table"><table>
+<tr><th>Medial meniscus</th><th>Lateral meniscus</th></tr>
+<tr><td>C-shaped, broader behind, <strong>fixed to the MCL</strong>, more often torn</td><td>Nearly circular, smaller, mobile</td></tr>
+</table></div>
+<ul>
+<li>The <strong>peripheral meniscus is vascular</strong> (red zone, repairable). The <strong>central meniscus is avascular</strong> (white zone, nourished by synovial fluid).</li>
+<li><strong>Screw-home:</strong> the femur medially rotates in the last 15&ndash;20&deg; of extension to lock the knee. <strong>Popliteus unlocks it</strong> by laterally rotating the femur.</li>
+</ul>
+<h3>Ligament injuries</h3>
+<ul>
+<li><strong>ACL:</strong> female 4.5:1; <strong>non-contact pivot in 60&ndash;80%</strong>. A pop, <strong>immediate hemarthrosis</strong>, giving way. X-ray rules out fracture; MRI if the exam is unclear. Physio and <strong>reconstruction</strong>. <strong>Return to play at 9&ndash;12 months</strong>, 3&ndash;6% reinjury.</li>
+<li><strong>PCL:</strong> <strong>dashboard</strong> blow to the flexed tibia, or hyperextension. Minimal swelling, vague pain. Stress X-rays for grading. <strong>Physio and a brace usually suffice</strong>; surgery for posterolateral corner injury or rotatory instability. About 50% return to the same level.</li>
+<li><strong>MCL:</strong> very common; a <strong>valgus</strong> collision; little swelling; may involve the medial meniscus or ACL. <strong>Early ROM + brace.</strong></li>
+<li><strong>LCL:</strong> rare alone; a high-energy <strong>varus</strong> force; associated with <strong>PCL</strong> injury. Brace, with surgery if there are other injuries.</li>
+</ul>
+<h3>Meniscal injuries</h3>
+<ul>
+<li><strong>Twisting with the foot planted.</strong> Joint line pain, <strong>delayed or intermittent swelling</strong>, locking and catching. Effusion, joint line tenderness, <strong>McMurray and Thessaly</strong> tests. X-ray is usually normal. MRI if conservative care fails or a big tear is suspected.</li>
+<li><strong>Degenerative (older):</strong> physio, analgesics and an IA steroid; surgery depends on the degree of OA; arthroplasty is the last resort.</li>
+<li><strong>Traumatic (young):</strong> <strong>repair</strong> red or red-white zone, large, bucket-handle and root tears; <strong>resect</strong> white-zone degenerative tears. Return at 6 weeks to 3 months.</li>
+</ul>
+<div class="callout"><strong>Unhappy triad:</strong> a valgus blow tears the <strong>MCL</strong>, then the <strong>medial meniscus</strong> (bucket handle, because it is attached to the MCL), then the <strong>ACL</strong>.</div>
+`,
+  "quiz": [
+    {"stem": "A 27-year-old football player pivots, feels his knee 'move' and give way, and the knee swells within an hour. Which test best confirms the likely injury?", "opts": ["Posterior drawer test", "Lachman test", "McMurray test", "Ober's test"], "correct": 1, "explain": "A non-contact pivot with a pop and immediate hemarthrosis means an ACL tear. Lachman (knee at about 30°) is the gold-standard exam test."},
+    {"stem": "A driver's flexed knee hits the dashboard in a crash. There is minimal swelling and the tibia sags backward. Which ligament is injured, and what is the usual treatment?", "opts": ["ACL; reconstruction", "MCL; surgical repair", "PCL; physiotherapy and bracing", "LCL; immediate surgery"], "correct": 2, "explain": "A blow to the anterior tibia with the knee flexed tears the PCL. Physiotherapy and bracing are generally enough; reconstruction is for rotatory instability or posterolateral corner injuries."},
+    {"stem": "Why is the medial meniscus injured more often than the lateral meniscus?", "opts": ["It is firmly attached to the tibial collateral ligament (MCL) and is less mobile", "It is nearly circular and smaller", "It has no blood supply at all", "It lies outside the joint capsule"], "correct": 0, "explain": "The C-shaped medial meniscus is fixed to the deep fibres of the MCL, so it can't move out of the way. Valgus and twisting forces that injure the MCL often tear it too."},
+    {"stem": "A 23-year-old hockey player has a bucket-handle medial meniscal tear in the vascular peripheral zone. What is the preferred surgical approach?", "opts": ["Total knee arthroplasty", "Partial meniscectomy only", "No surgery; bracing for life", "Meniscal repair"], "correct": 3, "explain": "Red or red-white zone tears, bucket-handle tears, root tears and tears in young patients are repaired. White-zone and chronic degenerative tears are resected."}
+  ]
+},
+{
+  "id": "knee-2",
+  "title": "Knee Part 2: Anterior Knee Pain & the Approach to Knee Pain",
+  "instructor": "Elentra module 07",
+  "duration": "~40 min",
+  "tags": [{"label": "Clinical diagnoses, no imaging", "cls": "mcc"}],
+  "body": `
+<p>Most knee pain without injury is a <strong>loading problem</strong> rather than a torn structure. Recognizing these clinically spares the patient unnecessary imaging.</p>
+<h3>Patellofemoral stability</h3>
+<p>The <strong>Q-angle</strong> (ASIS&ndash;patella line vs patella&ndash;tibial tuberosity line) makes the quadriceps pull the patella <strong>laterally</strong>. Two things resist it: <strong>vastus medialis</strong> and the <strong>raised lateral femoral buttress</strong>. Genu varum means a smaller Q-angle and medial loading; genu valgum means a larger Q-angle and lateral loading.</p>
+<h3>Patellofemoral pain syndrome</h3>
+<ul>
+<li>Anterior knee pain from <strong>repetitive loading of the extensor mechanism</strong>. Risk factors: females, adolescents, an increased Q-angle. 30% lifetime prevalence.</li>
+<li>Aching anterior pain, <strong>worse after activity, with prolonged sitting and with stairs</strong>. <strong>No swelling.</strong></li>
+<li><strong>Clinical diagnosis with no imaging.</strong> Treat with activity modification, physio for dynamic misalignment and <strong>VL/VM balance</strong>, and bracing or taping.</li>
+</ul>
+<h3>Other knee pathology</h3>
+<ul>
+<li><strong>Bursitis</strong> (prepatellar, infrapatellar, suprapatellar): friction, mild swelling and tenderness. Treat with PRICE and NSAIDs; <strong>rule out septic bursitis</strong>. Housemaid's knee is prepatellar; clergyman's knee is superficial infrapatellar.</li>
+<li><strong>Baker's cyst:</strong> synovial fluid herniating into the popliteal fossa (gastrocnemius/semimembranosus bursa). <strong>Ultrasound confirms it.</strong> The differential includes a <strong>popliteal aneurysm and DVT</strong>. Treat conservatively for 6 weeks, then MRI and referral.</li>
+<li><strong>ITB friction syndrome:</strong> the ITB rubs the lateral epicondyle at <strong>&lt;30&deg; of flexion</strong>. Seen in runners, especially downhill. Lateral knee aching. Treat with PRICE and ITB stretching.</li>
+</ul>
+<h3>Knee injections</h3>
+<div class="data-table"><table>
+<tr><th>Injection</th><th>For</th><th>Against</th></tr>
+<tr><td>Corticosteroid</td><td>Fast, cheap</td><td>Lasts 4&ndash;12 weeks; weak evidence of cartilage harm</td></tr>
+<tr><td>Hyaluronic acid</td><td>&gt;26 weeks of relief, safe</td><td>$300&ndash;500; mixed studies</td></tr>
+<tr><td>PRP</td><td>Safe</td><td>$500&ndash;1,500; Cochrane: no clinically significant benefit</td></tr>
+<tr><td>Stem cells</td><td>&mdash;</td><td>Not shown to work; $3k&ndash;10k; Health Canada regulates them as drugs</td></tr>
+</table></div>
+<h3>Approach to knee pain</h3>
+<div class="callout"><strong>Traumatic knee:</strong> swelling <strong>within 6 h</strong> (hemarthrosis) means <strong>ACL tear, fracture, patellar dislocation</strong> or a large chondral injury. Swelling <strong>after 6 h</strong> means <strong>meniscus, PCL</strong>, an OA flare or a high-grade MCL sprain. With <strong>no swelling</strong>, sort by location.</div>
+<ul>
+<li><strong>Non-traumatic, by location:</strong>
+  <ul>
+    <li>Anterior: PFPS, patellar or quadriceps tendinopathy, bursitis, apophysitis.</li>
+    <li>Posterior: Baker's cyst, DVT, PCL.</li>
+    <li>Medial: medial OA, medial meniscus, <strong>pes anserine bursitis</strong>, MCL.</li>
+    <li>Lateral: ITB syndrome, lateral meniscus, <strong>peroneal nerve</strong>, lateral OA.</li>
+  </ul>
+</li>
+<li><strong>Always consider pain referred from the hip</strong>, and radiculopathy.</li>
+</ul>
+`,
+  "quiz": [
+    {"stem": "An 18-year-old who recently started running has 3 months of bilateral anterior knee pain, worse with stairs and prolonged sitting, with no swelling. What is the best initial management?", "opts": ["MRI of both knees", "Arthroscopy", "Intra-articular PRP", "Activity modification and physiotherapy focused on VM/VL balance"], "correct": 3, "explain": "This is patellofemoral pain syndrome, a clinical diagnosis that needs no imaging. Treat with activity modification, physiotherapy for dynamic misalignment and vastus medialis/lateralis balance, and taping or bracing."},
+    {"stem": "Which structure resists the patella's tendency to sublux laterally?", "opts": ["Vastus medialis and the lateral buttress of the femoral trochlea", "Iliotibial band and biceps femoris", "Popliteus and the arcuate ligament", "The lateral meniscus"], "correct": 0, "explain": "The Q-angle pulls the patella laterally. The pull of vastus medialis and an extra buttress of bone on the lateral patellar surface of the femur counteract it."},
+    {"stem": "After a twisting knee injury, a patient develops a large effusion within 2 hours. Which diagnosis is most likely?", "opts": ["Degenerative meniscal tear", "Pes anserine bursitis", "ACL tear", "IT band friction syndrome"], "correct": 2, "explain": "Swelling within 6 hours suggests hemarthrosis: an ACL tear, fracture, patellar dislocation or a large chondral injury. Meniscal and PCL injuries swell more slowly."},
+    {"stem": "A downhill runner has aching lateral knee pain during runs. Friction occurs at under 30° of knee flexion. What is the diagnosis?", "opts": ["Baker's cyst", "IT band friction syndrome", "Prepatellar bursitis", "PCL injury"], "correct": 1, "explain": "ITB friction syndrome is friction between the iliotibial band and the lateral femoral epicondyle during stance, below 30° of flexion. It is classic in downhill running and is treated with PRICE and ITB stretching."}
+  ]
+},
+{
+  "id": "leg",
+  "title": "Anatomy of the Leg",
+  "instructor": "Elentra module 08",
+  "duration": "~65 min",
+  "tags": [{"label": "One compartment, one nerve", "cls": "mcc"}],
+  "body": `
+<p>The cleanest example of "one compartment, one job, one nerve". With that rule, <strong>foot drop</strong> after a fibular head injury becomes predictable.</p>
+<h3>Bones and fractures</h3>
+<ul>
+<li><strong>Tibia:</strong> bears weight. It <strong>fractures at the narrow middle&ndash;distal third, where blood supply is poorest</strong>.</li>
+<li><strong>Fibula:</strong> bears no weight, so it is the <strong>graft donor</strong>. It fractures just above the lateral malleolus in extreme inversion, and often breaks along with the tibia.</li>
+<li><strong>Foot:</strong>
+  <ul>
+    <li><strong>Talus</strong>: no muscle attachments.</li>
+    <li><strong>Calcaneus</strong>: the Achilles tendon inserts on its tuberosity, and the <strong>sustentaculum tali</strong> is a pulley for FHL.</li>
+    <li><strong>Navicular</strong>: its tuberosity holds the spring ligament.</li>
+    <li>Cuboid, cuneiforms (transverse arch).</li>
+    <li><strong>5th metatarsal tuberosity</strong>: fibularis brevis inserts here, and inversion can cause an avulsion fracture.</li>
+  </ul>
+</li>
+</ul>
+<h3>Four compartments</h3>
+<div class="data-table"><table>
+<tr><th>Compartment</th><th>Job</th><th>Nerve</th><th>Muscles</th></tr>
+<tr><td>Anterior</td><td><strong>Dorsiflexion</strong></td><td><strong>Deep fibular</strong></td><td>Tibialis anterior (also inverts; L4&ndash;5), EDL, EHL (L5)</td></tr>
+<tr><td>Lateral</td><td><strong>Eversion</strong></td><td><strong>Superficial fibular</strong></td><td>Fibularis longus (&rarr; 1st MT, transverse arch), fibularis brevis (&rarr; 5th MT tuberosity)</td></tr>
+<tr><td>Superficial posterior</td><td><strong>Plantarflexion</strong></td><td><strong>Tibial</strong></td><td>Gastrocnemius (works with the knee straight; S1), soleus (S1), plantaris (graft)</td></tr>
+<tr><td>Deep posterior</td><td>Plantarflexion, toe flexion, inversion</td><td><strong>Tibial</strong></td><td>Popliteus (unlocks the knee), FDL, tibialis posterior (&rarr; navicular, inverts; L5), FHL</td></tr>
+</table></div>
+<p class="flag">Fibularis tertius is greyed out on Dr. Martin's slides: nice to know, not need to know.</p>
+<ul>
+<li><strong>Seated calf raise</strong> (knee bent) isolates <strong>soleus</strong>. The standing raise uses gastrocnemius as well.</li>
+<li><strong>Achilles rupture:</strong> a snap, a palpable gap, can't plantarflex against resistance. Surgery for young active patients.</li>
+<li><strong>Compartment syndrome</strong> (sealed fascia) needs a fasciotomy. <strong>Shin splints</strong> are a mild anterior compartment version.</li>
+</ul>
+<div class="callout"><strong>Tarsal tunnel</strong> (behind the medial malleolus, under the flexor retinaculum), anterior to posterior: <strong>Tom, Dick, And Very Nervous Harry</strong> &mdash; Tibialis posterior, flexor Digitorum longus, posterior tibial Artery and Vein, tibial Nerve, flexor Hallucis longus. Tarsal tunnel syndrome causes heel pain.</div>
+<h3>Vessels</h3>
+<ul>
+<li>The popliteal artery gives the <strong>anterior tibial</strong> artery (with the deep fibular nerve), which becomes the <strong>dorsalis pedis</strong>, and the <strong>posterior tibial</strong> artery (with the tibial nerve, through the tarsal tunnel), which gives the fibular artery.</li>
+<li>The <strong>great saphenous vein</strong> runs anterior to the medial malleolus into the femoral vein. The <strong>small saphenous vein</strong> runs lateral to the Achilles into the popliteal vein. Perforators let blood flow only from superficial to deep.</li>
+<li><strong>Venous return:</strong> valves, the arteriovenous pump and the <strong>musculovenous pump</strong>. Failed valves in the great saphenous vein cause <strong>varicose veins</strong> (treated with laser closure).</li>
+</ul>
+<h3>Nerves and lesions</h3>
+<ul>
+<li>The sciatic nerve (L4&ndash;S3) splits into the <strong>tibial nerve</strong> (posterior compartment) and the <strong>common fibular nerve</strong>. The common fibular nerve wraps the <strong>fibular neck</strong>, where it is subcutaneous and exposed, and divides into the <strong>superficial</strong> (lateral compartment; skin of the dorsum of the foot) and <strong>deep</strong> (anterior compartment; skin of the <strong>first web space</strong>) branches.</li>
+<li><strong>Sensory map:</strong> saphenous (medial leg), sural (lateral ankle and foot), superficial fibular (dorsum of the foot), deep fibular (first web space), plantar nerves (sole).</li>
+</ul>
+<div class="callout"><strong>Common fibular nerve injury at the fibular neck:</strong> lost dorsiflexion and eversion gives <strong>foot drop</strong> and a numb dorsum of the foot. The patient compensates with a <strong>steppage</strong>, waddling or swing-out gait, and the foot slaps down after heel strike.</div>
+`,
+  "quiz": [
+    {"stem": "After a blow to the lateral knee, a patient can't dorsiflex or evert the foot and has numbness over the dorsum of the foot. Where is the lesion?", "opts": ["Tibial nerve in the popliteal fossa", "Deep fibular nerve under the extensor retinaculum", "Common fibular nerve at the neck of the fibula", "Femoral nerve at the inguinal ligament"], "correct": 2, "explain": "The common fibular nerve wraps subcutaneously around the fibular neck. Injury there knocks out both the anterior compartment (dorsiflexion, deep branch) and the lateral compartment (eversion, superficial branch), giving foot drop."},
+    {"stem": "Which exercise best isolates soleus?", "opts": ["Seated calf raise with the knees bent", "Standing calf raise with the knees straight", "Ankle dorsiflexion against resistance", "Foot eversion against resistance"], "correct": 0, "explain": "Gastrocnemius crosses the knee and is slackened when the knee is flexed, so a seated calf raise relies on soleus. A standing raise uses both."},
+    {"stem": "Which muscle inserts mainly on the navicular tuberosity, plantarflexes the ankle and inverts the foot?", "opts": ["Fibularis longus", "Tibialis anterior", "Flexor hallucis longus", "Tibialis posterior"], "correct": 3, "explain": "Tibialis posterior (deep posterior compartment, tibial nerve) inserts mainly on the navicular tuberosity, plantarflexes and inverts, and supports the arches. Tibialis anterior dorsiflexes and inverts."},
+    {"stem": "Which structure lies just behind the posterior tibial artery and vein in the tarsal tunnel?", "opts": ["Flexor digitorum longus", "Tibial nerve", "Tibialis posterior", "Fibularis brevis"], "correct": 1, "explain": "From anterior to posterior: Tom, Dick, And Very Nervous Harry. That is tibialis posterior, flexor digitorum longus, the posterior tibial artery and vein, the tibial nerve, then flexor hallucis longus."}
+  ]
+}
+];
+</script>
+<script>
+(function(){
+  var navlist = document.getElementById('navlist');
+  var content = document.getElementById('content');
+  var totalQ = 0;
+  MODULES.forEach(function(m){ totalQ += m.quiz.length; });
+  document.getElementById('progress-count').textContent = '0 / ' + totalQ;
+
+  var STORE_KEY = 'msk-hub-wk9-answers-v1';
+  var answered = {};
+  try {
+    var raw = localStorage.getItem(STORE_KEY);
+    if (raw) answered = JSON.parse(raw);
+  } catch(e) {}
+
+  function saveAnswered(){
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(answered)); } catch(e) {}
+  }
+
+  function correctCount(){
+    var n = 0;
+    Object.keys(answered).forEach(function(k){ if (answered[k] === 'correct') n++; });
+    return n;
+  }
+
+  function updateProgress(){
+    var c = correctCount();
+    document.getElementById('progress-count').textContent = c + ' / ' + totalQ;
+    document.getElementById('progress-fill').style.width = (totalQ ? (100 * c / totalQ) : 0) + '%';
+  }
+
+  function moduleAnsweredCount(m){
+    var n = 0;
+    m.quiz.forEach(function(q, i){
+      var key = m.id + '-' + i;
+      if (answered[key]) n++;
+    });
+    return n;
+  }
+
+  function markDot(m){
+    var dot = document.querySelector('.navlist a[href="#' + m.id + '"] .dot');
+    if (!dot) return;
+    var done = moduleAnsweredCount(m) === m.quiz.length && m.quiz.length > 0;
+    dot.classList.toggle('done', done);
+  }
+
+  // Build nav
+  MODULES.forEach(function(m, idx){
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + m.id;
+    a.innerHTML = '<span class="num">' + String(idx+1).padStart(2,'0') + '</span><span class="dot"></span><span>' + m.title + '</span>';
+    li.appendChild(a);
+    navlist.appendChild(li);
+  });
+
+  function renderQuiz(m){
+    var wrap = document.createElement('div');
+    wrap.className = 'quiz';
+
+    var head = document.createElement('div');
+    head.className = 'quiz-head';
+    head.innerHTML = '<span>Check yourself</span><span class="quiz-score" id="score-' + m.id + '"></span>';
+    wrap.appendChild(head);
+
+    var scoreEl = head.querySelector('.quiz-score');
+
+    var body = document.createElement('div');
+    body.className = 'quiz-body';
+
+    function updateModuleScore(){
+      var n = moduleAnsweredCount(m);
+      scoreEl.textContent = n + ' / ' + m.quiz.length + ' answered';
+    }
+
+    m.quiz.forEach(function(q, i){
+      var key = m.id + '-' + i;
+      var qd = document.createElement('div');
+      qd.className = 'q';
+      var stem = document.createElement('div');
+      stem.className = 'q-stem';
+      stem.textContent = (i+1) + '. ' + q.stem;
+      qd.appendChild(stem);
+
+      var opts = document.createElement('div');
+      opts.className = 'q-opts';
+
+      var explain = document.createElement('div');
+      explain.className = 'q-explain';
+      explain.innerHTML = '<strong>' + (q.explain.split(' ')[0]) + '</strong> ' + q.explain;
+
+      var alreadyAnswered = !!answered[key];
+
+      q.opts.forEach(function(optText, oi){
+        var btn = document.createElement('button');
+        btn.className = 'opt';
+        btn.innerHTML = '<span class="letter">' + String.fromCharCode(65+oi) + '</span><span>' + optText + '</span>';
+        if (alreadyAnswered) {
+          btn.disabled = true;
+          if (oi === q.correct) btn.classList.add('correct');
+          if (answered[key] === 'incorrect-' + oi) btn.classList.add('incorrect');
+        }
+        btn.addEventListener('click', function(){
+          if (btn.disabled) return;
+          var allOpts = opts.querySelectorAll('.opt');
+          allOpts.forEach(function(o){ o.disabled = true; });
+          if (oi === q.correct) {
+            btn.classList.add('correct');
+            answered[key] = 'correct';
+          } else {
+            btn.classList.add('incorrect');
+            allOpts[q.correct].classList.add('correct');
+            answered[key] = 'incorrect-' + oi;
+          }
+          explain.classList.add('shown');
+          saveAnswered();
+          updateProgress();
+          updateModuleScore();
+          markDot(m);
+        });
+        opts.appendChild(btn);
+      });
+
+      qd.appendChild(opts);
+      qd.appendChild(explain);
+      if (alreadyAnswered) explain.classList.add('shown');
+      body.appendChild(qd);
+    });
+
+    wrap.appendChild(body);
+    updateModuleScore();
+    return wrap;
+  }
+
+  MODULES.forEach(function(m, idx){
+    var sec = document.createElement('section');
+    sec.className = 'module';
+    sec.id = m.id;
+
+    var head = document.createElement('div');
+    head.className = 'module-head';
+    head.innerHTML = '<span class="module-num">' + String(idx+1).padStart(2,'0') + '</span><h2>' + m.title + '</h2>';
+    sec.appendChild(head);
+
+    var meta = document.createElement('div');
+    meta.className = 'module-meta';
+    var tagsHtml = '<span class="tag">' + m.instructor + '</span><span class="tag">' + m.duration + '</span>';
+    (m.tags || []).forEach(function(t){ tagsHtml += '<span class="tag ' + t.cls + '">' + t.label + '</span>'; });
+    meta.innerHTML = tagsHtml;
+    sec.appendChild(meta);
+
+    var bodyDiv = document.createElement('div');
+    bodyDiv.className = 'module-body';
+    bodyDiv.innerHTML = m.body;
+    sec.appendChild(bodyDiv);
+
+    var quizWrap = document.createElement('div');
+    quizWrap.className = 'module-body';
+    quizWrap.appendChild(renderQuiz(m));
+    sec.appendChild(quizWrap);
+
+    content.appendChild(sec);
+    markDot(m);
+  });
+
+  updateProgress();
+
+  // Active-link tracking on scroll
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.module'));
+  var links = Array.prototype.slice.call(document.querySelectorAll('.navlist a'));
+  function onScroll(){
+    var pos = window.scrollY + 120;
+    var current = sections[0];
+    sections.forEach(function(s){ if (s.offsetTop <= pos) current = s; });
+    links.forEach(function(l){ l.classList.toggle('active', l.getAttribute('href') === '#' + current.id); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Close mobile nav on link click
+  links.forEach(function(l){
+    l.addEventListener('click', function(){
+      document.getElementById('sidebar').classList.remove('open');
+    });
+  });
+})();
+</script>

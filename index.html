@@ -232,6 +232,31 @@
 
   // kind: hub | quiz | notes (open as pages); md | docx (open in reader); pdf (opens in tab)
   var WEEKS = [
+    { n: 9, title: "Musculoskeletal Medicine", items: [
+      { kind: "hub", t: "MSK Study Hub", f: "summaries/week9-study-hub.html", d: "Hand nerves, upper limb X-rays, hip, thigh, knee and leg." },
+      { kind: "quiz", t: "Week 9 Case Bank", f: "quizzes/week9-case-bank.html", d: "80 vignettes across 8 modules." },
+      { kind: "notes", t: "Week 9 Video Notes", f: "module-notes/week9-video-notes.html", d: "Fill-in outlines for 8 videos." },
+      { group: "Video scripts", items: [
+        { kind: "md", t: "Wrist and Hand, Part 2", f: "scripts/week9/01-wrist-and-hand-part-2.html" },
+        { kind: "md", t: "Upper Extremity Radiology", f: "scripts/week9/02-upper-extremity-radiology.html" },
+        { kind: "md", t: "Hip Joint", f: "scripts/week9/03-hip-joint.html" },
+        { kind: "md", t: "Gluteal Region and Thigh", f: "scripts/week9/04-gluteal-region-and-thigh.html" },
+        { kind: "md", t: "Hip Pain", f: "scripts/week9/05-hip-pain.html" },
+        { kind: "md", t: "Knee, Part 1", f: "scripts/week9/06-knee-part-1.html" },
+        { kind: "md", t: "Knee, Part 2", f: "scripts/week9/07-knee-part-2.html" },
+        { kind: "md", t: "Anatomy of the Leg", f: "scripts/week9/08-anatomy-of-the-leg.html" }
+      ]},
+      { group: "NotebookLM videos", unit: "videos", items: [
+        { kind: "video", label: "Video", t: "Hand Neuropathies", f: "https://notebook.google.com/notebook/75141254-8f89-45a9-8474-ec4b841681cd/artifact/f8295ea9-af4b-4541-9950-5fd81b321922", dur: "8:19 · Explainer" },
+        { kind: "video", label: "Video", t: "Upper Extremity Radiology", f: "https://notebook.google.com/notebook/75141254-8f89-45a9-8474-ec4b841681cd/artifact/8be3fdec-ea74-44ae-83c1-ce8f10b070d9", dur: "8:21 · Explainer" },
+        { kind: "video", label: "Video", t: "Approach to the Hip", f: "https://notebook.google.com/notebook/75141254-8f89-45a9-8474-ec4b841681cd/artifact/61d5f502-bc82-475f-abca-9e0967d9782d", dur: "8:26 · Explainer" },
+        { kind: "video", label: "Video", t: "Gluteal & Thigh Anatomy", f: "https://notebook.google.com/notebook/75141254-8f89-45a9-8474-ec4b841681cd/artifact/115e1087-c54f-4ad6-9d3f-132427effd21", dur: "7:32 · Explainer" },
+        { kind: "video", label: "Video", t: "Approach to Hip Pain", f: "https://notebook.google.com/notebook/75141254-8f89-45a9-8474-ec4b841681cd/artifact/69acf64d-1d12-4afe-a751-dda2fddd390b", dur: "8:50 · Explainer" },
+        { kind: "video", label: "Video", t: "Clinical Approach to Knee 1", f: "https://notebook.google.com/notebook/75141254-8f89-45a9-8474-ec4b841681cd/artifact/5e5d634c-c495-404c-9ea2-f12f87eb79c4", dur: "7:21 · Explainer" },
+        { kind: "video", label: "Video", t: "Knee Clinical Approach", f: "https://notebook.google.com/notebook/75141254-8f89-45a9-8474-ec4b841681cd/artifact/cf4db943-1002-489f-8b8b-e0456a23a8d0", dur: "9:22 · Explainer" },
+        { kind: "video", label: "Video", t: "Leg Anatomy Review", f: "https://notebook.google.com/notebook/75141254-8f89-45a9-8474-ec4b841681cd/artifact/d226e50b-4d6c-4726-8364-30b97198d633", dur: "9:17 · Explainer" }
+      ]}
+    ]},
     { n: 8, title: "Musculoskeletal Medicine", items: [
       { kind: "hub", t: "MSK Study Hub", f: "summaries/week8-study-hub.html", d: "Brachial plexus, shoulder and arm, elbow, forearm, wrist and hand." },
       { kind: "quiz", t: "Week 8 Case Bank", f: "quizzes/week8-case-bank.html", d: "80 vignettes across 8 modules." },

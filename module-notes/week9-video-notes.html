@@ -1,0 +1,727 @@
+<title>Week 9 Video Notes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper: #f2f0e8;
+    --paper-raised: #fbfaf5;
+    --ink: #1e2a2e;
+    --ink-soft: #55625f;
+    --hairline: #d6d1c2;
+    --accent: #2c5f5a;
+    --accent-soft: #dce8e4;
+    --accent-ink: #163634;
+    --amber: #b5792c;
+    --amber-soft: #f3e6d2;
+    --good: #2f6b3e;
+    --good-soft: #dfeee1;
+    --shadow: 0 1px 2px rgba(30,42,46,.06), 0 8px 24px -12px rgba(30,42,46,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #171d1e; --paper-raised: #1f2729; --ink: #e9eae4; --ink-soft: #a5afab;
+      --hairline: #333e3f; --accent: #7bbbb0; --accent-soft: #223634; --accent-ink: #cdeae4;
+      --amber: #e0b06b; --amber-soft: #3a2f1a; --good: #7fc98d; --good-soft: #1e3324;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #171d1e; --paper-raised: #1f2729; --ink: #e9eae4; --ink-soft: #a5afab;
+    --hairline: #333e3f; --accent: #7bbbb0; --accent-soft: #223634; --accent-ink: #cdeae4;
+    --amber: #e0b06b; --amber-soft: #3a2f1a; --good: #7fc98d; --good-soft: #1e3324;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Public Sans', system-ui, sans-serif; -webkit-font-smoothing:antialiased; }
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  h1,h2,h3{ font-family:'Fraunces', Georgia, serif; text-wrap:balance; margin:0; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+  button{ font-family:inherit; cursor:pointer; }
+  textarea{ font-family:inherit; }
+
+  .shell{ max-width:900px; margin:0 auto; padding:0 24px 96px; }
+  .topbar{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:28px 24px 20px; max-width:900px; margin:0 auto; border-bottom:1px solid var(--hairline); }
+  .brand .kicker{ font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:600; }
+  .brand h1{ font-size:1.5rem; font-weight:600; margin-top:2px; }
+  .topstat{ text-align:right; font-family:'JetBrains Mono', monospace; font-size:.78rem; color:var(--ink-soft); }
+
+  .intro{ padding:28px 0 8px; max-width:620px; }
+  .intro p{ margin:8px 0 0; color:var(--ink-soft); line-height:1.55; font-size:.95rem; }
+
+  .group-heading{ display:flex; align-items:center; gap:12px; margin:32px 0 14px; }
+  .group-heading h2{ font-size:1.02rem; font-weight:600; white-space:nowrap; }
+  .group-heading .rule{ height:1px; background:var(--hairline); flex:1; }
+
+  .list{ display:flex; flex-direction:column; gap:10px; }
+  .row{
+    display:flex; align-items:center; gap:14px; text-align:left; width:100%;
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; box-shadow:var(--shadow); transition:border-color .12s ease, transform .12s ease;
+  }
+  .row:hover{ border-color:var(--accent); transform:translateY(-1px); }
+  .row .num{ font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--ink-soft); width:28px; flex-shrink:0; }
+  .row .body{ flex:1; min-width:0; }
+  .row h3{ font-size:1rem; font-weight:500; line-height:1.3; }
+  .row .meta{ font-size:.76rem; color:var(--ink-soft); margin-top:3px; font-family:'JetBrains Mono',monospace; }
+  .row .status{ flex-shrink:0; }
+  .pill{ font-family:'JetBrains Mono',monospace; font-size:.66rem; font-weight:600; padding:3px 9px; border-radius:99px; white-space:nowrap; }
+  .pill.empty{ background:var(--hairline); color:var(--ink-soft); }
+  .pill.started{ background:var(--amber-soft); color:var(--amber); }
+  .pill.done{ background:var(--good-soft); color:var(--good); }
+
+  .detail-header{ display:flex; align-items:center; gap:14px; padding:26px 0 4px; flex-wrap:wrap; }
+  .back-btn{ background:none; border:1px solid var(--hairline); border-radius:8px; padding:7px 12px; font-size:.82rem; color:var(--ink-soft); }
+  .back-btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .detail-title .kicker{ font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; font-weight:600; }
+  .detail-title h2{ font-size:1.3rem; font-weight:600; margin-top:2px; }
+  .runtime{ font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--ink-soft); }
+  .connects{ margin:14px 0 0; padding:10px 14px; background:var(--accent-soft); border-left:3px solid var(--accent); border-radius:6px; font-size:.85rem; color:var(--accent-ink); }
+
+  .obj-card{ margin-top:22px; background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow); }
+  .obj-card h3{ font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); font-weight:600; margin-bottom:10px; }
+  .obj{ display:flex; align-items:flex-start; gap:10px; padding:6px 0; font-size:.9rem; line-height:1.4; }
+  .obj input{ margin-top:3px; flex-shrink:0; width:16px; height:16px; accent-color:var(--accent); }
+  .obj label.checked{ color:var(--ink-soft); text-decoration:line-through; text-decoration-color:var(--hairline); }
+
+  .section-card{ margin-top:16px; background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow); }
+  .section-card .sh{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
+  .section-card h3{ font-size:1.02rem; font-weight:600; }
+  .section-card .tag{ font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--amber); background:var(--amber-soft); padding:2px 8px; border-radius:99px; white-space:nowrap; }
+  .section-card .hint{ font-size:.85rem; color:var(--ink-soft); margin:2px 0 10px; line-height:1.4; }
+  .section-card textarea{
+    width:100%; min-height:76px; resize:vertical; border:1px solid var(--hairline); border-radius:8px;
+    background:var(--paper); color:var(--ink); padding:10px 12px; font-size:.9rem; line-height:1.5;
+  }
+  .section-card textarea:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .section-card textarea::placeholder{ color:var(--ink-soft); opacity:.6; }
+
+  .detail-actions{ display:flex; gap:10px; justify-content:space-between; align-items:center; margin-top:24px; flex-wrap:wrap; }
+  .save-note{ font-size:.76rem; color:var(--ink-soft); font-family:'JetBrains Mono',monospace; }
+  .btn{ border:1px solid var(--hairline); background:var(--paper-raised); color:var(--ink); border-radius:8px; padding:10px 16px; font-size:.86rem; font-weight:500; }
+  .btn.primary{ background:var(--accent); color:var(--paper-raised); border-color:var(--accent); font-weight:600; }
+  .btn:hover{ border-color:var(--accent); }
+
+  [hidden]{ display:none !important; }
+  footer{ max-width:900px; margin:56px auto 0; padding:20px 24px 0; color:var(--ink-soft); font-size:.78rem; border-top:1px solid var(--hairline); }
+
+  @media print{
+    .topbar .topstat, .back-btn, .detail-actions, footer, #dashboard{ display:none !important; }
+    body{ background:#fff; color:#000; }
+    .section-card, .obj-card{ box-shadow:none; border:1px solid #ccc; break-inside:avoid; }
+    textarea{ border:1px solid #999 !important; }
+  }
+  @media (max-width:560px){
+    .topbar{ flex-direction:column; align-items:flex-start; gap:6px; }
+    .topstat{ text-align:left; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">P2 &middot; Week 9 &middot; Musculoskeletal Medicine</span>
+    <h1>Video Notes</h1>
+  </div>
+  <div class="topstat">8 videos &middot; fill in as you watch</div>
+</div>
+
+<main class="shell">
+
+  <section id="dashboard">
+    <div class="intro">
+      <p>An outline for each Week 9 NotebookLM Explainer video, following the order of the script it was made from. Tick off each learning objective as the video covers it, pause at each heading, and jot the point before moving on. Notes save automatically in this browser.</p>
+    </div>
+    <div id="groups"></div>
+  </section>
+
+  <section id="detail" hidden>
+    <div class="detail-header">
+      <button class="back-btn" id="backBtn">&larr; All videos</button>
+      <div class="detail-title">
+        <div class="kicker" id="detKicker"></div>
+        <h2 id="detTitle"></h2>
+      </div>
+      <span class="runtime" id="detRuntime"></span>
+    </div>
+    <div class="connects" id="detConnects" hidden></div>
+
+    <div class="obj-card">
+      <h3>Learning objectives</h3>
+      <div id="objList"></div>
+    </div>
+
+    <div id="sectionList"></div>
+
+    <div class="detail-actions">
+      <span class="save-note" id="saveNote">Notes save automatically</span>
+      <div style="display:flex; gap:10px;">
+        <button class="btn" id="printBtn">Print this outline</button>
+        <button class="btn primary" id="nextBtn">Next video &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Week 9 study material &middot; P2 Musculoskeletal Block &middot; for personal review use</footer>
+
+<script id="data" type="application/json">[
+ {
+  "id": "wrist-hand-2",
+  "num": 1,
+  "title": "Clinical Approach to the Wrist & Hand, Part 2",
+  "group": "Upper Limb",
+  "connects": "Continues Part 1 from week 8.",
+  "objectives": [
+   "Identify the nerve supply of the hand, the carpal tunnel and the structures passing through it",
+   "List the features of carpal tunnel syndrome and describe its management",
+   "Recognize ulnar neuropathy at the wrist (Guyon's canal) and how it differs from an elbow lesion and C8"
+  ],
+  "sections": [
+   {
+    "h": "Median Nerve in the Hand",
+    "tag": "palmar cutaneous vs recurrent",
+    "p": "Which branch leaves before the tunnel and why the central palm is spared."
+   },
+   {
+    "h": "Ulnar Nerve in the Hand",
+    "tag": "superficial vs deep",
+    "p": "Guyon's canal, and what the deep branch supplies."
+   },
+   {
+    "h": "Nerve Injury Patterns",
+    "tag": "benediction vs claw",
+    "p": "Median at the wrist vs the elbow; proximal vs distal ulnar; Erb and Klumpke."
+   },
+   {
+    "h": "The Carpal Tunnel",
+    "tag": "9 tendons + median nerve",
+    "p": "Floor, roof, contents, and what runs outside."
+   },
+   {
+    "h": "CTS: Causes and Presentation",
+    "tag": "night symptoms, APB",
+    "p": "Extrinsic vs intrinsic causes; normal forearm muscles."
+   },
+   {
+    "h": "CTS: Differential and Management",
+    "tag": "C6, EMG/NCS",
+    "p": "Night splint, injection, release."
+   },
+   {
+    "h": "Ulnar Neuropathy at the Wrist",
+    "tag": "handlebar neuropathy",
+    "p": "Features, C8 differential, Guyon's release."
+   },
+   {
+    "h": "Recap"
+   }
+  ],
+  "runtime": "8:19 · Hand Neuropathies"
+ },
+ {
+  "id": "ue-radiology",
+  "num": 2,
+  "title": "Upper Extremity Radiology",
+  "group": "Upper Limb",
+  "connects": "",
+  "objectives": [
+   "Identify the distinguishing features of the bones and joints of the upper extremity and relate them to their appearance on plain radiographs"
+  ],
+  "sections": [
+   {
+    "h": "A Systematic Read",
+    "tag": "maturity, bone, alignment, joints, soft tissue",
+    "p": "Parts of a long bone; the physis; TIMS-C."
+   },
+   {
+    "h": "Shoulder Views",
+    "tag": "AP, axillary, Y",
+    "p": "Landmarks, the invisible labrum, os acromiale, orienting by the coracoid."
+   },
+   {
+    "h": "Shoulder Pathology",
+    "tag": "OA, surgical neck, dislocation",
+    "p": "The three signs of OA; the Y-view for dislocation direction."
+   },
+   {
+    "h": "Elbow Landmarks",
+    "tag": "medial epicondyle, sublime tubercle",
+    "p": "AP and lateral, step by step."
+   },
+   {
+    "h": "Fat Pads",
+    "tag": "posterior = always abnormal",
+    "p": "Child vs adult fracture to look for."
+   },
+   {
+    "h": "Elbow Alignment Lines",
+    "tag": "anterior humeral, radiocapitellar",
+    "p": "Both should hit the centre of the capitellum."
+   },
+   {
+    "h": "Wrist Views and Carpals",
+    "tag": "radial to ulnar",
+    "p": "Lister's tubercle; the TFCC isn't visible."
+   },
+   {
+    "h": "Arcs of Gilula",
+    "tag": "3 smooth arcs",
+    "p": "Fractures with preserved arcs; a distal radius fracture; a giant cell tumour."
+   },
+   {
+    "h": "Recap"
+   }
+  ],
+  "runtime": "8:21 · Upper Extremity Radiology"
+ },
+ {
+  "id": "hip-joint",
+  "num": 3,
+  "title": "Clinical Approach to the Hip Joint",
+  "group": "Hip & Thigh",
+  "connects": "",
+  "objectives": [
+   "Identify the bony landmarks of the pelvis, femur and proximal leg",
+   "Compare the stability and mobility of the hip and glenohumeral joints",
+   "Describe the presentation of hip fracture and outline its investigation and management"
+  ],
+  "sections": [
+   {
+    "h": "Osteology",
+    "tag": "ilium, ischium, pubis",
+    "p": "Pelvic, femoral and tibial landmarks."
+   },
+   {
+    "h": "Hip vs Shoulder Stability",
+    "tag": "Y ligament of Bigelow",
+    "p": "Congruency, labrum, capsular ligaments; mobility vs stability."
+   },
+   {
+    "h": "Femoral Head Blood Supply",
+    "tag": "medial circumflex",
+    "p": "Why a displaced neck fracture risks AVN."
+   },
+   {
+    "h": "Is This a Hip Fracture?",
+    "tag": "short, externally rotated",
+    "p": "History, exam, X-ray then CT."
+   },
+   {
+    "h": "Stability and Why It Happened",
+    "tag": "why fall? why break?",
+    "p": "Trauma assessment; syncope workup; osteoporosis."
+   },
+   {
+    "h": "Fixing the Fracture",
+    "tag": "24–48 h",
+    "p": "Femoral neck vs intertrochanteric vs subtrochanteric."
+   },
+   {
+    "h": "After Surgery",
+    "tag": "VTE, delirium, falls",
+    "p": "Complication and fracture prevention."
+   },
+   {
+    "h": "Recap"
+   }
+  ],
+  "runtime": "8:26 · Approach to the Hip"
+ },
+ {
+  "id": "gluteal-thigh",
+  "num": 4,
+  "title": "Anatomy of the Gluteal Region & Thigh",
+  "group": "Hip & Thigh",
+  "connects": "The hip joint video's nerves and vessels in detail.",
+  "objectives": [
+   "Identify the gluteal muscles and explain the Trendelenburg sign and gait",
+   "Identify the compartments of the thigh and the function and innervation of each",
+   "Trace the arterial supply, venous and lymphatic drainage, and collateral circulation",
+   "Identify the femoral triangle, its borders and its contents"
+  ],
+  "sections": [
+   {
+    "h": "Sciatic Foramina and Piriformis",
+    "tag": "only superior gluteal above",
+    "p": "What passes through each foramen."
+   },
+   {
+    "h": "Gluteal Muscles",
+    "tag": "medius/minimus = superior gluteal",
+    "p": "Actions and nerves."
+   },
+   {
+    "h": "Trendelenburg",
+    "tag": "drop on the swing side",
+    "p": "Which side is weak and why the patient lurches."
+   },
+   {
+    "h": "Sciatic Nerve and Injections",
+    "tag": "upper outer quadrant",
+    "p": "Causes of sciatic injury."
+   },
+   {
+    "h": "Thigh Compartments",
+    "tag": "femoral / obturator / sciatic",
+    "p": "Muscles, actions, pes anserinus, patellar reflex."
+   },
+   {
+    "h": "Thigh Injuries and the Popliteal Fossa",
+    "tag": "AVN deep to superficial",
+    "p": "Hamstring avulsion, groin pull, popliteal aneurysm."
+   },
+   {
+    "h": "Arteries and Collaterals",
+    "tag": "cruciate + genicular",
+    "p": "Femoral, profunda, circumflex, perforators, adductor hiatus."
+   },
+   {
+    "h": "Veins, Lymph and the Femoral Triangle",
+    "tag": "NAVEL",
+    "p": "Great saphenous vein, inguinal nodes, femoral hernia."
+   },
+   {
+    "h": "Recap"
+   }
+  ],
+  "runtime": "7:32 · Gluteal & Thigh Anatomy"
+ },
+ {
+  "id": "hip-pain",
+  "num": 5,
+  "title": "Clinical Approach to Hip Pain",
+  "group": "Hip & Thigh",
+  "connects": "",
+  "objectives": [
+   "Describe the clinical presentation of common hip pathologies (OA, labral tear, AVN, bursitis, tendinopathy, piriformis syndrome)",
+   "Outline an approach to investigating and managing hip pain"
+  ],
+  "sections": [
+   {
+    "h": "Where Is 'the Hip'?",
+    "tag": "groin = intra-articular",
+    "p": "Anterior vs lateral vs posterior."
+   },
+   {
+    "h": "Hip Osteoarthritis",
+    "tag": "C sign, IR lost first",
+    "p": "Presentation, exam, X-ray not MRI, treatment."
+   },
+   {
+    "h": "Labral Tear and AVN",
+    "tag": "MR arthrogram; steroids, alcohol"
+   },
+   {
+    "h": "Greater Trochanteric Bursitis",
+    "tag": "point tenderness, Ober's"
+   },
+   {
+    "h": "GTPS vs Hip OA",
+    "tag": "the socks test",
+    "p": "Gluteal tendinopathy and single leg stance."
+   },
+   {
+    "h": "Piriformis Syndrome",
+    "tag": "Pace, Beatty, FAIR, Freiberg"
+   },
+   {
+    "h": "Snapping Hip",
+    "tag": "painless = ignore"
+   },
+   {
+    "h": "Recap"
+   }
+  ],
+  "runtime": "8:50 · Approach to Hip Pain"
+ },
+ {
+  "id": "knee-1",
+  "num": 6,
+  "title": "Clinical Approach to the Knee, Part 1",
+  "group": "Knee & Leg",
+  "connects": "",
+  "objectives": [
+   "Describe the location and function of the 4 cardinal knee ligaments and the menisci",
+   "Describe an approach to diagnosing and managing ligament and meniscal injuries"
+  ],
+  "sections": [
+   {
+    "h": "Knee Osteology and Views",
+    "tag": "skyline, tunnel"
+   },
+   {
+    "h": "Capsule and Cardinal Ligaments",
+    "tag": "ACL vs PCL",
+    "p": "Attachments, when taut, what each prevents."
+   },
+   {
+    "h": "Menisci and the Locking Mechanism",
+    "tag": "medial = fixed to MCL; popliteus unlocks",
+    "p": "Red vs white zones."
+   },
+   {
+    "h": "ACL Injury",
+    "tag": "pivot, pop, hemarthrosis, Lachman",
+    "p": "Treatment and 9–12 month return."
+   },
+   {
+    "h": "PCL, MCL and LCL Injuries",
+    "tag": "dashboard, valgus, varus"
+   },
+   {
+    "h": "Meniscal Injuries",
+    "tag": "twist, joint line pain, McMurray",
+    "p": "Degenerative vs traumatic management."
+   },
+   {
+    "h": "The Unhappy Triad",
+    "tag": "MCL + medial meniscus + ACL"
+   },
+   {
+    "h": "Recap"
+   }
+  ],
+  "runtime": "7:21 · Clinical Approach to Knee 1"
+ },
+ {
+  "id": "knee-2",
+  "num": 7,
+  "title": "Clinical Approach to the Knee, Part 2",
+  "group": "Knee & Leg",
+  "connects": "Completes the knee from Part 1.",
+  "objectives": [
+   "Describe patellofemoral stability and the approach to PFPS",
+   "Recognize knee bursitis, Baker's cyst and ITB friction syndrome",
+   "Apply a clinical approach to traumatic and non-traumatic knee pain"
+  ],
+  "sections": [
+   {
+    "h": "Patellofemoral Stability",
+    "tag": "Q-angle, VM, lateral buttress"
+   },
+   {
+    "h": "Patellofemoral Pain Syndrome",
+    "tag": "no imaging",
+    "p": "Presentation and physio."
+   },
+   {
+    "h": "Bursitis and Baker's Cyst",
+    "tag": "US confirms; rule out aneurysm, DVT"
+   },
+   {
+    "h": "ITB Friction Syndrome",
+    "tag": "<30°, downhill running"
+   },
+   {
+    "h": "Knee Injections",
+    "tag": "steroid, HA, PRP, stem cells",
+    "p": "Benefits, costs and evidence."
+   },
+   {
+    "h": "Approach to Traumatic Knee Pain",
+    "tag": "swelling <6 h vs >6 h"
+   },
+   {
+    "h": "Non-Traumatic Knee Pain by Location",
+    "tag": "think of the hip"
+   },
+   {
+    "h": "Recap"
+   }
+  ],
+  "runtime": "9:22 · Knee Clinical Approach"
+ },
+ {
+  "id": "leg",
+  "num": 8,
+  "title": "Anatomy of the Leg",
+  "group": "Knee & Leg",
+  "connects": "",
+  "objectives": [
+   "Identify the bony landmarks of the leg and foot",
+   "Identify the compartments of the leg and the function and innervation of the muscles in each",
+   "Describe the consequences of lesions of the nerves of the leg (e.g. foot drop)"
+  ],
+  "sections": [
+   {
+    "h": "Bones of the Leg and Foot",
+    "tag": "fracture sites, 5th MT"
+   },
+   {
+    "h": "Four Compartments",
+    "tag": "fascia, retinacula, compartment syndrome"
+   },
+   {
+    "h": "Anterior and Lateral Compartments",
+    "tag": "dorsiflex / evert",
+    "p": "Deep vs superficial fibular nerve."
+   },
+   {
+    "h": "Superficial Posterior Compartment",
+    "tag": "gastrocnemius vs soleus",
+    "p": "Achilles injuries."
+   },
+   {
+    "h": "Deep Posterior Compartment and Tarsal Tunnel",
+    "tag": "Tom, Dick, And Very Nervous Harry"
+   },
+   {
+    "h": "Arteries and Veins",
+    "tag": "dorsalis pedis, saphenous veins",
+    "p": "Venous pumps and varicose veins."
+   },
+   {
+    "h": "Nerves and Sensory Map",
+    "tag": "first web space = deep fibular"
+   },
+   {
+    "h": "Foot Drop",
+    "tag": "steppage gait",
+    "p": "Common fibular nerve at the fibular neck."
+   },
+   {
+    "h": "Recap"
+   }
+  ],
+  "runtime": "9:17 · Leg Anatomy Review"
+ }
+]</script>
+<script>
+(function(){
+  "use strict";
+  var MODULES = JSON.parse(document.getElementById('data').textContent);
+  var store = {
+    get: function(){ try{ return JSON.parse(localStorage.getItem('wk9VideoNotes-v1')) || {}; }catch(e){ return {}; } },
+    set: function(v){ try{ localStorage.setItem('wk9VideoNotes-v1', JSON.stringify(v)); }catch(e){} }
+  };
+  var data = store.get();
+
+  var dashboard = document.getElementById('dashboard');
+  var detail = document.getElementById('detail');
+  var groupsEl = document.getElementById('groups');
+  var currentIdx = -1;
+  var saveTimer = null;
+
+  function moduleState(m){
+    var d = data[m.id] || {};
+    var notesFilled = (m.sections || []).filter(function(s,i){ return d['note'+i] && d['note'+i].trim().length; }).length;
+    var objChecked = (m.objectives || []).filter(function(o,i){ return d['obj'+i]; }).length;
+    if(notesFilled === 0 && objChecked === 0) return 'empty';
+    if(notesFilled === (m.sections||[]).length && objChecked === (m.objectives||[]).length) return 'done';
+    return 'started';
+  }
+
+  function renderDashboard(){
+    groupsEl.innerHTML = '';
+    var groups = [];
+    MODULES.forEach(function(m){
+      var g = groups.filter(function(x){ return x.name===m.group; })[0];
+      if(!g){ g = {name:m.group, mods:[]}; groups.push(g); }
+      g.mods.push(m);
+    });
+    groups.forEach(function(g){
+      var h = document.createElement('div');
+      h.className = 'group-heading';
+      h.innerHTML = '<h2>'+g.name+'</h2><div class="rule"></div>';
+      groupsEl.appendChild(h);
+
+      var list = document.createElement('div');
+      list.className = 'list';
+      g.mods.forEach(function(m){
+        var idx = MODULES.indexOf(m);
+        var st = moduleState(m);
+        var row = document.createElement('button');
+        row.className = 'row';
+        var pillLabel = st==='done' ? 'Notes complete' : st==='started' ? 'In progress' : 'Not started';
+        row.innerHTML =
+          '<span class="num">'+String(m.num).padStart(2,'0')+'</span>'+
+          '<span class="body"><h3>'+m.title+'</h3><span class="meta">'+m.runtime+' · '+m.sections.length+' sections</span></span>'+
+          '<span class="status"><span class="pill '+st+'">'+pillLabel+'</span></span>';
+        row.addEventListener('click', function(){ openModule(idx); });
+        list.appendChild(row);
+      });
+      groupsEl.appendChild(list);
+    });
+  }
+
+  function openModule(idx){
+    currentIdx = idx;
+    var m = MODULES[idx];
+    var d = data[m.id] || (data[m.id] = {});
+    dashboard.hidden = true; detail.hidden = false;
+
+    document.getElementById('detKicker').textContent = 'Video '+m.num+' of 5';
+    document.getElementById('detTitle').textContent = m.title;
+    document.getElementById('detRuntime').textContent = m.runtime;
+    var connEl = document.getElementById('detConnects');
+    if(m.connects){ connEl.hidden = false; connEl.textContent = m.connects; }
+    else { connEl.hidden = true; }
+
+    var objList = document.getElementById('objList');
+    objList.innerHTML = '';
+    m.objectives.forEach(function(o, i){
+      var row = document.createElement('div');
+      row.className = 'obj';
+      var checked = !!d['obj'+i];
+      row.innerHTML = '<input type="checkbox" id="obj_'+i+'" '+(checked?'checked':'')+'><label for="obj_'+i+'"'+(checked?' class="checked"':'')+'>'+o+'</label>';
+      var cb = row.querySelector('input');
+      var lbl = row.querySelector('label');
+      cb.addEventListener('change', function(){
+        d['obj'+i] = cb.checked;
+        lbl.classList.toggle('checked', cb.checked);
+        persist();
+      });
+      objList.appendChild(row);
+    });
+
+    var sectionList = document.getElementById('sectionList');
+    sectionList.innerHTML = '';
+    m.sections.forEach(function(s, i){
+      var card = document.createElement('div');
+      card.className = 'section-card';
+      var tagHtml = s.tag ? '<span class="tag">'+s.tag+'</span>' : '';
+      var hintHtml = s.p ? '<div class="hint">'+s.p+'</div>' : '';
+      card.innerHTML =
+        '<div class="sh"><h3>'+(i+1)+'. '+s.h+'</h3>'+tagHtml+'</div>'+
+        hintHtml +
+        '<textarea placeholder="Notes on this section...">'+(d['note'+i]||'')+'</textarea>';
+      var ta = card.querySelector('textarea');
+      ta.addEventListener('input', function(){
+        d['note'+i] = ta.value;
+        persist();
+      });
+      sectionList.appendChild(card);
+    });
+
+    document.getElementById('nextBtn').textContent = (idx === MODULES.length-1) ? 'Back to all videos' : 'Next video →';
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  function persist(){
+    store.set(data);
+    var note = document.getElementById('saveNote');
+    note.textContent = 'Saved';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ note.textContent = 'Notes save automatically'; }, 1200);
+  }
+
+  document.getElementById('backBtn').addEventListener('click', function(){
+    detail.hidden = true; dashboard.hidden = false;
+    renderDashboard();
+    window.scrollTo({top:0, behavior:'instant'});
+  });
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    if(currentIdx === MODULES.length-1){
+      detail.hidden = true; dashboard.hidden = false;
+      renderDashboard();
+      window.scrollTo({top:0, behavior:'instant'});
+    } else {
+      openModule(currentIdx+1);
+    }
+  });
+  document.getElementById('printBtn').addEventListener('click', function(){ window.print(); });
+
+  renderDashboard();
+})();
+</script>
