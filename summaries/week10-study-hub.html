@@ -1,0 +1,2008 @@
+<title>Week 10 MSK Study Hub</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --paper: #f3f5f4;
+    --paper-raised: #ffffff;
+    --ink: #1b2321;
+    --ink-soft: #4b5651;
+    --ink-faint: #7c8a84;
+    --line: #d8ddda;
+    --line-soft: #e7eae8;
+    --amber: #a8641c;
+    --amber-ink: #7a4712;
+    --amber-wash: #f4e6d3;
+    --teal: #1f6e73;
+    --teal-ink: #17565a;
+    --teal-wash: #dcedee;
+    --good: #2f7a4f;
+    --good-wash: #dcf0e2;
+    --bad: #ae3f34;
+    --bad-wash: #f7ded9;
+    --shadow: 0 1px 2px rgba(27,35,33,0.06), 0 6px 20px -8px rgba(27,35,33,0.12);
+    --radius: 3px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12191a;
+      --paper-raised: #182123;
+      --ink: #e9edea;
+      --ink-soft: #b6c0bb;
+      --ink-faint: #7d8b85;
+      --line: #2c3937;
+      --line-soft: #223030;
+      --amber: #e0a860;
+      --amber-ink: #f0c592;
+      --amber-wash: #33291b;
+      --teal: #6fc2c6;
+      --teal-ink: #9adade;
+      --teal-wash: #16302f;
+      --good: #6fbf8f;
+      --good-wash: #1a3327;
+      --bad: #e2897c;
+      --bad-wash: #3a211d;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12191a;
+    --paper-raised: #182123;
+    --ink: #e9edea;
+    --ink-soft: #b6c0bb;
+    --ink-faint: #7d8b85;
+    --line: #2c3937;
+    --line-soft: #223030;
+    --amber: #e0a860;
+    --amber-ink: #f0c592;
+    --amber-wash: #33291b;
+    --teal: #6fc2c6;
+    --teal-ink: #9adade;
+    --teal-wash: #16302f;
+    --good: #6fbf8f;
+    --good-wash: #1a3327;
+    --bad: #e2897c;
+    --bad-wash: #3a211d;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  h1, h2, h3, h4 { font-family: 'Spectral', Georgia, serif; text-wrap: balance; margin: 0; }
+  a { color: var(--teal-ink); }
+  table { border-collapse: collapse; }
+
+  .shell { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 280px;
+    flex: none;
+    border-right: 1px solid var(--line);
+    background: var(--paper-raised);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 22px 18px 30px;
+  }
+  .sidebar-head { margin-bottom: 4px; }
+  .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--teal-ink);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .sidebar-head h1 { font-size: 21px; font-weight: 600; line-height: 1.25; }
+  .sidebar-head .sub { color: var(--ink-faint); font-size: 13px; margin-top: 6px; }
+
+  .progress-block { margin: 18px 0 20px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-soft); margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+  .progress-track { height: 6px; background: var(--line-soft); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--amber); width: 0%; transition: width .4s ease; }
+
+  .navlist { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-soft); padding-top: 10px; }
+  .navlist li { margin: 0; }
+  .navlist a {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    padding: 7px 6px;
+    border-radius: var(--radius);
+  }
+  .navlist a:hover { background: var(--line-soft); color: var(--ink); }
+  .navlist a.active { color: var(--ink); font-weight: 600; }
+  .navlist .num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-faint); flex: none; width: 16px; }
+  .navlist .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--line); flex: none; }
+  .navlist .dot.done { background: var(--good); }
+
+  .sidebar-foot { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--line-soft); font-size: 12px; color: var(--ink-faint); }
+  .sidebar-foot code { font-family: 'IBM Plex Mono', monospace; background: var(--line-soft); padding: 1px 5px; border-radius: 2px; }
+
+  main { flex: 1; min-width: 0; }
+  .topbar {
+    position: sticky; top: 0; z-index: 5;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 40px;
+    display: none;
+  }
+
+  .hero {
+    padding: 54px 48px 40px;
+    border-bottom: 1px solid var(--line);
+    max-width: 900px;
+  }
+  .hero .kicker { margin-bottom: 14px; }
+  .hero h1 { font-size: 40px; font-weight: 600; letter-spacing: -0.01em; }
+  .hero .dek { color: var(--ink-soft); font-size: 16.5px; margin-top: 14px; max-width: 62ch; }
+  .hero-meta { display: flex; gap: 26px; margin-top: 26px; flex-wrap: wrap; }
+  .hero-meta div { font-size: 13px; color: var(--ink-faint); }
+  .hero-meta strong { display: block; font-family: 'Spectral', serif; font-size: 20px; color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .content { padding: 8px 48px 90px; max-width: 900px; }
+
+  section.module {
+    padding: 46px 0;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 20px;
+  }
+  section.module:last-of-type { border-bottom: none; }
+
+  .module-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 6px; }
+  .module-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--amber); padding-top: 6px; flex: none; width: 24px; }
+  .module-head h2 { font-size: 25px; font-weight: 600; }
+  .module-meta { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 22px 40px; }
+  .tag { font-size: 11.5px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.03em; color: var(--ink-faint); border: 1px solid var(--line); padding: 3px 8px; border-radius: 99px; }
+  .tag.mcc { color: var(--teal-ink); border-color: var(--teal); background: var(--teal-wash); }
+
+  .module-body { margin-left: 40px; }
+  .module-body p { color: var(--ink-soft); margin: 0 0 14px; max-width: 68ch; }
+  .module-body h3 { font-size: 15px; font-weight: 600; margin: 22px 0 10px; color: var(--ink); }
+  .module-body ul, .module-body ol { margin: 0 0 14px; padding-left: 20px; color: var(--ink-soft); max-width: 66ch; }
+  .module-body li { margin-bottom: 6px; }
+  .module-body li strong { color: var(--ink); }
+  .callout {
+    background: var(--amber-wash);
+    border-left: 3px solid var(--amber);
+    padding: 12px 16px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 14px;
+    color: var(--ink);
+    margin: 16px 0;
+    max-width: 64ch;
+  }
+  .callout strong { color: var(--amber-ink); }
+
+  .data-table { width: 100%; margin: 10px 0 20px; font-size: 13.5px; overflow-x: auto; display: block; }
+  .data-table table { width: 100%; min-width: 480px; }
+  .data-table th, .data-table td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  .data-table th { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); font-weight: 500; }
+  .module-body p.flag { font-size: 13px; color: var(--ink-faint); font-style: italic; }
+  .data-table td.num { font-variant-numeric: tabular-nums; }
+
+  .quiz {
+    margin-top: 26px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .quiz-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--line-soft);
+    background: var(--line-soft);
+  }
+  .quiz-head span { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+  .quiz-score { font-size: 12.5px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+  .quiz-body { padding: 18px; }
+  .q { margin-bottom: 20px; }
+  .q:last-child { margin-bottom: 0; }
+  .q-stem { font-size: 14.5px; color: var(--ink); margin-bottom: 10px; font-weight: 500; }
+  .q-opts { display: flex; flex-direction: column; gap: 7px; }
+  .opt {
+    text-align: left;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    padding: 9px 12px;
+    border-radius: var(--radius);
+    font-size: 13.5px;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    gap: 9px;
+  }
+  .opt:hover { border-color: var(--teal); }
+  .opt:focus-visible { outline: 2px solid var(--teal); outline-offset: 1px; }
+  .opt .letter { font-family: 'IBM Plex Mono', monospace; color: var(--ink-faint); flex: none; }
+  .opt.correct { background: var(--good-wash); border-color: var(--good); }
+  .opt.incorrect { background: var(--bad-wash); border-color: var(--bad); }
+  .opt[disabled] { cursor: default; }
+  .q-explain {
+    display: none;
+    margin-top: 9px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    background: var(--teal-wash);
+    border-left: 3px solid var(--teal);
+    padding: 9px 12px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .q-explain.shown { display: block; }
+  .q-explain strong { color: var(--teal-ink); }
+
+  .colophon {
+    max-width: 900px;
+    padding: 34px 48px 70px;
+    color: var(--ink-faint);
+    font-size: 12.5px;
+    border-top: 1px solid var(--line);
+  }
+  .colophon a { color: var(--ink-soft); }
+
+  .theme-toggle {
+    position: fixed; bottom: 18px; right: 18px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    color: var(--ink-soft);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10;
+  }
+
+  .mobile-nav-toggle { display: none; }
+
+  @media (max-width: 880px) {
+    .sidebar { position: fixed; left: -300px; top: 0; z-index: 20; transition: left .25s ease; box-shadow: var(--shadow); }
+    .sidebar.open { left: 0; }
+    .topbar { display: flex; align-items: center; gap: 12px; padding: 12px 20px; }
+    .mobile-nav-toggle {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: var(--radius);
+      border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace; font-size: 13px; cursor: pointer;
+    }
+    .topbar strong { font-family: 'Spectral', serif; font-size: 15px; }
+    .hero { padding: 30px 20px 28px; }
+    .hero h1 { font-size: 30px; }
+    .content { padding: 8px 20px 70px; }
+    .module-meta, .module-body { margin-left: 0; }
+    .module-head { gap: 10px; }
+    .colophon { padding: 26px 20px 60px; }
+  }
+</style>
+
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <span class="kicker">PoM2 &middot; Musculoskeletal Medicine</span>
+      <h1>Week&nbsp;10 &mdash; Imaging, Foot &amp; Ankle, Fractures, Pain, Exercise &amp; Pediatrics</h1>
+      <div class="sub">Musculoskeletal Block</div>
+    </div>
+
+    <div class="progress-block">
+      <div class="progress-label"><span>Quiz progress</span><span id="progress-count">0 / 30</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+
+    <ul class="navlist" id="navlist"></ul>
+
+    <div class="sidebar-foot">
+      Built from this week\'s Elentra slides and learning objectives (the same material as the week 10 NotebookLM video scripts). Written for review, not a substitute for the modules &mdash; cross-check anything that doesn\'t match the lecture.
+    </div>
+  </nav>
+
+  <main>
+    <div class="topbar">
+      <button class="mobile-nav-toggle" id="navToggle" aria-label="Toggle module list">&#9776;</button>
+      <strong>Week 10 &mdash; Musculoskeletal Medicine</strong>
+    </div>
+
+    <header class="hero">
+      <span class="kicker">Study Hub</span>
+      <h1>Musculoskeletal Medicine</h1>
+      <p class="dek">Ten modules that finish the lower limb and widen out: lower extremity X-rays, nerve injury, the foot and ankle, soft tissue tumours, fracture management and imaging, chronic pain, exercise prescription and pediatric orthopedics.</p>
+      <div class="hero-meta">
+        <div><strong>10</strong>modules</div>
+        <div><strong>30</strong>quiz questions</div>
+        <div><strong>~10.5h</strong>module time on Elentra</div>
+      </div>
+    </header>
+
+    <div class="content" id="content"></div>
+
+    <footer class="colophon">
+      Sources: Week 10 Elentra digital modules (Drs. Kalia, Payne, Cassidy, Martin, Wehrli, Latosinsky, D'Souza, Logan, Del Balso, Jarmain, Viana and Thornton): the slides and each module's learning objectives. Items marked with a warning sign aren't on the slides. For personal review; cross-check anything that doesn't match the modules.</footer>
+  </main>
+</div>
+
+<button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle color theme">&#9788;</button>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var stored = null;
+  try { stored = localStorage.getItem('msk-hub-theme'); } catch(e) {}
+  if (stored) root.setAttribute('data-theme', stored);
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var current = root.getAttribute('data-theme');
+    var next = current === 'dark' ? 'light' : (current === 'light' ? 'dark' : ((window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'light' : 'dark'));
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('msk-hub-theme', next); } catch(e) {}
+  });
+
+  document.getElementById('navToggle').addEventListener('click', function(){
+    document.getElementById('sidebar').classList.toggle('open');
+  });
+})();
+</script>
+
+<script>
+const MODULES = [
+  {
+    "id": "le-radiology",
+    "title": "Lower Extremity Radiology",
+    "instructor": "Elentra module 01",
+    "duration": "~45 min",
+    "tags": [
+      {
+        "label": "Read every film the same way",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Why this matters:</strong> naming the landmark precisely is how you tell orthopedics where a fracture is. Use the same systematic read on every film.</p>
+<h3>A systematic read</h3>
+<ul>
+<li><strong>Skeletal maturity:</strong> is the physis open (a lucent line) or fused?</li>
+<li><strong>Bone:</strong> cortex and medullary cavity, density, generalized bone disease</li>
+<li><strong>Alignment:</strong> malalignment suggests fracture, dislocation or other injury</li>
+<li><strong>Joints:</strong> inflammation, narrowing, degenerative change</li>
+<li><strong>Soft tissues:</strong> abnormalities can be extrinsic to bone</li>
+</ul>
+<p><strong>Parts of a long bone:</strong> epiphysis, physis, metaphysis, diaphysis; cortex and medullary cavity.</p>
+<p><strong>TIMS-C for pathology:</strong> <strong>T</strong>rauma and tumours; <strong>I</strong>nfection, inflammatory, idiopathic; <strong>M</strong>etabolic and malignancy; <strong>S</strong>ystemic (leukemia, lymphoma) and senile (osteoarthritis); <strong>C</strong>ongenital (mostly immature skeletons).</p>
+<p><strong>Osteoarthritis at any joint has three features:</strong> joint space narrowing, marginal osteophytes, subchondral sclerosis. Look for all three; one may dominate.</p>
+<h3>Hip</h3>
+<p><strong>Standard views:</strong> AP hip (one joint), cross-table lateral, AP pelvis (both hips and the pelvis). The <strong>frog-leg</strong> view is used in children to assess the femoral head epiphysis.</p>
+<p><strong>AP hip landmarks:</strong> femoral head and fovea, femoral neck, greater and lesser trochanters, intertrochanteric region. Acetabular roof, quadrilateral plate, iliopectineal line, teardrop, ilioischial line. Superior and inferior pubic rami, pubic symphysis, ischial tuberosity.</p>
+<p><strong>AP pelvis:</strong> iliac wings and crest, ASIS, AIIS, sacroiliac joints, pubic symphysis.</p>
+<p><strong>Three alignment lines on AP pelvis:</strong></p>
+<ul>
+<li><strong>Pelvic ring:</strong> should be continuous</li>
+<li><strong>Obturator ring:</strong> complete outline on each side</li>
+<li><strong>Shenton's line:</strong> smooth curve from the inferior femoral neck to the inferior superior pubic ramus</li>
+</ul>
+<p><strong>Example:</strong> a step-off in Shenton's line supports a <strong>femoral neck fracture</strong>. Total hip arthroplasty shows an acetabular cup, femoral head, neck and stem.</p>
+<h3>Knee</h3>
+<p><strong>Routine series:</strong> AP (with or without weight bearing), lateral, <strong>skyline</strong> for the patella. Weight-bearing AP often includes both knees for comparison.</p>
+<p><strong>AP:</strong> femoral condyles, intercondylar fossa, adductor tubercle, popliteal groove; <strong>tibial plateaus</strong> (the preferred radiology term), tibial spines, intercondylar eminence; fibular head, neck and shaft. The joint spaces are radiolucent cartilage, which isn't directly visible. A line along the lateral distal femur should pass within <strong>5 mm</strong> of the lateral proximal tibia.</p>
+<p><strong>Lateral:</strong></p>
+<ul>
+<li><strong>Blumensaat's line</strong> is the roof of the intercondylar notch; the ACL runs parallel to this region</li>
+<li><strong>Medial plateau is flat; lateral plateau is slightly convex</strong> and extends more posteriorly</li>
+<li>Tibial tuberosity, where the patellar tendon attaches</li>
+<li><strong>Soft tissues:</strong> quadriceps and patellar tendons, suprapatellar fat pads, Hoffa's fat pad</li>
+</ul>
+<p><strong>Effusion:</strong> fluid distends the normally collapsed <strong>suprapatellar recess</strong> and displaces the fat pads.</p>
+<p><strong>Lipohemarthrosis:</strong> a <strong>fat-fluid level</strong>. In trauma, it points to a subtle <strong>intra-articular fracture</strong>, because marrow fat escapes into the joint.</p>
+<p><strong>Skyline:</strong> medial and lateral patellar facets, median ridge, trochlear groove. Soft tissue is thicker medially, which helps with orientation.</p>
+<p><strong>Immature knee:</strong> look for uniform growth plates; displacement, fragmentation or irregularity may be pathology.</p>
+<p><strong>Don't call it a fracture:</strong> a <strong>bipartite patella</strong> is a well-defined fragment, most often <strong>superolateral</strong>. Patellar fractures more often involve the poles or mid-body.</p>
+<p><strong>Post-op:</strong> total knee arthroplasty; ACL reconstruction shows bone tunnels, which shouldn't be widened, and the tibial tunnel shouldn't lie in the anterior third.</p>
+<h3>Ankle</h3>
+<p><strong>Standard views:</strong> AP, <strong>mortise</strong> (ankle rotated slightly inward, showing the joint space and distal tibiofibular joint), lateral.</p>
+<p><strong>The mortise is formed by:</strong> medial malleolus, tibial plafond and lateral malleolus, with the <strong>talar dome</strong> inside. The fibular notch forms the inferior tibiofibular syndesmosis.</p>
+<p><strong>Lateral:</strong> talus (head, neck, body), calcaneus (tuberosity, anterior process), subtalar joint, navicular, cuboid, <strong>Achilles tendon</strong> and <strong>Kager's fat pad</strong> (a triangular lucency anterior to it).</p>
+<p><strong>Immature skeleton:</strong> an 11-year-old has open lucent physes and a visible calcaneal apophysis; a 17-year-old has fused plates with faint sclerotic lines.</p>
+<p><strong>Pathology examples:</strong></p>
+<ul>
+<li>Transverse medial and oblique lateral malleolar fractures; weight-bearing views may test the mortise under stress</li>
+<li><strong>Calcaneal spur:</strong> a projection from the plantar calcaneus</li>
+<li><strong>Enthesophyte:</strong> new bone where a tendon attaches, for example the Achilles. An <strong>osteophyte</strong> forms at a joint margin.</li>
+<li>Achilles tendinopathy: a thick tendon encroaching on Kager's fat pad</li>
+</ul>
+<div class="callout"><strong>Take-home:</strong> read systematically, check the alignment lines, and look at the soft tissues for the clue to a hidden fracture.</div>
+`,
+    "quiz": [
+      {
+        "stem": "What helps separate the tibial plateaus on a lateral knee X-ray?",
+        "opts": [
+          "The medial is flat; the lateral is slightly convex and extends more posteriorly",
+          "The lateral is always larger",
+          "The medial has a tubercle",
+          "They can never be told apart"
+        ],
+        "correct": 0,
+        "explain": "Blumensaat's line is the notch roof, useful for locating the intercondylar region."
+      },
+      {
+        "stem": "What is Kager's fat pad?",
+        "opts": [
+          "A pad under the patella",
+          "A triangular lucency anterior to the Achilles tendon",
+          "A pad at the hip",
+          "A lucency around the talar dome"
+        ],
+        "correct": 1,
+        "explain": "Encroachment on it can accompany Achilles tendinopathy."
+      },
+      {
+        "stem": "How is a 17-year-old's ankle X-ray expected to differ from an 11-year-old's?",
+        "opts": [
+          "The growth plates are more lucent",
+          "There are more ossification centres",
+          "Plates are fused, with faint sclerotic lines",
+          "The fibula is absent"
+        ],
+        "correct": 2,
+        "explain": "Open physes appear as lucent lines in the immature skeleton."
+      }
+    ]
+  },
+  {
+    "id": "nerve-injury",
+    "title": "Nerve Injury: Seddon, Localization and EDX",
+    "instructor": "Elentra module 02",
+    "duration": "~50 min",
+    "tags": [
+      {
+        "label": "Prognosis by layer",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Why this matters:</strong> four questions run the whole approach. <strong>Is it a nerve injury? Where is it? How bad is it? What now?</strong></p>
+<h3>Nerve structure</h3>
+<ul>
+<li><strong>Epineurium:</strong> around the whole nerve, holding fascicles together</li>
+<li><strong>Perineurium:</strong> around each fascicle</li>
+<li><strong>Endoneurium:</strong> around each axon, like a protective tube</li>
+</ul>
+<h3>Seddon classification</h3>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>What is disrupted</th>
+<th>Recovery</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Neurapraxia</strong></td>
+<td>Myelin only; axon intact</td>
+<td>Temporary, typically resolves in <strong>weeks (6–12)</strong> once the cause is addressed. Example: Saturday night palsy</td>
+</tr>
+<tr>
+<td><strong>Axonotmesis</strong></td>
+<td>Axon, with varying supporting tissue; <strong>epineurium intact</strong></td>
+<td>Can recover spontaneously, but slowly, at <strong>1 inch per month (1 mm per day)</strong></td>
+</tr>
+<tr>
+<td><strong>Neurotmesis</strong></td>
+<td><strong>Epineurium</strong>: nerve discontinuity</td>
+<td><strong>Cannot recover spontaneously</strong>, because regenerating axons have no track to follow</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Mechanisms:</strong> compression, crush, stretch, cut.</p>
+<p><strong>After axon injury:</strong> <strong>Wallerian degeneration</strong> removes the axon distal to the injury. Schwann cells proliferate and clear debris, and the axon regrows, far better with an endoneurial tube to follow.</p>
+<h3>Anatomical classification</h3>
+<ul>
+<li><strong>Motor neuronopathy:</strong> anterior horn cell</li>
+<li><strong>Radiculopathy:</strong> spinal roots</li>
+<li><strong>Plexopathy:</strong> brachial or lumbosacral plexus</li>
+<li><strong>Mononeuropathy:</strong> an individual named nerve</li>
+<li><strong>Polyneuropathy:</strong> generalized, diffuse</li>
+</ul>
+<h3>Root vs terminal branch</h3>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th></th>
+<th>Radiculopathy</th>
+<th>Mononeuropathy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lesion</td>
+<td>Spinal nerve root, typically compressed in the foramen</td>
+<td>Named nerve, typically compressed at a common site</td>
+</tr>
+<tr>
+<td>Onset</td>
+<td>Sudden or insidious, usually a clear time</td>
+<td>Variable; chronic compression is insidious, transection acute</td>
+</tr>
+<tr>
+<td>Pain</td>
+<td>Neck or back pain radiating down the limb in a <strong>dermatome</strong>, "fuzzy" borders</td>
+<td><strong>Well-circumscribed</strong> sensory abnormality</td>
+</tr>
+<tr>
+<td>Aggravated by</td>
+<td>Positions such as neck extension; relieved by reducing tension (hand overhead)</td>
+<td>Irritation, such as leaning on the elbow, driving, typing</td>
+</tr>
+<tr>
+<td>Weakness</td>
+<td><strong>Myotomal</strong>, across several nerves</td>
+<td>Only muscles of <strong>that peripheral nerve</strong>, not others from the same root</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Dermatome:</strong> skin supplied by one root. <strong>Myotome:</strong> muscles supplied by one root, regardless of the peripheral nerve.</p>
+<p><strong>Numb thumb example:</strong> carpal tunnel syndrome or C6 radiculopathy. Their sensory territories overlap. C6 also supplies biceps through the musculocutaneous nerve, and sensation via the LCNFA. APB is C8 through the median nerve. So weak biceps favours C6; weak APB favours carpal tunnel.</p>
+<h3>Presentation</h3>
+<ul>
+<li><strong>Negative phenomena:</strong> loss of sensation, weakness, loss of reflexes</li>
+<li><strong>Positive phenomena:</strong> pain, paresthesia</li>
+<li><strong>True sensory loss is neurogenic</strong>, but ask whether it's PNS or CNS</li>
+</ul>
+<h3>Electrodiagnostic studies</h3>
+<p><strong>NCS:</strong> stimulate a nerve and record distally.</p>
+<ul>
+<li><strong>Size of response</strong> reflects the <strong>axon</strong></li>
+<li><strong>Timing and speed</strong> reflect the <strong>myelin</strong></li>
+</ul>
+<p><strong>EMG:</strong> a needle records muscle activity. Is it normal at rest? Denervated muscle isn't. Does it respond normally to voluntary activation? Which muscle exactly?</p>
+<p><strong>EDX can tell you:</strong></p>
+<ul>
+<li>Is there a nerve problem?</li>
+<li>Where is it?</li>
+<li>How severe is it, and will it recover?</li>
+<li>Is myelin or axon involved, and is the nerve continuous?</li>
+<li>Is it a muscle problem instead?</li>
+</ul>
+<p><strong>EDX can't tell you:</strong> the cause of all MSK pain (rotator cuff tear) or CNS disease (stroke). More than one study over time may be needed for prognosis.</p>
+<h3>Case: foot drop</h3>
+<p>A horseback rider hits a fence with the right knee and lands on the low back. Dorsiflexion, EHL and eversion are 0/5, and sensation is reduced over the dorsum of the foot with clear borders. Other muscles are 4+/5 from pain.</p>
+<p><strong>EMG:</strong> abnormal only in common peroneal muscles, sparing biceps femoris short head and paraspinals, with no response on sensory or motor NCS. <strong>Diagnosis: common peroneal axonopathy at the fibular head.</strong> You can't yet say axonotmesis or neurotmesis; you must wait and see if it recovers.</p>
+<p><strong>Alternate ending:</strong> abnormal L5 muscles across several nerves, including paraspinals, is <strong>L5 radiculopathy</strong>.</p>
+<div class="callout"><strong>Take-home:</strong> the layers determine healing potential, clinical patterns localize the lesion, and EDX clarifies the diagnosis and prognosis.</div>
+`,
+    "quiz": [
+      {
+        "stem": "Which connective tissue layer surrounds each fascicle?",
+        "opts": [
+          "Endoneurium",
+          "Perineurium",
+          "Epineurium",
+          "Sarcolemma"
+        ],
+        "correct": 1,
+        "explain": "Endoneurium surrounds each axon; epineurium the whole nerve."
+      },
+      {
+        "stem": "What is Wallerian degeneration?",
+        "opts": [
+          "Demyelination without axon loss",
+          "Muscle atrophy from disuse",
+          "Degeneration of the axon distal to the injury",
+          "Compression of a spinal root"
+        ],
+        "correct": 2,
+        "explain": "Macrophages and Schwann cells clear debris, then the axon regrows."
+      },
+      {
+        "stem": "In mononeuropathy, which muscles are weak?",
+        "opts": [
+          "All muscles from the same root",
+          "Only proximal muscles",
+          "Only muscles of that peripheral nerve",
+          "All limb muscles"
+        ],
+        "correct": 2,
+        "explain": "Muscles from the same root managed by a different nerve are spared."
+      }
+    ]
+  },
+  {
+    "id": "foot-ankle",
+    "title": "Clinical Approach to the Foot & Ankle",
+    "instructor": "Elentra module 03",
+    "duration": "~90 min",
+    "tags": [
+      {
+        "label": "Ottawa rules",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Why this matters:</strong> foot and ankle problems are common, and the management theme repeats: education first, because improvement is slow.</p>
+<h3>Functional anatomy</h3>
+<p><strong>Bones:</strong> seven tarsals (talus, calcaneus, navicular, cuboid, three cuneiforms), metatarsals, phalanges. Sustentaculum tali supports the talus. The 5th metatarsal tuberosity takes fibularis brevis, and a quick inversion can avulse it.</p>
+<p><strong>Dorsum:</strong> extensor retinacula. EDB and EHB originate on the calcaneus and are supplied by the <strong>deep fibular nerve</strong>.</p>
+<p><strong>Sole:</strong> plantar aponeurosis protects the sole and supports the arches. Four muscle layers work as a group during stance.</p>
+<p><strong>Ankle (talocrural):</strong> hinge. <strong>Most stable in dorsiflexion</strong> (wide anterior talus wedged in the mortise), <strong>least stable in plantarflexion</strong>.</p>
+<p><strong>Ligaments:</strong></p>
+<ul>
+<li><strong>Lateral (weak):</strong> anterior talofibular, posterior talofibular, calcaneofibular</li>
+<li><strong>Medial (deltoid, strong):</strong> anterior and posterior tibiotalar, tibiocalcaneal, tibionavicular</li>
+</ul>
+<p><strong>Subtalar joint:</strong> plane joint; <strong>most inversion and eversion happen here</strong>. <strong>Transverse tarsal joint:</strong> calcaneocuboid and talonavicular.</p>
+<p><strong>Spring ligament</strong> (calcaneonavicular) supports the talar head, the keystone of the medial arch.</p>
+<p><strong>Arches:</strong> medial longitudinal is higher (tibialis anterior, tibialis posterior, fibularis longus); lateral longitudinal is flat; transverse runs across the cuneiforms, cuboid and metatarsal bases.</p>
+<p><strong>Nice to know (grey box):</strong> the long plantar ligament runs from the calcaneus to the cuboid, with fibres to the metatarsal bases.</p>
+<h3>Vessels and nerves</h3>
+<ul>
+<li><strong>Dorsalis pedis:</strong> continuation of anterior tibial; gives lateral tarsal, arcuate and deep plantar arteries. <strong>A weak or absent pulse suggests vascular insufficiency.</strong> Five P's: pain, pallor, paresthesia, paralysis, pulselessness.</li>
+<li><strong>Posterior tibial:</strong> through the tarsal tunnel, splits into medial and lateral plantar arteries. Feel its pulse between the medial malleolus and calcaneal tendon.</li>
+<li><strong>Collateral:</strong> the deep plantar arch joins lateral plantar and deep plantar arteries, so sole wounds bleed from both ends.</li>
+<li><strong>Veins:</strong> plantar network to dorsal network, then great and small saphenous veins.</li>
+<li><strong>Superficial fibular nerve:</strong> sensation over the dorsum, except the first web space.</li>
+<li><strong>Deep fibular nerve:</strong> dorsal foot muscles and the <strong>first web space</strong>.</li>
+<li><strong>Tibial nerve:</strong> through the tarsal tunnel to medial and lateral plantar nerves.</li>
+</ul>
+<h3>Ottawa Foot and Ankle Rules</h3>
+<p><strong>Ankle X-ray</strong> is required only with <strong>pain in the malleolar zone</strong> and any of:</p>
+<ul>
+<li>Bone tenderness at the <strong>posterior edge or tip of the lateral malleolus</strong> (distal 6 cm)</li>
+<li>Bone tenderness at the <strong>posterior edge or tip of the medial malleolus</strong> (distal 6 cm)</li>
+<li><strong>Inability to bear weight</strong> both immediately and in the ED</li>
+</ul>
+<p><strong>Foot X-ray</strong> is required only with <strong>pain in the midfoot zone</strong> and any of:</p>
+<ul>
+<li>Bone tenderness at the <strong>base of the 5th metatarsal</strong></li>
+<li>Bone tenderness at the <strong>navicular</strong></li>
+<li><strong>Inability to bear weight</strong> both immediately and in the ED</li>
+</ul>
+<h3>Ankle sprain</h3>
+<ul>
+<li>Up to <strong>85% are lateral</strong>, in inversion and plantarflexion: <strong>ATFL &gt; CFL &gt; PTFL</strong></li>
+<li>Swelling, ecchymosis, tenderness over the ligament; <strong>anterior drawer</strong> tests the ATFL</li>
+<li><strong>Management:</strong> education, RICE, brief immobilization if needed, <strong>early mobilization</strong>, strengthening, proprioception, NSAIDs; reconstruction only for ongoing instability</li>
+</ul>
+<p><strong>When it isn't just a sprain:</strong></p>
+<ul>
+<li><strong>Unimalleolar:</strong> may be non-operative, depending on talar stability</li>
+<li><strong>Bimalleolar:</strong> forceful eversion; usually surgery</li>
+<li><strong>Trimalleolar:</strong> unstable; surgery</li>
+<li><strong>Maisonneuve:</strong> forceful external rotation, interosseous ligament disruption; usually surgery</li>
+</ul>
+<h3>Achilles</h3>
+<p><strong>Tendinopathy:</strong> runners after increased training; pain at the posterior heel, worse with passive dorsiflexion. Education, activity modification, footwear, cautious heel wedge, <strong>PT with eccentric strengthening</strong>, NSAIDs. Surgery is rare.</p>
+<p><strong>Rupture:</strong> active people in their 30s–40s. Surgery may slightly lower re-rupture but adds infection, wound and sural nerve risks, so <strong>share the decision</strong>.</p>
+<h3>Plantar fasciitis</h3>
+<p>Chronic insertional inflammation. <strong>Pain at the anteromedial calcaneus on first morning steps</strong> and with activity; typically 40–60, F&gt;M; often a tight Achilles. Cushioned heel pad, arch support, weight loss, stretching and strengthening, night splints, NSAIDs. Surgical release is very rare.</p>
+<h3>Tibialis posterior dysfunction</h3>
+<p><strong>Hypovascular tendon distal to the medial malleolus.</strong> Risks: trauma, steroids, inflammatory arthritis, obesity, diabetes. Spectrum: medial pain, weakness, flexible then <strong>rigid flat foot</strong>. <strong>"Too many toes" sign.</strong> RICE, physio, orthosis, NSAIDs; surgery by severity.</p>
+<h3>Bunions and Morton's neuroma</h3>
+<p><strong>Bunion (hallux valgus):</strong> footwear and metatarsus varus. Pain at the medial first MTP, secondary toe deformities. Wider toe box, positioning if flexible, surgery. Treat early.</p>
+<p><strong>Morton's neuroma:</strong> perineural fibrosis of a common digital nerve, <strong>usually between the 3rd and 4th metatarsals</strong>. Middle-aged, F&gt;M; burning, provoked by high heels and narrow toe boxes; squeeze test; sensory findings possible, <strong>no motor findings</strong>. Lower heels, wider toe box, metatarsal pad, neuropathic agents, steroid injection, excision.</p>
+<h3>Diabetic foot</h3>
+<p>Poor blood flow starves skin and nerves. <strong>Neuropathy</strong> means unnoticed injury, dry skin and intrinsic atrophy, and possibly <strong>Charcot arthropathy</strong>. <strong>Ulcers occur in 15% of patients with diabetes.</strong> Debridement or amputation may be needed. <strong>Prevention is key:</strong> monofilament testing, appropriate socks and shoes, daily foot checks with mirrors.</p>
+`,
+    "quiz": [
+      {
+        "stem": "Which joint produces most foot inversion and eversion?",
+        "opts": [
+          "Talocrural",
+          "First MTP",
+          "Subtalar",
+          "Calcaneocuboid alone"
+        ],
+        "correct": 2,
+        "explain": "The transverse tarsal joint assists."
+      },
+      {
+        "stem": "Numbness only in the first web space points to which nerve?",
+        "opts": [
+          "Superficial fibular",
+          "Sural",
+          "Deep fibular",
+          "Lateral plantar"
+        ],
+        "correct": 2,
+        "explain": "The superficial fibular supplies the rest of the dorsum."
+      },
+      {
+        "stem": "Which measure best prevents diabetic foot ulcers?",
+        "opts": [
+          "Monofilament testing, appropriate footwear and daily foot checks",
+          "Routine antibiotics",
+          "Annual amputation review",
+          "Walking barefoot"
+        ],
+        "correct": 0,
+        "explain": "Ulcers occur in 15% of patients with diabetes."
+      }
+    ]
+  },
+  {
+    "id": "msk-oncology",
+    "title": "MSK Oncology: Soft Tissue Tumours",
+    "instructor": "Elentra module 04",
+    "duration": "~70 min",
+    "tags": [
+      {
+        "label": "Avoid the whoops excision",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Why this matters:</strong> most lumps are benign, so the common error is cutting out a sarcoma as if it were a lipoma. The module calls this the <strong>"whoops" excision</strong>, and it can reduce the chance of cure or lead to amputation.</p>
+<h3>Definitions and epidemiology</h3>
+<ul>
+<li><strong>Soft tissue:</strong> non-epithelial, extraskeletal, mesoderm-derived: skeletal and smooth muscle, fat, fibrous tissue, vessels, nerve</li>
+<li><strong>Malignant soft tissue tumour = sarcoma</strong></li>
+<li><strong>Benign to malignant is 100:1</strong> (300 vs 2 per 100,000)</li>
+<li>Incidence rises with age</li>
+<li><strong>Pediatric sarcomas:</strong> neuroblastoma, rhabdomyosarcoma, Ewing sarcoma</li>
+</ul>
+<h3>Pathogenesis (99% unknown)</h3>
+<ul>
+<li><strong>Environmental:</strong> asbestos (mesothelioma), vinyl chloride (angiosarcoma), radiation, herbicides</li>
+<li><strong>Virus:</strong> HHV-8 (Kaposi sarcoma)</li>
+<li><strong>Chronic lymphedema:</strong> Stewart-Treves angiosarcoma</li>
+<li><strong>Genetic:</strong> Li-Fraumeni (p53), retinoblastoma (Rb), neurofibromatosis (neurofibromin)</li>
+</ul>
+<h3>Classification</h3>
+<p>Named for the adult tissue they most resemble.</p>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th>Tissue</th>
+<th>Benign</th>
+<th>Malignant</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fat</td>
+<td>Lipoma</td>
+<td>Liposarcoma</td>
+</tr>
+<tr>
+<td>Skeletal muscle</td>
+<td>Rhabdomyoma</td>
+<td>Rhabdomyosarcoma</td>
+</tr>
+<tr>
+<td>Smooth muscle</td>
+<td>Leiomyoma</td>
+<td>Leiomyosarcoma</td>
+</tr>
+<tr>
+<td>Fibrous</td>
+<td>Fibroma</td>
+<td>Fibrosarcoma</td>
+</tr>
+<tr>
+<td>Peripheral nerve</td>
+<td>Neurofibroma</td>
+<td>Neurofibrosarcoma</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Behaviour categories:</strong></p>
+<ul>
+<li><strong>Benign:</strong> limited growth, may recur, no metastasis</li>
+<li><strong>Intermediate:</strong> locally aggressive, no metastasis; or rarely metastasizing (5–10%)</li>
+<li><strong>Malignant:</strong> locally aggressive, frequent metastasis</li>
+</ul>
+<h3>History and exam</h3>
+<p><strong>History:</strong> when noticed, size then and now (be persistent, and use fruit and nuts as size comparisons), trauma, recurrence, other lumps, family history.</p>
+<p><strong>Sarcomas are usually painless lumps.</strong> Significant symptoms should make you think of metastases.</p>
+<p><strong>Exam:</strong> location, size, skin changes, consistency, <strong>superficial vs deep</strong>, <strong>mobile, tethered or fixed</strong>, regional nodes (uncommonly involved).</p>
+<h3>The diagnostic pathway</h3>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th>Finding</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Under 5 cm, no suspicious features</strong> (limited growth, minimal symptoms, superficial)</td>
+<td>Excise</td>
+</tr>
+<tr>
+<td><strong>Under 5 cm with suspicious features</strong> (rapid growth, pain, recurrent, deep, fixed, difficult location)</td>
+<td>Imaging (<strong>MRI preferred</strong>) or surgical expert, then biopsy</td>
+</tr>
+<tr>
+<td><strong>Over 5 cm</strong></td>
+<td>Imaging (<strong>MRI preferred</strong>) or surgical expert, then biopsy</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Rules:</strong></p>
+<ul>
+<li><strong>Image before biopsy</strong></li>
+<li><strong>Biopsy by a physician experienced in sarcoma</strong>, with resection in mind</li>
+<li><strong>Don't do a "whoops" excision</strong></li>
+</ul>
+<h3>Biopsy options</h3>
+<ul>
+<li><strong>FNAB:</strong> cheap, easy, fast, atraumatic, but poor yield and hard to type; not widely used for primary diagnosis</li>
+<li><strong>Excisional:</strong> complete removal with minimal margin; <strong>not ideal if sarcoma</strong></li>
+<li><strong>Incisional:</strong> more tissue, more invasive</li>
+<li><strong>Core biopsy: the best compromise</strong>: less invasive, adequate tissue, good diagnosis</li>
+</ul>
+<p><strong>Pathology:</strong> routine histology generates a differential, then histochemistry, immunohistochemistry, cytogenetics, molecular tests and EM.</p>
+<h3>Management</h3>
+<ul>
+<li><strong>Staging CT chest</strong></li>
+<li><strong>Multidisciplinary tumour board</strong> for every potential sarcoma</li>
+<li><strong>Surgery ± radiotherapy; chemotherapy is uncommon</strong></li>
+<li><strong>Radiation added to surgery cuts local recurrence from 30% to 10%</strong></li>
+<li><strong>Pre-op radiation gives better long-term function:</strong> less tissue damage, and surgery removes most of the radiated tissue</li>
+<li><strong>Adjuvant chemotherapy is not standard care</strong></li>
+<li>Some sarcomas are curable with chemotherapy plus local therapy: osteosarcoma, Ewing sarcoma, rhabdomyosarcoma in young adults</li>
+<li>Non-curable disease: palliative care can significantly improve quality of life</li>
+</ul>
+<h3>The four cases</h3>
+<ol>
+<li><strong>33-year-old, big soft flank mass for 6 years, other lumps, uncle with lumps.</strong> Over 5 cm, so image. Spindle cell/pleomorphic lipoma (MDM2 negative, CD34 positive). Observe.</li>
+<li><strong>18-year-old, plum-sized tethered hip mass.</strong> Imaging, biopsy, tumour board, wide local excision. No recurrence at 5 years.</li>
+<li><strong>55-year-old with neurofibromatosis, football-sized thigh mass in muscle, dull ache.</strong> Malignant peripheral nerve sheath tumour. Pre-op radiation, surgery 6–8 weeks later, CT chest. Lung metastases at one year: goals of care and palliative referral.</li>
+<li><strong>55-year-old, abdominal girth, early satiety, weight loss.</strong> Dedifferentiated liposarcoma. Well-differentiated liposarcoma recurs locally but doesn't metastasize; dedifferentiated disease can do both.</li>
+</ol>
+<div class="callout"><strong>Take-home:</strong> benign tumours are common, sarcomas are rare and need a specialized path. Image first, core biopsy by an expert, tumour board, then surgery with or without radiotherapy.</div>
+`,
+    "quiz": [
+      {
+        "stem": "What is the status of adjuvant chemotherapy in soft tissue sarcoma?",
+        "opts": [
+          "Standard for every patient",
+          "Replaces surgery",
+          "Not standard therapy",
+          "Only used in lipomas"
+        ],
+        "correct": 2,
+        "explain": "Chemotherapy is uncommon and used in select subtypes or trials."
+      },
+      {
+        "stem": "A 55-year-old with neurofibromatosis has an enlarging deep thigh mass with a dull ache. What should you suspect?",
+        "opts": [
+          "Malignant peripheral nerve sheath tumour",
+          "Simple lipoma",
+          "Myositis ossificans",
+          "Baker's cyst"
+        ],
+        "correct": 0,
+        "explain": "Neurofibromatosis is a genetic predisposition to sarcoma."
+      },
+      {
+        "stem": "How do well-differentiated and dedifferentiated liposarcoma differ?",
+        "opts": [
+          "Well-differentiated metastasizes widely",
+          "Well-differentiated recurs locally but doesn't metastasize; dedifferentiated can do both",
+          "Dedifferentiated is benign",
+          "They behave identically"
+        ],
+        "correct": 1,
+        "explain": "Well-differentiated disease can progress to dedifferentiated disease."
+      }
+    ]
+  },
+  {
+    "id": "fracture-management",
+    "title": "Fracture Management & Complications",
+    "instructor": "Elentra module 05",
+    "duration": "~44 min",
+    "tags": [
+      {
+        "label": "Compartment syndrome: call ortho",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Why this matters:</strong> the bone usually heals, but limbs and lives are lost to complications. Compartment syndrome is the one you can't afford to miss.</p>
+<h3>Objectives of fracture management</h3>
+<p>Restore anatomy (length, alignment, rotation, translation), allow early motion, avoid complications of immobility and poor healing, and improve function.</p>
+<h3>The five steps</h3>
+<ol>
+<li><strong>Resuscitate as needed.</strong> Bones bleed, and sharp edges injure vessels.</li>
+<li><strong>Obtain a reduction</strong> if displaced.<ul>
+<li><strong>Open:</strong> in the OR under anesthesia</li>
+<li><strong>Closed:</strong> adequate analgesia and sedation, longitudinal traction, exaggerate the deformity, then reverse it while keeping traction</li>
+<li>The choice depends on fracture type and location, displacement, open vs closed, and fitness for surgery</li>
+</ul>
+</li>
+<li><strong>Maintain the reduction:</strong> internal fixation (ORIF), external fixation, or cast/splint.</li>
+<li><strong>Post-reduction X-rays</strong> confirm it's adequate and being held.</li>
+<li><strong>Rehabilitate:</strong> as much safe movement as possible, as early as possible; protect weight bearing; PT and OT.</li>
+</ol>
+<h3>Open fractures</h3>
+<p><strong>Definition:</strong> the fracture or hematoma is exposed to the environment through a traumatic break in soft tissue and skin. <strong>Any fracture with a wound, even a distant one, is open until proven otherwise.</strong></p>
+<p><strong>Complications:</strong> higher rates, especially <strong>infection</strong>, plus nonunion, delayed union and incomplete recovery.</p>
+<p><strong>Goal:</strong> turn an unstable contaminated wound into a stable clean environment.</p>
+<p><strong>Principles:</strong></p>
+<ul>
+<li><strong>Early antibiotics</strong> (cefazolin 2 g IV in the case)</li>
+<li><strong>Tetanus prophylaxis</strong></li>
+<li><strong>Stabilize</strong> while waiting for ortho (closed reduction and splint)</li>
+<li><strong>Early surgery:</strong> remove devitalized tissue, gently irrigate with sterile saline, stabilize</li>
+<li><strong>Early soft tissue closure</strong>, with plastics for flaps if needed</li>
+</ul>
+<h3>Fracture healing</h3>
+<ul>
+<li><strong>Primary (contact):</strong> bone surfaces directly apposed, as with internal fixation</li>
+<li><strong>Secondary (spontaneous):</strong> natural stages with callus</li>
+<li><strong>Healing is a clinical diagnosis:</strong> no tenderness, no motion at the fracture site, weight bearing possible</li>
+<li><strong>X-ray:</strong> fracture line widens at 10–14 days; callus at 2 weeks; union shows mature bridging callus with remodelling</li>
+<li><strong>Timelines:</strong> upper limb 3–10 weeks; lower limb 6–12 weeks</li>
+<li><strong>Delayed union:</strong> takes twice as long as expected</li>
+</ul>
+<h3>The seven complications</h3>
+<p><strong>1. Thromboembolic disease.</strong> Virchow's triad fits most ortho trauma. Risks: multiple injuries, spinal cord or head injury, lower limb or pelvic fracture, older age, prolonged surgery or wait. Prevent mechanically (pneumatic compression; IVC filter prevents embolization, not clot) or chemically (ASA, LMWH), according to the patient.</p>
+<p><strong>2. Compartment syndrome.</strong> Pressure in a closed fascio-osseous space exceeds tolerance, so blood can't flow. Muscle and nerve are most vulnerable, with <strong>transient injury within 2 hours of ischemia</strong>.</p>
+<ul>
+<li><strong>External causes:</strong> tight cast, direct pressure, circumferential eschar</li>
+<li><strong>Internal causes:</strong> hematoma, fluid leak, burns, post-reperfusion, crush</li>
+<li><strong>Presentation (clinical diagnosis):</strong><ul>
+<li><strong>Pain out of proportion to the injury</strong></li>
+<li><strong>Pain on passive stretch</strong></li>
+<li>Paresthesia (midterm)</li>
+<li>Paralysis (very late)</li>
+<li>Pulselessness isn't typical; by then it's been missed</li>
+</ul>
+</li>
+<li><strong>Sites:</strong> most often lower leg or forearm. Classic: a tibial fracture with rising narcotic needs.</li>
+<li><strong>No test is required.</strong> If the patient can't communicate, measure pressure: <strong>diastolic BP minus compartment pressure under 20, or absolute pressure over 30 mmHg</strong>.</li>
+<li><strong>Non-orthopedist:</strong> <strong>call ortho urgently</strong>, elevate the limb, remove compressive dressings and casts, cool the limb, monitor. <strong>Definitive treatment is fasciotomy.</strong></li>
+</ul>
+<p><strong>3. Nonunion.</strong> Failure to heal in twice the expected time (radiology slide: no healing in 6–9 months). <strong>Atrophic</strong> (no significant bone, impaired healing), <strong>hypertrophic</strong> (lots of bone, suggests stabilization is insufficient), <strong>infected</strong>. Manage with stabilization, biologic help (nutrition, metabolic issues, smoking cessation, bone graft), eradicating infection, reconstruction.</p>
+<p><strong>4. Malunion.</strong> Healed in an abnormal position. Assess in all planes, and consider the patient: if it affects comfort or function, consider <strong>osteotomy</strong>.</p>
+<p><strong>5. AVN (osteonecrosis).</strong> Bone death from lost blood supply, most common with a <strong>retrograde blood supply: femoral head, talus, scaphoid</strong>. Presents with pain; management is surgical.</p>
+<p><strong>6. Post-traumatic arthritis.</strong> After a periarticular fracture. Uncommon in hip and knee, <strong>very common with ankle fractures (over 50%)</strong>. Treat like degenerative OA.</p>
+<p><strong>7. Heterotopic ossification.</strong> Ectopic bone after trauma. Risks: polytrauma, head injury, burns over 30% TBSA. Hip, knee and elbow are most at risk. Causes stiffness, even ankylosis; early redness and swelling. <strong>X-ray and CT are negative early; bone scan is more effective.</strong> Control inflammation and pain; excise once mature if problematic.</p>
+`,
+    "quiz": [
+      {
+        "stem": "Which bones are prone to AVN because of retrograde blood supply?",
+        "opts": [
+          "Radius, ulna, clavicle",
+          "Sternum, rib, vertebra",
+          "Femoral head, talus, scaphoid",
+          "Patella, fibula, calcaneus"
+        ],
+        "correct": 2,
+        "explain": "Presents with pain, and management is surgical."
+      },
+      {
+        "stem": "Post-traumatic arthritis is very common after which fracture site?",
+        "opts": [
+          "Ankle",
+          "Hip",
+          "Knee",
+          "Clavicle"
+        ],
+        "correct": 0,
+        "explain": "Over 50% with ankle fractures; uncommon in hip and knee."
+      },
+      {
+        "stem": "Which test is most useful early in heterotopic ossification?",
+        "opts": [
+          "X-ray",
+          "CT",
+          "Bone scan",
+          "Ultrasound of the skin"
+        ],
+        "correct": 2,
+        "explain": "X-ray and CT are negative until the new bone calcifies."
+      }
+    ]
+  },
+  {
+    "id": "fracture-radiology",
+    "title": "Fracture Radiology & Healing",
+    "instructor": "Elentra module 06",
+    "duration": "~58 min",
+    "tags": [
+      {
+        "label": "OLD ACIDS",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Why this matters:</strong> a good fracture description lets an orthopedic surgeon picture the injury over the phone. Each fracture gets more than one descriptor. The body is always assumed to be in anatomic position.</p>
+<h3>The mnemonic: OLD ACIDS</h3>
+<ul>
+<li><strong>O</strong>pen or closed</li>
+<li><strong>L</strong>ocation</li>
+<li><strong>D</strong>egree: complete or incomplete</li>
+<li><strong>A</strong>rticular surface involvement</li>
+<li><strong>C</strong>omminution and types</li>
+<li><strong>I</strong>ntrinsic bone quality</li>
+<li><strong>D</strong>isplacement: the descriptors</li>
+<li><strong>S</strong>oft tissue injury</li>
+</ul>
+<h3>Fracture description order</h3>
+<p>Views, location, type, descriptors, joint involvement, other findings, bone quality, healing.</p>
+<h3>Views</h3>
+<ul>
+<li><strong>Ankle mortise</strong> view</li>
+<li><strong>Scaphoid:</strong> ulnar deviation, clenched fist view</li>
+<li><strong>Shoulder:</strong> Y view</li>
+<li><strong>Spiral fractures:</strong> need multiple views to see the spiral</li>
+</ul>
+<h3>Location</h3>
+<p><strong>Epiphysis, physis, metaphysis, diaphysis</strong>, and <strong>apophysis</strong>, a non-articular bony prominence where muscles or tendons attach, exposed to traction (calcaneal tuberosity). Note mature or immature skeleton.</p>
+<h3>Types</h3>
+<p><strong>Complete:</strong></p>
+<ul>
+<li><strong>Transverse</strong></li>
+<li><strong>Oblique</strong></li>
+<li><strong>Spiral:</strong> twisting injury; can look oblique</li>
+<li><strong>Longitudinal/linear</strong></li>
+<li><strong>Comminuted:</strong> including <strong>segmental</strong> and <strong>butterfly</strong> fragment</li>
+</ul>
+<p><strong>Incomplete:</strong> bowing, buckle, greenstick. <strong>Salter-Harris</strong> injuries involve growth plates in the immature skeleton.</p>
+<p><strong>Others:</strong> avulsion, open.</p>
+<h3>Displacement descriptors</h3>
+<p><strong>Rule: describe the distal fragment relative to the proximal.</strong> <strong>The exception is the clavicle:</strong> proximal relative to distal, because neck muscles pull the proximal fragment.</p>
+<ul>
+<li><strong>Angulation:</strong> by the direction of the apex, or the direction the distal fragment points<ul>
+<li><strong>Varus:</strong> apex lateral, angulation away from the midline</li>
+<li><strong>Valgus:</strong> apex medial, angulation toward the midline</li>
+</ul>
+</li>
+<li><strong>Translation (displacement):</strong> ends moved apart, in terms of bone width (half shaft width). If it exceeds the width of the bone, it's <strong>off-ended</strong>.</li>
+<li><strong>Rotation:</strong> distal relative to proximal; hard to see, so check joints above and below. Internal or external.</li>
+<li><strong>Distraction:</strong> fragments pulled apart lengthwise</li>
+<li><strong>Impaction:</strong> fragments driven into each other; foreshortened, "telescoped in"</li>
+<li><strong>Override:</strong> fragments overlap; foreshortened</li>
+</ul>
+<p>⚠ The slide also says the distal fragment is "directed laterally" in varus and "medially" in valgus. Standard usage is the reverse, so learn these by the apex, and check this against the course.</p>
+<h3>Joint involvement</h3>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th>Intra-articular</th>
+<th>Extra-articular</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Involves the articular surface</td>
+<td>Doesn't involve the joint</td>
+</tr>
+<tr>
+<td>Risk of <strong>secondary OA</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Reduction must be anatomic</strong></td>
+<td>Reduction can be relatively anatomic</td>
+</tr>
+<tr>
+<td>Longer to heal</td>
+<td>Bones remodel, particularly with weight bearing</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>If you can't see the fracture, look for secondary signs:</strong> <strong>hemarthrosis and a fat-fluid level</strong>. Also look for subluxation or dislocation.</p>
+<h3>Other findings</h3>
+<ul>
+<li>Open fractures</li>
+<li>Periprosthetic fractures</li>
+<li>Amputation</li>
+<li><strong>Diastasis:</strong> widening or incongruence at a joint, with or without fracture (pubic symphysis, AC joint)</li>
+</ul>
+<h3>Bone quality</h3>
+<p><strong>Pathological fracture:</strong> in weakened bone, usually <strong>transverse</strong>, spontaneous or after trivial trauma.</p>
+<h3>Healing</h3>
+<ul>
+<li><strong>Primary (contact):</strong> directly apposed surfaces, as in internal fixation; little callus</li>
+<li><strong>Secondary:</strong> natural stages, most common</li>
+<li><strong>Clinical healing:</strong> no tenderness, no motion, weight bearing possible</li>
+<li><strong>X-ray:</strong> fracture line widens at <strong>10–14 days</strong>; callus at <strong>2 weeks</strong>; <strong>radiological union</strong> shows mature bridging callus with remodelling and a restored medullary space</li>
+<li><strong>Upper limb:</strong> 3–10 weeks, longest in distal humerus (8–10)</li>
+<li><strong>Lower limb:</strong> 6–12 weeks, longest in femoral neck and shaft</li>
+<li><strong>Delayed union:</strong> twice the expected time</li>
+<li><strong>Nonunion:</strong> no healing in 6–9 months</li>
+<li><strong>Malunion:</strong> non-anatomic healing</li>
+</ul>
+<div class="callout"><strong>Take-home:</strong> trace the cortex, look for secondary signs, and use the descriptors.</div>
+`,
+    "quiz": [
+      {
+        "stem": "Which fracture type is typical of a pathological fracture?",
+        "opts": [
+          "Spiral",
+          "Comminuted",
+          "Usually transverse with trivial trauma",
+          "Always segmental"
+        ],
+        "correct": 2,
+        "explain": "Occurs in weakened bone, spontaneously or with trivial trauma."
+      },
+      {
+        "stem": "When does callus typically first appear on X-ray?",
+        "opts": [
+          "2 weeks",
+          "2 days",
+          "6 months",
+          "1 year"
+        ],
+        "correct": 0,
+        "explain": "The fracture line widens at 10–14 days; union shows mature bridging callus with remodelling."
+      },
+      {
+        "stem": "What is the difference between delayed union and nonunion on the radiology slide?",
+        "opts": [
+          "They are identical",
+          "Delayed takes twice as long as expected; nonunion shows no healing in 6–9 months",
+          "Delayed is non-anatomic healing",
+          "Nonunion heals in 3 weeks"
+        ],
+        "correct": 1,
+        "explain": "Malunion is non-anatomic healing."
+      }
+    ]
+  },
+  {
+    "id": "psych-pain",
+    "title": "Psychological Factors in Chronic Pain",
+    "instructor": "Elentra module 07",
+    "duration": "~80 min",
+    "tags": [
+      {
+        "label": "Conscious vs unconscious gain",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Why this matters:</strong> pain is defined as both sensory and emotional. A patient's distress isn't separate from the pain, and treating only the tissue misses much of it.</p>
+<h3>Definition</h3>
+<p>The International Association for the Study of Pain: "an unpleasant sensory and emotional experience associated with actual or potential tissue damage, or described in terms of such damage."</p>
+<h3>Assessing Fred</h3>
+<p>A 47-year-old man, off work and supported by WSIB, has ongoing pain and disability one year after a crush injury with well-healed tibial and fibular fractures.</p>
+<p><strong>Assessment:</strong></p>
+<ul>
+<li>Duration and nature of pain</li>
+<li>Physical and psychological symptoms, <strong>including suicidal ideation</strong></li>
+<li>Past care, treatments and home remedies: what has worked</li>
+<li><strong>Functional implications</strong></li>
+<li>Review all past investigations; others only as clinically indicated</li>
+<li><strong>Pain charting:</strong> numerical 0–10, faces, visual analogue, McGill Pain Questionnaire, pain diary</li>
+</ul>
+<h3>Psychological symptoms and pain</h3>
+<p>The relationship runs on a spectrum: emotional and cognitive aspects of pain, adjustment disorder, psychological factors affecting a medical condition, somatic symptom disorders, and comorbid psychological symptoms.</p>
+<p><strong>Affective disorders go both ways</strong> (from the Viana slides): depression is common in chronic pain (5–87%), with somatic overlap in appetite, sleep, energy and weight. Pain intensity, number of painful areas and frequency of severe pain predict depression. Anxiety is one of the most disabling aspects, and leads to activity avoidance, deconditioning and social isolation.</p>
+<p><strong>Cognitive distortions:</strong> mental filter, catastrophizing, emotional reasoning.</p>
+<h3>Medically unexplained symptoms</h3>
+<p><strong>Types:</strong> pain in different locations, functional disturbance of organ systems, fatigue or exhaustion.</p>
+<p><strong>May be caused by:</strong> physiological disturbance, emotional problems, or pathology not yet diagnosed.</p>
+<p><strong>Prevalence:</strong> 15–25% in primary care, 39–52% in specialist clinics, over 60% in neurology.</p>
+<p><strong>Functional somatic syndromes:</strong> IBS, chronic fatigue syndrome, fibromyalgia. Female preponderance, significant overlap with anxiety and depression.</p>
+<h3>Somatic symptom and related disorders (DSM-5)</h3>
+<p>DSM-5 moved away from mind-body dualism and from implying that symptoms aren't real. The focus is on distressing symptoms with abnormal thoughts, feelings and behaviours. The group includes somatic symptom disorder, illness anxiety disorder, conversion disorder, psychological factors affecting other conditions, and factitious disorder.</p>
+<p><strong>Somatic symptom disorder:</strong></p>
+<ul>
+<li><strong>A:</strong> one or more somatic symptoms that are distressing or disrupt daily life</li>
+<li><strong>B:</strong> excessive thoughts, feelings or behaviours about them</li>
+<li><strong>C:</strong> symptomatic state persists <strong>over 6 months</strong>, though any one symptom may come and go</li>
+</ul>
+<p><strong>Conversion disorder (functional neurological symptom disorder):</strong></p>
+<ul>
+<li>Altered voluntary motor or sensory function</li>
+<li><strong>Clinical findings incompatible</strong> with recognized neurological or medical conditions</li>
+<li>Not better explained by another disorder</li>
+<li>Causes significant distress or impairment</li>
+</ul>
+<p><strong>Factitious disorder:</strong> presenting self or another as ill or injured, with deception, <strong>even without obvious external rewards</strong>. Imposed on self, or on another.</p>
+<h3>Gain and consciousness</h3>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th></th>
+<th>Behaviour</th>
+<th>Gain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Somatic symptom and related disorders</strong></td>
+<td>Unconscious</td>
+<td>Inner psychic gain</td>
+</tr>
+<tr>
+<td><strong>Factitious disorder</strong></td>
+<td><strong>Conscious</strong></td>
+<td><strong>Unconscious</strong>; the focus is the sick role</td>
+</tr>
+<tr>
+<td><strong>Malingering</strong></td>
+<td><strong>Conscious</strong></td>
+<td><strong>External gain</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Assessing factitious disorder or malingering:</strong></p>
+<ul>
+<li>Thorough history with a clear chronology</li>
+<li>Inconsistent, selective or misleading information</li>
+<li>Symptoms out of proportion</li>
+<li>Gaps between index event and onset</li>
+<li>Many tests and treatments with little benefit</li>
+<li>Collateral information and triangulation of the data</li>
+<li>Inconsistent exam findings</li>
+<li>Neuropsychological assessment in some cases</li>
+</ul>
+<h3>Management</h3>
+<p><strong>Multimodal, multidisciplinary, collaborative</strong>, with realistic measurable goals: <strong>management, not cure</strong>. Start with the patient.</p>
+<p><strong>Biological:</strong></p>
+<ul>
+<li><strong>Physical:</strong> TENS, heat and cold, acupuncture, massage, physio, injections</li>
+<li><strong>WHO ladder:</strong> non-opioid ± adjuvant (NSAIDs, acetaminophen); weak opioid + non-opioid ± adjuvant; strong opioid + non-opioid ± adjuvant</li>
+<li><strong>Adjuvants:</strong> analgesic antidepressants, anticonvulsants</li>
+</ul>
+<p><strong>CBT:</strong> connects thoughts, feelings and behaviours; manages rather than cures pain; individual or group. Components: education, contingency management, relaxation, problem solving, communication, distraction, behavioural activation, cognitive restructuring.</p>
+<p><strong>Other:</strong> psychodynamic psychotherapy, relaxation and meditation.</p>
+<p><strong>Rehabilitation:</strong> education and adaptation, ergonomics, <strong>pacing</strong>, exercise, vocational coordination.</p>
+<p><strong>Secondary prevention:</strong> <strong>time is vital; intervene before 12 weeks</strong>. Early and active, with maintained activity and return to work. Patient as partner, good communication with workplace and family, follow-up.</p>
+<p><strong>General strategies:</strong></p>
+<ul>
+<li>One physician, regular visits</li>
+<li>Goal directed</li>
+<li>Understand the communication</li>
+<li>Limit investigations and operations</li>
+<li>Motivational interviewing</li>
+<li><strong>Monitor thyself</strong></li>
+</ul>
+`,
+    "quiz": [
+      {
+        "stem": "A patient says 'this will ruin my life and never improve'. What is the distortion?",
+        "opts": [
+          "Pacing",
+          "Contingency management",
+          "Catastrophizing",
+          "Relaxation"
+        ],
+        "correct": 2,
+        "explain": "Mental filter and emotional reasoning are others."
+      },
+      {
+        "stem": "By when should secondary prevention intervene?",
+        "opts": [
+          "Before 12 weeks",
+          "After 2 years",
+          "Only after disability is established",
+          "Never"
+        ],
+        "correct": 0,
+        "explain": "Keep it early and active, with maintained activity and return to work."
+      },
+      {
+        "stem": "Which general strategy is on the slides?",
+        "opts": [
+          "Many physicians with frequent changes",
+          "More investigations and operations",
+          "One physician, regular visits, goal directed, limit investigations",
+          "Stop all follow-up"
+        ],
+        "correct": 2,
+        "explain": "Also motivational interviewing and 'monitor thyself'."
+      }
+    ]
+  },
+  {
+    "id": "chronic-pain",
+    "title": "Understanding & Managing Chronic Pain",
+    "instructor": "Elentra module 08",
+    "duration": "~77 min",
+    "tags": [
+      {
+        "label": "Hurt doesn't equal harm",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Why this matters:</strong> chronic pain is rarely cured. The focus is on active physical and cognitive management by the patient, with medication in a supporting role.</p>
+<h3>Time course</h3>
+<ul>
+<li><strong>Acute:</strong> seconds, simultaneous with and proportional to the cause, nociceptive</li>
+<li><strong>Subacute:</strong> hours to days, with hyperalgesia and allodynia; mainly nociceptive, some neuropathic</li>
+<li><strong>Chronic:</strong> <strong>over 3 months</strong>, may outlast tissue damage, pronounced affective component, <strong>mainly neuropathic</strong></li>
+</ul>
+<h3>Pain types</h3>
+<p><strong>Nociceptive:</strong> well localized; clear duration, intensity and quality. <strong>Transduction, conduction, transmission, perception.</strong></p>
+<p><strong>Neuropathic:</strong> from a lesion or dysfunction in the nervous system, with spontaneous pain or hypersensitivity; burning, electrical, pins and needles.</p>
+<p><strong>Chronic pain, two categories:</strong></p>
+<ul>
+<li><strong>Chronic nociceptive (minority):</strong> chronically activated nociceptors (inflammatory disease, OA); prevent further activation</li>
+<li><strong>Chronic neuropathic (majority):</strong> <strong>"wind-up" and central sensitization</strong>, reduced descending 5-HT and NE activity, abnormal processing despite resolved injury, "fear of harm" avoidance</li>
+</ul>
+<h3>Fibres and modulation</h3>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th>Fibre</th>
+<th>Myelin</th>
+<th>Function</th>
+<th>Pain quality</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Aβ</td>
+<td>Myelinated</td>
+<td>Touch, pressure, vibration</td>
+<td>Non-nociceptive</td>
+</tr>
+<tr>
+<td>Aδ</td>
+<td>Thin myelin</td>
+<td>Pinprick, cold</td>
+<td>Sharp, well localized</td>
+</tr>
+<tr>
+<td>C</td>
+<td>Unmyelinated</td>
+<td>Heat, cold, pressure</td>
+<td>Dull, poorly localized, persistent</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Gate control:</strong> Aβ activates inhibitory interneurons, which is why rubbing helps</li>
+<li><strong>Endogenous opioids:</strong> enkephalins, endorphins, dynorphins</li>
+<li><strong>Descending inhibition:</strong> NE and 5-HT</li>
+<li><strong>Central sensitization:</strong> NMDA receptors</li>
+</ul>
+<h3>Effects on the patient</h3>
+<p>Depression, anxiety, irritability; poor sleep, fatigue, reduced mobility; strained relationships; disability, lost work, substance use.</p>
+<p><strong>Fear of harm:</strong> avoiding activity gives less pain now, then generalizes (operant and classical conditioning) into inactivity and isolation. <strong>Hurt does not equal harm:</strong> most original injuries have healed, and activity can normalize signal processing and release endorphins.</p>
+<h3>The team</h3>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Physicians</strong> (anesthesia, neurology, PM&amp;R, internal medicine, psychiatry)</td>
+<td>Review, trial medications, interventions, long-term strategy for the GP</td>
+</tr>
+<tr>
+<td><strong>Nursing</strong></td>
+<td>Support, documentation, triage</td>
+</tr>
+<tr>
+<td><strong>Psychology</strong></td>
+<td>Group and individual therapy, CBT, pacing, family education</td>
+</tr>
+<tr>
+<td><strong>Physiotherapy</strong></td>
+<td>Mobility, strength, flexibility; modalities only as an adjunct</td>
+</tr>
+<tr>
+<td><strong>Occupational therapy</strong></td>
+<td>Activity participation, pacing, ergonomics for ADLs and work</td>
+</tr>
+<tr>
+<td><strong>Kinesiologist</strong></td>
+<td>General exercise prescription and supervision</td>
+</tr>
+<tr>
+<td><strong>Chiropractor</strong></td>
+<td>Spinal manipulation, more helpful acutely</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Refer to a multidisciplinary clinic</strong> for failure of standard analgesics, a review of options, or worsening activity, mood or isolation.</p>
+<h3>Non-pharmacologic</h3>
+<p><strong>Active therapy has the best evidence.</strong> Individualized, supervised programs work best; <strong>any regular activity beats avoidance</strong>. Yoga and tai chi outperform general exercise for back pain. "Work hardening" programs aren't effective.</p>
+<p><strong>Passive modalities have little evidence:</strong> TENS slightly better than placebo; ultrasound and low-level laser no better than placebo; acupuncture moderately better; massage works when combined with exercise and education. Spinal manual therapy: possible short-term benefit, no evidence for long-term use.</p>
+<h3>Pharmacologic</h3>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Examples</th>
+<th>Key points</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NSAIDs, COX-2</strong></td>
+<td>Ibuprofen, naproxen; celecoxib, meloxicam</td>
+<td>Mild to moderate pain; renal and BP effects, upper GI bleed (less with COX-2); <strong>limit to a 2–3 week trial</strong>, monitor if longer</td>
+</tr>
+<tr>
+<td><strong>Acetaminophen</strong></td>
+<td></td>
+<td>Adult 325–1000 mg q4–6h, <strong>max 4 g/day</strong></td>
+</tr>
+<tr>
+<td><strong>Tricyclics</strong></td>
+<td>Amitriptyline, nortriptyline</td>
+<td>Pain and sleep 10–50 mg</td>
+</tr>
+<tr>
+<td><strong>SNRIs</strong></td>
+<td>Duloxetine 60 mg, venlafaxine</td>
+<td>Pain and mood</td>
+</tr>
+<tr>
+<td><strong>SSRIs</strong></td>
+<td></td>
+<td>Help mood; <strong>no significant effect on pain alone</strong></td>
+</tr>
+<tr>
+<td><strong>Anticonvulsants</strong></td>
+<td>Gabapentin 900–2700 mg/day; pregabalin</td>
+<td>Neuropathic; α2δ on calcium channels; <strong>sedation</strong>, start low; 1–2 weeks for effect</td>
+</tr>
+<tr>
+<td><strong>Cannabinoids</strong></td>
+<td>Nabilone, cannabis</td>
+<td>Growing evidence; higher CBD:THC; don't smoke or vape</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Opioids: the START principle</h3>
+<p><strong>S: Should I start?</strong> History, exam, <strong>Opioid Risk Tool</strong> (male, age 16–45, personal or family substance use, psychiatric history), urine screen, stop benzodiazepines, treatment agreement, informed consent.</p>
+<p><strong>T: Trial.</strong> Start low, go slow; avoid driving during titration. Optimal dose: improved function or <strong>at least 30% pain reduction</strong>, balanced against plateau and adverse effects. <strong>Watchful dose: 90 mg morphine equivalent per day.</strong></p>
+<p><strong>A: A's of monitoring.</strong> Analgesia, ADLs, adverse effects, aberrant behaviour (escalating dose, altering route, illegal activity). Complications: neuroendocrine effects, sleep apnea, opioid-induced hyperalgesia.</p>
+<p><strong>R: Restrict use.</strong> History of addiction (strong recommendation against; under 20 MED/day if used); active psychiatric disorder (stabilize first); elderly (lower, slower); adolescents; pregnancy (taper).</p>
+<p><strong>T: Terminate.</strong> Addiction, misuse, poor effect. Taper from 10% of daily dose per day to 10% per month, slowing at a third of the original dose. Withdrawal: nausea, diarrhea, aches, chills, hyperalgesia, anxiety. <strong>Switching opioids:</strong> give 50% or less of the previous MED if high dose; 60–70% if moderate or low.</p>
+<div class="callout"><strong>Take-home:</strong> always use adjuvants before opioids, take a multimodal approach, and educate that activity maintains function and controls pain.</div>
+`,
+    "quiz": [
+      {
+        "stem": "What is the main side effect limiting gabapentin titration?",
+        "opts": [
+          "Hepatotoxicity",
+          "Tachycardia",
+          "Sedation",
+          "Hypoglycemia"
+        ],
+        "correct": 2,
+        "explain": "Start low, and allow 1–2 weeks to see effect."
+      },
+      {
+        "stem": "What is the watchful opioid dose?",
+        "opts": [
+          "90 mg morphine equivalent per day",
+          "10 mg per day",
+          "500 mg per day",
+          "There is none"
+        ],
+        "correct": 0,
+        "explain": "Remember START: Should I start, Trial, A's of monitoring, Restrict, Terminate."
+      },
+      {
+        "stem": "A patient on long-term opioids crushes tablets and runs out early. What does this indicate?",
+        "opts": [
+          "Adequate analgesia",
+          "Normal tolerance only",
+          "Opioid-induced constipation",
+          "Aberrant drug-related behaviour"
+        ],
+        "correct": 3,
+        "explain": "Also multiple doctoring, prescription fraud and selling."
+      }
+    ]
+  },
+  {
+    "id": "physical-activity",
+    "title": "Physical Activity Prescription",
+    "instructor": "Elentra module 09",
+    "duration": "~48 min",
+    "tags": [
+      {
+        "label": "FITT",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Why this matters:</strong> low fitness is an independent risk factor for death, as important as smoking, hypertension and high cholesterol. Only 25% of physicians counsel on it, yet 92% of patients say they'd follow that advice.</p>
+<h3>The case</h3>
+<p>Nancy, 68, is sedentary and worried about falling. She has newly diagnosed untreated hypertension (140/85). Her father had an MI at 70, her mother a hip fracture at 73. She used to walk her dog on trails. How would you write her prescription?</p>
+<h3>Benefits</h3>
+<p><strong>Mortality:</strong> an independent risk factor for all-cause death. <strong>Some is good, more is better:</strong> the greatest gains come from moving inactive people to some activity. Trials suggest exercise can compare with drugs for mortality outcomes in several conditions.</p>
+<p><strong>Cardiovascular:</strong></p>
+<ul>
+<li>Up: contractility, coronary flow, stroke volume, oxygen uptake and use, endothelial function, plasma volume</li>
+<li>Down: heart rate, BP, oxygen demand, blood viscosity</li>
+</ul>
+<p><strong>Musculoskeletal:</strong> <strong>55% lower risk of hip fracture</strong>, mainly from fewer falls (strength, proprioception, coordination, gait, reaction time); a small 1–3% rise in bone density with high-impact training.</p>
+<p><strong>Evidence as medicine:</strong> includes anxiety, depression, type 2 diabetes, hypertension, heart failure, COPD, cancer, dementia, osteoarthritis, osteoporosis, RA, pain and stroke.</p>
+<h3>Canadian guidelines (adults)</h3>
+<ul>
+<li><strong>At least 150 minutes a week</strong> of moderate to vigorous aerobic activity (or at least 75 minutes vigorous, per the US guideline shown)</li>
+<li><strong>Muscle strengthening at least 2 days a week</strong></li>
+<li>Build strength, sit less, improve balance</li>
+<li>More activity gives more benefit</li>
+</ul>
+<h3>Intensity</h3>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th>Intensity</th>
+<th>Patient definition</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Light</strong></td>
+<td><strong>Can sing</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Moderate</strong></td>
+<td><strong>Can talk</strong>; breathing and heart rate up, warmer, may sweat</td>
+<td>Brisk walking, stairs, biking, dancing, swimming</td>
+</tr>
+<tr>
+<td><strong>Vigorous</strong></td>
+<td><strong>Conversation impossible</strong></td>
+<td>Sport, running, aerobics</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Strengthening:</strong> a weight where no more than 10–15 repetitions are possible. Standing from sitting, stairs, heavy gardening, resistance bands, push-ups.</p>
+<h3>Taking a history</h3>
+<ol>
+<li>Current activity</li>
+<li>Intention to be active</li>
+<li>Past activity and <strong>preferences</strong>: enjoyment, solo or group, indoors or outdoors, <strong>barriers</strong>, goals (playing with grandchildren counts)</li>
+<li><strong>Is it safe?</strong> Symptoms and past medical history</li>
+</ol>
+<h3>Safety and contraindications</h3>
+<p>Vigorous exercise is low risk relative to everyday hazards (47 deaths per 100,000 a year, compared with 190 for motorcycle accidents and 260 for cancer, on the slide).</p>
+<p><strong>Pre-participation screening (ACSM):</strong> ask about regular exercise, known disease, and signs or symptoms. <strong>Any active symptoms mean stop and evaluate:</strong></p>
+<ul>
+<li>Chest, neck, jaw or arm pain</li>
+<li>Dyspnea at rest or on mild exertion</li>
+<li>Dizziness or syncope</li>
+<li>Orthopnea or PND</li>
+<li>Ankle edema</li>
+<li>Palpitations</li>
+<li>Claudication</li>
+<li>Known murmur</li>
+<li>Unusual fatigue</li>
+</ul>
+<p><strong>Absolute contraindications in CVD:</strong></p>
+<ol>
+<li>New or uncontrolled arrhythmia</li>
+<li>Resting or uncontrolled tachycardia</li>
+<li><strong>Resting SBP over 180 or DBP over 100</strong></li>
+<li>Symptomatic hypotension</li>
+<li>Unstable or crescendo angina</li>
+<li>Acute or unstable heart failure</li>
+<li>Unstable diabetes</li>
+<li>Acute febrile illness</li>
+</ol>
+<p><strong>Risk stratification:</strong></p>
+<ul>
+<li>Asymptomatic, low risk: self-directed</li>
+<li>Asymptomatic with significant risk factors: start low to moderate</li>
+<li>Asymptomatic, high risk: possible investigations first</li>
+<li>Symptomatic CVD: supervision or referral</li>
+</ul>
+<p>⚠ The slides list absolute contraindications, not a separate "relative" list. Treat controlled risk factors and known conditions as reasons to adapt the plan, and check this against the course.</p>
+<h3>The prescription: FITT</h3>
+<ul>
+<li><strong>F</strong>requency: 5 times a week (aerobic)</li>
+<li><strong>I</strong>ntensity: sing, talk, or no conversation</li>
+<li><strong>T</strong>ime: 30 minutes</li>
+<li><strong>T</strong>ype: walking, cycling, dancing, swimming, jogging</li>
+</ul>
+<p><strong>3 A's:</strong> <strong>Ask</strong> about activity, <strong>Advise</strong> on benefits, <strong>Act</strong> by signposting to support.</p>
+<p><strong>Tailor it:</strong> consider preferences, goals, social determinants (time, money, access), and behaviour change. Use shared decision making and follow up.</p>
+<h3>Hypertension considerations</h3>
+<p><strong>Do:</strong> control BP over 180/100 with medication first; prolonged warm-up (15 min) and cool-down (10 min); keep the feet moving; one rest day a week.</p>
+<p><strong>Don't:</strong> very strenuous resistance training; vigorous exercise with known LVH; lying-down, isometric or overhead exercises.</p>
+<p><strong>Medications:</strong></p>
+<ul>
+<li><strong>Beta-blockers:</strong> lower max heart rate and performance; avoid in athletes</li>
+<li><strong>ACE inhibitors, ARBs:</strong> minimal problems; recommended</li>
+<li><strong>Calcium channel blockers:</strong> small postural hypotension risk; extend cool-down</li>
+<li><strong>Diuretics:</strong> dehydration risk; accessible toilets</li>
+</ul>
+<p><strong>Adjust if:</strong> severe pain during exercise, pain that doesn't settle, more night pain, more joint swelling.</p>
+<p><strong>Nancy's prescription:</strong> BP is below the threshold, so start at low to moderate intensity. Brisk walking with her dog, 30 minutes, 5 days a week, at a "talk" level, plus strength and balance work 2 days a week to reduce her fall risk.</p>
+`,
+    "quiz": [
+      {
+        "stem": "Which step comes first in an exercise history?",
+        "opts": [
+          "Prescribing a marathon",
+          "Ordering a stress test on everyone",
+          "Asking about current activity",
+          "Asking for a gym contract"
+        ],
+        "correct": 2,
+        "explain": "Then intention, past activity and preferences, and safety."
+      },
+      {
+        "stem": "What are the 3 A's?",
+        "opts": [
+          "Ask, Advise, Act",
+          "Assess, Admit, Avoid",
+          "Aerobic, Anaerobic, Agility",
+          "Aspirin, ACE, Atorvastatin"
+        ],
+        "correct": 0,
+        "explain": "Signpost patients to support and follow up."
+      },
+      {
+        "stem": "Which sign should prompt adjusting exercise in a patient with joint pain?",
+        "opts": [
+          "Mild soreness that settles",
+          "Feeling warm",
+          "Pain that doesn't settle to usual levels or increased swelling",
+          "Sweating"
+        ],
+        "correct": 2,
+        "explain": "Also severe pain during exercise and increased night pain."
+      }
+    ]
+  },
+  {
+    "id": "peds-ortho",
+    "title": "Pediatric Orthopedics",
+    "instructor": "Elentra module 10",
+    "duration": "~55 min",
+    "tags": [
+      {
+        "label": "The physis fails first",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Why this matters:</strong> children aren't small adults. Their bones bend, their growth plates fail before ligaments do, and a missed injury can affect growth for years.</p>
+<h3>Children's bones</h3>
+<p>More porous and pliable, with a <strong>thick, active periosteum</strong> and a <strong>physis that's a site of relative weakness</strong>. So there's <strong>less ligament injury and dislocation</strong>.</p>
+<p><strong>Unique fractures:</strong> buckle, greenstick, plastic deformation, avulsion.</p>
+<p><strong>Healing is seldom a problem.</strong> <strong>Remodelling</strong> is better with at least 2 years of growth remaining, metaphyseal fractures, and deformity <strong>in the plane of the joint</strong>. It's worse with displaced intra-articular fractures, midshaft angulation or rotation, and out-of-plane deformity.</p>
+<p><strong>Treatment:</strong> closed reduction (hematoma block, conscious sedation), splint or cast, <strong>post-reduction films</strong>, timely follow-up.</p>
+<h3>Apophysis injuries</h3>
+<p><strong>Avulsion fractures:</strong> a burst of contraction pulls off the apophysis in fast-growing bones. Pelvis, 5th metatarsal, medial epicondyle. A 14-year-old sprinter's anterior hip pain fits. Often non-surgical.</p>
+<p><strong>Overuse apophysitis:</strong></p>
+<ul>
+<li><strong>Osgood-Schlatter:</strong> tibial tuberosity; ages 8–14 (F), 10–15 (M); clinical diagnosis</li>
+<li><strong>Sinding-Larsen:</strong> distal patella</li>
+<li><strong>Sever's:</strong> calcaneus</li>
+</ul>
+<p><strong>Management:</strong> benign and self-limiting, usually gone within 2 years; RICE, activity as tolerated, NSAIDs. Other overuse injuries: stress fractures, osteochondritis dissecans.</p>
+<h3>Salter-Harris fractures</h3>
+<p><strong>Complications:</strong> growth arrest, leg length discrepancy, angular deformity. About <strong>10% develop growth disturbance</strong>.</p>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Features</th>
+<th>Treatment and prognosis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>I</strong></td>
+<td>Through the physis; misdiagnosed as a sprain (sprains are rare in kids)</td>
+<td>Excellent; stable with closed reduction</td>
+</tr>
+<tr>
+<td><strong>II</strong></td>
+<td><strong>Most common</strong>; most often distal radius</td>
+<td>Usually good; closed reduction</td>
+</tr>
+<tr>
+<td><strong>III</strong></td>
+<td><strong>Intra-articular</strong></td>
+<td>Usually good; <strong>anatomic reduction</strong></td>
+</tr>
+<tr>
+<td><strong>IV</strong></td>
+<td><strong>Intra-articular</strong>; <strong>bony bridge risk</strong>; lateral humeral condyle, distal tibia</td>
+<td><strong>Anatomic reduction</strong></td>
+</tr>
+<tr>
+<td><strong>V</strong></td>
+<td><strong>Compression</strong> of the physis; often missed, diagnosed late by growth arrest</td>
+<td>Refer to ortho</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Prognosis factors:</strong> age, severity, type (IV and V worse), reduction method, growth plate vascularity, open vs closed.</p>
+<p><strong>Three messages:</strong> any growth plate injury is serious; follow for at least 1 year, preferably 2; warn the family.</p>
+<h3>The pediatric elbow</h3>
+<p><strong>CRITOE, order and approximate age of ossification:</strong> Capitellum 1, Radial head 3, Internal (medial) epicondyle 5, Trochlea 7, Olecranon 9, External (lateral) epicondyle 11.</p>
+<p><strong>Swelling means a high suspicion of bony injury.</strong> Call peds ortho for a very swollen elbow, instability, displaced fracture, or incongruently reduced dislocation.</p>
+<h3>Developmental dysplasia of the hip</h3>
+<p><strong>Definition:</strong> a spectrum from a shallow acetabulum to perinatal subluxation or dislocation. <strong>1–6 per 1000 births; left more than right.</strong></p>
+<p><strong>Risk factors:</strong> <strong>firstborn, female, breech</strong>, family history, oligohydramnios, race (more common in Caucasian and North American Indigenous populations), other MSK problems (torticollis, calcaneovalgus foot, club foot, scoliosis).</p>
+<p><strong>Exam:</strong></p>
+<ul>
+<li><strong>Limited abduction</strong> (key finding)</li>
+<li>Leg length discrepancy, <strong>Galeazzi test</strong></li>
+<li><strong>Barlow: "sign of exit."</strong> Adduct with a posterior force; the femoral head slips out.</li>
+<li><strong>Ortolani: "sign of entry."</strong> Lift and abduct; the head slips back in.</li>
+<li>Both are <strong>unreliable after 3–6 months</strong></li>
+<li>Older child: painless limp, waddling gait</li>
+</ul>
+<p><strong>Management, by age:</strong> diagnose early. <strong>Pavlik harness up to 6 months</strong>, then closed reduction with spica cast, then open reduction with or without osteotomy.</p>
+<h3>Club foot</h3>
+<p><strong>Congenital talipes equinovarus:</strong> ankle in plantarflexion, heel and forefoot in varus. Genetic component; linked with spina bifida and syndromes. Untreated: progressive stiffness and reduced walking.</p>
+<p><strong>Ponseti timeline:</strong></p>
+<ul>
+<li>Weekly manipulation and casting for <strong>4–6 weeks</strong>, starting around 3 weeks to 3 months of age</li>
+<li><strong>Percutaneous tendo-Achilles lengthening</strong></li>
+<li>Post-op cast for <strong>3 weeks</strong></li>
+<li><strong>Abduction brace (boots and bars): 3 months full time, then at night for 2–3 years</strong></li>
+<li>Resistant or recurrent: posteromedial release</li>
+</ul>
+<h3>Rotation and angulation</h3>
+<p><strong>Avoid overtreating normal variants.</strong> <strong>Genu varum is normal to age 2; genu valgum is normal from 3 to 7.</strong> In-toeing and out-toeing are extremely common normal variations.</p>
+<p><strong>Warning signs:</strong> excessive variation, short stature, progressive varum, asymmetry, persistence beyond 7–8 years, associated conditions.</p>
+<h3>The child with a limp</h3>
+<p><strong>Causes differ by age:</strong> missed DDH, club foot, hip pathology, overuse, accidental and <strong>non-accidental trauma</strong>, neuromuscular and inflammatory disease.</p>
+<p><strong>Warning signs:</strong> asymmetry, progression, leg length discrepancy, pain, deformity.</p>
+<p>⚠ <strong>Not on the slides, standard teaching to check against the course:</strong></p>
+<ul>
+<li><strong>Transient synovitis:</strong> self-limited hip inflammation in a well child, often after a viral illness, ages about 3–8. Treat with rest and NSAIDs. Exclude septic arthritis.</li>
+<li><strong>Legg-Calvé-Perthes:</strong> idiopathic avascular necrosis of the femoral head, ages about 4–8, more often boys; painless or mild limp. Observation, or containment and surgery. Complication: early OA.</li>
+<li><strong>SCFE:</strong> the femoral head slips off the neck through the physis, in obese adolescents; hip or knee pain with external rotation on flexion. <strong>Non-weight-bearing and urgent surgical pinning.</strong> Complications: AVN, OA.</li>
+</ul>
+<h3>Scoliosis</h3>
+<p><strong>Definition:</strong> a structural lateral curve with rotational deformity. <strong>Idiopathic is most common, adolescent onset typical, F&gt;M.</strong> Others: neuromuscular (CP, spina bifida, neurofibromatosis), congenital, post-traumatic.</p>
+<p><strong>Assessment:</strong> rarely painful; the curve or rib hump is noticed incidentally. Do a neurological review and thorough exam; look for <strong>dimple, hairy patch, lipoma, hemangioma</strong>. <strong>Adams forward bend test</strong> shows a rib prominence on the convex side and rules out postural scoliosis.</p>
+<p><strong>Investigation:</strong> radiographs defining location, levels, direction and magnitude ("right thoracic T7–T12, 45 degrees"), and ruling out anomalies, trauma and tumours.</p>
+<p><strong>Progression risk:</strong> girls, younger physiologic age, <strong>pre-menarchal</strong>, larger curves, double over single, thoracic over lumbar.</p>
+<p><strong>Management:</strong> education and monitoring; <strong>orthosis (TLSO)</strong>; <strong>surgical fusion</strong> with instrumentation depending on curve and progression risk. No drug role.</p>
+`,
+    "quiz": [
+      {
+        "stem": "What is the DDH treatment for a child under 6 months?",
+        "opts": [
+          "Spinal fusion",
+          "Ponseti casting",
+          "Pavlik harness",
+          "Boots and bars"
+        ],
+        "correct": 2,
+        "explain": "Older: closed reduction and spica, then open reduction with or without osteotomies."
+      },
+      {
+        "stem": "Which is the right Ponseti sequence?",
+        "opts": [
+          "Weekly casts for 4–6 weeks, Achilles lengthening, 3-week cast, then abduction brace",
+          "Surgery at birth, then nothing",
+          "Physio only",
+          "Brace first, casts at age 5"
+        ],
+        "correct": 0,
+        "explain": "Boots and bars: 3 months full time, then nights for 2–3 years."
+      },
+      {
+        "stem": "A 13-year-old premenarchal girl has a right thoracic curve and rib hump on forward bend. Which is true?",
+        "opts": [
+          "Postural scoliosis",
+          "No follow-up needed",
+          "She has lower progression risk",
+          "Pre-menarchal status raises progression risk"
+        ],
+        "correct": 3,
+        "explain": "Also larger, double and thoracic curves. Management: monitoring, TLSO, surgery by curve."
+      }
+    ]
+  }
+];
+</script>
+<script>
+(function(){
+  var navlist = document.getElementById('navlist');
+  var content = document.getElementById('content');
+  var totalQ = 0;
+  MODULES.forEach(function(m){ totalQ += m.quiz.length; });
+  document.getElementById('progress-count').textContent = '0 / ' + totalQ;
+
+  var STORE_KEY = 'msk-hub-wk10-answers-v1';
+  var answered = {};
+  try {
+    var raw = localStorage.getItem(STORE_KEY);
+    if (raw) answered = JSON.parse(raw);
+  } catch(e) {}
+
+  function saveAnswered(){
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(answered)); } catch(e) {}
+  }
+
+  function correctCount(){
+    var n = 0;
+    Object.keys(answered).forEach(function(k){ if (answered[k] === 'correct') n++; });
+    return n;
+  }
+
+  function updateProgress(){
+    var c = correctCount();
+    document.getElementById('progress-count').textContent = c + ' / ' + totalQ;
+    document.getElementById('progress-fill').style.width = (totalQ ? (100 * c / totalQ) : 0) + '%';
+  }
+
+  function moduleAnsweredCount(m){
+    var n = 0;
+    m.quiz.forEach(function(q, i){
+      var key = m.id + '-' + i;
+      if (answered[key]) n++;
+    });
+    return n;
+  }
+
+  function markDot(m){
+    var dot = document.querySelector('.navlist a[href="#' + m.id + '"] .dot');
+    if (!dot) return;
+    var done = moduleAnsweredCount(m) === m.quiz.length && m.quiz.length > 0;
+    dot.classList.toggle('done', done);
+  }
+
+  // Build nav
+  MODULES.forEach(function(m, idx){
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + m.id;
+    a.innerHTML = '<span class="num">' + String(idx+1).padStart(2,'0') + '</span><span class="dot"></span><span>' + m.title + '</span>';
+    li.appendChild(a);
+    navlist.appendChild(li);
+  });
+
+  function renderQuiz(m){
+    var wrap = document.createElement('div');
+    wrap.className = 'quiz';
+
+    var head = document.createElement('div');
+    head.className = 'quiz-head';
+    head.innerHTML = '<span>Check yourself</span><span class="quiz-score" id="score-' + m.id + '"></span>';
+    wrap.appendChild(head);
+
+    var scoreEl = head.querySelector('.quiz-score');
+
+    var body = document.createElement('div');
+    body.className = 'quiz-body';
+
+    function updateModuleScore(){
+      var n = moduleAnsweredCount(m);
+      scoreEl.textContent = n + ' / ' + m.quiz.length + ' answered';
+    }
+
+    m.quiz.forEach(function(q, i){
+      var key = m.id + '-' + i;
+      var qd = document.createElement('div');
+      qd.className = 'q';
+      var stem = document.createElement('div');
+      stem.className = 'q-stem';
+      stem.textContent = (i+1) + '. ' + q.stem;
+      qd.appendChild(stem);
+
+      var opts = document.createElement('div');
+      opts.className = 'q-opts';
+
+      var explain = document.createElement('div');
+      explain.className = 'q-explain';
+      explain.innerHTML = '<strong>' + (q.explain.split(' ')[0]) + '</strong> ' + q.explain;
+
+      var alreadyAnswered = !!answered[key];
+
+      q.opts.forEach(function(optText, oi){
+        var btn = document.createElement('button');
+        btn.className = 'opt';
+        btn.innerHTML = '<span class="letter">' + String.fromCharCode(65+oi) + '</span><span>' + optText + '</span>';
+        if (alreadyAnswered) {
+          btn.disabled = true;
+          if (oi === q.correct) btn.classList.add('correct');
+          if (answered[key] === 'incorrect-' + oi) btn.classList.add('incorrect');
+        }
+        btn.addEventListener('click', function(){
+          if (btn.disabled) return;
+          var allOpts = opts.querySelectorAll('.opt');
+          allOpts.forEach(function(o){ o.disabled = true; });
+          if (oi === q.correct) {
+            btn.classList.add('correct');
+            answered[key] = 'correct';
+          } else {
+            btn.classList.add('incorrect');
+            allOpts[q.correct].classList.add('correct');
+            answered[key] = 'incorrect-' + oi;
+          }
+          explain.classList.add('shown');
+          saveAnswered();
+          updateProgress();
+          updateModuleScore();
+          markDot(m);
+        });
+        opts.appendChild(btn);
+      });
+
+      qd.appendChild(opts);
+      qd.appendChild(explain);
+      if (alreadyAnswered) explain.classList.add('shown');
+      body.appendChild(qd);
+    });
+
+    wrap.appendChild(body);
+    updateModuleScore();
+    return wrap;
+  }
+
+  MODULES.forEach(function(m, idx){
+    var sec = document.createElement('section');
+    sec.className = 'module';
+    sec.id = m.id;
+
+    var head = document.createElement('div');
+    head.className = 'module-head';
+    head.innerHTML = '<span class="module-num">' + String(idx+1).padStart(2,'0') + '</span><h2>' + m.title + '</h2>';
+    sec.appendChild(head);
+
+    var meta = document.createElement('div');
+    meta.className = 'module-meta';
+    var tagsHtml = '<span class="tag">' + m.instructor + '</span><span class="tag">' + m.duration + '</span>';
+    (m.tags || []).forEach(function(t){ tagsHtml += '<span class="tag ' + t.cls + '">' + t.label + '</span>'; });
+    meta.innerHTML = tagsHtml;
+    sec.appendChild(meta);
+
+    var bodyDiv = document.createElement('div');
+    bodyDiv.className = 'module-body';
+    bodyDiv.innerHTML = m.body;
+    sec.appendChild(bodyDiv);
+
+    var quizWrap = document.createElement('div');
+    quizWrap.className = 'module-body';
+    quizWrap.appendChild(renderQuiz(m));
+    sec.appendChild(quizWrap);
+
+    content.appendChild(sec);
+    markDot(m);
+  });
+
+  updateProgress();
+
+  // Active-link tracking on scroll
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.module'));
+  var links = Array.prototype.slice.call(document.querySelectorAll('.navlist a'));
+  function onScroll(){
+    var pos = window.scrollY + 120;
+    var current = sections[0];
+    sections.forEach(function(s){ if (s.offsetTop <= pos) current = s; });
+    links.forEach(function(l){ l.classList.toggle('active', l.getAttribute('href') === '#' + current.id); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Close mobile nav on link click
+  links.forEach(function(l){
+    l.addEventListener('click', function(){
+      document.getElementById('sidebar').classList.remove('open');
+    });
+  });
+})();
+</script>

@@ -1,0 +1,504 @@
+<title>Week 10 Case Bank</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper: #f2f0e8;
+    --paper-raised: #fbfaf5;
+    --ink: #1e2a2e;
+    --ink-soft: #55625f;
+    --hairline: #d6d1c2;
+    --accent: #2c5f5a;
+    --accent-soft: #dce8e4;
+    --accent-ink: #163634;
+    --good: #2f6b3e;
+    --good-soft: #dfeee1;
+    --bad: #a03f37;
+    --bad-soft: #f6e3df;
+    --amber: #b5792c;
+    --amber-soft: #f3e6d2;
+    --shadow: 0 1px 2px rgba(30,42,46,.06), 0 8px 24px -12px rgba(30,42,46,.18);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #171d1e;
+      --paper-raised: #1f2729;
+      --ink: #e9eae4;
+      --ink-soft: #a5afab;
+      --hairline: #333e3f;
+      --accent: #7bbbb0;
+      --accent-soft: #223634;
+      --accent-ink: #cdeae4;
+      --good: #7fc98d;
+      --good-soft: #1e3324;
+      --bad: #e19489;
+      --bad-soft: #3a2320;
+      --amber: #e0b06b;
+      --amber-soft: #3a2f1a;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #171d1e;
+    --paper-raised: #1f2729;
+    --ink: #e9eae4;
+    --ink-soft: #a5afab;
+    --hairline: #333e3f;
+    --accent: #7bbbb0;
+    --accent-soft: #223634;
+    --accent-ink: #cdeae4;
+    --good: #7fc98d;
+    --good-soft: #1e3324;
+    --bad: #e19489;
+    --bad-soft: #3a2320;
+    --amber: #e0b06b;
+    --amber-soft: #3a2f1a;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Public Sans', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+  }
+
+  h1,h2,h3{ font-family:'Fraunces', Georgia, serif; text-wrap:balance; margin:0; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+
+  a{ color:inherit; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  /* ---------- shell ---------- */
+  .shell{ max-width:1040px; margin:0 auto; padding:0 24px 96px; }
+  .topbar{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:16px; padding:28px 24px 20px; max-width:1040px; margin:0 auto;
+    border-bottom:1px solid var(--hairline);
+  }
+  .brand{ display:flex; flex-direction:column; gap:2px; }
+  .brand .kicker{
+    font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--accent); font-weight:600;
+  }
+  .brand h1{ font-size:1.5rem; font-weight:600; }
+  .topstat{ text-align:right; font-family:'JetBrains Mono', monospace; font-size:.78rem; color:var(--ink-soft); }
+  .topstat b{ color:var(--ink); font-weight:600; }
+
+  /* ---------- dashboard ---------- */
+  .intro{ padding:32px 0 8px; max-width:640px; }
+  .intro p{ margin:10px 0 0; color:var(--ink-soft); line-height:1.55; font-size:.97rem; }
+
+  .group-heading{
+    display:flex; align-items:center; gap:12px;
+    margin:36px 0 14px;
+  }
+  .group-heading h2{ font-size:1.05rem; font-weight:600; color:var(--ink); white-space:nowrap; }
+  .group-heading .rule{ height:1px; background:var(--hairline); flex:1; }
+  .group-heading .count{ font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--ink-soft); }
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:14px; }
+
+  .card{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:18px 18px 16px; text-align:left; box-shadow:var(--shadow);
+    display:flex; flex-direction:column; gap:12px; min-height:150px;
+    transition:transform .15s ease, border-color .15s ease;
+    position:relative; overflow:hidden;
+  }
+  .card:hover{ transform:translateY(-2px); border-color:var(--accent); }
+  .card:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .card .num{
+    font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--ink-soft);
+    letter-spacing:.06em;
+  }
+  .card h3{ font-size:1.05rem; font-weight:500; line-height:1.28; flex:1; }
+  .card-foot{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .badge{
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; font-weight:600;
+    padding:3px 8px; border-radius:99px; letter-spacing:.02em;
+  }
+  .badge.new{ background:var(--accent-soft); color:var(--accent-ink); }
+  .badge.done{ background:var(--good-soft); color:var(--good); }
+  .badge.retry{ background:var(--amber-soft); color:var(--amber); }
+  .score{ font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--ink-soft); }
+  .score b{ color:var(--ink); }
+
+  /* ---------- quiz view ---------- */
+  .quiz-header{
+    display:flex; align-items:center; gap:14px; padding:26px 0 6px; flex-wrap:wrap;
+  }
+  .back-btn{
+    background:none; border:1px solid var(--hairline); border-radius:8px;
+    padding:7px 12px; font-size:.82rem; color:var(--ink-soft); display:flex; align-items:center; gap:6px;
+  }
+  .back-btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .quiz-title{ flex:1; min-width:200px; }
+  .quiz-title .kicker{ font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; font-weight:600;}
+  .quiz-title h2{ font-size:1.25rem; font-weight:600; margin-top:2px; }
+
+  .progress-wrap{ padding:14px 0 30px; }
+  .progress-meta{ display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--ink-soft); margin-bottom:6px; }
+  .progress-track{ height:6px; background:var(--hairline); border-radius:99px; overflow:hidden; }
+  .progress-fill{ height:100%; background:var(--accent); border-radius:99px; transition:width .3s ease; }
+
+  .stem-card{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:12px;
+    padding:26px 28px; box-shadow:var(--shadow); margin-bottom:20px;
+  }
+  .stem-card .vignette-tag{
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--ink-soft);
+    text-transform:uppercase; letter-spacing:.08em; margin-bottom:10px; display:block;
+  }
+  .stem{ font-size:1.14rem; line-height:1.55; font-weight:400; }
+
+  .opts{ display:flex; flex-direction:column; gap:10px; }
+  .opt{
+    display:flex; align-items:flex-start; gap:12px; text-align:left;
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; font-size:.98rem; line-height:1.45; color:var(--ink);
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .opt:hover:not(:disabled){ border-color:var(--accent); }
+  .opt:disabled{ cursor:default; }
+  .opt .letter{
+    font-family:'JetBrains Mono',monospace; font-weight:600; font-size:.82rem;
+    width:22px; height:22px; border-radius:6px; background:var(--accent-soft); color:var(--accent-ink);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;
+  }
+  .opt.correct{ background:var(--good-soft); border-color:var(--good); }
+  .opt.correct .letter{ background:var(--good); color:var(--paper-raised); }
+  .opt.incorrect{ background:var(--bad-soft); border-color:var(--bad); }
+  .opt.incorrect .letter{ background:var(--bad); color:var(--paper-raised); }
+  .opt.dim{ opacity:.55; }
+
+  .explain{
+    margin-top:16px; padding:16px 18px; border-radius:10px; background:var(--accent-soft);
+    border-left:3px solid var(--accent); font-size:.92rem; line-height:1.55; color:var(--ink);
+  }
+  .explain b{ color:var(--accent-ink); }
+
+  .quiz-nav{ display:flex; justify-content:flex-end; margin-top:20px; }
+  .next-btn{
+    background:var(--accent); color:var(--paper-raised); border:none; border-radius:8px;
+    padding:11px 22px; font-size:.92rem; font-weight:600; display:flex; align-items:center; gap:8px;
+    box-shadow:var(--shadow);
+  }
+  .next-btn:disabled{ background:var(--hairline); color:var(--ink-soft); box-shadow:none; cursor:not-allowed; }
+  .next-btn:not(:disabled):hover{ filter:brightness(1.06); }
+
+  /* ---------- summary ---------- */
+  .summary{ padding:40px 0; text-align:center; }
+  .summary .ring{
+    width:132px; height:132px; margin:0 auto 20px; position:relative;
+  }
+  .summary .ring svg{ transform:rotate(-90deg); }
+  .summary .ring .pct{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-size:1.7rem; font-weight:600;
+  }
+  .summary h2{ font-size:1.4rem; margin-bottom:6px; }
+  .summary p{ color:var(--ink-soft); margin:0 0 26px; }
+  .summary-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .btn{
+    border:1px solid var(--hairline); background:var(--paper-raised); color:var(--ink);
+    border-radius:8px; padding:10px 18px; font-size:.9rem; font-weight:500;
+  }
+  .btn.primary{ background:var(--accent); color:var(--paper-raised); border-color:var(--accent); font-weight:600; }
+  .btn:hover{ border-color:var(--accent); }
+
+  .review-list{ text-align:left; max-width:640px; margin:30px auto 0; display:flex; flex-direction:column; gap:10px; }
+  .review-item{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; font-size:.88rem; display:flex; gap:10px; align-items:flex-start;
+  }
+  .review-item .mark{ font-size:.85rem; margin-top:1px; }
+  .review-item .mark.miss{ color:var(--bad); }
+  .review-item .mark.hit{ color:var(--good); }
+  .review-item div{ line-height:1.5; color:var(--ink-soft); }
+  .review-item b{ color:var(--ink); font-weight:500; }
+
+  [hidden]{ display:none !important; }
+
+  footer{
+    max-width:1040px; margin:0 auto; padding:40px 24px 0; color:var(--ink-soft);
+    font-size:.78rem; border-top:1px solid var(--hairline); margin-top:56px; padding-top:20px;
+  }
+
+  @media (max-width:560px){
+    .stem-card{ padding:20px; }
+    .topbar{ flex-direction:column; align-items:flex-start; gap:6px; }
+    .topstat{ text-align:left; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">P2 &middot; Week 10 &middot; Musculoskeletal Medicine</span>
+    <h1>Case Bank</h1>
+  </div>
+  <div class="topstat" id="topstat">80 questions &middot; 10 modules</div>
+</div>
+
+<main class="shell">
+
+  <section id="dashboard">
+    <div class="intro">
+      <p>Ten clinical-vignette questions per module, built from the Week 10 Elentra slides and learning objectives (lower extremity X-rays, nerve injury, the foot and ankle, soft tissue tumours, fractures, chronic pain, exercise prescription and pediatric orthopedics). Options are written to similar length, and the correct answer&#39;s position varies &mdash; work the case, don&#39;t read the answer key by eye.</p>
+    </div>
+    <div id="groups"></div>
+  </section>
+
+  <section id="quizview" hidden>
+    <div class="quiz-header">
+      <button class="back-btn" id="backBtn">&larr; All modules</button>
+      <div class="quiz-title">
+        <div class="kicker" id="quizGroup"></div>
+        <h2 id="quizTitle"></h2>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="progressLabel">Question 1 of 10</span>
+        <span id="scoreLabel">Score 0 / 0</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="stem-card">
+      <span class="vignette-tag" id="qTag">Case</span>
+      <div class="stem" id="qStem"></div>
+    </div>
+
+    <div class="opts" id="opts"></div>
+    <div class="explain" id="explain" hidden></div>
+
+    <div class="quiz-nav">
+      <button class="next-btn" id="nextBtn" disabled>Next question &rarr;</button>
+    </div>
+  </section>
+
+  <section id="summaryview" hidden>
+    <div class="summary">
+      <div class="ring">
+        <svg width="132" height="132" viewBox="0 0 132 132">
+          <circle cx="66" cy="66" r="58" fill="none" stroke="var(--hairline)" stroke-width="10"/>
+          <circle id="ringFg" cx="66" cy="66" r="58" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round"/>
+        </svg>
+        <div class="pct" id="ringPct">0%</div>
+      </div>
+      <h2 id="sumTitle"></h2>
+      <p id="sumSub"></p>
+      <div class="summary-actions">
+        <button class="btn primary" id="retryBtn">Retry module</button>
+        <button class="btn" id="dashBtn">Back to modules</button>
+      </div>
+      <div class="review-list" id="reviewList"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Week 10 study material &middot; P2 Musculoskeletal Block &middot; for personal review use</footer>
+
+<script id="data" type="application/json">[{"id": "le-radiology", "title": "Lower Extremity Radiology", "group": "Imaging & Nerves", "q": [{"stem": "An older woman falls and has hip pain. On AP pelvis, the smooth curve from the inferior femoral neck to the superior pubic ramus has a step-off. What does this suggest?", "opts": ["Normal variant", "Femoral neck fracture", "Sacroiliitis", "Bipartite patella"], "correct": 1, "explain": "A break in Shenton's line supports a femoral neck fracture."}, {"stem": "Which view is typically added in a child to assess the femoral head epiphysis?", "opts": ["Skyline", "Mortise", "Frog-leg", "Cross-table lateral of the knee"], "correct": 2, "explain": "The frog-leg projection abducts and externally rotates the femurs to show the epiphyses."}, {"stem": "Which three features define osteoarthritis on X-ray at any joint?", "opts": ["Joint space narrowing, marginal osteophytes, subchondral sclerosis", "Erosions, periostitis, osteopenia", "Fat-fluid level, effusion, fracture line", "Soft tissue swelling, chondrocalcinosis, tophi"], "correct": 0, "explain": "Look for all three, though one may be more prominent."}, {"stem": "After knee trauma, a lateral X-ray shows a fat-fluid level but no clear fracture. What does this imply?", "opts": ["Isolated effusion from OA", "Quadriceps rupture", "Normal Hoffa's fat pad", "Occult intra-articular fracture"], "correct": 3, "explain": "Lipohemarthrosis: marrow fat and blood enter the joint through an intra-articular fracture."}, {"stem": "What radiographic sign indicates a knee joint effusion?", "opts": ["Widened Blumensaat's line", "Distended suprapatellar recess displacing the fat pads", "Fragment at the superolateral patella", "Calcaneal spur"], "correct": 1, "explain": "The recess is normally collapsed; fluid makes it bulbous."}, {"stem": "A well-defined fragment sits at the superolateral patella after a knee injury. What is most likely?", "opts": ["Bipartite patella", "Patellar pole fracture", "Osteochondritis dissecans", "Enthesophyte"], "correct": 0, "explain": "This anatomical variant is often mistaken for a fracture. Fractures more often involve the poles or mid-body."}, {"stem": "Which structure is formed by the medial malleolus, tibial plafond and lateral malleolus?", "opts": ["Subtalar joint", "Tarsal tunnel", "Ankle mortise", "Syndesmophyte"], "correct": 2, "explain": "The talar dome sits within the mortise."}, {"stem": "Which view best shows the joint space and distal tibiofibular joint at the ankle?", "opts": ["Skyline", "Frog-leg", "Y view", "Mortise"], "correct": 3, "explain": "The ankle is rotated slightly inward for the mortise view."}, {"stem": "How does an enthesophyte differ from an osteophyte?", "opts": ["Enthesophyte forms at a tendon or ligament attachment; osteophyte at a joint margin", "They are identical", "Enthesophyte is always malignant", "Osteophyte forms only in children"], "correct": 0, "explain": "An Achilles enthesophyte, for example, forms from chronic repetitive stress."}, {"stem": "In TIMS-C, what does the S stand for?", "opts": ["Sprain and strain", "Systemic and senile", "Spiral and segmental", "Sclerosis and synovitis"], "correct": 1, "explain": "Trauma/tumours, Infection/inflammatory/idiopathic, Metabolic/malignancy, Systemic/senile, Congenital."}]}, {"id": "nerve-injury", "title": "Nerve Injury", "group": "Imaging & Nerves", "q": [{"stem": "After sleeping on his arm, a man has wrist drop. Studies show myelin injury with an intact axon. What is the expected course?", "opts": ["Permanent deficit", "Recovery in about 6–12 weeks", "Recovery at 1 mm per day over years", "Immediate surgery"], "correct": 1, "explain": "Neurapraxia (Saturday night palsy) resolves in weeks once the cause is addressed."}, {"stem": "Which injury disrupts the axon but leaves the epineurium intact?", "opts": ["Neurapraxia", "Neurotmesis", "Axonotmesis", "Radiculopathy"], "correct": 2, "explain": "It can recover spontaneously, but slowly."}, {"stem": "How fast does a peripheral axon regenerate?", "opts": ["About 1 mm per day (1 inch per month)", "About 1 cm per day", "About 1 mm per week", "It does not regenerate"], "correct": 0, "explain": "So a lesion far from its target takes many months."}, {"stem": "Why can't neurotmesis recover spontaneously?", "opts": ["Myelin alone is damaged", "The cell body always dies", "Wallerian degeneration does not occur", "There is no track for regenerating axons to follow"], "correct": 3, "explain": "The epineurium is disrupted, so fibres may grow off course."}, {"stem": "A patient has neck pain radiating down the arm with fuzzy dermatomal numbness and weakness across several nerves. What is the likely lesion?", "opts": ["Mononeuropathy", "Radiculopathy", "Polyneuropathy", "Myopathy"], "correct": 1, "explain": "Radiculopathy follows dermatomes and myotomes."}, {"stem": "A patient with a numb thumb has weak APB and normal biceps. Which diagnosis fits better?", "opts": ["Carpal tunnel syndrome", "C6 radiculopathy", "Musculocutaneous injury", "Stroke"], "correct": 0, "explain": "APB is C8 through the median nerve. Biceps weakness would favour C6."}, {"stem": "On NCS, what does the size of the response reflect?", "opts": ["Myelin health", "Muscle bulk", "Axon health", "CNS function"], "correct": 2, "explain": "Timing and speed reflect the myelin sheath."}, {"stem": "Which question can electrodiagnostic studies NOT answer?", "opts": ["Where along the PNS is the problem?", "Is the axon involved?", "Is this a myopathy?", "Is this pain from a rotator cuff tear?"], "correct": 3, "explain": "EDX doesn't assess all MSK pain or CNS disease such as stroke."}, {"stem": "A rider has foot drop with loss of eversion and sensation over the dorsal foot. EMG is abnormal only in common peroneal muscles, sparing short head of biceps and paraspinals. Where is the lesion?", "opts": ["Common peroneal nerve at the fibular head", "L5 root", "Sciatic nerve in the thigh", "Tibial nerve"], "correct": 0, "explain": "L5 radiculopathy would also involve non-peroneal L5 muscles and paraspinals."}, {"stem": "Axonal injury is confirmed early on. Can you say if it's axonotmesis or neurotmesis?", "opts": ["Yes, always on the first EMG", "No; you may need to wait and see if it recovers", "Yes, from sensation alone", "Yes, with an X-ray"], "correct": 1, "explain": "More than one study over time may be needed."}]}, {"id": "foot-ankle", "title": "Foot & Ankle", "group": "Lower Limb", "q": [{"stem": "A patient has pain in the malleolar zone with tenderness at the posterior edge of the lateral malleolus. By the Ottawa rules, what do you do?", "opts": ["Reassure without imaging", "Order an ankle X-ray", "Order MRI first", "Order a foot X-ray only"], "correct": 1, "explain": "Bone tenderness at the posterior edge or tip of either malleolus, or inability to bear weight, means an ankle series."}, {"stem": "Which findings indicate a foot X-ray under the Ottawa rules?", "opts": ["Midfoot pain plus tenderness at the base of the 5th metatarsal or navicular, or inability to bear weight", "Heel pain in the morning", "Medial first MTP deformity", "Burning between the 3rd and 4th toes"], "correct": 0, "explain": "Inability to bear weight must be both immediately and in the ED."}, {"stem": "Which ligament is most often injured in an inversion ankle sprain?", "opts": ["Deltoid", "Calcaneofibular", "Anterior talofibular", "Posterior talofibular"], "correct": 2, "explain": "ATFL > CFL > PTFL. Up to 85% of sprains are lateral."}, {"stem": "What is the recommended approach to a typical ankle sprain?", "opts": ["Prolonged casting for 8 weeks", "Immediate reconstruction", "Strict bed rest", "RICE, early mobilization, strengthening and proprioception"], "correct": 3, "explain": "Reconstruction only for ongoing instability."}, {"stem": "A twisted ankle with forceful external rotation has an interosseous ligament disruption and proximal fibular pain. Which injury?", "opts": ["Maisonneuve fracture", "Jones fracture", "Morton's neuroma", "Unimalleolar fracture"], "correct": 0, "explain": "It's typically managed surgically."}, {"stem": "A 50-year-old woman has anteromedial heel pain with her first morning steps and a tight Achilles. Diagnosis?", "opts": ["Achilles rupture", "Plantar fasciitis", "Tarsal tunnel syndrome", "Stress fracture of the talus"], "correct": 1, "explain": "Management is education, heel pad, arch support, stretching. Surgery is very rare."}, {"stem": "A runner has posterior heel pain after increasing mileage, worse with passive dorsiflexion. Which therapy is emphasized?", "opts": ["Steroid injection into the tendon", "Immediate surgery", "Eccentric strengthening with PT", "Long-term immobilization"], "correct": 2, "explain": "Set expectations for slow improvement."}, {"stem": "An obese patient with diabetes has medial ankle pain and a flattening arch, with 'too many toes' seen from behind. Which diagnosis?", "opts": ["Bunion", "Plantar fasciitis", "Morton's neuroma", "Tibialis posterior dysfunction"], "correct": 3, "explain": "The tendon is hypovascular distal to the medial malleolus."}, {"stem": "A woman in high heels has burning between the 3rd and 4th toes, and a squeeze reproduces it. There's no weakness. Diagnosis?", "opts": ["Morton's neuroma", "Hallux valgus", "Common peroneal neuropathy", "Gout"], "correct": 0, "explain": "Perineural fibrosis of a common digital nerve; sensory findings possible, no motor."}, {"stem": "In which foot position is the ankle most stable, and why?", "opts": ["Plantarflexion; the narrow talus fits loosely", "Dorsiflexion; the wide anterior talus wedges in the mortise", "Inversion; the ligaments are slack", "Eversion; the calcaneus locks"], "correct": 1, "explain": "Most sprains happen in plantarflexion."}]}, {"id": "msk-oncology", "title": "MSK Oncology", "group": "Lower Limb", "q": [{"stem": "A patient has a 7 cm painless thigh lump. What is the next step?", "opts": ["Excise it in clinic", "Imaging, MRI preferred, or a surgical expert", "Fine needle aspiration and discharge", "Reassure and review in a year"], "correct": 1, "explain": "Over 5 cm goes to imaging or an expert before biopsy."}, {"stem": "Which mass under 5 cm can reasonably be excised?", "opts": ["Deep and fixed", "Rapidly growing and painful", "Superficial with limited growth and minimal symptoms", "Recurrent after prior excision"], "correct": 2, "explain": "Other features are suspicious and need imaging or an expert."}, {"stem": "What is the benign to malignant ratio for soft tissue tumours?", "opts": ["100:1", "10:1", "1:1", "1:100"], "correct": 0, "explain": "Sarcomas are rare but need a specialized path."}, {"stem": "Which is the best biopsy choice for a suspected sarcoma?", "opts": ["Excisional biopsy with minimal margin", "FNA for primary diagnosis", "Shave biopsy", "Core biopsy by an experienced physician"], "correct": 3, "explain": "Less invasive, adequate tissue, good diagnosis."}, {"stem": "Why is a 'whoops' excision dangerous?", "opts": ["It may reduce the chance of cure and risk amputation", "It always spreads infection", "Lipomas turn malignant", "It needs general anesthesia"], "correct": 0, "explain": "Image before biopsy, and don't excise suspicious lumps without a plan."}, {"stem": "Which symptom profile is typical of a primary sarcoma?", "opts": ["Severe night pain only", "Usually a painless lump", "Fever and rash", "Bilateral symmetric swelling"], "correct": 1, "explain": "Significant symptoms should make you think of metastases."}, {"stem": "What is the malignant counterpart of a leiomyoma?", "opts": ["Rhabdomyosarcoma", "Liposarcoma", "Leiomyosarcoma", "Fibrosarcoma"], "correct": 2, "explain": "Tumours are named for the tissue they resemble."}, {"stem": "Which pairing of exposure or syndrome with tumour is correct?", "opts": ["Asbestos: rhabdomyosarcoma", "HHV-8: osteosarcoma", "Vinyl chloride: lipoma", "Li-Fraumeni: p53 mutation"], "correct": 3, "explain": "Asbestos: mesothelioma. Vinyl chloride: angiosarcoma. HHV-8: Kaposi sarcoma."}, {"stem": "What is the main staging investigation for a soft tissue sarcoma on these slides?", "opts": ["CT chest", "Bone marrow biopsy", "Upper endoscopy", "Serum tumour markers"], "correct": 0, "explain": "All potential sarcomas go to a multidisciplinary team."}, {"stem": "How much does adding radiation to surgery reduce local recurrence?", "opts": ["From 90% to 80%", "From 30% to 10%", "From 10% to 5%", "It has no effect"], "correct": 1, "explain": "Pre-op radiation gives better long-term function."}]}, {"id": "fracture-management", "title": "Fracture Management", "group": "Fractures", "q": [{"stem": "What is the first priority for a patient arriving with a fracture?", "opts": ["Immediate plating", "Resuscitation as needed", "MRI of the limb", "Physiotherapy"], "correct": 1, "explain": "Bones bleed, and sharp edges can cause vascular trauma."}, {"stem": "How is closed reduction performed?", "opts": ["No analgesia, gentle pressure only", "Open the skin to view fragments", "Analgesia and sedation, longitudinal traction, exaggerate then reverse the deformity", "Apply a cast without moving the limb"], "correct": 2, "explain": "Always get post-reduction X-rays."}, {"stem": "A tibial fracture has a small skin wound some distance away. How should you treat it?", "opts": ["As open until proven otherwise", "As closed, because the wound is distant", "As a sprain", "Discharge with oral antibiotics only"], "correct": 0, "explain": "Any fracture with a wound, even a distant one, is treated as open."}, {"stem": "Which set of steps is correct for an open fracture?", "opts": ["Delay antibiotics until cultures return", "Scrub with iodine and close at 2 weeks", "Cast only", "Early antibiotics, tetanus, stabilize, early surgical debridement and irrigation, early closure"], "correct": 3, "explain": "Cefazolin 2 g IV was used in the case."}, {"stem": "A patient with a tibial fracture has escalating narcotic needs and pain on passive toe movement. What is the diagnosis and next step?", "opts": ["Compartment syndrome; urgent call to orthopedics", "DVT; start warfarin", "Nerve root irritation; order EMG", "Nonunion; order bone scan"], "correct": 0, "explain": "It's a clinical diagnosis. Pain out of proportion and pain on passive stretch are early findings."}, {"stem": "Which finding is very late in compartment syndrome?", "opts": ["Pain on passive stretch", "Paralysis", "Pain out of proportion", "Tense swelling"], "correct": 1, "explain": "Pulselessness isn't typical; by then it has been missed."}, {"stem": "When would you measure compartment pressure?", "opts": ["In every tibial fracture", "Never", "In a patient who can't communicate, such as an obtunded patient", "Only after fasciotomy"], "correct": 2, "explain": "Diastolic BP minus compartment pressure under 20, or absolute over 30 mmHg, supports it."}, {"stem": "What should a non-orthopedist do while awaiting ortho for compartment syndrome?", "opts": ["Tighten the cast", "Massage the limb", "Start a heparin bolus", "Elevate the limb, remove casts and dressings, cool it, monitor"], "correct": 3, "explain": "Definitive treatment is fasciotomy."}, {"stem": "What defines a nonunion in Part 3?", "opts": ["Failure to heal in twice the expected time", "Healing in a bad position", "Any fracture over 4 weeks", "Callus on X-ray"], "correct": 0, "explain": "Malunion is healing in an abnormal position."}, {"stem": "A nonunion shows abundant bone at the site. What does this suggest?", "opts": ["Infection only", "Insufficient stabilization", "Too much immobilization", "AVN"], "correct": 1, "explain": "Hypertrophic nonunion. Atrophic nonunion suggests impaired biology."}]}, {"id": "fracture-radiology", "title": "Fracture Radiology", "group": "Fractures", "q": [{"stem": "In fracture description, what is displacement described relative to?", "opts": ["Proximal fragment relative to distal, always", "Distal fragment relative to proximal, except the clavicle", "Either, as you prefer", "The nearest joint only"], "correct": 1, "explain": "In the clavicle, neck muscles pull the proximal fragment."}, {"stem": "What does the 'O' in OLD ACIDS stand for?", "opts": ["Oblique", "Osteopenia", "Open or closed", "Override"], "correct": 2, "explain": "Location, Degree, Articular, Comminution, Intrinsic quality, Displacement, Soft tissue."}, {"stem": "A fracture line is spiral after a twisting injury. Why take multiple views?", "opts": ["A spiral can resemble an oblique fracture on one view", "To find the growth plate", "To measure callus", "Because it's always pathological"], "correct": 0, "explain": "Spiral fractures need multiple views to be seen."}, {"stem": "Which fracture type is incomplete?", "opts": ["Transverse", "Segmental", "Butterfly", "Greenstick"], "correct": 3, "explain": "Bowing, buckle and greenstick are incomplete."}, {"stem": "How is translation that exceeds the width of the bone described?", "opts": ["Off-ended", "Impacted", "Distracted", "Rotated"], "correct": 0, "explain": "Otherwise describe it as a fraction of shaft width."}, {"stem": "Fragments are driven into each other, and the bone looks foreshortened. Which term applies?", "opts": ["Distraction", "Impaction", "Diastasis", "Avulsion"], "correct": 1, "explain": "Override also foreshortens, but the fragments overlap."}, {"stem": "How does varus angulation relate to the apex, per the slides?", "opts": ["Apex medial", "No apex", "Apex lateral", "Apex anterior"], "correct": 2, "explain": "Valgus is apex medial. Learn these by the apex."}, {"stem": "Why does an intra-articular fracture matter?", "opts": ["It heals faster", "It never needs reduction", "It lowers OA risk", "It risks secondary OA and needs anatomic reduction"], "correct": 3, "explain": "It also takes longer to heal. Extra-articular fractures tolerate relative reduction."}, {"stem": "No fracture line is seen, but a knee shows a fat-fluid level. What does this show?", "opts": ["A secondary sign of joint involvement", "A normal knee", "Gout", "Enthesitis"], "correct": 0, "explain": "Hemarthrosis and a fat-fluid level are the secondary signs."}, {"stem": "Which special view is used for the scaphoid?", "opts": ["Y view", "Ulnar deviation, clenched fist view", "Frog-leg", "Mortise"], "correct": 1, "explain": "Y view is for the shoulder; mortise for the ankle."}]}, {"id": "psych-pain", "title": "Psychological Factors in Chronic Pain", "group": "Chronic Pain", "q": [{"stem": "Which definition of pain matches the IASP?", "opts": ["A purely tissue-based signal", "An unpleasant sensory and emotional experience tied to actual or potential tissue damage", "Any symptom without a cause", "A psychiatric disorder"], "correct": 1, "explain": "Both the sensory and emotional parts count."}, {"stem": "A patient has distressing fatigue and pain for 8 months, spends hours researching it and has excessive worry. Which diagnosis fits?", "opts": ["Conversion disorder", "Malingering", "Somatic symptom disorder", "Factitious disorder"], "correct": 2, "explain": "Distressing symptoms, excessive thoughts or behaviours, and persistence over 6 months."}, {"stem": "Which feature defines conversion disorder?", "opts": ["Altered motor or sensory function incompatible with recognized conditions", "Conscious faking for money", "Fear of having cancer without symptoms", "Chronic widespread pain only"], "correct": 0, "explain": "Also called functional neurological symptom disorder."}, {"stem": "A patient fabricates illness and seeks hospital care with no obvious external reward. Which diagnosis?", "opts": ["Malingering", "Somatic symptom disorder", "Illness anxiety disorder", "Factitious disorder"], "correct": 3, "explain": "Behaviour is conscious; the gain (sick role) is unconscious."}, {"stem": "A patient exaggerates back pain to obtain a disability payment. Which term applies?", "opts": ["Malingering", "Factitious disorder", "Conversion disorder", "Adjustment disorder"], "correct": 0, "explain": "Conscious behaviour motivated by external gain."}, {"stem": "Which feature suggests factitious disorder or malingering?", "opts": ["Consistent history", "Inconsistent information and symptoms out of proportion", "Clear response to therapy", "Normal mood"], "correct": 1, "explain": "Seek collateral information and triangulate the data."}, {"stem": "Which are examples of functional somatic syndromes?", "opts": ["RA, SLE, gout", "Stroke, MS, ALS", "IBS, chronic fatigue syndrome, fibromyalgia", "Sarcoma, lymphoma, myeloma"], "correct": 2, "explain": "They overlap with anxiety and depression."}, {"stem": "How common are medically unexplained symptoms in primary care?", "opts": ["Under 1%", "About 5%", "About 90%", "15–25%"], "correct": 3, "explain": "Higher in specialist and neurology clinics."}, {"stem": "A person with chronic pain has low mood. Which is true of pain and depression?", "opts": ["They influence each other, and somatic symptoms overlap", "Depression never appears with pain", "Treating pain always cures mood", "Pain intensity doesn't matter"], "correct": 0, "explain": "Intensity, number of painful areas and severe pain frequency predict depression."}, {"stem": "What is the goal of CBT in chronic pain?", "opts": ["Curing the pain", "Managing the pain by linking thoughts, feelings and behaviours", "Proving symptoms aren't real", "Replacing all medical care"], "correct": 1, "explain": "Components include education, relaxation, activation and cognitive restructuring."}]}, {"id": "chronic-pain", "title": "Understanding & Managing Chronic Pain", "group": "Chronic Pain", "q": [{"stem": "What duration defines chronic pain?", "opts": ["Over 2 weeks", "Over 3 months", "Over 1 year", "Over 6 weeks"], "correct": 1, "explain": "It may outlast the resolution of tissue damage."}, {"stem": "A patient has burning, electric pain with pins and needles after a nerve lesion. What type is it?", "opts": ["Nociceptive", "Referred muscular", "Neuropathic", "Inflammatory only"], "correct": 2, "explain": "Neuropathic pain comes from a lesion or dysfunction in the nervous system."}, {"stem": "What explains most chronic pain today, per the slides?", "opts": ["Wind-up and central sensitization", "Ongoing fracture", "Active infection", "Only chronic inflammation"], "correct": 0, "explain": "Chronic nociceptive pain is the minority."}, {"stem": "Which fibre carries dull, poorly localized, persistent pain?", "opts": ["Aβ", "Aδ", "Motor neuron", "C"], "correct": 3, "explain": "Aδ carries sharp, well-localized pain."}, {"stem": "Why does rubbing an injury help?", "opts": ["Aβ fibres activate inhibitory interneurons (gate control)", "It removes the inflammation", "C fibres stop firing permanently", "It raises serum opioids tenfold"], "correct": 0, "explain": "Endogenous opioids and descending NE and 5-HT also modulate pain."}, {"stem": "What is the message of 'hurt does not equal harm'?", "opts": ["Stop all activity", "Pain often reflects dysfunctional signalling, so returning to activity helps", "All pain is imagined", "Rest is the only treatment"], "correct": 1, "explain": "Exercise can normalize processing and release endorphins."}, {"stem": "Which provider focuses on activity participation, pacing and ergonomics for ADLs and work?", "opts": ["Physiotherapist", "Kinesiologist", "Occupational therapist", "Chiropractor"], "correct": 2, "explain": "Physio focuses on mobility, strength and flexibility."}, {"stem": "Which modality has good evidence in chronic pain?", "opts": ["Therapeutic ultrasound", "Low-level laser", "Work-hardening programs", "Regular, individualized, supervised exercise"], "correct": 3, "explain": "Any regular activity beats avoidance."}, {"stem": "What is the advice on NSAIDs?", "opts": ["Limit daily use to a 2–3 week trial; monitor renal function and BP if longer", "Use indefinitely without monitoring", "First choice for severe pain", "They have no GI risk"], "correct": 0, "explain": "COX-2 inhibitors have less GI bleed risk but the same renal and BP issues."}, {"stem": "Which antidepressant class doesn't significantly help pain alone?", "opts": ["Tricyclics", "SSRIs", "SNRIs", "Duloxetine specifically"], "correct": 1, "explain": "NE is the primary neurotransmitter for pain modulation."}]}, {"id": "physical-activity", "title": "Physical Activity Prescription", "group": "Chronic Pain", "q": [{"stem": "How does low fitness rank as a mortality risk factor?", "opts": ["Unrelated to mortality", "An independent risk factor for all-cause death", "Only matters over 80", "Less important than any other factor"], "correct": 1, "explain": "As important as smoking, hypertension and cholesterol."}, {"stem": "What is the recommended weekly aerobic target for adults?", "opts": ["30 min", "75 min of light activity", "At least 150 min moderate to vigorous", "At least 500 min vigorous"], "correct": 2, "explain": "Plus muscle strengthening at least 2 days a week."}, {"stem": "A patient can talk but can't sing during exercise. What intensity is it?", "opts": ["Moderate", "Light", "Vigorous", "Maximal"], "correct": 0, "explain": "Sing = low, talk = moderate, conversation impossible = high."}, {"stem": "What does FITT stand for?", "opts": ["Fitness, Intent, Time, Trial", "Fat, Insulin, Tone, Training", "Frequency, Instruction, Testing, Target", "Frequency, Intensity, Time, Type"], "correct": 3, "explain": "A typical prescription: 5 times weekly, moderate, 30 minutes, walking."}, {"stem": "Which is an absolute contraindication to exercise?", "opts": ["Resting BP over 180/100", "Controlled hypertension", "Family history of MI", "Age over 65"], "correct": 0, "explain": "Others: uncontrolled arrhythmia, unstable angina, acute heart failure, unstable diabetes, febrile illness."}, {"stem": "How does regular activity change hip fracture risk?", "opts": ["Raises it", "About 55% lower, mainly by reducing falls", "No change", "Raises bone density by 50%"], "correct": 1, "explain": "Bone density rises only 1–3%."}, {"stem": "A patient develops chest pain on mild exertion. What is the correct action?", "opts": ["Double the dose", "Add resistance work", "Stop and promptly evaluate or refer", "Ignore it"], "correct": 2, "explain": "Active signs or symptoms mean stop and evaluate."}, {"stem": "How much benefit comes from moving a sedentary person to some activity?", "opts": ["None", "Harmful", "Only at high volume", "The greatest population benefit"], "correct": 3, "explain": "Some is good, more is better."}, {"stem": "Which exercise should a hypertensive patient avoid?", "opts": ["Isometric and overhead exercises", "Brisk walking", "Prolonged warm-up", "Swimming"], "correct": 0, "explain": "Also very strenuous resistance training and lying-down exercises."}, {"stem": "Which antihypertensive reduces max heart rate and performance?", "opts": ["ACE inhibitors", "Beta-blockers", "ARBs", "Diuretics only"], "correct": 1, "explain": "ACE inhibitors and ARBs have minimal problems with exercise."}]}, {"id": "peds-ortho", "title": "Pediatric Orthopedics", "group": "Pediatrics", "q": [{"stem": "Why are ligament injuries less common in children?", "opts": ["Ligaments are absent", "The physis is relatively weak and fails first", "Bones are more brittle", "Periosteum is thin"], "correct": 1, "explain": "So a 'sprain' in a child may be a Salter-Harris I injury."}, {"stem": "Which fracture type is unique to children?", "opts": ["Bimalleolar", "Hip fracture", "Buckle", "Maisonneuve"], "correct": 2, "explain": "Also greenstick, plastic deformation and avulsions."}, {"stem": "Which Salter-Harris type is most common?", "opts": ["II", "I", "III", "V"], "correct": 0, "explain": "Most often at the distal radius."}, {"stem": "Which Salter-Harris type risks a bony bridge between metaphysis and epiphysis?", "opts": ["I", "II", "III", "IV"], "correct": 3, "explain": "Sites: lateral humeral condyle and distal tibia. It needs anatomic reduction."}, {"stem": "How long should growth plate injuries be followed?", "opts": ["At least 1 year, preferably 2", "1 week", "Until the cast is removed", "Follow-up isn't needed"], "correct": 0, "explain": "About 10% develop growth disturbance."}, {"stem": "A 14-year-old sprinter has acute anterior hip pain and a limp. What is likely?", "opts": ["DDH", "Avulsion fracture at an apophysis", "Perthes disease", "Septic arthritis"], "correct": 1, "explain": "Often non-surgical."}, {"stem": "A 12-year-old boy has tibial tuberosity pain and swelling worse with sport. Diagnosis and course?", "opts": ["Salter-Harris V; surgery", "Sarcoma; biopsy", "Osgood-Schlatter; benign, self-limiting", "SCFE; pinning"], "correct": 2, "explain": "Sinding-Larsen is the distal patella; Sever's is the calcaneus."}, {"stem": "What does CRITOE describe?", "opts": ["Hip exam steps", "Fracture description order", "Scoliosis levels", "Order of elbow ossification"], "correct": 3, "explain": "Capitellum, Radial head, Internal epicondyle, Trochlea, Olecranon, External epicondyle."}, {"stem": "Which newborn has the highest DDH risk?", "opts": ["Firstborn female in breech", "Third-born male in vertex", "Preterm male", "Twin male in vertex"], "correct": 0, "explain": "Also family history and oligohydramnios."}, {"stem": "An examiner abducts and lifts a flexed thigh, and the femoral head slips back in. Which test?", "opts": ["Barlow", "Ortolani", "Galeazzi", "Adams"], "correct": 1, "explain": "Barlow is the 'sign of exit'. Both are unreliable after 3–6 months."}]}]</script>
+<script>
+(function(){
+  "use strict";
+  var MODULES = JSON.parse(document.getElementById('data').textContent);
+  var CIRC = 2 * Math.PI * 58;
+
+  var store = { get:function(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+                set:function(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} } };
+  var results = store.get('caseBankResultsWk10-v1') || {};
+
+  var dashboard = document.getElementById('dashboard');
+  var quizview = document.getElementById('quizview');
+  var summaryview = document.getElementById('summaryview');
+  var groupsEl = document.getElementById('groups');
+
+  var state = { modIdx:-1, qIdx:0, correctCount:0, answers:[], locked:false };
+
+  function letterFor(i){ return String.fromCharCode(65+i); }
+
+  function renderDashboard(){
+    groupsEl.innerHTML = '';
+    var groups = [];
+    MODULES.forEach(function(m){
+      var g = groups.filter(function(x){ return x.name===m.group; })[0];
+      if(!g){ g = { name:m.group, mods:[] }; groups.push(g); }
+      g.mods.push(m);
+    });
+    groups.forEach(function(g){
+      var h = document.createElement('div');
+      h.className = 'group-heading';
+      h.innerHTML = '<h2>'+g.name+'</h2><div class="rule"></div><span class="count">'+g.mods.length+' module'+(g.mods.length>1?'s':'')+'</span>';
+      groupsEl.appendChild(h);
+
+      var grid = document.createElement('div');
+      grid.className = 'grid';
+      g.mods.forEach(function(m){
+        var idx = MODULES.indexOf(m);
+        var r = results[m.id];
+        var card = document.createElement('button');
+        card.className = 'card';
+        var badge = '<span class="badge new">Not started</span>';
+        var scoreLine = '';
+        if(r){
+          var pct = Math.round(100*r.score/r.total);
+          badge = pct>=80 ? '<span class="badge done">Completed</span>' : '<span class="badge retry">Review again</span>';
+          scoreLine = '<span class="score">Best <b>'+r.score+' / '+r.total+'</b> ('+pct+'%)</span>';
+        } else {
+          scoreLine = '<span class="score">'+m.q.length+' questions</span>';
+        }
+        card.innerHTML =
+          '<span class="num">'+String(idx+1).padStart(2,'0')+' / 10</span>'+
+          '<h3>'+m.title+'</h3>'+
+          '<div class="card-foot">'+scoreLine+badge+'</div>';
+        card.addEventListener('click', function(){ startModule(idx); });
+        grid.appendChild(card);
+      });
+      groupsEl.appendChild(grid);
+    });
+  }
+
+  function startModule(idx){
+    state.modIdx = idx; state.qIdx = 0; state.correctCount = 0; state.answers = [];
+    dashboard.hidden = true; summaryview.hidden = true; quizview.hidden = false;
+    var m = MODULES[idx];
+    document.getElementById('quizGroup').textContent = m.group;
+    document.getElementById('quizTitle').textContent = m.title;
+    renderQuestion();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  function renderQuestion(){
+    var m = MODULES[state.modIdx];
+    var q = m.q[state.qIdx];
+    state.locked = false;
+    document.getElementById('progressLabel').textContent = 'Question '+(state.qIdx+1)+' of '+m.q.length;
+    document.getElementById('scoreLabel').textContent = 'Score '+state.correctCount+' / '+state.qIdx;
+    document.getElementById('progressFill').style.width = (100*state.qIdx/m.q.length)+'%';
+    document.getElementById('qTag').textContent = 'Case '+(state.qIdx+1);
+    document.getElementById('qStem').textContent = q.stem;
+
+    var optsEl = document.getElementById('opts');
+    optsEl.innerHTML = '';
+    q.opts.forEach(function(optText, i){
+      var b = document.createElement('button');
+      b.className = 'opt';
+      b.innerHTML = '<span class="letter">'+letterFor(i)+'</span><span>'+optText+'</span>';
+      b.addEventListener('click', function(){ selectOption(i); });
+      optsEl.appendChild(b);
+    });
+
+    document.getElementById('explain').hidden = true;
+    var nextBtn = document.getElementById('nextBtn');
+    nextBtn.disabled = true;
+    nextBtn.textContent = (state.qIdx === m.q.length-1) ? 'See results →' : 'Next question →';
+  }
+
+  function selectOption(i){
+    if(state.locked) return;
+    state.locked = true;
+    var m = MODULES[state.modIdx];
+    var q = m.q[state.qIdx];
+    var correct = (i === q.correct);
+    if(correct) state.correctCount++;
+    state.answers.push({ q:q, chosen:i, correct:correct });
+
+    var opts = document.querySelectorAll('#opts .opt');
+    opts.forEach(function(el, idx){
+      el.disabled = true;
+      if(idx === q.correct) el.classList.add('correct');
+      else if(idx === i) el.classList.add('incorrect');
+      else el.classList.add('dim');
+    });
+
+    var explain = document.getElementById('explain');
+    explain.innerHTML = '<b>'+(correct ? 'Correct. ' : 'Not quite. ')+'</b>'+q.explain;
+    explain.hidden = false;
+
+    document.getElementById('scoreLabel').textContent = 'Score '+state.correctCount+' / '+(state.qIdx+1);
+    document.getElementById('nextBtn').disabled = false;
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    var m = MODULES[state.modIdx];
+    if(state.qIdx < m.q.length-1){
+      state.qIdx++;
+      renderQuestion();
+    } else {
+      finishModule();
+    }
+  });
+
+  function finishModule(){
+    var m = MODULES[state.modIdx];
+    document.getElementById('progressFill').style.width = '100%';
+    quizview.hidden = true; summaryview.hidden = false;
+
+    var total = m.q.length, score = state.correctCount;
+    var pct = Math.round(100*score/total);
+    results[m.id] = { score:score, total:total };
+    var prev = store.get('caseBankResultsWk10-v1') || {};
+    var existing = prev[m.id];
+    if(!existing || existing.score < score) prev[m.id] = { score:score, total:total };
+    else results[m.id] = existing;
+    store.set('caseBankResultsWk10-v1', prev);
+    results = prev;
+
+    var offset = CIRC * (1 - pct/100);
+    var ring = document.getElementById('ringFg');
+    ring.style.strokeDasharray = CIRC;
+    ring.style.strokeDashoffset = CIRC;
+    requestAnimationFrame(function(){
+      ring.style.transition = 'stroke-dashoffset .6s ease';
+      ring.style.strokeDashoffset = offset;
+    });
+    document.getElementById('ringPct').textContent = pct+'%';
+    document.getElementById('sumTitle').textContent = m.title;
+    document.getElementById('sumSub').textContent = score+' of '+total+' correct — '+(pct>=80?'strong grasp of this module.':pct>=60?'solid, worth a second pass.':'flag this module for review.');
+
+    var reviewList = document.getElementById('reviewList');
+    reviewList.innerHTML = '';
+    var misses = state.answers.filter(function(a){ return !a.correct; });
+    if(misses.length){
+      var h = document.createElement('div');
+      h.style.textAlign = 'left';
+      h.style.fontFamily = "'JetBrains Mono',monospace";
+      h.style.fontSize = '.72rem';
+      h.style.color = 'var(--ink-soft)';
+      h.style.textTransform = 'uppercase';
+      h.style.letterSpacing = '.08em';
+      h.style.margin = '0 0 4px';
+      h.textContent = 'Missed questions';
+      reviewList.appendChild(h);
+    }
+    misses.forEach(function(a){
+      var item = document.createElement('div');
+      item.className = 'review-item';
+      item.innerHTML = '<span class="mark miss">&#10007;</span><div><b>'+a.q.stem+'</b><br>Correct answer: '+a.q.opts[a.q.correct]+'</div>';
+      reviewList.appendChild(item);
+    });
+
+    document.getElementById('retryBtn').onclick = function(){ startModule(state.modIdx); };
+  }
+
+  document.getElementById('dashBtn').addEventListener('click', backToDashboard);
+  document.getElementById('backBtn').addEventListener('click', backToDashboard);
+  function backToDashboard(){
+    quizview.hidden = true; summaryview.hidden = true; dashboard.hidden = false;
+    renderDashboard();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  renderDashboard();
+})();
+</script>
