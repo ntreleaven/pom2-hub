@@ -1,0 +1,2382 @@
+<title>Week 11 MSK Study Hub</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --paper: #f3f5f4;
+    --paper-raised: #ffffff;
+    --ink: #1b2321;
+    --ink-soft: #4b5651;
+    --ink-faint: #7c8a84;
+    --line: #d8ddda;
+    --line-soft: #e7eae8;
+    --amber: #a8641c;
+    --amber-ink: #7a4712;
+    --amber-wash: #f4e6d3;
+    --teal: #1f6e73;
+    --teal-ink: #17565a;
+    --teal-wash: #dcedee;
+    --good: #2f7a4f;
+    --good-wash: #dcf0e2;
+    --bad: #ae3f34;
+    --bad-wash: #f7ded9;
+    --shadow: 0 1px 2px rgba(27,35,33,0.06), 0 6px 20px -8px rgba(27,35,33,0.12);
+    --radius: 3px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12191a;
+      --paper-raised: #182123;
+      --ink: #e9edea;
+      --ink-soft: #b6c0bb;
+      --ink-faint: #7d8b85;
+      --line: #2c3937;
+      --line-soft: #223030;
+      --amber: #e0a860;
+      --amber-ink: #f0c592;
+      --amber-wash: #33291b;
+      --teal: #6fc2c6;
+      --teal-ink: #9adade;
+      --teal-wash: #16302f;
+      --good: #6fbf8f;
+      --good-wash: #1a3327;
+      --bad: #e2897c;
+      --bad-wash: #3a211d;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12191a;
+    --paper-raised: #182123;
+    --ink: #e9edea;
+    --ink-soft: #b6c0bb;
+    --ink-faint: #7d8b85;
+    --line: #2c3937;
+    --line-soft: #223030;
+    --amber: #e0a860;
+    --amber-ink: #f0c592;
+    --amber-wash: #33291b;
+    --teal: #6fc2c6;
+    --teal-ink: #9adade;
+    --teal-wash: #16302f;
+    --good: #6fbf8f;
+    --good-wash: #1a3327;
+    --bad: #e2897c;
+    --bad-wash: #3a211d;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  h1, h2, h3, h4 { font-family: 'Spectral', Georgia, serif; text-wrap: balance; margin: 0; }
+  a { color: var(--teal-ink); }
+  table { border-collapse: collapse; }
+
+  .shell { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 280px;
+    flex: none;
+    border-right: 1px solid var(--line);
+    background: var(--paper-raised);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 22px 18px 30px;
+  }
+  .sidebar-head { margin-bottom: 4px; }
+  .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--teal-ink);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .sidebar-head h1 { font-size: 21px; font-weight: 600; line-height: 1.25; }
+  .sidebar-head .sub { color: var(--ink-faint); font-size: 13px; margin-top: 6px; }
+
+  .progress-block { margin: 18px 0 20px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-soft); margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+  .progress-track { height: 6px; background: var(--line-soft); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--amber); width: 0%; transition: width .4s ease; }
+
+  .navlist { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-soft); padding-top: 10px; }
+  .navlist li { margin: 0; }
+  .navlist a {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    padding: 7px 6px;
+    border-radius: var(--radius);
+  }
+  .navlist a:hover { background: var(--line-soft); color: var(--ink); }
+  .navlist a.active { color: var(--ink); font-weight: 600; }
+  .navlist .num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-faint); flex: none; width: 16px; }
+  .navlist .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--line); flex: none; }
+  .navlist .dot.done { background: var(--good); }
+
+  .sidebar-foot { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--line-soft); font-size: 12px; color: var(--ink-faint); }
+  .sidebar-foot code { font-family: 'IBM Plex Mono', monospace; background: var(--line-soft); padding: 1px 5px; border-radius: 2px; }
+
+  main { flex: 1; min-width: 0; }
+  .topbar {
+    position: sticky; top: 0; z-index: 5;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 40px;
+    display: none;
+  }
+
+  .hero {
+    padding: 54px 48px 40px;
+    border-bottom: 1px solid var(--line);
+    max-width: 900px;
+  }
+  .hero .kicker { margin-bottom: 14px; }
+  .hero h1 { font-size: 40px; font-weight: 600; letter-spacing: -0.01em; }
+  .hero .dek { color: var(--ink-soft); font-size: 16.5px; margin-top: 14px; max-width: 62ch; }
+  .hero-meta { display: flex; gap: 26px; margin-top: 26px; flex-wrap: wrap; }
+  .hero-meta div { font-size: 13px; color: var(--ink-faint); }
+  .hero-meta strong { display: block; font-family: 'Spectral', serif; font-size: 20px; color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .content { padding: 8px 48px 90px; max-width: 900px; }
+
+  section.module {
+    padding: 46px 0;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 20px;
+  }
+  section.module:last-of-type { border-bottom: none; }
+
+  .module-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 6px; }
+  .module-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--amber); padding-top: 6px; flex: none; width: 24px; }
+  .module-head h2 { font-size: 25px; font-weight: 600; }
+  .module-meta { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 22px 40px; }
+  .tag { font-size: 11.5px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.03em; color: var(--ink-faint); border: 1px solid var(--line); padding: 3px 8px; border-radius: 99px; }
+  .tag.mcc { color: var(--teal-ink); border-color: var(--teal); background: var(--teal-wash); }
+
+  .module-body { margin-left: 40px; }
+  .module-body p { color: var(--ink-soft); margin: 0 0 14px; max-width: 68ch; }
+  .module-body h3 { font-size: 15px; font-weight: 600; margin: 22px 0 10px; color: var(--ink); }
+  .module-body ul, .module-body ol { margin: 0 0 14px; padding-left: 20px; color: var(--ink-soft); max-width: 66ch; }
+  .module-body li { margin-bottom: 6px; }
+  .module-body li strong { color: var(--ink); }
+  .callout {
+    background: var(--amber-wash);
+    border-left: 3px solid var(--amber);
+    padding: 12px 16px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 14px;
+    color: var(--ink);
+    margin: 16px 0;
+    max-width: 64ch;
+  }
+  .callout strong { color: var(--amber-ink); }
+
+  .data-table { width: 100%; margin: 10px 0 20px; font-size: 13.5px; overflow-x: auto; display: block; }
+  .data-table table { width: 100%; min-width: 480px; }
+  .data-table th, .data-table td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  .data-table th { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); font-weight: 500; }
+  .module-body p.flag { font-size: 13px; color: var(--ink-faint); font-style: italic; }
+  .data-table td.num { font-variant-numeric: tabular-nums; }
+
+  .quiz {
+    margin-top: 26px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .quiz-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--line-soft);
+    background: var(--line-soft);
+  }
+  .quiz-head span { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+  .quiz-score { font-size: 12.5px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+  .quiz-body { padding: 18px; }
+  .q { margin-bottom: 20px; }
+  .q:last-child { margin-bottom: 0; }
+  .q-stem { font-size: 14.5px; color: var(--ink); margin-bottom: 10px; font-weight: 500; }
+  .q-opts { display: flex; flex-direction: column; gap: 7px; }
+  .opt {
+    text-align: left;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    padding: 9px 12px;
+    border-radius: var(--radius);
+    font-size: 13.5px;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    gap: 9px;
+  }
+  .opt:hover { border-color: var(--teal); }
+  .opt:focus-visible { outline: 2px solid var(--teal); outline-offset: 1px; }
+  .opt .letter { font-family: 'IBM Plex Mono', monospace; color: var(--ink-faint); flex: none; }
+  .opt.correct { background: var(--good-wash); border-color: var(--good); }
+  .opt.incorrect { background: var(--bad-wash); border-color: var(--bad); }
+  .opt[disabled] { cursor: default; }
+  .q-explain {
+    display: none;
+    margin-top: 9px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    background: var(--teal-wash);
+    border-left: 3px solid var(--teal);
+    padding: 9px 12px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .q-explain.shown { display: block; }
+  .q-explain strong { color: var(--teal-ink); }
+
+  .colophon {
+    max-width: 900px;
+    padding: 34px 48px 70px;
+    color: var(--ink-faint);
+    font-size: 12.5px;
+    border-top: 1px solid var(--line);
+  }
+  .colophon a { color: var(--ink-soft); }
+
+  .theme-toggle {
+    position: fixed; bottom: 18px; right: 18px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    color: var(--ink-soft);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10;
+  }
+
+  .mobile-nav-toggle { display: none; }
+
+  @media (max-width: 880px) {
+    .sidebar { position: fixed; left: -300px; top: 0; z-index: 20; transition: left .25s ease; box-shadow: var(--shadow); }
+    .sidebar.open { left: 0; }
+    .topbar { display: flex; align-items: center; gap: 12px; padding: 12px 20px; }
+    .mobile-nav-toggle {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: var(--radius);
+      border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace; font-size: 13px; cursor: pointer;
+    }
+    .topbar strong { font-family: 'Spectral', serif; font-size: 15px; }
+    .hero { padding: 30px 20px 28px; }
+    .hero h1 { font-size: 30px; }
+    .content { padding: 8px 20px 70px; }
+    .module-meta, .module-body { margin-left: 0; }
+    .module-head { gap: 10px; }
+    .colophon { padding: 26px 20px 60px; }
+  }
+</style>
+
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <span class="kicker">PoM2 &middot; Musculoskeletal Medicine</span>
+      <h1>Week&nbsp;11 &mdash; Infections, Crystal Arthritis, Inflammatory Arthritis, OA, Vasculitis &amp; CTDs</h1>
+      <div class="sub">Musculoskeletal Block</div>
+    </div>
+
+    <div class="progress-block">
+      <div class="progress-label"><span>Quiz progress</span><span id="progress-count">0 / 32</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+
+    <ul class="navlist" id="navlist"></ul>
+
+    <div class="sidebar-foot">
+      Built from this week\'s Elentra slides and learning objectives (the same material as the week 11 NotebookLM video scripts). Written for review, not a substitute for the modules &mdash; cross-check anything that doesn\'t match the lecture.
+    </div>
+  </nav>
+
+  <main>
+    <div class="topbar">
+      <button class="mobile-nav-toggle" id="navToggle" aria-label="Toggle module list">&#9776;</button>
+      <strong>Week 11 &mdash; Musculoskeletal Medicine</strong>
+    </div>
+
+    <header class="hero">
+      <span class="kicker">Study Hub</span>
+      <h1>Musculoskeletal Medicine</h1>
+      <p class="dek">Eight modules that turn the block from anatomy to rheumatology: MSK infections, the acute hot joint with gout and pseudogout, juvenile idiopathic arthritis, the approach to polyarthritis, the seronegative arthritides, osteoarthritis, vasculitis and the connective tissue diseases.</p>
+      <div class="hero-meta">
+        <div><strong>8</strong>modules</div>
+        <div><strong>32</strong>quiz questions</div>
+        <div><strong>~8h</strong>module time on Elentra</div>
+      </div>
+    </header>
+
+    <div class="content" id="content"></div>
+
+    <footer class="colophon">
+      Sources: Week 11 Elentra digital modules (Drs. Faber, Devlin, G. Rohekar, Berard, Jiang, S. Rohekar, Appleton, Barra and Pope): the student slides and each module's learning objectives. Items marked with a warning sign aren't on the slides. For personal review; cross-check anything that doesn't match the modules.</footer>
+  </main>
+</div>
+
+<button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle color theme">&#9788;</button>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var stored = null;
+  try { stored = localStorage.getItem('msk-hub-theme'); } catch(e) {}
+  if (stored) root.setAttribute('data-theme', stored);
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var current = root.getAttribute('data-theme');
+    var next = current === 'dark' ? 'light' : (current === 'light' ? 'dark' : ((window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'light' : 'dark'));
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('msk-hub-theme', next); } catch(e) {}
+  });
+
+  document.getElementById('navToggle').addEventListener('click', function(){
+    document.getElementById('sidebar').classList.toggle('open');
+  });
+})();
+</script>
+
+<script>
+const MODULES = [
+  {
+    "id": "msk-infections",
+    "title": "MSK Infections: Joints, Bone, Hand and Diabetic Foot",
+    "instructor": "Elentra module 01",
+    "duration": "~80 min",
+    "tags": [
+      {
+        "label": "Infection first",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Why this matters:</strong> an infected joint or bone is destroyed by delay, and antibiotics alone rarely fix it. The theme of this module is <strong>source control plus antibiotics</strong>.</p>
+<h3>Differential for an acutely swollen joint</h3>
+<p><strong>Acute monoarthritis:</strong></p>
+<ul>
+<li><strong>Infectious:</strong> bacterial, viral, mycobacterial, fungal</li>
+<li><strong>Crystal:</strong> gout, CPPD</li>
+<li><strong>Inflammatory:</strong> reactive arthritis, RA, sarcoid</li>
+<li><strong>Trauma</strong></li>
+<li><strong>Blood:</strong> hemarthrosis</li>
+<li><strong>Malignant</strong> (less common)</li>
+</ul>
+<p><strong>Red flags for infection:</strong> fever, pain, and a <strong>significant reduction in range of motion</strong>.</p>
+<p><strong>History:</strong> onset (OPQRST), which joints, associated fever or rash, exposures (<strong>IVDU, sexual contact, travel</strong>), past interventions, and risk factors (immune compromise, an inflammatory joint condition such as RA).</p>
+<p><strong>Exam:</strong> vital signs; effusion, erythema, prior scar, rash; warmth and subtle effusion compared with the other side; ROM and function limited by pain.</p>
+<h3>Septic arthritis</h3>
+<p><strong>How it happens:</strong> <strong>hematogenous seeding</strong> or <strong>direct inoculation</strong>. Risk factors: immune compromise, type 2 diabetes, alcohol, age over 80, IVDU, RA.</p>
+<p><strong>Pathophysiology:</strong> the synovium acts as a "petri dish". Inflammation leads to joint damage.</p>
+<p><strong>Investigations:</strong></p>
+<ul>
+<li>CBC, electrolytes, creatinine, CRP</li>
+<li><strong>Blood cultures</strong></li>
+<li><strong>Joint aspirate:</strong> cell count, microscopy, Gram stain</li>
+<li>Imaging if needed</li>
+<li>Tests guided by the differential: coagulopathy, HIV, travel history</li>
+</ul>
+<p><strong>Reading the aspirate:</strong> these slides flag WBC counts above <strong>20,000</strong> and above <strong>50,000</strong>. Gout typically sits at <strong>20,000–50,000</strong> with <strong>MSU crystals</strong>. Septic arthritis has a positive Gram stain or culture. Older patients with either may or may not be febrile, so fever does not separate them.</p>
+<p><strong>Pathogens:</strong></p>
+<ul>
+<li><strong>Adults:</strong> <strong><em>S. aureus</em></strong> (MSSA and MRSA), <strong>streptococci</strong> (groups A, C, G), and less often Gram-negative bacilli</li>
+<li><strong>Children:</strong> <em>S. aureus</em>, streptococci</li>
+</ul>
+<p><strong>Treatment has two arms:</strong></p>
+<ul>
+<li><strong>Surgical:</strong> joint decompression, irrigation (removes organisms and proteolytic and lysosomal enzymes), and debridement of necrotic tissue. The goal is to preserve the synovium as an immune-competent barrier.</li>
+<li><strong>Medical:</strong> systemic antibiotics. Guidelines quote 2–4 weeks; in practice <strong><em>S. aureus</em> gets 4–6 weeks</strong>. The OVIVA trial (oral vs IV for bone and joint infection) is the reference on the slides.</li>
+<li><strong>Empiric:</strong> <strong>cefazolin (Ancef) 2 g IV q8h</strong>, or <strong>vancomycin 15 mg/kg plus ceftriaxone 2 g IV q24h</strong>.</li>
+</ul>
+<p><strong>Other infectious causes:</strong></p>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th>Cause</th>
+<th>Pattern and exposure</th>
+<th>Investigations</th>
+<th>Treatment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gonococcal arthritis</td>
+<td>Large joint mono- or oligoarthritis (knee, wrist, ankle); young, multiple partners, MSM; F&gt;M</td>
+<td>Blood culture; NAAT/culture of urine, rectum, throat; joint fluid (positive in 50%)</td>
+<td>Ceftriaxone 10–14 days</td>
+</tr>
+<tr>
+<td>Disseminated gonococcal infection</td>
+<td>Tenosynovitis, pustular dermatitis, polyarthralgia</td>
+<td>Same</td>
+<td>Ceftriaxone 10–14 days</td>
+</tr>
+<tr>
+<td>Lyme arthritis</td>
+<td>Large joint monoarthritis</td>
+<td>Lyme serology; joint fluid PCR (lower yield)</td>
+<td>IV ceftriaxone 28 days</td>
+</tr>
+<tr>
+<td>Tuberculosis</td>
+<td>Large joint monoarthritis; from an endemic country</td>
+<td>Joint fluid for AFB</td>
+<td>RIPE 9 months to 1 year</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Infectious polyarthritis:</strong> bacterial, <strong>think infective endocarditis</strong>. Viral: parvovirus B19 (associated with anemia), chikungunya, Zika, dengue, hepatitis B and C, HIV.</p>
+<p><strong>Reactive arthritis:</strong> arthritis days to weeks after an infection, mono- or oligoarticular, with dactylitis and enthesitis, linked to HLA-B27. GI triggers: <em>Campylobacter</em>, <em>Salmonella</em>, <em>Shigella</em>, <em>Yersinia</em>, <em>C. difficile</em>. GU trigger: <em>Chlamydia trachomatis</em>.</p>
+<p><strong>Prosthetic joint infection:</strong> best managed by orthopedics and ID together. Early vs late. Less virulent organisms (coagulase-negative staph, <em>Propionibacterium acnes</em>), so keep a <strong>high index of suspicion</strong>.</p>
+<h3>Osteomyelitis and discitis</h3>
+<p><strong>Routes:</strong></p>
+<ul>
+<li><strong>Hematogenous:</strong> vertebral osteomyelitis and most pediatric osteomyelitis</li>
+<li><strong>Non-hematogenous (contiguous):</strong> direct inoculation by trauma, post-surgical, diabetic foot infection</li>
+</ul>
+<p><strong>Why it is hard to cure:</strong> bacteria adhere and form <strong>biofilm</strong>, and survive inside osteoblasts. <strong>Acute</strong> disease brings edema, vascular congestion and small vessel thrombosis. <strong>Chronic</strong> disease leaves <strong>necrotic bone</strong>, which drives treatment failure.</p>
+<p><strong>Adults:</strong> diabetic foot, native vertebral osteomyelitis (people who inject drugs, middle-aged men), Pott's disease (TB), trauma or surgery, sacral wounds.</p>
+<p><strong>Children:</strong> hematogenous, usually under 12, in the vascular <strong>metaphysis</strong>. Organisms: <strong><em>S. aureus</em> always</strong>, <strong><em>Salmonella</em> in sickle cell disease</strong>, <em>Kingella</em> and other Gram-negatives.</p>
+<p><strong>Imaging:</strong></p>
+<ul>
+<li>X-ray and CT are <strong>not sensitive enough</strong></li>
+<li><strong>MRI is the most sensitive</strong>, and findings persist despite resolution</li>
+<li><strong>Choosing Wisely:</strong> don't routinely repeat imaging in a patient improving on adequate antibiotics</li>
+<li>Tagged WBC scan takes 2 days</li>
+</ul>
+<p><strong>Treatment questions:</strong> vascular supply, chronicity, need for debridement, patient engagement. <strong>Antibiotics alone will not save you.</strong></p>
+<p><strong>Vertebral osteomyelitis / spondylodiscitis case:</strong> a 55-year-old man with 5 days of severe back pain, afebrile, with a normal neurologic exam. Next steps: <strong>blood cultures and MRI spine</strong>, and consider a spinal biopsy. MRI shows L3–L4 marrow edema with endplate irregularity, which is spondylodiscitis. Look for <strong>paravertebral and epidural abscess</strong>. Think of TB, <em>Brucella</em> (epidemiologic history) and <em>M. bovis</em> (BCG for bladder cancer). Treat for <strong>6 weeks</strong>, with <strong>IV vancomycin plus ceftriaxone</strong> and neurosurgery if there is cord compression.</p>
+<p><strong>Sacral ulcer:</strong> ask about chronicity, offloading and debridement; involve plastics.</p>
+<h3>Hand infections</h3>
+<p>The key move is to separate <strong>cellulitis from abscess</strong>.</p>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th></th>
+<th>Cellulitis</th>
+<th>Abscess / deep infection</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Location</td>
+<td>Superficial, wrist to MCP, dorsal, irregular margins</td>
+<td>Fingertip, around joints, palmar surface</td>
+</tr>
+<tr>
+<td>Treatment</td>
+<td>Rest, elevation, antibiotics</td>
+<td><strong>Incision and drainage, wound care, antibiotics</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Rest and elevation for both.</strong></p>
+<ul>
+<li><strong>Cat bite:</strong> PIP and DIP joints, mixed infection, <strong><em>Pasteurella multocida</em></strong>. Broad-spectrum antibiotics; I&amp;D if it progresses.</li>
+<li><strong>Human "bite":</strong> young men, fights, <strong>MCP joint</strong>, mixed flora, <strong><em>Eikenella corrodens</em></strong>. Broad-spectrum antibiotics.</li>
+<li><strong>Paronychia:</strong> nail fold infection, F&gt;M. <em>S. aureus</em>; mixed organisms in diabetes; fungus if immunocompromised.</li>
+<li><strong>Felon:</strong> pulp space infection.</li>
+<li><strong>Suppurative tenosynovitis:</strong> <strong>Kanavel's four signs:</strong> swelling of the entire finger, flexed posture, tenderness along the tendon sheath, intense pain on extension.</li>
+</ul>
+<h3>Diabetic foot infection</h3>
+<p><strong>Assess:</strong> is it truly infected? How chronic? Any systemic symptoms? Why did it happen: new shoes, injury, device not worn, glycemic control, vascular disease, Charcot foot, prior ulcer?</p>
+<p><strong>Exam:</strong> location, blood supply, smell, and <strong>probe to bone</strong>.</p>
+<p><strong>Severity:</strong></p>
+<ul>
+<li><strong>Mild:</strong> likely staph or strep</li>
+<li><strong>Moderate:</strong> deeper than skin, over 2 cm</li>
+<li><strong>Severe:</strong> moderate plus systemic features (SIRS)</li>
+</ul>
+<p><strong>Investigations:</strong> CBC, electrolytes, creatinine, CRP. <strong>Swab only if it looks infected and you can get a good specimen.</strong> A wound isn't necessarily infected, and any wound you swab will grow bacteria. X-ray first, MRI is most sensitive, tagged WBC scan takes 2 days.</p>
+<p><strong>Antibiotics:</strong></p>
+<ul>
+<li><strong>Monomicrobial (staph/strep):</strong> cefazolin, or oral cephalexin, doxycycline or amoxicillin-clavulanate</li>
+<li><strong>Polymicrobial (chronic ulcer, Gram-negatives, possibly <em>Pseudomonas</em>):</strong> amoxicillin-clavulanate; if severe, IV ceftriaxone plus metronidazole</li>
+<li><strong>Pseudomonas on swab:</strong> piperacillin-tazobactam</li>
+</ul>
+<p><strong>Severe infection:</strong> <strong>exclude necrotizing fasciitis</strong>, draw blood cultures, get a deep swab, ask whether ortho or vascular is needed, start piperacillin-tazobactam (add vancomycin for MRSA history or risk).</p>
+<p><strong>Non-antibiotic pillars:</strong> revascularization, debridement, offloading, patient engagement.</p>
+<div class="callout"><strong>Take-home:</strong> clinical assessment is essential, and what makes these infections better is not antibiotics alone.</div>
+`,
+    "quiz": [
+      {
+        "stem": "Which finding best separates cellulitis of the hand from a deep space abscess?",
+        "opts": [
+          "Any fever",
+          "Dorsal superficial irregular margins vs a fingertip, palmar or periarticular collection",
+          "Patient age",
+          "Presence of diabetes"
+        ],
+        "correct": 1,
+        "explain": "Cellulitis is superficial, wrist to MCP, dorsal, with irregular margins. Abscess is deep, at the fingertip, around joints or on the palm."
+      },
+      {
+        "stem": "A diabetic patient has a foot ulcer over 2 cm involving deeper structures, with fever and tachycardia. How is it classified?",
+        "opts": [
+          "Mild",
+          "Moderate",
+          "Not infected",
+          "Severe"
+        ],
+        "correct": 3,
+        "explain": "Moderate means deeper than skin or over 2 cm. Severe is moderate plus systemic features (SIRS)."
+      },
+      {
+        "stem": "What is the correct statement about swabbing a diabetic foot wound?",
+        "opts": [
+          "Swab only if it appears infected and a good specimen can be obtained",
+          "Swab every wound at every visit",
+          "A positive swab proves infection",
+          "Swabs replace clinical assessment"
+        ],
+        "correct": 0,
+        "explain": "A wound isn't necessarily infected, and any wound you swab will grow bacteria."
+      },
+      {
+        "stem": "A patient has a severe diabetic foot infection with no MRSA history. Which is the right empiric drug, and what must be excluded?",
+        "opts": [
+          "Cephalexin; gout",
+          "Piperacillin-tazobactam; necrotizing fasciitis",
+          "Doxycycline; Charcot foot",
+          "Vancomycin alone; osteoarthritis"
+        ],
+        "correct": 1,
+        "explain": "Severe infection: exclude necrotizing fasciitis, draw blood cultures, get a deep swab, consider ortho or vascular, and start pip-tazo (add vancomycin for MRSA risk)."
+      }
+    ]
+  },
+  {
+    "id": "acute-monoarthritis",
+    "title": "Acute Monoarthritis: Septic Joint, Gout and Pseudogout",
+    "instructor": "Elentra module 02",
+    "duration": "~40 min",
+    "tags": [
+      {
+        "label": "Red joint: aspirate",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Why this matters:</strong> a hot red joint looks the same whether it is infected or full of crystals. Infection destroys a joint quickly, so the whole approach is built around not missing it.</p>
+<h3>Definitions</h3>
+<ul>
+<li><strong>Acute:</strong> under 6 weeks. <strong>Arthritis:</strong> an inflamed joint. <strong>Acute monoarthritis</strong> is one inflamed joint for under 6 weeks.</li>
+<li>⚠ From the Polyarthritis slides: <strong>mono = 1 joint, oligo = 2–3, poly = 4 or more</strong>.</li>
+</ul>
+<h3>The differential</h3>
+<p><strong>Acute hot red monoarthritis:</strong> infection, infection, infection, gout, pseudogout, and "oh, did I mention infection?" Rarer: reactive and psoriatic arthritis.</p>
+<p>⚠ From the Osteoarthritis slides, <strong>chronic monoarthritis:</strong> osteoarthritis first, then chronic crystal arthritis. Less often: autoimmune arthritis, Charcot joint, chronic infection (atypical mycobacteria), neoplasm, avascular necrosis.</p>
+<h3>The one rule: if the joint is red, aspirate it</h3>
+<p>Send the fluid for <strong>the 3 C's</strong>:</p>
+<ul>
+<li><strong>Cell count</strong> (a couple of hours)</li>
+<li><strong>Culture and sensitivity</strong> (24–48 hours), plus <strong>Gram stain</strong></li>
+<li><strong>Crystals</strong> (a couple of hours)</li>
+</ul>
+<p>"To inject is human, to aspirate divine."</p>
+<h3>Septic arthritis: Mr. Williams</h3>
+<p>A 62-year-old man with diabetes and a right knee replacement has a hot, red, very painful left ankle, temperature 38.6 °C, after a recent pedicure. Fluid: <strong>59 × 10⁹ cells/L</strong>, no crystals, <strong>Gram-positive cocci in clusters</strong>.</p>
+<p><strong>A medical emergency:</strong> without rapid treatment it causes fulminant joint damage.</p>
+<p><strong>Systemic risk factors:</strong> immunosuppression, diabetes, cancer, certain drugs (methotrexate, leflunomide, prednisone, anti-TNF, other biologics), very young or old age, alcohol excess, IV drugs, recent infection.</p>
+<p><strong>Local risk factors:</strong> prosthetic joint, recent joint surgery, underlying joint abnormality, penetrating trauma, skin infection.</p>
+<p><strong>Spread:</strong> <strong>hematogenous (#1)</strong>, direct inoculation, or from a contiguous site such as infected bone.</p>
+<p><strong>Organisms:</strong></p>
+<ul>
+<li>Gram-positive cocci, 80%: <strong>staphylococcus (60+%)</strong>, streptococcus (20%)</li>
+<li>Gram-negative, 15%: immune compromise, elderly, neonates, IV drug users</li>
+<li>Anaerobes</li>
+</ul>
+<p><strong>Treatment:</strong> admit, urgent ortho consult, <strong>I&amp;D in the OR</strong> (a closed-space infection usually needs drainage), empiric IV antibiotics (cefotaxime in this case), analgesia, rest. <strong>Repeat I&amp;D</strong> until the joint is clean, and <strong>IV antibiotics for 4–6 weeks</strong>.</p>
+<h3>Gout: Mike's toe</h3>
+<p>A 48-year-old brewery worker on hydrochlorothiazide, two days after cholecystectomy, has severe pain, swelling and redness of the <strong>first MTP</strong>. Fluid: <strong>15 × 10⁹ cells/L</strong>, no growth, <strong>needle-shaped, negatively birefringent crystals</strong>.</p>
+<p><strong>The sink analogy:</strong> uric acid production equals excretion at steady state. <strong>Under-excretion is the most common cause of hyperuricemia</strong> (the clogged drain). An acute attack is the sink overflowing.</p>
+<p><strong>Who:</strong> first attack in men aged <strong>35–50</strong>; in women <strong>after menopause</strong>, since estrogen protects uric acid excretion.</p>
+<p><strong>Attack:</strong> rapid and intense over hours; can't stand the bedsheets; swollen, warm, red; may have fever. <strong>It can look just like an infected joint.</strong> Usually a single lower-limb joint; <strong>first MTP in 50%</strong>. Untreated, it resolves in <strong>7–10 days</strong>.</p>
+<p><strong>Risk factors:</strong> impaired renal function, <strong>diuretics</strong> (furosemide, hydrochlorothiazide), excess alcohol, family history, male sex. <strong>Associations ("a disease of plenty"):</strong> obesity, hypertension, diabetes, hyperlipidemia.</p>
+<p><strong>Triggers, SMARTS:</strong> <strong>S</strong>urgery, <strong>M</strong>echanical injury, <strong>A</strong>lcohol, <strong>R</strong>ecent illness, <strong>T</strong>ravel or dehydration, <strong>S</strong>tart or stop allopurinol.</p>
+<p><strong>Diagnosis:</strong> must aspirate and find <strong>needle-shaped, negatively birefringent urate crystals</strong>.</p>
+<p><strong>Bloods:</strong> CBC (raised WBC, reactive thrombocytosis), creatinine, uric acid (<strong>may be normal during an attack</strong>), fasting glucose and lipids.</p>
+<p><strong>Hyperuricemia can't diagnose gout, and isolated hyperuricemia is not treated.</strong></p>
+<p><strong>Acute treatment ("mop up the water first"):</strong></p>
+<ul>
+<li>Rest, ice, elevation; hydration; reduce alcohol; less meat and seafood, more vegetables and low-fat dairy</li>
+<li><strong>Intra-articular corticosteroid</strong></li>
+<li><strong>Oral NSAID or COXIB</strong> (indomethacin 50 mg PO TID)</li>
+<li><strong>Oral colchicine</strong> 0.6 mg PO q8h</li>
+<li><strong>Oral prednisone</strong> 30 mg daily for 2 days, then reduce by 5 mg every 2 days</li>
+</ul>
+<p><strong>Recurrence:</strong> 60% at 1 year, 80% at 2 years, 90% at 5 years.</p>
+<p><strong>When to consider allopurinol:</strong></p>
+<ul>
+<li>Recurrent attacks affecting lifestyle</li>
+<li>Patients at risk from acute treatments</li>
+<li>Patient accepts lifelong medication</li>
+<li>Tophi</li>
+</ul>
+<p><strong>Allopurinol rules:</strong> it inhibits <strong>xanthine oxidase</strong> ("turns off the tap"). <strong>Do not start during an acute attack.</strong> Use <strong>NSAID or colchicine prophylaxis</strong>. Aim for the lower limit of the lab reference range.</p>
+<p><strong>Chronic gout:</strong> years of hyperuricemia deposit urate in skin and bone as <strong>tophi</strong>; urate-lowering therapy is indicated.</p>
+<h3>Pseudogout: Mary's knee</h3>
+<p>A 78-year-old woman with mild chronic knee pain develops a very swollen, warm, mildly red right knee after a brisk walk. Fluid: <strong>18 × 10⁹ cells/L</strong>, no growth, <strong>rhomboid intracellular positively birefringent crystals</strong>.</p>
+<p><strong>Who:</strong> older people, often with osteoarthritis. <strong>Where:</strong> usually one lower-limb joint, <strong>most often the knee</strong>. <strong>Attack:</strong> less intense and slower to peak than gout. Untreated, it lasts <strong>several days to a few weeks</strong>.</p>
+<p><strong>Pseudogout vs chondrocalcinosis:</strong> pseudogout is the acute arthritis caused by calcium pyrophosphate crystals in the joint. <strong>Chondrocalcinosis is the X-ray finding</strong> of calcium pyrophosphate in cartilage.</p>
+<p><strong>Treatment:</strong> rest, ice, elevation, hydration; intra-articular steroid, NSAID or COXIB, or the same prednisone taper.</p>
+<h3>Gout vs pseudogout</h3>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th></th>
+<th>Gout</th>
+<th>Pseudogout</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Crystal</td>
+<td>Monosodium urate</td>
+<td>Calcium pyrophosphate</td>
+</tr>
+<tr>
+<td>Shape</td>
+<td><strong>Needle</strong></td>
+<td><strong>Rhomboid</strong>, intracellular</td>
+</tr>
+<tr>
+<td>Birefringence</td>
+<td><strong>Negative</strong></td>
+<td><strong>Positive</strong></td>
+</tr>
+<tr>
+<td>Typical patient</td>
+<td>Man 35–50; postmenopausal woman</td>
+<td>Older, with OA</td>
+</tr>
+<tr>
+<td>Typical joint</td>
+<td><strong>First MTP</strong></td>
+<td><strong>Knee</strong></td>
+</tr>
+<tr>
+<td>Duration untreated</td>
+<td>7–10 days</td>
+<td>Days to weeks</td>
+</tr>
+<tr>
+<td>Long-term drug</td>
+<td>Allopurinol</td>
+<td>None on these slides</td>
+</tr>
+</tbody>
+</table></div>
+<div class="callout"><strong>Take-home:</strong> must rule out infection, must aspirate, and send the 3 C's.</div>
+`,
+    "quiz": [
+      {
+        "stem": "An X-ray shows calcium pyrophosphate deposition in cartilage, with no joint symptoms. What is this finding called?",
+        "opts": [
+          "Pseudogout",
+          "Tophus",
+          "Podagra",
+          "Chondrocalcinosis"
+        ],
+        "correct": 3,
+        "explain": "Chondrocalcinosis is the radiographic finding. Pseudogout is the acute inflammatory arthritis."
+      },
+      {
+        "stem": "How long does an untreated gout attack typically last?",
+        "opts": [
+          "7–10 days",
+          "A few hours",
+          "3 months",
+          "Over a year"
+        ],
+        "correct": 0,
+        "explain": "Untreated gout resolves in about 7–10 days. Pseudogout lasts several days to a few weeks."
+      },
+      {
+        "stem": "Which acute treatment is listed for gout on the slides but not for pseudogout?",
+        "opts": [
+          "Oral NSAIDs",
+          "Intra-articular corticosteroid",
+          "Oral colchicine",
+          "Oral prednisone"
+        ],
+        "correct": 2,
+        "explain": "On Dr. Rohekar's slides, colchicine 0.6 mg q8h appears for gout only. Note the Polyarthritis slides do list colchicine for pseudogout."
+      },
+      {
+        "stem": "What is the risk of gout recurrence within 1 year of a first attack?",
+        "opts": [
+          "10%",
+          "60%",
+          "90%",
+          "Zero if the patient stops alcohol"
+        ],
+        "correct": 1,
+        "explain": "Recurrence: 60% at 1 year, 80% at 2 years, 90% at 5 years."
+      }
+    ]
+  },
+  {
+    "id": "jia",
+    "title": "Juvenile Idiopathic Arthritis",
+    "instructor": "Elentra module 03",
+    "duration": "~47 min",
+    "tags": [
+      {
+        "label": "Watch for silent uveitis",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Why this matters:</strong> JIA is the most common chronic rheumatic disease in children, and its most dangerous feature, uveitis, is usually silent.</p>
+<h3>Diagnostic criteria</h3>
+<p>JIA affects about <strong>1 in 1000</strong> children, against about 1% of adults with RA. Most categories are more common in girls, and it is rare before 6 months.</p>
+<p><strong>All four are needed:</strong></p>
+<ul>
+<li>Age of onset <strong>under 16</strong></li>
+<li>Arthritis in <strong>one or more joints</strong></li>
+<li>Duration <strong>over 6 weeks</strong></li>
+<li><strong>Exclusion of other causes</strong></li>
+</ul>
+<p>JIA is a <strong>clinical diagnosis of exclusion</strong>. Bloodwork and imaging are adjuncts.</p>
+<p><strong>Inflammatory presentation:</strong> morning stiffness, improves with mobility, responds to NSAIDs, subacute or chronic course, altered weight-bearing.</p>
+<p><strong>Red flags for another diagnosis:</strong></p>
+<ul>
+<li>Constitutional symptoms</li>
+<li>Acute onset</li>
+<li>Severe pain</li>
+<li>Inability to walk</li>
+<li>Night pain disturbing sleep</li>
+<li>Severe tenderness or redness of joints</li>
+</ul>
+<h3>The subtypes</h3>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th>Subtype</th>
+<th>Frequency</th>
+<th>Age at onset</th>
+<th>Sex</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Systemic</td>
+<td>10%</td>
+<td>All</td>
+<td>F=M</td>
+</tr>
+<tr>
+<td>Oligoarthritis (under 4 joints)</td>
+<td>35%</td>
+<td>Peak 2–4 yr</td>
+<td>F&gt;&gt;&gt;&gt;M</td>
+</tr>
+<tr>
+<td>Polyarthritis RF+</td>
+<td>5%</td>
+<td>Late teens</td>
+<td>F&gt;&gt;M</td>
+</tr>
+<tr>
+<td>Polyarthritis RF−</td>
+<td>15%</td>
+<td>Any time</td>
+<td>F&gt;&gt;M</td>
+</tr>
+<tr>
+<td>Enthesitis-related</td>
+<td>10%</td>
+<td>Late teens</td>
+<td>M&gt;&gt;F</td>
+</tr>
+<tr>
+<td>Psoriatic</td>
+<td>10%</td>
+<td>Any time</td>
+<td>F&gt;M</td>
+</tr>
+<tr>
+<td>Undifferentiated</td>
+<td>15%</td>
+<td>Any time</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Oligoarticular:</strong></p>
+<ul>
+<li>Under 6, usually 1–3 years; girls 4:1</li>
+<li>A <strong>"painless limp"</strong>; a warm, swollen joint that isn't very tender</li>
+<li>Knees, ankles, wrists, elbows; <strong>the hip is extremely uncommon</strong></li>
+<li>Thirds: stays limited and may remit; 1–2 more joints; or extends to many joints</li>
+</ul>
+<p><strong>Polyarticular:</strong></p>
+<ul>
+<li>Peaks at <strong>2–5 and 10–14</strong>; girls 3:1</li>
+<li>Insidious, <strong>5 or more joints in the first 6 months</strong>, stiffness of 60 minutes or more, fatigue</li>
+<li><strong>RF-negative:</strong> younger, fewer joints, asymmetric</li>
+<li><strong>RF-positive:</strong> older, more joints, like adult RA (3–5% of JIA)</li>
+</ul>
+<p><strong>Systemic (Still's disease):</strong> the most serious and potentially life-threatening subtype.</p>
+<ul>
+<li><strong>Fever:</strong> 39 °C or higher, once or twice daily (<strong>quotidian</strong>), peaks late afternoon to evening, normal between spikes, child looks unwell only during the fever</li>
+<li><strong>Rash:</strong> evanescent, <strong>salmon-coloured</strong>, may appear only with fever</li>
+<li><strong>Arthritis:</strong> arthralgia early, effusions later</li>
+<li><strong>Other:</strong> organomegaly, lymphadenopathy, serositis, lethargy, weight loss, growth disturbance</li>
+<li>Often first mistaken for <strong>infection or leukemia</strong></li>
+<li>Serious complication: <strong>macrophage activation syndrome</strong></li>
+</ul>
+<p><strong>Enthesitis-related:</strong> boys, often over 10; sacroiliitis, dactylitis, enthesopathy; <strong>HLA-B27 in 50%</strong>; 30% go on to AS; family history of AS, IBD, psoriasis, uveitis or reactive arthritis. <strong>Its uveitis is symptomatic</strong> (pain, photophobia, decreased vision).</p>
+<p><strong>Psoriatic:</strong> biphasic (young and preteen), family history of psoriasis, onycholysis, nail pitting, dactylitis.</p>
+<p><strong>Undifferentiated:</strong> meets none, or two or more, of the categories.</p>
+<h3>Complications and extra-articular features</h3>
+<p><strong>MSK:</strong> muscle atrophy, contracture, joint damage, <strong>leg length discrepancy</strong>. <strong>Growth:</strong> slowed during active disease; limb shortening or lengthening; <strong>micrognathia</strong>.</p>
+<p><strong>Anterior uveitis is the most common extra-articular manifestation.</strong></p>
+<ul>
+<li><strong>Typically asymptomatic</strong>, except in ERA</li>
+<li><strong>Risk factors:</strong> <strong>ANA positivity</strong>, female sex, younger age, shorter disease duration</li>
+<li>Usually develops in the <strong>first 4 years</strong> and <strong>doesn't parallel joint disease</strong></li>
+<li><strong>Regular slit lamp exams</strong>; interval depends on subtype, age, duration and ANA status</li>
+<li>Complications: synechiae, glaucoma, cataract, band keratopathy, cystoid macular edema, <strong>blindness</strong></li>
+</ul>
+<h3>Examination and investigations</h3>
+<p><strong>pGALS</strong> (gait, arms, legs, spine) is a screening exam for: a child with muscle, joint or bone pain; an unwell child with fever; a limp; motor delay or regression; a chronic disease with MSK involvement.</p>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Role in JIA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CBC</td>
+<td>Leukocytosis, thrombocytosis (sJIA); normocytic or microcytic anemia</td>
+</tr>
+<tr>
+<td>ESR, CRP</td>
+<td>May be normal or elevated</td>
+</tr>
+<tr>
+<td><strong>ANA</strong></td>
+<td><strong>Prognosticates uveitis risk; does NOT diagnose JIA</strong></td>
+</tr>
+<tr>
+<td><strong>RF</strong></td>
+<td>Classifies and prognosticates polyarticular JIA</td>
+</tr>
+<tr>
+<td>HLA-B27</td>
+<td>Associated with ERA (and reactive and IBD arthritis)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Radiographs:</strong> soft tissue swelling, effusion, periarticular osteopenia; erosions are <strong>uncommon</strong>; advanced maturation then growth arrest. Early epiphyseal closure gives a short limb or small mandible; inflammation in adolescence can delay closure and give a long limb. Use X-ray to rule out other causes such as tumour, especially in a single joint.</p>
+<h3>Treatment</h3>
+<p><strong>Short-term aims:</strong> relieve discomfort, preserve function, prevent deformity, control inflammation. <strong>Long-term aims:</strong> limit side effects, promote growth, rehabilitate, psychosocial and educational support. Care is <strong>multidisciplinary</strong>. Non-drug care: education, physio, OT, nutrition.</p>
+<ul>
+<li><strong>Oligoarticular:</strong> NSAIDs and/or steroid joint injections. If not improving or extended, treat as polyarticular.</li>
+<li><strong>Polyarticular:</strong> NSAIDs, selected injections, oral steroids as a bridge, then <strong>methotrexate or leflunomide</strong>, then <strong>biologics</strong> (shared decision with family).</li>
+<li><strong>Systemic:</strong> NSAIDs, systemic steroids, <strong>IL-1 blocker (anakinra)</strong>, <strong>IL-6 blocker (tocilizumab)</strong>.</li>
+<li><strong>Uveitis:</strong> steroid drops, then methotrexate, then infliximab or adalimumab; oral steroids.</li>
+<li><strong>ERA:</strong> exercise, NSAIDs, DMARDs for peripheral disease, biologics (anti-TNF especially for axial disease), topical steroids for uveitis.</li>
+</ul>
+<p><strong>Initial primary care management:</strong> order preliminary tests, start an NSAID, and <strong>refer to rheumatology and ophthalmology/optometry</strong>.</p>
+<h3>Adults vs children</h3>
+<p>Both use stepwise NSAIDs, steroids, DMARDs and biologics. Children differ in: <strong>eye screening</strong>, attention to <strong>growth and development</strong>, a family and school team, and local injections early in oligoarticular disease.</p>
+<h3>⚠ DMARD toxicity (not on these slides)</h3>
+<p>Standard teaching to check against the course: methotrexate (liver toxicity, cytopenias, teratogenicity; given with folic acid); leflunomide (liver toxicity, teratogenicity). Biologics target a specific cytokine or cell and carry an infection risk.</p>
+<p><strong>The two cases:</strong> the 5-year-old girl with many active joints fits <strong>polyarticular JIA</strong>. The 3-year-old boy with quotidian fever, rash and splenomegaly fits <strong>systemic JIA</strong>, after excluding infection and leukemia; watch for macrophage activation syndrome.</p>
+`,
+    "quiz": [
+      {
+        "stem": "What is pGALS?",
+        "opts": [
+          "A pediatric blood test panel",
+          "A screening MSK exam of gait, arms, legs and spine",
+          "A staging system for uveitis",
+          "A classification of JIA subtypes"
+        ],
+        "correct": 1,
+        "explain": "Use it for a child with MSK pain, an unwell febrile child, a limp, motor delay or regression, or a chronic disease with MSK involvement."
+      },
+      {
+        "stem": "A joint inflamed during childhood stops growing early. What deformity can this cause?",
+        "opts": [
+          "Short limb or small mandible",
+          "Long limb only",
+          "Bamboo spine",
+          "Heberden's nodes"
+        ],
+        "correct": 0,
+        "explain": "Early epiphyseal closure gives a short limb or micrognathia. Inflammation in adolescence can delay closure and give a long limb."
+      },
+      {
+        "stem": "What is the initial primary care management of suspected JIA?",
+        "opts": [
+          "Start a biologic",
+          "Prescribe long-term opioids",
+          "Order MRI of every joint and wait",
+          "Order preliminary tests, start an NSAID, refer to rheumatology and ophthalmology/optometry"
+        ],
+        "correct": 3,
+        "explain": "Take-home point from Dr. Berard's slides."
+      },
+      {
+        "stem": "Which feature is typical of RF-positive polyarticular JIA?",
+        "opts": [
+          "Younger child, few asymmetric joints",
+          "Older child, many joints, similar to adult RA",
+          "Boys with sacroiliitis",
+          "Quotidian fevers"
+        ],
+        "correct": 1,
+        "explain": "RF-positive disease occurs in older children and resembles adult RA. It accounts for only 3–5% of JIA."
+      }
+    ]
+  },
+  {
+    "id": "polyarthritis",
+    "title": "Approach to Inflammatory Polyarthritis",
+    "instructor": "Elentra module 04",
+    "duration": "~70 min",
+    "tags": [
+      {
+        "label": "Build the differential",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Why this matters:</strong> all inflammatory arthritides are <strong>clinical diagnoses</strong>. History and exam build the differential, and tests only support it. Don't reflexively order ANA and RF on every sore joint.</p>
+<h3>Classifying arthritis</h3>
+<ul>
+<li><strong>Type:</strong> inflammatory (autoimmune, infectious, crystalline) or non-inflammatory (primary OA, trauma, avascular necrosis, neuropathic arthropathy, recurrent hemarthrosis, hemochromatosis)</li>
+<li><strong>Duration:</strong> acute <strong>6 weeks or less</strong>; chronic <strong>over 6 weeks</strong></li>
+<li><strong>Number:</strong> mono 1 joint, oligo 2–3, <strong>poly 4 or more</strong></li>
+</ul>
+<p><strong>Synovitis</strong> means increased fluid (swelling), warmth, pain and stiffness, with redness sometimes (infectious or crystalline).</p>
+<h3>Differential by duration</h3>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th>Acute (under 6 weeks)</th>
+<th>Chronic (over 6 weeks)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Polyarticular gout</td>
+<td>Rheumatoid arthritis</td>
+</tr>
+<tr>
+<td>Infectious and post-infectious, including viral</td>
+<td>Connective tissue disease (SLE, myositis, Sjögren's, scleroderma, MCTD)</td>
+</tr>
+<tr>
+<td>Rheumatic fever</td>
+<td>Reactive arthritis</td>
+</tr>
+<tr>
+<td>Drug reactions (serum sickness)</td>
+<td>Seronegative spondyloarthropathy (psoriatic, enteropathic)</td>
+</tr>
+<tr>
+<td>Early RA, CTD, vasculitis or seronegative arthritis</td>
+<td>Palindromic rheumatism, systemic vasculitis, polyarticular JIA, adult-onset Still's, sarcoidosis, drug reactions</td>
+</tr>
+</tbody>
+</table></div>
+<p>Many acute autoimmune polyarthritides become chronic.</p>
+<p><strong>Viral arthritis:</strong> during or weeks after infection. Hepatitis A, B, C; HIV, CMV, EBV; parvovirus; chikungunya; influenza; COVID-19. <strong>Self-limited</strong>, supportive care, NSAIDs and short prednisone if severe.</p>
+<h3>Temporal pattern</h3>
+<ul>
+<li><strong>Onset:</strong> acute (hours to days) in crystal and infectious arthritis; insidious (weeks to months) in RA, CTD, degenerative disease</li>
+<li><strong>Course:</strong> <strong>episodic</strong> (crystal); <strong>migratory</strong> (palindromic rheumatism, rheumatic fever, early gonococcal); <strong>progressive and additive</strong> (RA, CTD, degenerative)</li>
+</ul>
+<h3>Joint distribution</h3>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Think of</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Symmetric, small and large</td>
+<td><strong>RA</strong> (also SLE, CTD)</td>
+</tr>
+<tr>
+<td>Asymmetric, small and large</td>
+<td><strong>Psoriatic arthritis</strong> (also gout, reactive)</td>
+</tr>
+<tr>
+<td>Axial, with peripheral large joints</td>
+<td><strong>Axial SpA / ankylosing spondylitis</strong></td>
+</tr>
+<tr>
+<td>Symmetric, mainly weight-bearing</td>
+<td><strong>Osteoarthritis</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Joint predilections:</strong></p>
+<ul>
+<li><strong>Axial:</strong> AS</li>
+<li><strong>First CMC:</strong> OA</li>
+<li><strong>First MTP:</strong> gout, OA</li>
+<li><strong>DIPs:</strong> OA, psoriatic; <strong>spared in RA and other CTDs</strong></li>
+<li><strong>MCPs:</strong> RA, CPPD</li>
+<li><strong>Wrists, shoulders, elbows, ankles:</strong> RA, CPPD, psoriatic</li>
+</ul>
+<p><strong>Other findings:</strong> tenosynovitis, <strong>dactylitis</strong> (sausage digit), <strong>enthesitis</strong>, bursitis, nodules, Heberden's and Bouchard's nodes, swan-neck, boutonnière, ulnar deviation, MCP subluxation.</p>
+<h3>RA vs seronegative spondyloarthropathy</h3>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th></th>
+<th>RA</th>
+<th>Seronegative SpA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Joints</td>
+<td>Symmetric small and large; MCPs; <strong>DIPs spared</strong></td>
+<td>Axial, or asymmetric peripheral; DIPs in psoriatic</td>
+</tr>
+<tr>
+<td>Other MSK</td>
+<td>Ulnar deviation, MCP subluxation, nodules</td>
+<td><strong>Enthesitis, dactylitis</strong></td>
+</tr>
+<tr>
+<td>Extra-articular</td>
+<td>Episcleritis, pulmonary nodules, rheumatoid nodules</td>
+<td>Uveitis, psoriasis, nail changes, IBD</td>
+</tr>
+<tr>
+<td>Serology</td>
+<td>RF, anti-CCP</td>
+<td><strong>RF negative</strong>; HLA-B27</td>
+</tr>
+<tr>
+<td>X-ray erosions</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table></div>
+<p>⚠ The slides give only risk-factor headings for epidemiology. RA and most CTDs are grouped by demographics and family history of autoimmune disease; psoriasis and IBD point to SpA.</p>
+<h3>Extra-articular manifestations</h3>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th>System</th>
+<th>Findings</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ocular</td>
+<td>Uveitis, scleritis, episcleritis, sicca</td>
+</tr>
+<tr>
+<td>Oral</td>
+<td>Aphthous ulcers</td>
+</tr>
+<tr>
+<td>Skin</td>
+<td>Malar rash, photosensitive rash, Gottron's, vasculitic rash, erythema nodosum, livedo reticularis, Raynaud's, tophi, nodules, keratoderma blenorrhagicum, sclerodactyly, calcinosis, digital ulcers</td>
+</tr>
+<tr>
+<td>Nails</td>
+<td>Psoriasis, pitting, dystrophy</td>
+</tr>
+<tr>
+<td>Pulmonary</td>
+<td>ILD, effusions, nodules</td>
+</tr>
+<tr>
+<td>Cardiac</td>
+<td>Pericarditis, myocarditis</td>
+</tr>
+<tr>
+<td>Renal</td>
+<td>Glomerulonephritis, interstitial nephritis</td>
+</tr>
+<tr>
+<td>GI</td>
+<td>Esophageal dysmotility, IBD</td>
+</tr>
+<tr>
+<td>GU</td>
+<td>Urethritis, genital ulcers</td>
+</tr>
+<tr>
+<td>Hematologic</td>
+<td>Hemolytic anemia, thrombocytopenia, lymphopenia</td>
+</tr>
+<tr>
+<td>Constitutional</td>
+<td>Lymphadenopathy, fevers</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Pictures to link:</strong> dermatomyositis has heliotrope, shawl, V, holster, mechanic's hands, Gottron's. Scleroderma has sclerodactyly, nail-fold changes, Raynaud's, calcinosis. Reactive arthritis: "can't see, can't pee, can't climb a tree."</p>
+<h3>Investigations</h3>
+<p><strong>Routine labs:</strong></p>
+<ul>
+<li><strong>CBC:</strong> low Hgb (chronic disease), high platelets (inflammation), low platelets or WBC (autoimmune cytopenia)</li>
+<li><strong>Creatinine:</strong> glomerulonephritis or vasculitis; drug clearance</li>
+<li><strong>Liver enzymes:</strong> drug clearance; autoimmune hepatitis</li>
+<li><strong>CRP</strong> most used; <strong>ESR</strong> not routine and nonspecific</li>
+</ul>
+<p><strong>Special tests:</strong> uric acid for gout; viral serologies; HLA-B27 for AS; for CPPD, look for hemochromatosis, hyperparathyroidism, hypothyroidism.</p>
+<p><strong>RF:</strong> usually IgM against the Fc portion of IgG. Found in 70–80% of RA. Also in 5–20% of healthy people, Sjögren's, SLE, myositis, MCTD, hepatitis B and C, TB, syphilis, endocarditis, chronic lung disease, lymphoma. <strong>Neither sensitive nor specific for RA.</strong></p>
+<p><strong>Anti-CCP:</strong> <strong>95% specific for RA</strong>, can predate arthritis by years.</p>
+<p><strong>RF and anti-CCP:</strong> order <strong>only for initial diagnosis</strong> when RA is suspected. <strong>Don't use them to monitor</strong>; titres don't predict flares or response. <strong>Seropositive means more aggressive disease.</strong></p>
+<p><strong>ANA:</strong> present in <strong>up to 30% of normal people</strong>. <strong>Positive doesn't rule in CTD; negative typically rules it out.</strong></p>
+<p><strong>ENA map:</strong></p>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th>Antibody</th>
+<th>Disease</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Anti-dsDNA, anti-Sm</td>
+<td>SLE</td>
+</tr>
+<tr>
+<td>Anti-SSA/Ro, anti-SSB/La</td>
+<td>Sjögren's</td>
+</tr>
+<tr>
+<td>Anti-centromere, anti-Scl70, anti-RNA Pol3</td>
+<td>Scleroderma</td>
+</tr>
+<tr>
+<td>Anti-Jo1</td>
+<td>Dermatomyositis</td>
+</tr>
+<tr>
+<td>Anti-RNP</td>
+<td>Mixed CTD</td>
+</tr>
+<tr>
+<td>Anti-histone</td>
+<td>Drug-induced lupus</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>SLE activity:</strong> <strong>anti-dsDNA rises, C3 and C4 fall</strong> in a flare.</p>
+<p><strong>Synovial fluid (arthrocentesis):</strong></p>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th></th>
+<th>Normal</th>
+<th>Non-inflammatory</th>
+<th>Inflammatory</th>
+<th>Infectious</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Clarity</td>
+<td>Transparent</td>
+<td>Transparent</td>
+<td>Cloudy</td>
+<td>Cloudy</td>
+</tr>
+<tr>
+<td>Viscosity</td>
+<td>High</td>
+<td>High</td>
+<td>Moderate</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>WBC</td>
+<td>&lt;200</td>
+<td>&lt;2000</td>
+<td>&gt;2000</td>
+<td>&gt;2000</td>
+</tr>
+<tr>
+<td>PMNs</td>
+<td>&lt;25%</td>
+<td>&lt;25%</td>
+<td>&gt;50%</td>
+<td>&gt;75%</td>
+</tr>
+<tr>
+<td>Crystals</td>
+<td>None</td>
+<td>None</td>
+<td>Possible</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Gram stain, culture</td>
+<td>Negative</td>
+<td>Negative</td>
+<td>Negative</td>
+<td>Positive</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Crystals:</strong> <strong>MSU</strong> is needle-shaped and negatively birefringent (yellow). <strong>CPPD</strong> is rhomboid and positively birefringent (blue).</p>
+<p><strong>X-rays:</strong> little use in acute polyarthritis, since damage takes time. Erosions occur in RA, psoriatic and other SpA, gout and septic arthritis, <strong>not SLE or Sjögren's</strong>.</p>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th>Inflammatory</th>
+<th>Degenerative</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Periarticular osteopenia</td>
+<td>Osteophytes</td>
+</tr>
+<tr>
+<td>Fusiform soft tissue swelling</td>
+<td>Subchondral sclerosis</td>
+</tr>
+<tr>
+<td><strong>Symmetric</strong> joint space narrowing</td>
+<td>Subchondral cysts</td>
+</tr>
+<tr>
+<td>Erosions, periostitis, subluxation</td>
+<td><strong>Asymmetric</strong> joint space narrowing</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Management, briefly</h3>
+<p><strong>Drugs:</strong> analgesia (acetaminophen, NSAIDs); corticosteroids (prednisone, IM, injection); <strong>DMARDs</strong>: csDMARD (methotrexate), tsDMARD (tofacitinib), bDMARD (adalimumab). <strong>Gout:</strong> colchicine, NSAIDs, steroids, allopurinol, febuxostat. <strong>Pseudogout:</strong> colchicine, NSAIDs, steroids.</p>
+<p><strong>Non-drug:</strong> gentle physiotherapy, strengthening, compresses, rest.</p>
+<h3>⚠ DMARD toxicity and biologics (not on these slides)</h3>
+<p>Standard teaching to check against the course: methotrexate (liver toxicity, cytopenias, teratogenicity, with folic acid); hydroxychloroquine (retinal toxicity); sulfasalazine (cytopenias, GI upset); leflunomide (liver toxicity, teratogenicity). Conventional DMARDs broadly modulate the immune system; biologics target one cytokine or cell, are used when conventional therapy isn't enough, and raise infection risk. You won't be asked to choose between specific biologics.</p>
+<div class="callout"><strong>Take-home:</strong> narrow the differential by demographics, joint pattern, serology, fluid, risk factors and extra-articular features.</div>
+`,
+    "quiz": [
+      {
+        "stem": "Which diseases are NOT erosive on X-ray?",
+        "opts": [
+          "SLE and Sjögren's",
+          "RA and psoriatic arthritis",
+          "Gout and septic arthritis",
+          "Psoriatic and other SpA"
+        ],
+        "correct": 0,
+        "explain": "Erosions: RA, psoriatic and other SpA, gout, septic. Not SLE or Sjögren's."
+      },
+      {
+        "stem": "A patient with lupus flares. Which lab pattern is expected?",
+        "opts": [
+          "Falling anti-dsDNA, rising C3 and C4",
+          "Rising anti-dsDNA, falling C3 and C4",
+          "Rising RF only",
+          "Normal urine always"
+        ],
+        "correct": 1,
+        "explain": "In a seroconcordant flare, anti-dsDNA rises and complement falls. Serodiscordant patients don't follow this."
+      },
+      {
+        "stem": "A patient with new polyarthritis weeks after a viral illness has parvovirus serology positive. What is the management?",
+        "opts": [
+          "Lifelong methotrexate",
+          "Urgent biologic",
+          "Supportive care; NSAIDs and short prednisone if severe",
+          "Joint replacement"
+        ],
+        "correct": 2,
+        "explain": "Viral arthritis is self-limited and managed supportively."
+      },
+      {
+        "stem": "Which pairing of DMARD class and example is correct?",
+        "opts": [
+          "csDMARD: adalimumab",
+          "bDMARD: tofacitinib",
+          "tsDMARD: methotrexate",
+          "csDMARD: methotrexate"
+        ],
+        "correct": 3,
+        "explain": "csDMARD: methotrexate. tsDMARD: tofacitinib. bDMARD: adalimumab."
+      }
+    ]
+  },
+  {
+    "id": "seronegative",
+    "title": "Seronegative Arthritides: AS, Psoriatic and Reactive",
+    "instructor": "Elentra module 05",
+    "duration": "~40 min",
+    "tags": [
+      {
+        "label": "RF negative, think spine",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Why this matters:</strong> back pain is common, but a young patient whose back pain improves with activity may have a disease that fuses the spine. Inflammatory back pain is the pattern to recognize.</p>
+<h3>The spondyloarthritis family</h3>
+<p><strong>SpA</strong> means inflammatory changes in the spine and spinal joints, but it can present with <strong>mainly peripheral arthritis and no spinal symptoms</strong>. It is called "seronegative" because <strong>rheumatoid factor is absent</strong>.</p>
+<p><strong>Family members:</strong> ankylosing spondylitis at the centre, with psoriatic arthritis, reactive arthritis, arthritis with ulcerative colitis or Crohn's, acute anterior uveitis, "juvenile SpA", and undifferentiated SpA.</p>
+<h3>Ankylosing spondylitis</h3>
+<p>The <strong>prototypical SpA</strong>. An autoimmune attack on spinal joints that <strong>classically begins in the sacroiliac joints and slowly ascends</strong>. Inflammation triggers <strong>new bone</strong>, which fuses the spine into a rigid <strong>"bamboo spine"</strong>.</p>
+<p><strong>Epidemiology and genetics:</strong></p>
+<ul>
+<li><strong>HLA-B27</strong> in over 90% of white AS patients, 50–80% of non-white patients, and <strong>8% of the general Caucasian population</strong></li>
+<li>HLA-B27 raises relative risk <strong>50–100×</strong></li>
+<li>Twin concordance: 60% monozygotic; 20–25% in HLA-B27+ dizygotic</li>
+<li>Prevalence 0.1–1.4%</li>
+</ul>
+<h3>Inflammatory vs mechanical back pain</h3>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th></th>
+<th>Inflammatory</th>
+<th>Mechanical</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Age of onset</td>
+<td><strong>Under 40</strong></td>
+<td>Any</td>
+</tr>
+<tr>
+<td>Onset</td>
+<td><strong>Insidious</strong></td>
+<td>Acute</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td><strong>Over 3 months</strong></td>
+<td>Under 4 weeks</td>
+</tr>
+<tr>
+<td>Morning stiffness</td>
+<td><strong>Over 60 min</strong></td>
+<td>Under 30 min</td>
+</tr>
+<tr>
+<td>Night pain</td>
+<td><strong>Yes</strong></td>
+<td>No</td>
+</tr>
+<tr>
+<td>Activity</td>
+<td><strong>Improves</strong></td>
+<td>Worse</td>
+</tr>
+<tr>
+<td>SI joints</td>
+<td>Tender</td>
+<td>Not tender</td>
+</tr>
+<tr>
+<td>Mobility</td>
+<td>Lost in all planes</td>
+<td>Abnormal flexion</td>
+</tr>
+<tr>
+<td>Chest expansion</td>
+<td><strong>Decreased</strong></td>
+<td>Normal</td>
+</tr>
+<tr>
+<td>Neurologic deficit</td>
+<td>Unlikely</td>
+<td>Possible</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Sacroiliitis and imaging</h3>
+<ul>
+<li>Usually <strong>bilateral and symmetric</strong></li>
+<li>Starts in the synovial lower two-thirds of the joint</li>
+<li><strong>Earliest change: erosion on the iliac side</strong>, where cartilage is thinner</li>
+<li>"Pseudowidening", then sclerosis, then <strong>complete fusion</strong></li>
+</ul>
+<p><strong>Non-radiographic axial SpA (nr-axSpA):</strong> axial SpA with no diagnostic SI changes on X-ray but <strong>diagnostic MRI findings</strong>.</p>
+<h3>Enthesitis</h3>
+<p>The <strong>enthesis</strong> is where ligament, tendon or capsule inserts into bone. Enthesitis produces new bone or fibrosis. <strong>Common sites:</strong> SI joints, intervertebral discs, manubriosternal joints, symphysis pubis, iliac crests, trochanters, patellae, clavicles, <strong>calcanei (Achilles, plantar fascia)</strong>.</p>
+<h3>"ANKSPOND": more than back pain</h3>
+<ul>
+<li><strong>A</strong>ortic insufficiency, ascending aortitis, conduction abnormalities, pericarditis</li>
+<li><strong>N</strong>eurologic: atlantoaxial subluxation, cauda equina</li>
+<li><strong>K</strong>idney: amyloidosis, chronic prostatitis</li>
+<li><strong>S</strong>pine: cervical fracture, stenosis, osteoporosis</li>
+<li><strong>P</strong>ulmonary: <strong>upper lobe fibrosis</strong>, restrictive changes</li>
+<li><strong>O</strong>cular: <strong>anterior uveitis in 25–30%</strong></li>
+<li><strong>N</strong>ephropathy (IgA)</li>
+<li><strong>D</strong>iscitis or spondylodiscitis</li>
+</ul>
+<p>Also <strong>microscopic colitis</strong> in 30–60%. AS patients can have a <strong>lower-limb oligoarthritis</strong>, sometimes before any back complaint.</p>
+<h3>Psoriatic arthritis</h3>
+<p>A heterogeneous arthritis, peripheral, axial or both. <strong>Psoriasis comes first in 67%</strong>; arthritis first or simultaneous in 33%. Look for <strong>hidden psoriasis: umbilicus, scalp, behind ears, perianal, nails</strong>.</p>
+<p><strong>Numbers:</strong> psoriasis 1.2%; PsA in 5–7% of psoriasis (as on the slides); first-degree relatives 50× more likely. HLA-B38, B39, DR4, B27.</p>
+<p><strong>Patterns:</strong></p>
+<ul>
+<li><strong>Asymmetric oligoarthritis, over 50%</strong></li>
+<li>Axial, 20–40%</li>
+<li>Rheumatoid-like polyarthritis, 15–25%</li>
+<li>Predominantly <strong>DIP</strong>, 5–10%</li>
+<li><strong>Arthritis mutilans</strong>, 5%</li>
+</ul>
+<p><strong>Axial:</strong> <strong>asymmetric</strong> sacroiliitis, with large non-marginal <strong>"jug-handle" syndesmophytes</strong>.</p>
+<p><strong>Extra-articular:</strong></p>
+<ul>
+<li><strong>Nail changes in 80% of PsA</strong> vs 30% of psoriasis alone: pitting, ridging, onycholysis, hyperkeratosis, oil spots, splinter hemorrhages</li>
+<li>Conjunctivitis 20%, uveitis 7% (more with axial disease)</li>
+<li><strong>Dactylitis</strong> (sausage digit)</li>
+</ul>
+<h3>Reactive arthritis</h3>
+<p>Inflammatory arthritis <strong>in response to an infection elsewhere</strong>, <strong>not an infection of the joint</strong>. Avoid the eponym "Reiter's".</p>
+<p><strong>Classic triad:</strong></p>
+<ul>
+<li><strong>Can't see:</strong> conjunctivitis or uveitis</li>
+<li><strong>Can't pee:</strong> urethritis or cervicitis</li>
+<li><strong>Can't climb a tree:</strong> large joint oligoarthritis, sacroiliitis, enthesitis</li>
+</ul>
+<p><strong>Skin:</strong> circinate balanitis, keratoderma blennorrhagicum.</p>
+<p><strong>Facts:</strong></p>
+<ul>
+<li>RF negative, HLA-B27 linked</li>
+<li><strong>GI:</strong> <em>Salmonella</em>, <em>Shigella</em>, <em>Campylobacter</em>. <strong>GU:</strong> <em>Chlamydia trachomatis</em> and other STIs</li>
+<li>Most common in men aged 20–40</li>
+<li>Starts <strong>1–3 weeks</strong> after infection</li>
+<li>Self-limiting, chronic or progressive; chronic in 15–30%</li>
+<li><strong>Treat based on symptoms</strong></li>
+</ul>
+<h3>RA vs SpA</h3>
+<p>From this week's Polyarthritis slides: RA is <strong>symmetric, small and large joints, MCPs, DIPs spared, RF and anti-CCP positive</strong>. SpA is <strong>axial or asymmetric, with enthesitis, dactylitis and uveitis, RF negative, often HLA-B27 positive</strong>.</p>
+<h3>Treatment: axial SpA</h3>
+<ul>
+<li><strong>Physiotherapy for all:</strong> posture, chest expansion, fewer deformities</li>
+<li><strong>NSAIDs:</strong> for mild to moderate symptoms, potentially disease modifying; <strong>indomethacin</strong> seems to work best; watch for GI disease</li>
+<li><strong>csDMARDs don't work for spinal disease</strong>, only predominantly peripheral symptoms</li>
+<li><strong>TNF inhibitors:</strong> very effective, likely disease modifying early</li>
+<li><strong>IL-17 inhibitors:</strong> very effective; time will tell on disease modification</li>
+</ul>
+<h3>Treatment: psoriatic arthritis</h3>
+<ul>
+<li><strong>csDMARDs:</strong> often used, limited evidence against radiographic progression. <strong>Methotrexate</strong> treats skin and joints; sulfasalazine and leflunomide also used. <strong>Hydroxychloroquine is often avoided</strong> because of reports of severe psoriasis flares.</li>
+<li><strong>Apremilast (PDE4 inhibitor):</strong> good for skin and joints, likely weaker than biologics.</li>
+<li><strong>TNF inhibitors:</strong> axial and peripheral; skin, joints, enthesitis, dactylitis, nails; prevent radiographic progression.</li>
+<li><strong>IL-12/23 inhibitors:</strong> great for skin, good for joints, <strong>no effect on axial disease</strong>.</li>
+<li><strong>IL-17 inhibitors:</strong> great for skin, effective for axial and joints.</li>
+<li><strong>JAK inhibitors, IL-23 inhibitors:</strong> peripheral joints and skin; axial effect uncertain.</li>
+</ul>
+<p>You should know when biologics are considered, not choose between them.</p>
+<h3>⚠ DMARD toxicity (not on these slides)</h3>
+<p>Standard teaching to check against the course: methotrexate (liver toxicity, cytopenias, teratogenicity, with folic acid); sulfasalazine (cytopenias, GI upset); leflunomide (liver toxicity, teratogenicity). Biologics raise infection risk.</p>
+<div class="callout"><strong>Take-home:</strong> a young person with inflammatory back pain, enthesitis, uveitis, psoriasis, IBD or a recent GI or GU infection should make you think SpA, even with a negative RF.</div>
+`,
+    "quiz": [
+      {
+        "stem": "A patient with AS has predominantly spinal disease. Which drug class does NOT work for it?",
+        "opts": [
+          "NSAIDs",
+          "TNF inhibitors",
+          "IL-17 inhibitors",
+          "Conventional synthetic DMARDs"
+        ],
+        "correct": 3,
+        "explain": "csDMARDs don't work for spinal disease; use only for predominantly peripheral symptoms. Physiotherapy is for all patients."
+      },
+      {
+        "stem": "Which drug is often avoided in psoriatic arthritis because of severe psoriasis flares?",
+        "opts": [
+          "Hydroxychloroquine",
+          "Methotrexate",
+          "Sulfasalazine",
+          "Apremilast"
+        ],
+        "correct": 0,
+        "explain": "Methotrexate treats skin and joints; sulfasalazine and leflunomide are also used. Hydroxychloroquine is often avoided."
+      },
+      {
+        "stem": "Which biologic class is good for skin and joints but does not work for axial disease?",
+        "opts": [
+          "TNF inhibitors",
+          "IL-17 inhibitors",
+          "IL-12/23 inhibitors",
+          "None; all treat axial disease"
+        ],
+        "correct": 2,
+        "explain": "You won't choose between biologics on the exam, but this contrast is on the slides."
+      },
+      {
+        "stem": "What percentage of psoriatic arthritis patients have nail changes, compared with psoriasis alone?",
+        "opts": [
+          "80% vs 30%",
+          "10% vs 5%",
+          "30% vs 80%",
+          "50% vs 50%"
+        ],
+        "correct": 0,
+        "explain": "Pitting, ridging, onycholysis, hyperkeratosis, oil spots and splinter hemorrhages."
+      }
+    ]
+  },
+  {
+    "id": "osteoarthritis",
+    "title": "Osteoarthritis: Chronic Monoarthritis",
+    "instructor": "Elentra module 06",
+    "duration": "~41 min",
+    "tags": [
+      {
+        "label": "Clinical diagnosis",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Why this matters:</strong> OA is the most common joint disorder worldwide, and a leading cause of disability. It is a clinical diagnosis, and most treatment is movement, not scans or arthroscopy.</p>
+<h3>Chronic monoarthritis differential</h3>
+<p>Osteoarthritis, osteoarthritis, osteoarthritis, then <strong>chronic crystal arthritis</strong> (gout, CPPD, basic calcium phosphate). First separate it from mechanical or sports causes of chronic knee pain.</p>
+<p><strong>Less commonly:</strong></p>
+<ul>
+<li>Autoimmune arthritis (RA, seronegative, JIA)</li>
+<li>Neuropathic (Charcot) joint (diabetes, syphilis)</li>
+<li>Chronic infection (atypical mycobacteria), usually with immunosuppression</li>
+<li>Neoplasm (pigmented villonodular synovitis, synovial chondromatosis)</li>
+<li>Avascular necrosis or spontaneous osteonecrosis</li>
+</ul>
+<h3>Typical presentation</h3>
+<ul>
+<li>One affected joint: <strong>knee &gt;&gt; hip; ankle; shoulder &gt;&gt; first MTP</strong>; CMC and hand usually occur with polyarthritis</li>
+<li>Pain, aching or stiffness <strong>brought on or aggravated by activity</strong></li>
+<li>Widespread chronic pain suggests something else</li>
+<li><strong>Morning stiffness under 30 minutes, usually under 5</strong></li>
+<li>Exam: joint tenderness, <strong>cool to similar-temperature effusion (not warm or hot)</strong>, joint thickening</li>
+</ul>
+<p><strong>Red flags to exclude:</strong> infection, autoimmune disease, malignancy, fracture, avascular necrosis.</p>
+<p><strong>Case: Mrs. Tran.</strong> A 52-year-old with diabetes and worsening knee pain limiting walking and stairs, 5 minutes of morning stiffness, a slight antalgic gait, a slightly swollen but cool knee, joint line tenderness and crepitus. Diagnosis: chronic monoarthritis due to knee OA.</p>
+<h3>Diagnosis and staging</h3>
+<p><strong>OA is a clinical diagnosis.</strong></p>
+<ul>
+<li><strong>Must have:</strong> joint pain, stiffness or aching on most days, chronic (<strong>over 6 weeks</strong>), worse with activity</li>
+<li><strong>Must not have:</strong> other causes (autoimmune, crystal, infection, malignancy, tendinopathy)</li>
+<li><strong>X-ray changes alone do NOT diagnose OA</strong>, although the findings are specific</li>
+<li><strong>X-ray is for staging:</strong> early, established, late or end-stage</li>
+<li><strong>MRI and bone scan: almost never.</strong> Only when the diagnosis is in doubt.</li>
+</ul>
+<p><strong>Radiographic features:</strong> osteophytes, joint space narrowing, subchondral sclerosis and cysts, on the <strong>Kellgren-Lawrence</strong> scale.</p>
+<ul>
+<li><strong>K/L 1–2:</strong> early OA</li>
+<li><strong>K/L 3–4:</strong> late to end-stage OA</li>
+</ul>
+<h3>Epidemiology</h3>
+<ul>
+<li><strong>1 in 7 Canadian adults</strong> over 20</li>
+<li>Most common joint disorder worldwide</li>
+<li>12% of Canadian workers have symptomatic OA</li>
+<li><strong>$27.5B</strong> cost to Canadians in 2010</li>
+<li>Symptomatic hip and knee OA is the <strong>11th leading cause of disability</strong> worldwide, above TB and heart disease</li>
+<li>Most symptomatic knee OA <strong>starts between ages 35 and 55</strong></li>
+</ul>
+<h3>Risk factors</h3>
+<p><strong>Primary OA</strong> has risk factors but no clear cause; it is the majority.</p>
+<p><strong>Secondary OA</strong> has an underlying cause:</p>
+<ul>
+<li>Post-traumatic (ACL and meniscus tears)</li>
+<li>Metabolic or endocrine (acromegaly, hyperparathyroidism, hemochromatosis)</li>
+<li>Rare monogenic disease (Stickler, Marshall, dysplasias)</li>
+<li>Joints damaged by inflammatory arthritis</li>
+</ul>
+<p><strong>Major factors raising risk of primary OA:</strong></p>
+<ul>
+<li><strong>Obesity and metabolic syndrome</strong></li>
+<li><strong>Ageing and senescence</strong></li>
+<li><strong>Mechanical factors:</strong> joint trauma, alignment, muscle weakness, occupation</li>
+<li><strong>Genetics</strong> (polygenic)</li>
+<li><strong>Female sex</strong> (<strong>1.4×</strong>)</li>
+</ul>
+<p><strong>Case: Ms. Markus.</strong> A 36-year-old soccer player with an ACL tear at 23, pain with running for 5 years and now swelling. She has <strong>post-traumatic knee OA</strong>; she isn't too young. Her risk of knee replacement by age 55 is <strong>over 50%</strong>.</p>
+<h3>Pathophysiology</h3>
+<ul>
+<li>OA is a disease of the <strong>entire joint organ</strong>: the "sick joint"</li>
+<li><strong>OA is NOT caused by wear and tear or by age</strong>, although cartilage thins with age and risk rises</li>
+<li>Risk factors make joint tissues more susceptible</li>
+<li>Chronic metabolic and physiologic stress causes <strong>inflammation, pain and tissue breakdown</strong></li>
+<li><strong>Joint failure</strong> (like heart failure) comes from tissues failing to heal</li>
+<li>Treatment goals include removing what impairs healing (obesity, sedentary life)</li>
+</ul>
+<h3>Approach to management: "the only slide you really need"</h3>
+<ol>
+<li><strong>What stage?</strong> Early, late, end-stage.</li>
+<li><strong>Which biomechanical factors can be treated?</strong> Alignment, overuse, weakness, gait.</li>
+<li><strong>Is there a role for medical treatment?</strong> Improve pain, function, quality of life.</li>
+<li><strong>Do they need joint replacement?</strong> End-stage disease with unacceptable symptoms and quality of life.</li>
+</ol>
+<p><strong>Goals:</strong> <strong>no approved treatment preserves or extends the life of the joint</strong>, but symptomatic treatment improves life <em>with</em> the joint. Limitations are cost, time and access.</p>
+<h3>Non-pharmacologic (hip and knee)</h3>
+<ul>
+<li><strong>Weight:</strong> lose <strong>5% of total body weight</strong></li>
+<li><strong>Activity:</strong> <strong>150 minutes a week</strong> (walk, swim, bike); neuromuscular control (Tai Chi, GLA:D)</li>
+<li><strong>Devices:</strong> walking aids, insoles, shoes, unloader brace</li>
+<li><strong>Joint protection:</strong> education, avoiding risky movements (OT)</li>
+<li><strong>Self-management:</strong> CBT</li>
+<li><strong>Topical heat</strong></li>
+</ul>
+<p><strong>Physiotherapy means ACTIVE therapy</strong> with exercise, preferably neuromuscular. <strong>Passive therapies (ultrasound, TENS, laser, acupuncture) are not recommended.</strong></p>
+<h3>Pharmacologic (hip and knee)</h3>
+<ul>
+<li><strong>Topical NSAIDs:</strong> diclofenac BID–TID</li>
+<li><strong>Acetaminophen:</strong> clinically meaningful effect uncertain</li>
+<li><strong>Oral NSAIDs:</strong> if no contraindications</li>
+<li><strong>SNRI:</strong> duloxetine</li>
+<li><strong>Tramadol:</strong> generally avoid opioids</li>
+<li><strong>Intra-articular corticosteroid:</strong> short-term relief</li>
+</ul>
+<p><strong>Inconclusive:</strong> herbal remedies, glucosamine, topical NSAID in hip OA, intra-articular HA, PRP, stem cells.</p>
+<p><strong>Not recommended:</strong> opioids, neuropathic pain modulators, capsaicin, chondroitin.</p>
+<h3>Surgery</h3>
+<ul>
+<li><strong>Recommended: joint replacement</strong>, a salvage procedure for end-stage disease with strong level 1 evidence</li>
+<li><strong>Not recommended: knee arthroscopy</strong>, with or without meniscectomy or repair; strong level 1 evidence of no meaningful benefit</li>
+</ul>
+<p><strong>Case: Mr. Liebowitz.</strong> A 68-year-old with chronic renal failure and varus knee OA. Plan: physio for at least 3 months, OT education, <strong>topical NSAID (avoid oral NSAIDs because of his renal failure)</strong>, a steroid injection if refractory, then an SNRI trial for 2–3 months. Two years later he is using a cane with bone-on-bone X-rays despite full treatment, so refer to orthopedics for <strong>knee arthroplasty</strong>.</p>
+<div class="callout"><strong>Take-home:</strong> diagnose clinically, stage with X-ray, treat with exercise and education first, and keep surgery for end-stage disease.</div>
+`,
+    "quiz": [
+      {
+        "stem": "A 68-year-old with chronic renal failure and knee OA needs medication for pain. What should you try?",
+        "opts": [
+          "Topical NSAID; avoid oral NSAIDs",
+          "Long-term opioid",
+          "High-dose oral NSAID",
+          "Capsaicin and chondroitin"
+        ],
+        "correct": 0,
+        "explain": "Also a steroid injection if refractory, then an SNRI trial for 2–3 months."
+      },
+      {
+        "stem": "Which is true of current treatment for OA?",
+        "opts": [
+          "Glucosamine rebuilds cartilage",
+          "No treatment yet preserves the joint; treatment improves life with the joint",
+          "Steroid injection cures OA",
+          "PRP is standard care"
+        ],
+        "correct": 1,
+        "explain": "Goals are lower pain, better function, less disability, better quality of life."
+      },
+      {
+        "stem": "Which surgery has strong level 1 evidence of no meaningful benefit in knee OA?",
+        "opts": [
+          "Total knee arthroplasty",
+          "Tendon repair",
+          "Fracture fixation",
+          "Knee arthroscopy"
+        ],
+        "correct": 3,
+        "explain": "Arthroscopy isn't recommended. Joint replacement is a salvage procedure for end-stage disease."
+      },
+      {
+        "stem": "Which feature suggests something other than OA?",
+        "opts": [
+          "Pain worse with activity",
+          "Joint line tenderness",
+          "Hot joint or chronic widespread pain",
+          "Stiffness under 5 minutes"
+        ],
+        "correct": 2,
+        "explain": "Red flags: infection, autoimmune disease, malignancy, fracture, AVN. Widespread pain should make you think of something else."
+      }
+    ]
+  },
+  {
+    "id": "vasculitis",
+    "title": "Vasculitis: GCA and ANCA-Associated Disease",
+    "instructor": "Elentra module 07",
+    "duration": "~69 min",
+    "tags": [
+      {
+        "label": "Steroids before biopsy",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Why this matters:</strong> vasculitis is rare but can be fatal, and in giant cell arteritis a delay can mean permanent blindness. The skill is recognizing a sick patient with several organ systems involved.</p>
+<h3>What vasculitis is</h3>
+<p>A group of diseases with <strong>inflammation of the blood vessel wall</strong>, with immune cell infiltration on histology. It is systemic: patients <strong>feel sick</strong>, with fevers, weight loss, fatigue, rapid pulse and diffuse aches. It can involve virtually any organ, and some types are uniformly fatal untreated.</p>
+<h3>Primary vs secondary</h3>
+<p><strong>Secondary (identifiable cause):</strong></p>
+<ul>
+<li><strong>Infection:</strong> hepatitis B or C, HIV, other viral, bacterial, fungal</li>
+<li><strong>Toxins and drugs:</strong> allergic reaction, cocaine</li>
+<li><strong>Cancer:</strong> hematologic, paraneoplastic</li>
+<li><strong>Connective tissue disease:</strong> lupus, RA, Sjögren's</li>
+</ul>
+<p><strong>Primary:</strong> no known cause, over 20 disorders, with symptoms set by the size and distribution of vessels affected.</p>
+<h3>Classification by vessel size</h3>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th>Size</th>
+<th>Diseases</th>
+<th>Slide notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Large</strong></td>
+<td>Takayasu's arteritis, <strong>giant cell arteritis</strong></td>
+<td>GCA is the <strong>most common vasculitis</strong></td>
+</tr>
+<tr>
+<td><strong>Medium</strong></td>
+<td>Classic polyarteritis nodosa, Kawasaki disease</td>
+<td>Kawasaki is one of the two <strong>most common in children</strong></td>
+</tr>
+<tr>
+<td><strong>Small, ANCA-associated</strong></td>
+<td>GPA, MPA, EGPA</td>
+<td>Most common systemic small vessel vasculitides</td>
+</tr>
+<tr>
+<td><strong>Small, other</strong></td>
+<td>Cryoglobulinemia, cutaneous leukocytoclastic vasculitis, Henoch-Schönlein purpura</td>
+<td>Cutaneous leukocytoclastic vasculitis can occur alone or with other types; Henoch-Schönlein purpura is the other <strong>most common in children</strong></td>
+</tr>
+<tr>
+<td><strong>Variable</strong></td>
+<td>Behçet's disease</td>
+<td>Shown separately on the slide</td>
+</tr>
+</tbody>
+</table></div>
+<h3>When to suspect primary vasculitis</h3>
+<ul>
+<li><strong>Chronically and systemically unwell</strong></li>
+<li><strong>Fever or chills, and/or weight loss</strong></li>
+<li><strong>Symptoms in multiple organ systems</strong></li>
+<li><strong>Purpura</strong></li>
+<li><strong>Very sick with multi-organ failure</strong>, especially <strong>pulmonary hemorrhage plus renal dysfunction</strong></li>
+<li><strong>AND no underlying infection or malignancy</strong></li>
+</ul>
+<p><strong>Why diagnosis is hard:</strong> it's rare, symptoms vary and can be nonspecific for years, many organs are involved, and it mimics common disease.</p>
+<p><strong>Case 1:</strong> a 45-year-old man with 6 weeks of painful, <strong>non-blanching rash</strong> on the legs, fatigue and bilateral ankle pain and swelling. The differential for purpura is coagulopathy or vasculitis; the case is cutaneous leukocytoclastic vasculitis.</p>
+<h3>Diagnosis and investigations</h3>
+<p>History and exam are critical. <strong>Rule out infection before diagnosing.</strong> <strong>Biopsy of involved tissue</strong> best clinches it.</p>
+<ul>
+<li><strong>Systemic inflammation (nonspecific):</strong> normocytic anemia, reactive thrombocytosis, raised ESR and CRP, low albumin</li>
+<li><strong>Organ involvement:</strong> kidney and lung disease can be <strong>silent</strong>, so <strong>always check creatinine, urine blood and protein, and chest X-ray</strong></li>
+<li><strong>Infection:</strong> WBC; blood, urine and sputum cultures (including fungal and AFB); liver enzymes; hepatitis B and C; cryoglobulins and complement; HIV; syphilis</li>
+<li><strong>Cancer:</strong> age-appropriate screening, serum protein electrophoresis</li>
+</ul>
+<p><strong>If you suspect vasculitis:</strong> head-to-toe history and exam, rule out infection, cancer screening up to date, CBC, creatinine, liver enzymes, ESR/CRP, urinalysis, chest X-ray, <strong>urgent referral to rheumatology</strong>, plus other services by organ.</p>
+<h3>Giant cell arteritis</h3>
+<p><strong>Pathophysiology:</strong> a <strong>large vessel vasculitis with a predilection for cranial arteries, particularly the temporal artery</strong>. Histology: <strong>transmural inflammation with giant cells</strong>.</p>
+<p><strong>Who:</strong> <strong>only over 50, most over 70</strong>. Lifetime risk 1% in women, 0.5% in men. More common in Northern European descent.</p>
+<p><strong>Case 3:</strong> a 75-year-old woman with new right temporal headache worsening over 1 week, pain brushing her hair, <strong>jaw pain when eating</strong>, and 2 months of <strong>morning shoulder and hip stiffness</strong>, fatigue and weight loss. Hgb 99, ESR 70, CRP 50. Given prednisone 50 mg the same day; 100% better in 5 days.</p>
+<p><strong>Cranial symptoms:</strong></p>
+<ul>
+<li>Headache; temporal and scalp tenderness</li>
+<li>Diplopia, <strong>vision loss</strong></li>
+<li><strong>Jaw and tongue claudication</strong></li>
+<li>Strokes</li>
+</ul>
+<p><strong>Other symptoms:</strong></p>
+<ul>
+<li>Fatigue, fever, weight loss</li>
+<li><strong>Polymyalgia rheumatica symptoms:</strong> limb girdle pain and stiffness, worse in the morning</li>
+<li>Limb claudication, Raynaud's or digital ischemia, chest pain, arthritis</li>
+</ul>
+<p><strong>Exam:</strong> tender temples, <strong>swollen rope-like temporal artery</strong>, optic disc swelling, pulselessness, bruits, BP differential.</p>
+<p><strong>Vision loss:</strong></p>
+<ul>
+<li>Occurs in <strong>15–20%</strong></li>
+<li>Can be transient: <strong>amaurosis fugax</strong></li>
+<li>Without treatment, total vision loss in the same and other eye within days to months</li>
+<li><strong>Acute painless vision loss is permanent</strong></li>
+</ul>
+<p><strong>Differential:</strong> sinusitis, dental infection, temporomandibular arthritis, acute-angle glaucoma, meningitis or encephalitis, cranial neuropathies, intracranial malignancy, severe hypertension, chronic headache syndromes, neck pain.</p>
+<p><strong>Diagnosis:</strong></p>
+<ul>
+<li><strong>ESR and CRP immediately.</strong> If neither is elevated, GCA is highly unlikely (<strong>under 2% are negative for both</strong>).</li>
+<li><strong>Temporal artery biopsy within 1–2 weeks.</strong> Transmural inflammation with giant cells is <strong>100% specific</strong>, but <strong>50–70% are negative because of skip lesions</strong>, so a <strong>negative biopsy can't rule out GCA</strong>.</li>
+<li><strong>Doppler ultrasound</strong> in specialized centres: the <strong>halo sign</strong>, specificity over 85%, absent in about 30%, unreliable elsewhere.</li>
+</ul>
+<p><strong>Initial management:</strong></p>
+<ul>
+<li><strong>Start prednisone 1 mg/kg (max 60 mg daily) as soon as GCA is suspected</strong>, after blood is drawn</li>
+<li><strong>If blood can't be drawn immediately, do not wait</strong> to start, and don't wait for results</li>
+<li><strong>Protect against steroid effects:</strong> PPI, calcium and vitamin D, bisphosphonate</li>
+<li><strong>Vision loss or stroke symptoms:</strong> emergency department for urgent ophthalmology or neurology</li>
+<li>Arrange biopsy or ultrasound; refer to rheumatology</li>
+</ul>
+<h3>ANCA-associated vasculitis</h3>
+<p>A rare systemic small vessel vasculitis (20–30 per million), <strong>fatal if untreated</strong>, with high morbidity and common relapses.</p>
+<p><strong>Three types:</strong> <strong>GPA</strong> (formerly Wegener's), <strong>MPA</strong>, <strong>EGPA</strong> (Churg-Strauss).</p>
+<p><strong>ANCA tests:</strong></p>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Target (ELISA)</th>
+<th>Most common in</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>c-ANCA</strong> (cytoplasmic)</td>
+<td><strong>Anti-PR3</strong></td>
+<td><strong>GPA</strong></td>
+</tr>
+<tr>
+<td><strong>p-ANCA</strong> (perinuclear)</td>
+<td><strong>Anti-MPO</strong></td>
+<td><strong>MPA, EGPA</strong></td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Immunofluorescence detects a collection of antibodies. <strong>ELISA detects one and is more specific.</strong></li>
+<li><strong>False positives:</strong> infection (endocarditis), cancer, medications, <strong>cocaine</strong></li>
+<li><strong>Up to 30% of GPA and 50–60% of MPA/EGPA are ANCA negative</strong>, so a negative test doesn't rule it out</li>
+</ul>
+<p><strong>Most common manifestations:</strong></p>
+<ul>
+<li><strong>Sinonasal inflammation:</strong> bloody or crusty discharge, facial pain</li>
+<li>Retro-orbital mass (diplopia)</li>
+<li>Dyspnea: lung nodules, adult-onset severe asthma, pulmonary embolism</li>
+<li><strong>Pulmonary hemorrhage</strong></li>
+<li>Inflammatory arthritis</li>
+<li><strong>Mononeuritis multiplex</strong></li>
+<li><strong>Renal dysfunction:</strong> raised creatinine, proteinuria, hematuria</li>
+<li>Skin: purpura, urticarial vasculitis, ulcers</li>
+</ul>
+<p><strong>Workup:</strong> head-to-toe assessment; CBC, creatinine, liver enzymes, ESR/CRP, urinalysis; chest X-ray; rule out infection.</p>
+<p><strong>Biopsy:</strong> important for single-organ disease. Punch biopsy for purpura or urticarial vasculitis in primary care; deep excisional for ulcers; refer for other tissues (renal if active sediment, sural nerve if neuropathy on EMG, lung nodule, sinonasal mass, ocular pseudotumour, lymph node).</p>
+<p><strong>When to order ANCA:</strong> only if small vessel vasculitis is suspected. Usually specialists order it; primary care may if concerned and no timely appointment exists.</p>
+<p><strong>Initial management:</strong></p>
+<ul>
+<li><strong>Unstable vitals, pulmonary hemorrhage, significant dyspnea or renal failure:</strong> admit</li>
+<li><strong>Active urine sediment with normal creatinine:</strong> urgent nephrology referral</li>
+<li><strong>Others:</strong> urgent rheumatology, plus other specialists by organ</li>
+</ul>
+<div class="callout"><strong>Take-home:</strong> systemically sick, multi-organ, purpura, lung plus kidney: think vasculitis, exclude infection, refer urgently. Older patient with new headache: start steroids before the biopsy.</div>
+`,
+    "quiz": [
+      {
+        "stem": "A patient's ANCA is negative, but the picture strongly fits small vessel vasculitis. What now?",
+        "opts": [
+          "Vasculitis is ruled out",
+          "Discharge",
+          "Start allopurinol",
+          "Continue evaluating; a negative test doesn't rule it out"
+        ],
+        "correct": 3,
+        "explain": "Up to 30% of GPA and 50–60% of MPA/EGPA are ANCA negative."
+      },
+      {
+        "stem": "A patient has bloody nasal crusting, lung nodules, hematuria and raised creatinine. Which diagnosis fits?",
+        "opts": [
+          "Giant cell arteritis",
+          "Granulomatosis with polyangiitis",
+          "Kawasaki disease",
+          "Polymyalgia alone"
+        ],
+        "correct": 1,
+        "explain": "Sinonasal inflammation plus lung and renal disease is ANCA-associated vasculitis. Kidney and lung disease can be silent, so always check."
+      },
+      {
+        "stem": "Which vasculitides are labelled most common in children on the slides?",
+        "opts": [
+          "GCA and Takayasu's",
+          "GPA and EGPA",
+          "Kawasaki disease and Henoch-Schönlein purpura",
+          "Behçet's and PAN"
+        ],
+        "correct": 2,
+        "explain": "Slide 'How do we classify vasculitis?' marks Kawasaki disease and HSP. GCA is the most common vasculitis overall."
+      },
+      {
+        "stem": "A patient with suspected vasculitis has pulmonary hemorrhage and renal failure. What is the management?",
+        "opts": [
+          "Hospital admission",
+          "Outpatient rheumatology in 6 months",
+          "Oral antibiotics",
+          "Skin biopsy in clinic only"
+        ],
+        "correct": 0,
+        "explain": "Unstable vitals, pulmonary hemorrhage, significant dyspnea or renal failure need admission. Active sediment with normal creatinine needs urgent nephrology."
+      }
+    ]
+  },
+  {
+    "id": "ctd",
+    "title": "Connective Tissue Disorders: SLE, APS, Sjögren's, Myositis, SSc",
+    "instructor": "Elentra module 08",
+    "duration": "~73 min",
+    "tags": [
+      {
+        "label": "ANA and organ patterns",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Why this matters:</strong> connective tissue is everywhere, so these diseases hit many organs. They share autoantibodies, Raynaud's and a strong female predominance, and the clinical picture tells you which one you're looking at.</p>
+<h3>The family</h3>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th>Disease</th>
+<th>Prevalence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SLE</td>
+<td>1 in 1,000</td>
+</tr>
+<tr>
+<td>Primary Sjögren's</td>
+<td>About 2 in 10,000</td>
+</tr>
+<tr>
+<td>Systemic sclerosis</td>
+<td>1 in 10,000</td>
+</tr>
+<tr>
+<td>Polymyositis / dermatomyositis</td>
+<td>1 in 100,000</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>All are more common in women</strong>, often with autoantibodies, Raynaud's and multi-organ disease. SLE is more common than scleroderma.</p>
+<h3>SLE: the classic case</h3>
+<p>A 22-year-old student with a malar rash, rash in the sun, fatigue, Raynaud's, weight loss, hair loss and morning hand stiffness with swollen knuckles. Labs: WBC 2.8, Hgb 111, platelets 43, normal creatinine and urine, <strong>ANA 1/320 speckled, anti-Sm positive, anti-DNA negative, low C3 and C4</strong>.</p>
+<p><strong>Initial labs:</strong> CBC with differential, ESR, creatinine, urinalysis, <strong>ANA as the screen</strong>, maybe ENA panel, complement. <strong>Don't order anti-DNA unless ANA is positive.</strong></p>
+<h3>The 11 ACR criteria</h3>
+<p>Classification criteria were made for research. To classify as SLE: <strong>at least 4 of 11</strong>. The 2019 EULAR/ACR criteria need <strong>ANA of at least 1/80 and a score of at least 10</strong>.</p>
+<ol>
+<li><strong>Malar rash:</strong> fixed erythema over the cheeks, photosensitive, <strong>spares the nasolabial folds</strong> (rosacea doesn't)</li>
+<li><strong>Discoid rash:</strong> raised patches with adherent keratotic scale and follicular plugging, heals with scarring</li>
+<li><strong>Photosensitivity</strong></li>
+<li><strong>Oral or nasal ulcers:</strong> often multiple, sometimes painless</li>
+<li><strong>Inflammatory arthritis:</strong> <strong>non-erosive</strong></li>
+<li><strong>Serositis:</strong> pleuritis (worse on inspiration) or pericarditis (worse lying down)</li>
+<li><strong>Renal:</strong> glomerulonephritis, with protein and blood in urine</li>
+<li><strong>Neurologic:</strong> seizures or psychosis, without drug or metabolic cause</li>
+<li><strong>Hematologic:</strong> hemolytic anemia, leukopenia, lymphopenia, thrombocytopenia, usually from autoantibodies</li>
+<li><strong>Positive ANA</strong></li>
+<li><strong>Immunologic:</strong> anti-DNA, anti-Sm or antiphospholipid antibodies</li>
+</ol>
+<p><strong>Lupus nephritis classes:</strong> 1 minimal change; 2 mesangial; 3 focal proliferative; <strong>4 diffuse proliferative (worst)</strong>; 5 membranous.</p>
+<p><strong>Raynaud's and alopecia are common in SLE but not ACR criteria.</strong></p>
+<p><strong>ANA:</strong> over 95% of SLE is ANA positive. <strong>A negative ANA makes SLE highly unlikely; a positive one never rules it in.</strong> The most common cause of a positive ANA is no obvious cause. Anti-dsDNA can't occur with a negative ANA.</p>
+<p><strong>Other skin:</strong> subacute cutaneous lupus (nonscarring, photosensitive, usually anti-Ro positive, face often spared), vasculitic rashes, livedo reticularis.</p>
+<h3>SLE epidemiology and mechanism</h3>
+<ul>
+<li><strong>9:1 women to men</strong>, young people, 1 in 1,000</li>
+<li>Drug-induced lupus is rare and milder (joints, skin, serositis)</li>
+<li><strong>Genes:</strong> HLA-DR2 and DR3, complement deficiencies, polygenic</li>
+<li><strong>Environment:</strong> smoking, infection, UV light, silica, hormones, some drugs</li>
+<li><strong>Immune:</strong> B cell hyperreactivity and autoantibodies, T cell abnormalities, immune complexes, type I interferon</li>
+<li><strong>"More garbage, garbage men on partial strike":</strong> increased apoptosis and delayed clearance of nuclear debris</li>
+</ul>
+<h3>SLE treatment</h3>
+<p>Depends on the <strong>organ involved and severity</strong> (minor is skin, joints, mucosa).</p>
+<p><strong>Non-drug:</strong> education, rest, sun avoidance and <strong>SPF 30+</strong>, PT and OT, rheumatology follow-up, and <strong>cardiac risk reduction</strong> (smoking, BP, lipids, diabetes).</p>
+<p><strong>Drugs:</strong></p>
+<ul>
+<li><strong>Hydroxychloroquine for every patient unless contraindicated:</strong> the anchor drug, helps skin and joints, may protect against major flares</li>
+<li><strong>NSAIDs:</strong> joint symptoms</li>
+<li><strong>Corticosteroids:</strong> topical for rash, low dose for mild to moderate arthritis, high dose for severe organ disease</li>
+<li><strong>Immunosuppressants:</strong> mycophenolate or azathioprine; methotrexate for skin and joints; <strong>cyclophosphamide only for serious major organ disease</strong></li>
+<li><strong>Biologics:</strong> belimumab (decreases B cell signalling)</li>
+</ul>
+<p><strong>Prognosis:</strong> worse with major organ disease. Deaths from infection, then <strong>accelerated atherosclerosis</strong> (50-fold more cardiovascular events), SLE itself and drug complications. Steroids cause AVN and osteoporosis.</p>
+<h3>Antiphospholipid syndrome</h3>
+<p>Antibodies attack phospholipids on cells and vessel linings, causing clots. Defined by <strong>recurrent arterial or venous thrombosis or recurrent pregnancy loss</strong> with persistent antibodies.</p>
+<p><strong>Antibodies:</strong> anticardiolipin; <strong>lupus anticoagulant</strong> (false PTT prolongation); <strong>false-positive VDRL</strong>.</p>
+<p><strong>Half of APS is associated with SLE</strong> (secondary); 10–20% of SLE patients have APS. Often <strong>livedo reticularis and low platelets</strong>.</p>
+<p><strong>Treatment:</strong></p>
+<ul>
+<li>Antibody positive, no events: nothing, or <strong>ASA 81 mg</strong></li>
+<li>Thrombosis: <strong>long-term warfarin</strong></li>
+<li>Recurrent fetal loss: <strong>ASA plus heparin</strong></li>
+<li><strong>Catastrophic APS ("thrombotic storm"):</strong> IV heparin and IV steroids; consider plasmapheresis or IVIG</li>
+</ul>
+<h3>Sjögren's syndrome</h3>
+<p><strong>Lymphocytic infiltration of exocrine glands</strong>, with dry eyes and mouth (<strong>sicca</strong>).</p>
+<ul>
+<li><strong>Eyes:</strong> dry, gritty, painful, worse through the day</li>
+<li><strong>Mouth:</strong> trouble with dry foods, altered taste, halitosis, <strong>dental caries</strong>, <strong>parotid enlargement</strong></li>
+<li><strong>Extra-glandular:</strong> Raynaud's, leukocytoclastic vasculitis, arthritis, neuropathy, rarely ILD</li>
+<li><strong>Higher risk of B cell MALT lymphoma</strong></li>
+<li><strong>Labs:</strong> anemia, leukopenia, polyclonal hypergammaglobulinemia, <strong>high ESR</strong>, <strong>ANA 80–90%, RF 90%</strong>, <strong>anti-Ro and anti-La</strong></li>
+</ul>
+<h3>Inflammatory myositis</h3>
+<p><strong>Proximal muscle weakness</strong> of shoulders and hips.</p>
+<p><strong>Causes of proximal weakness:</strong></p>
+<ul>
+<li><strong>Drugs:</strong> steroids, colchicine, hydroxychloroquine, cyclosporine, <strong>statins</strong></li>
+<li><strong>Toxins:</strong> alcohol</li>
+<li><strong>Endocrine:</strong> thyroid, parathyroid, adrenal</li>
+<li><strong>Electrolytes:</strong> potassium, low phosphate, low magnesium</li>
+<li>Infiltrative (sarcoid), infectious, inflammatory, malignancy-related</li>
+</ul>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th></th>
+<th>Dermatomyositis</th>
+<th>Polymyositis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Age</td>
+<td>Peaks in children and older adults</td>
+<td>Any</td>
+</tr>
+<tr>
+<td>Skin</td>
+<td>Rash, photosensitivity</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Cancer</td>
+<td><strong>May be paraneoplastic in the elderly</strong></td>
+<td>Usually not</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Dermatomyositis signs:</strong> <strong>heliotrope</strong>, <strong>Gottron's papules</strong> (raised over knuckles) and sign (flat), V-neck and cape rash, <strong>mechanic's hands</strong>, dilated nailfold capillaries, calcinosis.</p>
+<p><strong>Labs:</strong> <strong>elevated CK</strong>, ESR raised in half, ANA 80%. <strong>Anti-Jo-1 correlates with ILD</strong>, carries a bad prognosis and is very specific.</p>
+<p><strong>Antisynthetase syndrome:</strong> myositis, arthralgia, Raynaud's, mechanic's hands, ILD.</p>
+<p><strong>Concerning features:</strong> esophageal (aspiration), cardiac (arrhythmia), respiratory (ILD, diaphragm), malignancy (ovarian, gastric, lung, cervical).</p>
+<p><strong>Treatment:</strong> high-dose steroids, then steroid-sparing drugs (azathioprine, methotrexate, cyclophosphamide, IVIG, rituximab). Treat lung disease aggressively.</p>
+<h3>Systemic sclerosis</h3>
+<p><strong>Fibrosis, vascular instability, autoimmunity.</strong> Has the <strong>highest mortality of the CTDs</strong>.</p>
+<div class="data-table"><table>
+<thead>
+<tr>
+<th></th>
+<th>Limited (lcSSc)</th>
+<th>Diffuse (dcSSc)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Skin</td>
+<td>Distal to elbows and knees, may include fingers and face</td>
+<td>Also upper arms, thighs, trunk</td>
+</tr>
+<tr>
+<td>ANA</td>
+<td>Over 95%</td>
+<td>Over 95%; 50% nucleolar</td>
+</tr>
+<tr>
+<td>Antibody</td>
+<td><strong>Anti-centromere (50%)</strong></td>
+<td><strong>Scl-70 (30%): pulmonary fibrosis.</strong> RNA polymerase: <strong>renal crisis</strong></td>
+</tr>
+<tr>
+<td>Organs</td>
+<td>Rare renal and heart</td>
+<td>Higher mortality</td>
+</tr>
+<tr>
+<td>Lung</td>
+<td><strong>PAH</strong> with long-standing disease</td>
+<td>PAH possible</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>CREST:</strong> <strong>C</strong>alcinosis, <strong>R</strong>aynaud's, <strong>E</strong>sophageal dysmotility, <strong>S</strong>clerodactyly, <strong>T</strong>elangiectasia.</p>
+<p><strong>Causes of death:</strong> pulmonary fibrosis, pulmonary hypertension, cardiac disease.</p>
+<p><strong>Scleroderma renal crisis:</strong> high BP, intravascular hemolysis, worsening renal function. Mortality over 80% if missed. Highest risk in early progressive diffuse disease. <strong>Treat with rapid BP control using ACE inhibitors.</strong></p>
+<p><strong>Lung:</strong> ILD at the bases; PAH with dilated pulmonary arteries.</p>
+<p><strong>Raynaud's phenomenon:</strong> reversible pallor, then rubor or cyanosis. 3% of the population, usually primary. Over 95% of scleroderma. <strong>Raynaud's plus dilated nailfold capillaries plus anti-centromere: 1 in 3 develop SSc within 5 years.</strong></p>
+<p><strong>Raynaud's treatment:</strong> cold avoidance, smoking cessation, <strong>calcium channel blockers (nifedipine)</strong>, then PDE5 inhibitors, topical nitrates, IV prostacyclins.</p>
+<p><strong>SSc treatment:</strong> treat the organs involved; maybe methotrexate in early diffuse disease; stem cell transplant if very severe.</p>
+<h3>Quick match</h3>
+<ul>
+<li>Proximal weakness, high CK: <strong>polymyositis</strong>. Add knuckle rash: <strong>dermatomyositis</strong></li>
+<li>Dry eyes and mouth, caries, parotid swelling: <strong>Sjögren's</strong></li>
+<li>Rash in sun, oral ulcers: <strong>SLE</strong></li>
+<li>Dysphagia, Raynaud's, fingertip ulcers, sclerodactyly: <strong>systemic sclerosis</strong></li>
+<li>Repeated clots, livedo: <strong>APS</strong></li>
+<li>ILD, Raynaud's and positive ANA aren't specific</li>
+</ul>
+<h3>⚠ DMARD toxicity (not on these slides)</h3>
+<p>Standard teaching to check against the course: hydroxychloroquine (retinal toxicity, so eye screening); methotrexate (liver toxicity, cytopenias, teratogenicity); azathioprine (cytopenias); cyclophosphamide (marrow suppression, bladder toxicity). Biologics raise infection risk.</p>
+`,
+    "quiz": [
+      {
+        "stem": "Which drug class on the slides is a classic cause of proximal muscle weakness?",
+        "opts": [
+          "Beta blockers",
+          "Antihistamines",
+          "Thiazides",
+          "Statins"
+        ],
+        "correct": 3,
+        "explain": "Drugs: steroids, colchicine, hydroxychloroquine, cyclosporine, statins. Also alcohol, endocrine, electrolytes."
+      },
+      {
+        "stem": "A myositis patient is anti-Jo-1 positive with crackles and mechanic's hands. What does the antibody correlate with?",
+        "opts": [
+          "Interstitial lung disease and a bad prognosis",
+          "Better outcomes",
+          "Isolated skin disease",
+          "Renal crisis"
+        ],
+        "correct": 0,
+        "explain": "This is antisynthetase syndrome: myositis, arthralgia, Raynaud's, mechanic's hands and ILD."
+      },
+      {
+        "stem": "A patient with skin thickening above the elbows and on the trunk has anti-Scl-70. Which complication does this antibody correlate with?",
+        "opts": [
+          "Pulmonary fibrosis",
+          "Tophi",
+          "Pulmonary embolism",
+          "Uveitis"
+        ],
+        "correct": 0,
+        "explain": "Diffuse SSc. Scl-70 (30%) correlates with pulmonary fibrosis; RNA polymerase with renal crisis. Limited SSc: anti-centromere (50%)."
+      },
+      {
+        "stem": "An early diffuse scleroderma patient has new high BP, hemolysis and rising creatinine. What is the treatment?",
+        "opts": [
+          "Rapid BP control with an ACE inhibitor",
+          "Avoid all antihypertensives",
+          "High-dose prednisone",
+          "NSAIDs"
+        ],
+        "correct": 0,
+        "explain": "Scleroderma renal crisis has mortality over 80% if missed. ACE inhibitors have improved it."
+      }
+    ]
+  }
+];
+</script>
+<script>
+(function(){
+  var navlist = document.getElementById('navlist');
+  var content = document.getElementById('content');
+  var totalQ = 0;
+  MODULES.forEach(function(m){ totalQ += m.quiz.length; });
+  document.getElementById('progress-count').textContent = '0 / ' + totalQ;
+
+  var STORE_KEY = 'msk-hub-wk11-answers-v1';
+  var answered = {};
+  try {
+    var raw = localStorage.getItem(STORE_KEY);
+    if (raw) answered = JSON.parse(raw);
+  } catch(e) {}
+
+  function saveAnswered(){
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(answered)); } catch(e) {}
+  }
+
+  function correctCount(){
+    var n = 0;
+    Object.keys(answered).forEach(function(k){ if (answered[k] === 'correct') n++; });
+    return n;
+  }
+
+  function updateProgress(){
+    var c = correctCount();
+    document.getElementById('progress-count').textContent = c + ' / ' + totalQ;
+    document.getElementById('progress-fill').style.width = (totalQ ? (100 * c / totalQ) : 0) + '%';
+  }
+
+  function moduleAnsweredCount(m){
+    var n = 0;
+    m.quiz.forEach(function(q, i){
+      var key = m.id + '-' + i;
+      if (answered[key]) n++;
+    });
+    return n;
+  }
+
+  function markDot(m){
+    var dot = document.querySelector('.navlist a[href="#' + m.id + '"] .dot');
+    if (!dot) return;
+    var done = moduleAnsweredCount(m) === m.quiz.length && m.quiz.length > 0;
+    dot.classList.toggle('done', done);
+  }
+
+  // Build nav
+  MODULES.forEach(function(m, idx){
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + m.id;
+    a.innerHTML = '<span class="num">' + String(idx+1).padStart(2,'0') + '</span><span class="dot"></span><span>' + m.title + '</span>';
+    li.appendChild(a);
+    navlist.appendChild(li);
+  });
+
+  function renderQuiz(m){
+    var wrap = document.createElement('div');
+    wrap.className = 'quiz';
+
+    var head = document.createElement('div');
+    head.className = 'quiz-head';
+    head.innerHTML = '<span>Check yourself</span><span class="quiz-score" id="score-' + m.id + '"></span>';
+    wrap.appendChild(head);
+
+    var scoreEl = head.querySelector('.quiz-score');
+
+    var body = document.createElement('div');
+    body.className = 'quiz-body';
+
+    function updateModuleScore(){
+      var n = moduleAnsweredCount(m);
+      scoreEl.textContent = n + ' / ' + m.quiz.length + ' answered';
+    }
+
+    m.quiz.forEach(function(q, i){
+      var key = m.id + '-' + i;
+      var qd = document.createElement('div');
+      qd.className = 'q';
+      var stem = document.createElement('div');
+      stem.className = 'q-stem';
+      stem.textContent = (i+1) + '. ' + q.stem;
+      qd.appendChild(stem);
+
+      var opts = document.createElement('div');
+      opts.className = 'q-opts';
+
+      var explain = document.createElement('div');
+      explain.className = 'q-explain';
+      explain.innerHTML = '<strong>' + (q.explain.split(' ')[0]) + '</strong> ' + q.explain;
+
+      var alreadyAnswered = !!answered[key];
+
+      q.opts.forEach(function(optText, oi){
+        var btn = document.createElement('button');
+        btn.className = 'opt';
+        btn.innerHTML = '<span class="letter">' + String.fromCharCode(65+oi) + '</span><span>' + optText + '</span>';
+        if (alreadyAnswered) {
+          btn.disabled = true;
+          if (oi === q.correct) btn.classList.add('correct');
+          if (answered[key] === 'incorrect-' + oi) btn.classList.add('incorrect');
+        }
+        btn.addEventListener('click', function(){
+          if (btn.disabled) return;
+          var allOpts = opts.querySelectorAll('.opt');
+          allOpts.forEach(function(o){ o.disabled = true; });
+          if (oi === q.correct) {
+            btn.classList.add('correct');
+            answered[key] = 'correct';
+          } else {
+            btn.classList.add('incorrect');
+            allOpts[q.correct].classList.add('correct');
+            answered[key] = 'incorrect-' + oi;
+          }
+          explain.classList.add('shown');
+          saveAnswered();
+          updateProgress();
+          updateModuleScore();
+          markDot(m);
+        });
+        opts.appendChild(btn);
+      });
+
+      qd.appendChild(opts);
+      qd.appendChild(explain);
+      if (alreadyAnswered) explain.classList.add('shown');
+      body.appendChild(qd);
+    });
+
+    wrap.appendChild(body);
+    updateModuleScore();
+    return wrap;
+  }
+
+  MODULES.forEach(function(m, idx){
+    var sec = document.createElement('section');
+    sec.className = 'module';
+    sec.id = m.id;
+
+    var head = document.createElement('div');
+    head.className = 'module-head';
+    head.innerHTML = '<span class="module-num">' + String(idx+1).padStart(2,'0') + '</span><h2>' + m.title + '</h2>';
+    sec.appendChild(head);
+
+    var meta = document.createElement('div');
+    meta.className = 'module-meta';
+    var tagsHtml = '<span class="tag">' + m.instructor + '</span><span class="tag">' + m.duration + '</span>';
+    (m.tags || []).forEach(function(t){ tagsHtml += '<span class="tag ' + t.cls + '">' + t.label + '</span>'; });
+    meta.innerHTML = tagsHtml;
+    sec.appendChild(meta);
+
+    var bodyDiv = document.createElement('div');
+    bodyDiv.className = 'module-body';
+    bodyDiv.innerHTML = m.body;
+    sec.appendChild(bodyDiv);
+
+    var quizWrap = document.createElement('div');
+    quizWrap.className = 'module-body';
+    quizWrap.appendChild(renderQuiz(m));
+    sec.appendChild(quizWrap);
+
+    content.appendChild(sec);
+    markDot(m);
+  });
+
+  updateProgress();
+
+  // Active-link tracking on scroll
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.module'));
+  var links = Array.prototype.slice.call(document.querySelectorAll('.navlist a'));
+  function onScroll(){
+    var pos = window.scrollY + 120;
+    var current = sections[0];
+    sections.forEach(function(s){ if (s.offsetTop <= pos) current = s; });
+    links.forEach(function(l){ l.classList.toggle('active', l.getAttribute('href') === '#' + current.id); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Close mobile nav on link click
+  links.forEach(function(l){
+    l.addEventListener('click', function(){
+      document.getElementById('sidebar').classList.remove('open');
+    });
+  });
+})();
+</script>

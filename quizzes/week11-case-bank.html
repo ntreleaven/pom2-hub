@@ -1,0 +1,504 @@
+<title>Week 11 Case Bank</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper: #f2f0e8;
+    --paper-raised: #fbfaf5;
+    --ink: #1e2a2e;
+    --ink-soft: #55625f;
+    --hairline: #d6d1c2;
+    --accent: #2c5f5a;
+    --accent-soft: #dce8e4;
+    --accent-ink: #163634;
+    --good: #2f6b3e;
+    --good-soft: #dfeee1;
+    --bad: #a03f37;
+    --bad-soft: #f6e3df;
+    --amber: #b5792c;
+    --amber-soft: #f3e6d2;
+    --shadow: 0 1px 2px rgba(30,42,46,.06), 0 8px 24px -12px rgba(30,42,46,.18);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #171d1e;
+      --paper-raised: #1f2729;
+      --ink: #e9eae4;
+      --ink-soft: #a5afab;
+      --hairline: #333e3f;
+      --accent: #7bbbb0;
+      --accent-soft: #223634;
+      --accent-ink: #cdeae4;
+      --good: #7fc98d;
+      --good-soft: #1e3324;
+      --bad: #e19489;
+      --bad-soft: #3a2320;
+      --amber: #e0b06b;
+      --amber-soft: #3a2f1a;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #171d1e;
+    --paper-raised: #1f2729;
+    --ink: #e9eae4;
+    --ink-soft: #a5afab;
+    --hairline: #333e3f;
+    --accent: #7bbbb0;
+    --accent-soft: #223634;
+    --accent-ink: #cdeae4;
+    --good: #7fc98d;
+    --good-soft: #1e3324;
+    --bad: #e19489;
+    --bad-soft: #3a2320;
+    --amber: #e0b06b;
+    --amber-soft: #3a2f1a;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Public Sans', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+  }
+
+  h1,h2,h3{ font-family:'Fraunces', Georgia, serif; text-wrap:balance; margin:0; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+
+  a{ color:inherit; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  /* ---------- shell ---------- */
+  .shell{ max-width:1040px; margin:0 auto; padding:0 24px 96px; }
+  .topbar{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:16px; padding:28px 24px 20px; max-width:1040px; margin:0 auto;
+    border-bottom:1px solid var(--hairline);
+  }
+  .brand{ display:flex; flex-direction:column; gap:2px; }
+  .brand .kicker{
+    font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--accent); font-weight:600;
+  }
+  .brand h1{ font-size:1.5rem; font-weight:600; }
+  .topstat{ text-align:right; font-family:'JetBrains Mono', monospace; font-size:.78rem; color:var(--ink-soft); }
+  .topstat b{ color:var(--ink); font-weight:600; }
+
+  /* ---------- dashboard ---------- */
+  .intro{ padding:32px 0 8px; max-width:640px; }
+  .intro p{ margin:10px 0 0; color:var(--ink-soft); line-height:1.55; font-size:.97rem; }
+
+  .group-heading{
+    display:flex; align-items:center; gap:12px;
+    margin:36px 0 14px;
+  }
+  .group-heading h2{ font-size:1.05rem; font-weight:600; color:var(--ink); white-space:nowrap; }
+  .group-heading .rule{ height:1px; background:var(--hairline); flex:1; }
+  .group-heading .count{ font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--ink-soft); }
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:14px; }
+
+  .card{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:18px 18px 16px; text-align:left; box-shadow:var(--shadow);
+    display:flex; flex-direction:column; gap:12px; min-height:150px;
+    transition:transform .15s ease, border-color .15s ease;
+    position:relative; overflow:hidden;
+  }
+  .card:hover{ transform:translateY(-2px); border-color:var(--accent); }
+  .card:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .card .num{
+    font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--ink-soft);
+    letter-spacing:.06em;
+  }
+  .card h3{ font-size:1.05rem; font-weight:500; line-height:1.28; flex:1; }
+  .card-foot{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .badge{
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; font-weight:600;
+    padding:3px 8px; border-radius:99px; letter-spacing:.02em;
+  }
+  .badge.new{ background:var(--accent-soft); color:var(--accent-ink); }
+  .badge.done{ background:var(--good-soft); color:var(--good); }
+  .badge.retry{ background:var(--amber-soft); color:var(--amber); }
+  .score{ font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--ink-soft); }
+  .score b{ color:var(--ink); }
+
+  /* ---------- quiz view ---------- */
+  .quiz-header{
+    display:flex; align-items:center; gap:14px; padding:26px 0 6px; flex-wrap:wrap;
+  }
+  .back-btn{
+    background:none; border:1px solid var(--hairline); border-radius:8px;
+    padding:7px 12px; font-size:.82rem; color:var(--ink-soft); display:flex; align-items:center; gap:6px;
+  }
+  .back-btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .quiz-title{ flex:1; min-width:200px; }
+  .quiz-title .kicker{ font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; font-weight:600;}
+  .quiz-title h2{ font-size:1.25rem; font-weight:600; margin-top:2px; }
+
+  .progress-wrap{ padding:14px 0 30px; }
+  .progress-meta{ display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--ink-soft); margin-bottom:6px; }
+  .progress-track{ height:6px; background:var(--hairline); border-radius:99px; overflow:hidden; }
+  .progress-fill{ height:100%; background:var(--accent); border-radius:99px; transition:width .3s ease; }
+
+  .stem-card{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:12px;
+    padding:26px 28px; box-shadow:var(--shadow); margin-bottom:20px;
+  }
+  .stem-card .vignette-tag{
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--ink-soft);
+    text-transform:uppercase; letter-spacing:.08em; margin-bottom:10px; display:block;
+  }
+  .stem{ font-size:1.14rem; line-height:1.55; font-weight:400; }
+
+  .opts{ display:flex; flex-direction:column; gap:10px; }
+  .opt{
+    display:flex; align-items:flex-start; gap:12px; text-align:left;
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; font-size:.98rem; line-height:1.45; color:var(--ink);
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .opt:hover:not(:disabled){ border-color:var(--accent); }
+  .opt:disabled{ cursor:default; }
+  .opt .letter{
+    font-family:'JetBrains Mono',monospace; font-weight:600; font-size:.82rem;
+    width:22px; height:22px; border-radius:6px; background:var(--accent-soft); color:var(--accent-ink);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;
+  }
+  .opt.correct{ background:var(--good-soft); border-color:var(--good); }
+  .opt.correct .letter{ background:var(--good); color:var(--paper-raised); }
+  .opt.incorrect{ background:var(--bad-soft); border-color:var(--bad); }
+  .opt.incorrect .letter{ background:var(--bad); color:var(--paper-raised); }
+  .opt.dim{ opacity:.55; }
+
+  .explain{
+    margin-top:16px; padding:16px 18px; border-radius:10px; background:var(--accent-soft);
+    border-left:3px solid var(--accent); font-size:.92rem; line-height:1.55; color:var(--ink);
+  }
+  .explain b{ color:var(--accent-ink); }
+
+  .quiz-nav{ display:flex; justify-content:flex-end; margin-top:20px; }
+  .next-btn{
+    background:var(--accent); color:var(--paper-raised); border:none; border-radius:8px;
+    padding:11px 22px; font-size:.92rem; font-weight:600; display:flex; align-items:center; gap:8px;
+    box-shadow:var(--shadow);
+  }
+  .next-btn:disabled{ background:var(--hairline); color:var(--ink-soft); box-shadow:none; cursor:not-allowed; }
+  .next-btn:not(:disabled):hover{ filter:brightness(1.06); }
+
+  /* ---------- summary ---------- */
+  .summary{ padding:40px 0; text-align:center; }
+  .summary .ring{
+    width:132px; height:132px; margin:0 auto 20px; position:relative;
+  }
+  .summary .ring svg{ transform:rotate(-90deg); }
+  .summary .ring .pct{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-size:1.7rem; font-weight:600;
+  }
+  .summary h2{ font-size:1.4rem; margin-bottom:6px; }
+  .summary p{ color:var(--ink-soft); margin:0 0 26px; }
+  .summary-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .btn{
+    border:1px solid var(--hairline); background:var(--paper-raised); color:var(--ink);
+    border-radius:8px; padding:10px 18px; font-size:.9rem; font-weight:500;
+  }
+  .btn.primary{ background:var(--accent); color:var(--paper-raised); border-color:var(--accent); font-weight:600; }
+  .btn:hover{ border-color:var(--accent); }
+
+  .review-list{ text-align:left; max-width:640px; margin:30px auto 0; display:flex; flex-direction:column; gap:10px; }
+  .review-item{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; font-size:.88rem; display:flex; gap:10px; align-items:flex-start;
+  }
+  .review-item .mark{ font-size:.85rem; margin-top:1px; }
+  .review-item .mark.miss{ color:var(--bad); }
+  .review-item .mark.hit{ color:var(--good); }
+  .review-item div{ line-height:1.5; color:var(--ink-soft); }
+  .review-item b{ color:var(--ink); font-weight:500; }
+
+  [hidden]{ display:none !important; }
+
+  footer{
+    max-width:1040px; margin:0 auto; padding:40px 24px 0; color:var(--ink-soft);
+    font-size:.78rem; border-top:1px solid var(--hairline); margin-top:56px; padding-top:20px;
+  }
+
+  @media (max-width:560px){
+    .stem-card{ padding:20px; }
+    .topbar{ flex-direction:column; align-items:flex-start; gap:6px; }
+    .topstat{ text-align:left; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">P2 &middot; Week 11 &middot; Musculoskeletal Medicine</span>
+    <h1>Case Bank</h1>
+  </div>
+  <div class="topstat" id="topstat">80 questions &middot; 8 modules</div>
+</div>
+
+<main class="shell">
+
+  <section id="dashboard">
+    <div class="intro">
+      <p>Ten clinical-vignette questions per module, built from the Week 11 Elentra slides and learning objectives (MSK infections, acute monoarthritis, JIA, polyarthritis, the seronegative arthritides, osteoarthritis, vasculitis and connective tissue disorders). Options are written to similar length, and the correct answer&#39;s position varies &mdash; work the case, don&#39;t read the answer key by eye.</p>
+    </div>
+    <div id="groups"></div>
+  </section>
+
+  <section id="quizview" hidden>
+    <div class="quiz-header">
+      <button class="back-btn" id="backBtn">&larr; All modules</button>
+      <div class="quiz-title">
+        <div class="kicker" id="quizGroup"></div>
+        <h2 id="quizTitle"></h2>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="progressLabel">Question 1 of 10</span>
+        <span id="scoreLabel">Score 0 / 0</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="stem-card">
+      <span class="vignette-tag" id="qTag">Case</span>
+      <div class="stem" id="qStem"></div>
+    </div>
+
+    <div class="opts" id="opts"></div>
+    <div class="explain" id="explain" hidden></div>
+
+    <div class="quiz-nav">
+      <button class="next-btn" id="nextBtn" disabled>Next question &rarr;</button>
+    </div>
+  </section>
+
+  <section id="summaryview" hidden>
+    <div class="summary">
+      <div class="ring">
+        <svg width="132" height="132" viewBox="0 0 132 132">
+          <circle cx="66" cy="66" r="58" fill="none" stroke="var(--hairline)" stroke-width="10"/>
+          <circle id="ringFg" cx="66" cy="66" r="58" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round"/>
+        </svg>
+        <div class="pct" id="ringPct">0%</div>
+      </div>
+      <h2 id="sumTitle"></h2>
+      <p id="sumSub"></p>
+      <div class="summary-actions">
+        <button class="btn primary" id="retryBtn">Retry module</button>
+        <button class="btn" id="dashBtn">Back to modules</button>
+      </div>
+      <div class="review-list" id="reviewList"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Week 11 study material &middot; P2 Musculoskeletal Block &middot; for personal review use</footer>
+
+<script id="data" type="application/json">[{"id": "msk-infections", "title": "MSK Infections", "group": "Monoarthritis", "q": [{"stem": "A 28-year-old man has acute right knee pain, fever and a markedly reduced range of motion. Which next step is most important?", "opts": ["MRI of the knee", "Joint aspirate with cell count, microscopy and Gram stain", "Serum uric acid", "Oral NSAID and review in a week"], "correct": 1, "explain": "Fever, pain and a significant reduction in ROM are red flags for infection. Aspirate the joint, and add blood cultures, CBC, electrolytes, creatinine and CRP."}, {"stem": "Which organism is the most common cause of septic arthritis in adults?", "opts": ["Neisseria gonorrhoeae", "Pasteurella multocida", "Staphylococcus aureus", "Kingella kingae"], "correct": 2, "explain": "Adults: S. aureus (MSSA and MRSA) and streptococci (groups A, C, G), with Gram-negatives less often."}, {"stem": "A patient with suspected septic arthritis has Gram-positive cocci on aspirate. What is the appropriate treatment plan?", "opts": ["Oral antibiotics alone for 7 days", "Intra-articular steroid injection", "Colchicine and rest", "Surgical drainage and irrigation plus systemic antibiotics"], "correct": 3, "explain": "Treatment has two arms: surgical decompression, irrigation and debridement, plus systemic antibiotics. S. aureus usually gets 4–6 weeks."}, {"stem": "A sexually active 22-year-old has tenosynovitis, a pustular rash and polyarthralgia. Which diagnosis fits, and which drug treats it?", "opts": ["Disseminated gonococcal infection; ceftriaxone", "Lyme arthritis; RIPE therapy", "Reactive arthritis; vancomycin", "Tuberculous arthritis; ceftriaxone"], "correct": 0, "explain": "Disseminated gonococcal infection gives tenosynovitis, pustular dermatitis and polyarthralgia. Send blood culture and urine, rectal and throat NAAT or culture; treat with ceftriaxone for 10–14 days."}, {"stem": "A patient has fever and an acute polyarthritis from a bacterial cause. What should you think of first, according to the slides?", "opts": ["Parvovirus B19", "Infective endocarditis", "Chikungunya", "Gout"], "correct": 1, "explain": "'Think IE' for bacterial polyarthritis. Viral causes include parvovirus B19, chikungunya, Zika, dengue, hepatitis B and C, and HIV."}, {"stem": "A 6-year-old with sickle cell disease has hematogenous osteomyelitis. Besides S. aureus, which organism should you consider specifically?", "opts": ["Pasteurella", "Eikenella", "Salmonella", "Pseudomonas"], "correct": 2, "explain": "Pediatric osteomyelitis is hematogenous, in the vascular metaphysis, and S. aureus is always considered. Salmonella is linked to sickle cell disease."}, {"stem": "A 55-year-old man has 5 days of severe low back pain with a normal neurologic exam. Vertebral osteomyelitis is suspected. What are the next steps?", "opts": ["Lumbar X-ray only", "CT only and outpatient follow-up", "Empiric oral quinolone and review", "Blood cultures and MRI spine"], "correct": 3, "explain": "X-ray and CT aren't sensitive enough. Get blood cultures and MRI spine, consider a spinal biopsy, and look for paravertebral and epidural abscess."}, {"stem": "A patient is improving clinically on adequate antibiotics for osteomyelitis. What does Choosing Wisely advise about repeat MRI?", "opts": ["Don't routinely repeat it, because findings can persist despite resolution", "Repeat weekly to guide duration", "Repeat at the end of therapy for everyone", "Replace it with a tagged WBC scan each month"], "correct": 0, "explain": "MRI findings persist despite resolution, so don't routinely repeat imaging in patients improving on adequate therapy."}, {"stem": "A young man punched someone and now has an infected wound over the MCP joint. Which organism is classically linked to this?", "opts": ["Pasteurella multocida", "Eikenella corrodens", "Kingella kingae", "Propionibacterium acnes"], "correct": 1, "explain": "Human 'bites' after fights involve the MCP joint, with mixed flora and Eikenella. Cat bites involve PIP and DIP joints, with Pasteurella. Use broad-spectrum antibiotics."}, {"stem": "A swollen flexed finger has tenderness along the tendon sheath and intense pain on extension. What is the diagnosis and treatment?", "opts": ["Cellulitis; rest, elevation and antibiotics alone", "Felon; observation", "Suppurative tenosynovitis; incision and drainage, wound care, antibiotics", "Paronychia; topical antifungal"], "correct": 2, "explain": "These are Kanavel's four cardinal signs. Deep infection needs I&D, wound care and antibiotics, plus rest and elevation."}]}, {"id": "acute-monoarthritis", "title": "Acute Monoarthritis", "group": "Monoarthritis", "q": [{"stem": "A 62-year-old with diabetes and a knee replacement has a hot, red left ankle and a temperature of 38.6 °C. What must you do first?", "opts": ["Start allopurinol", "Inject a corticosteroid", "Aspirate the joint", "Order a serum uric acid and wait"], "correct": 2, "explain": "If the joint is red, aspirate it. Infection comes first on the differential until proven otherwise."}, {"stem": "Which three tests make up the '3 C's' for synovial fluid?", "opts": ["Cell count, culture, crystals", "CRP, creatinine, CBC", "Cell count, CCP, complement", "Culture, CT, colchicine"], "correct": 0, "explain": "Cell count, culture and sensitivity, and crystals, plus Gram stain."}, {"stem": "What is the most common route of infection in septic arthritis?", "opts": ["Direct inoculation", "Contiguous spread", "Lymphatic spread", "Hematogenous spread"], "correct": 3, "explain": "Hematogenous spread from a remote site is #1, followed by direct inoculation and spread from a contiguous site such as infected bone."}, {"stem": "Roughly what proportion of septic arthritis is caused by Gram-positive cocci, and which genus leads?", "opts": ["80%; staphylococcus", "15%; streptococcus", "50%; Gram-negative rods", "95%; anaerobes"], "correct": 0, "explain": "Gram-positive cocci cause about 80%: staph 60+%, strep 20%. Gram-negatives cause about 15% (immune compromise, elderly, neonates, IV drug users)."}, {"stem": "A 48-year-old man on hydrochlorothiazide has a hot first MTP two days after surgery. Aspirate shows needle-shaped crystals. How do they behave under polarized light?", "opts": ["Positively birefringent", "Non-birefringent", "Negatively birefringent", "Intracellular rhomboids"], "correct": 2, "explain": "Urate crystals are needle-shaped and negatively birefringent. Calcium pyrophosphate crystals are rhomboid and positively birefringent."}, {"stem": "A serum uric acid is normal during a suspected gout attack. What does this mean?", "opts": ["Gout is ruled out", "Levels may be normal during an attack, so aspirate", "The patient has pseudogout", "Start allopurinol immediately"], "correct": 1, "explain": "Uric acid may be normal in an acute attack, and hyperuricemia can't diagnose gout. Crystals prove the diagnosis."}, {"stem": "What is the most common reason for hyperuricemia?", "opts": ["Under-excretion of uric acid", "High purine diet alone", "Tumour lysis", "Overproduction by xanthine oxidase"], "correct": 0, "explain": "The 'clogged drain': under-excretion is the most common cause. Many people with hyperuricemia never get gout."}, {"stem": "Which is a trigger in the SMARTS mnemonic for gout?", "opts": ["Sulfasalazine", "Sunlight", "Smoking", "Starting or stopping allopurinol"], "correct": 3, "explain": "SMARTS: Surgery, Mechanical injury, Alcohol, Recent illness, Travel or dehydration, Start or stop allopurinol."}, {"stem": "A patient is in the middle of a gout attack and has had three attacks this year. What is the correct plan for allopurinol?", "opts": ["Start it today at full dose", "Treat the attack first; start later with NSAID or colchicine prophylaxis", "Never use it", "Use it as the sole acute treatment"], "correct": 1, "explain": "Mop up the water first. Don't start allopurinol during an attack. Later use prophylaxis, and target the lower limit of the reference range."}, {"stem": "A 78-year-old woman has a swollen, warm right knee after a brisk walk. Fluid shows rhomboid intracellular positively birefringent crystals. What is the diagnosis?", "opts": ["Gout", "Septic arthritis", "Acute pseudogout", "Osteoarthritis flare without crystals"], "correct": 2, "explain": "Older patient, knee, associated OA and rhomboid positively birefringent crystals: pseudogout."}]}, {"id": "jia", "title": "Juvenile Idiopathic Arthritis", "group": "Polyarthritis", "q": [{"stem": "Which combination is required for a diagnosis of JIA?", "opts": ["Onset under 18, 5+ joints, over 3 months, positive ANA", "Onset under 16, one or more joints, over 6 weeks, other causes excluded", "Onset under 12, positive RF, over 6 weeks", "Any age, fever, rash and arthritis"], "correct": 1, "explain": "Age of onset under 16, arthritis in one or more joints, duration over 6 weeks, and exclusion of other causes."}, {"stem": "A 3-year-old girl has a painless limp and a warm swollen knee, and is otherwise well. Which subtype is most likely?", "opts": ["Systemic", "RF-positive polyarticular", "Oligoarticular", "Enthesitis-related"], "correct": 2, "explain": "Oligoarticular JIA: young girls, peak 2–4 years, a 'painless limp', knees and ankles. The hip is very uncommon."}, {"stem": "A 3-year-old boy has daily fever spikes to 39 °C with normal temperatures between, a salmon rash with fever, and splenomegaly. Which serious complication should you watch for?", "opts": ["Macrophage activation syndrome", "Scleroderma renal crisis", "Giant cell arteritis", "Antiphospholipid syndrome"], "correct": 0, "explain": "This is systemic JIA (Still's disease). Macrophage activation syndrome is the unique serious complication on the slides."}, {"stem": "What is the most common extra-articular manifestation of JIA?", "opts": ["Pericarditis", "Malar rash", "Interstitial lung disease", "Anterior uveitis"], "correct": 3, "explain": "Anterior uveitis, typically asymptomatic except in ERA. It requires regular slit lamp screening."}, {"stem": "What is the role of ANA in a child with suspected JIA?", "opts": ["It diagnoses JIA", "It predicts uveitis risk", "It monitors joint activity", "It rules out systemic JIA"], "correct": 1, "explain": "ANA prognosticates uveitis risk and does NOT diagnose JIA. RF classifies polyarticular disease. HLA-B27 is associated with ERA."}, {"stem": "A 13-year-old boy has heel pain, sacroiliitis and a painful red eye with photophobia. His father has AS. Which subtype fits?", "opts": ["Oligoarticular", "Systemic", "Enthesitis-related", "RF-negative polyarticular"], "correct": 2, "explain": "ERA: boys, onset over 10, enthesitis, sacroiliitis, HLA-B27 in 50%, family history of AS, and symptomatic uveitis."}, {"stem": "Which feature should prompt you to consider a diagnosis other than JIA?", "opts": ["Morning stiffness", "Improvement with movement", "Response to NSAIDs", "Night pain disturbing sleep with severe joint redness"], "correct": 3, "explain": "Red flags: constitutional symptoms, acute onset, severe pain, inability to walk, night pain, severe tenderness or redness."}, {"stem": "Which fact about JIA uveitis explains why screening is needed?", "opts": ["It does not parallel joint activity and is usually silent", "It only occurs in systemic JIA", "It always appears after 10 years", "It always causes a red painful eye"], "correct": 0, "explain": "It usually develops in the first 4 years, doesn't parallel the joint course, and is typically asymptomatic. Complications can lead to blindness."}, {"stem": "A 5-year-old has an oligoarticular course that has not improved. How is she treated next?", "opts": ["As a polyarticular course, with second-line agents", "With antibiotics", "With IL-1 blockade only", "With arthroscopy"], "correct": 0, "explain": "Oligo: NSAIDs and/or steroid injections. Not improving or extended: treat as polyarticular (methotrexate or leflunomide, then biologics)."}, {"stem": "A child has active systemic JIA with fever. Which agents are used beyond NSAIDs and systemic steroids?", "opts": ["Anti-TNF eye drops", "Allopurinol", "IL-1 blocker or IL-6 blocker", "Hydroxychloroquine alone"], "correct": 2, "explain": "Systemic course: NSAIDs, systemic steroids, IL-1 blocker (anakinra), IL-6 blocker (tocilizumab)."}]}, {"id": "polyarthritis", "title": "Approach to Polyarthritis", "group": "Polyarthritis", "q": [{"stem": "How many joints define polyarthritis on the slides, and what duration defines chronic?", "opts": ["2 joints; over 2 weeks", "3 joints; over 3 months", "4 or more joints; over 6 weeks", "10 joints; over 1 year"], "correct": 2, "explain": "Mono 1, oligo 2–3, poly 4 or more. Six weeks separates acute from chronic."}, {"stem": "A 35-year-old woman has 3 months of symmetric swelling of MCPs, wrists and knees, with DIPs spared. Which diagnosis fits best?", "opts": ["Rheumatoid arthritis", "Osteoarthritis", "Psoriatic arthritis", "Polyarticular gout"], "correct": 0, "explain": "Symmetric small and large joints with DIP sparing is RA's pattern. DIPs are involved in OA and psoriatic arthritis."}, {"stem": "Which pattern points to psoriatic arthritis?", "opts": ["Symmetric, mainly weight-bearing", "Isolated first MTP", "Migratory large joints", "Asymmetric small and large joints with dactylitis and enthesitis"], "correct": 3, "explain": "Asymmetric polyarthritis points to psoriatic arthritis (also gout and reactive arthritis). Dactylitis and enthesitis add support."}, {"stem": "A migratory polyarthritis (joint resolves, then a new joint flares) suggests which group?", "opts": ["RA, CTD, degenerative", "Palindromic rheumatism, rheumatic fever, early gonococcal", "Gout, pseudogout", "Osteoarthritis only"], "correct": 1, "explain": "Progressive additive disease is RA, CTD and degenerative. Episodic is crystal disease."}, {"stem": "A well patient with diffuse arthralgia and no swollen joints asks for an ANA and RF. What is the best response?", "opts": ["Order both, since they are harmless", "Order anti-dsDNA instead", "Don't order reflexively; a positive result may not mean disease", "Order them monthly"], "correct": 2, "explain": "ANA is found in up to 30% of normal people and RF in 5–20% of healthy people. Consider the differential first."}, {"stem": "Which statement about anti-CCP is correct?", "opts": ["About 95% specific for RA and can precede arthritis by years", "Used to monitor flares", "Found in 30% of healthy people", "Only positive in SLE"], "correct": 0, "explain": "Anti-CCP helps separate RA from other RF-positive conditions. RF and anti-CCP are for diagnosis, not monitoring."}, {"stem": "A negative ANA in a patient with possible connective tissue disease most likely means:", "opts": ["SLE is confirmed", "Repeat every week", "Order anti-dsDNA next", "CTD is typically ruled out"], "correct": 3, "explain": "Positive doesn't rule in CTD; negative typically rules it out. Anti-dsDNA can't occur with a negative ANA."}, {"stem": "Which antibody pairing is correct?", "opts": ["Anti-Jo1: scleroderma", "Anti-histone: drug-induced lupus", "Anti-Scl70: Sjögren's", "Anti-Ro: dermatomyositis"], "correct": 1, "explain": "Anti-dsDNA and anti-Sm: SLE. Ro and La: Sjögren's. Centromere, Scl70, RNA Pol3: scleroderma. Jo1: dermatomyositis. RNP: mixed CTD."}, {"stem": "Synovial fluid has WBC 30,000, 80% PMNs, cloudy with a positive Gram stain. How is it classified?", "opts": ["Normal", "Non-inflammatory", "Infectious", "Hemorrhagic"], "correct": 2, "explain": "Infectious: over 2,000 WBC, over 75% PMNs, low viscosity, positive Gram stain and culture."}, {"stem": "Which X-ray finding favours degenerative over inflammatory arthritis?", "opts": ["Periarticular osteopenia", "Fusiform soft tissue swelling", "Periostitis", "Osteophytes with asymmetric joint space narrowing"], "correct": 3, "explain": "Degenerative: osteophytes, subchondral sclerosis and cysts, asymmetric narrowing. Inflammatory: osteopenia, fusiform swelling, symmetric narrowing, erosions."}]}, {"id": "seronegative", "title": "Seronegative Arthritides", "group": "Polyarthritis", "q": [{"stem": "A 26-year-old man has 6 months of insidious low back pain, 90 minutes of morning stiffness, night pain, and improvement with exercise. What type of back pain is this?", "opts": ["Mechanical", "Inflammatory", "Radicular", "Malignant"], "correct": 1, "explain": "Inflammatory: under 40, insidious, over 3 months, over 60 min of stiffness, night pain, improves with activity."}, {"stem": "Why is spondyloarthritis called 'seronegative'?", "opts": ["ANA is always negative", "HLA-B27 is absent", "Rheumatoid factor is absent", "Inflammatory markers are normal"], "correct": 2, "explain": "Seronegative refers to the absence of rheumatoid factor."}, {"stem": "Where does ankylosing spondylitis classically begin?", "opts": ["Sacroiliac joints", "Cervical spine", "First MTP", "DIP joints"], "correct": 0, "explain": "It begins in the SI joints and slowly ascends. New bone eventually forms a rigid 'bamboo spine'."}, {"stem": "What is the earliest radiographic change of sacroiliitis?", "opts": ["Complete bony ankylosis", "Sacral sclerosis", "Jug-handle syndesmophytes", "Erosion on the iliac side of the SI joint"], "correct": 3, "explain": "Cartilage is thinner on the iliac side. Later come pseudowidening, sclerosis and fusion."}, {"stem": "A patient has inflammatory back pain, MRI sacroiliitis and a normal SI X-ray. What is the diagnosis?", "opts": ["Mechanical back pain", "Non-radiographic axial SpA", "Psoriatic arthritis", "Osteoarthritis"], "correct": 1, "explain": "nr-axSpA lacks diagnostic X-ray changes but has diagnostic MRI findings."}, {"stem": "Which is the most common extra-articular feature in AS on the slides, at 25–30%?", "opts": ["Anterior uveitis", "Aortic insufficiency", "Atlantoaxial subluxation", "IgA nephropathy"], "correct": 0, "explain": "From the ANKSPOND list. Microscopic colitis is also common (30–60%)."}, {"stem": "Which joint pattern is most common in psoriatic arthritis?", "opts": ["Predominantly DIP", "Arthritis mutilans", "Asymmetric oligoarthritis", "Rheumatoid-like polyarthritis"], "correct": 2, "explain": "Asymmetric oligoarthritis over 50%; axial 20–40%; polyarthritis 15–25%; DIP 5–10%; mutilans 5%."}, {"stem": "Which feature best distinguishes axial psoriatic arthritis from ankylosing spondylitis?", "opts": ["Bilateral symmetric sacroiliitis", "Asymmetric sacroiliitis with jug-handle syndesmophytes", "Normal spine X-rays", "RF positivity"], "correct": 1, "explain": "Psoriatic axial disease has asymmetric sacroiliitis and large non-marginal syndesmophytes. AS sacroiliitis is usually bilateral and symmetric."}, {"stem": "A 30-year-old has conjunctivitis, urethritis and large joint oligoarthritis two weeks after diarrhea. Which is correct?", "opts": ["The joint is infected, so give 6 weeks of IV antibiotics", "He needs urate-lowering therapy", "It's RF positive and HLA-B27 unrelated", "It's a reaction to infection elsewhere; treat based on symptoms"], "correct": 3, "explain": "Reactive arthritis: 'can't see, can't pee, can't climb a tree', 1–3 weeks after GI or GU infection, RF negative, HLA-B27 linked."}, {"stem": "Which skin finding is linked to reactive arthritis?", "opts": ["Malar rash", "Keratoderma blennorrhagicum", "Heliotrope rash", "Livedo reticularis"], "correct": 1, "explain": "Reactive arthritis has psoriasis-like lesions: circinate balanitis and keratoderma blennorrhagicum."}]}, {"id": "osteoarthritis", "title": "Osteoarthritis", "group": "Osteoarthritis", "q": [{"stem": "A 52-year-old has worsening knee pain with activity, 5 minutes of morning stiffness and a cool, slightly swollen knee with crepitus. No red flags. What is the most likely diagnosis?", "opts": ["Septic arthritis", "Rheumatoid arthritis", "Knee osteoarthritis", "Gout"], "correct": 2, "explain": "Activity-related pain, stiffness under 30 min and a cool effusion make this chronic monoarthritis from OA."}, {"stem": "How is osteoarthritis diagnosed?", "opts": ["Clinically: typical symptoms with no other cause", "X-ray changes alone", "MRI for all patients", "A blood test"], "correct": 0, "explain": "Must have chronic symptoms over 6 weeks, worse with activity, and no other cause. X-ray is for staging."}, {"stem": "When is MRI appropriate in osteoarthritis?", "opts": ["Routinely at diagnosis", "Yearly to monitor", "Before physiotherapy", "Almost never; only if the diagnosis is in doubt"], "correct": 3, "explain": "Advanced imaging is expensive and should be used sparingly."}, {"stem": "Which K/L grades correspond to late to end-stage OA on the slides?", "opts": ["Grades 1–2", "Grades 3–4", "Grade 1 only", "Grades 0–1"], "correct": 1, "explain": "K/L 1–2 is early OA; K/L 3–4 is late to end-stage OA."}, {"stem": "A 36-year-old soccer player tore her ACL at 23 and now has knee pain and swelling. What is the correct assessment?", "opts": ["She is too young for OA", "She needs arthroscopy", "This is post-traumatic secondary OA", "This must be RA"], "correct": 2, "explain": "Post-traumatic OA is secondary. Her risk of knee replacement by 55 is over 50%."}, {"stem": "Which statement about OA pathophysiology matches the slides?", "opts": ["It is simply wear and tear", "It only affects cartilage", "It is caused by age", "It is a sick joint from stress, inflammation and failed healing"], "correct": 3, "explain": "All joint tissues are affected. Joint failure, like heart failure, comes from tissues failing to heal."}, {"stem": "How much does female sex raise the risk of OA?", "opts": ["1.4×", "4×", "10×", "It lowers risk"], "correct": 0, "explain": "Other major factors: obesity and metabolic syndrome, ageing, mechanical factors, polygenic genetics."}, {"stem": "Which is a secondary cause of OA?", "opts": ["Sedentary lifestyle alone", "Hemochromatosis", "Age alone", "Female sex"], "correct": 1, "explain": "Secondary causes: trauma, metabolic and endocrine disease (acromegaly, hyperparathyroidism, hemochromatosis), monogenic disease, inflammatory joint damage."}, {"stem": "What is the recommended physical activity and weight loss target for knee OA?", "opts": ["30 min a week; 20% body weight", "Bed rest until pain settles", "150 min a week; 5% total body weight", "Daily running only; no weight goal"], "correct": 2, "explain": "Also neuromuscular control (Tai Chi, GLA:D), devices, joint protection and CBT."}, {"stem": "Which therapy is not recommended as physiotherapy for OA?", "opts": ["Neuromuscular balance exercise", "Strength training", "Walking", "TENS and therapeutic ultrasound"], "correct": 3, "explain": "Physiotherapy means ACTIVE therapy. Passive therapies aren't shown to be beneficial."}]}, {"id": "vasculitis", "title": "Vasculitis", "group": "Systemic Rheumatology", "q": [{"stem": "Which presentation should make you suspect a primary vasculitis?", "opts": ["Isolated tension headache", "Chronically unwell, weight loss, multi-organ symptoms, purpura, no infection or cancer", "Single knee OA", "Mechanical back pain"], "correct": 1, "explain": "Also very sick patients with multi-organ failure, especially pulmonary hemorrhage and renal dysfunction."}, {"stem": "A 75-year-old has a new temporal headache, scalp tenderness and jaw pain when chewing. What should you do first?", "opts": ["Wait for biopsy before treating", "Order CT sinuses and review", "Draw ESR and CRP and start prednisone immediately", "Start an NSAID"], "correct": 2, "explain": "Prednisone 1 mg/kg (max 60 mg). If blood can't be drawn at once, don't wait to start, and don't wait for results."}, {"stem": "Which vessels does giant cell arteritis affect?", "opts": ["Large vessels, especially cranial arteries", "Only capillaries", "Small renal vessels only", "Veins of the legs"], "correct": 0, "explain": "A large vessel vasculitis with a predilection for cranial arteries, particularly the temporal artery."}, {"stem": "Which patient cannot have GCA by the slides' criteria?", "opts": ["A 55-year-old woman", "A 72-year-old man", "An 88-year-old woman", "A 40-year-old woman"], "correct": 3, "explain": "Only over 50, and most are over 70. Lifetime risk is 1% in women, 0.5% in men."}, {"stem": "A patient with suspected GCA has a negative temporal artery biopsy. What can you conclude?", "opts": ["GCA is excluded", "A negative biopsy can't rule it out, because of skip lesions", "Stop prednisone at once", "The diagnosis is ANCA vasculitis"], "correct": 1, "explain": "A positive biopsy is 100% specific, but 50–70% are negative due to skip lesions."}, {"stem": "Both ESR and CRP are normal in a patient with possible GCA. What does this suggest?", "opts": ["GCA is highly unlikely", "GCA is certain", "Vision loss is imminent", "Repeat next year"], "correct": 0, "explain": "Under 2% of GCA is negative for both."}, {"stem": "What is true of vision loss in GCA?", "opts": ["It never occurs", "It is always painful and reversible", "It occurs in over 80%", "Acute painless vision loss is permanent"], "correct": 3, "explain": "Occurs in 15–20%. Amaurosis fugax can be a warning. Vision loss or stroke symptoms need the emergency department."}, {"stem": "A patient on long-term GCA prednisone needs protection from steroid effects. Which set is on the slides?", "opts": ["PPI, calcium and vitamin D, bisphosphonate", "ACE inhibitor, statin, aspirin", "Allopurinol and colchicine", "Antibiotic prophylaxis alone"], "correct": 0, "explain": "Protect against steroid side effects from the start."}, {"stem": "Which pairing of ANCA pattern, target and disease is correct?", "opts": ["c-ANCA, MPO, EGPA", "p-ANCA, PR3, GPA", "c-ANCA, PR3, GPA", "p-ANCA, Scl70, MPA"], "correct": 2, "explain": "c-ANCA with anti-PR3 is most common in GPA. p-ANCA with anti-MPO is most common in MPA or EGPA."}, {"stem": "A patient has a positive ANCA and a heart murmur with fever. What must be considered?", "opts": ["False positive from infective endocarditis", "Automatic diagnosis of GPA", "Gout", "Osteoarthritis"], "correct": 0, "explain": "False positives: infections (endocarditis), cancer, medications and cocaine."}]}, {"id": "ctd", "title": "Connective Tissue Disorders", "group": "Systemic Rheumatology", "q": [{"stem": "A 22-year-old woman has a malar rash sparing the nasolabial folds, photosensitivity, oral ulcers, thrombocytopenia and positive anti-Sm. What is the diagnosis?", "opts": ["Rosacea", "Systemic sclerosis", "Sjögren's syndrome", "Systemic lupus erythematosus"], "correct": 3, "explain": "SLE classification needs at least 4 of 11 ACR criteria. Rosacea doesn't spare the nasolabial folds."}, {"stem": "What does a negative ANA mean when you are considering SLE?", "opts": ["SLE is highly unlikely", "SLE is confirmed", "Order anti-dsDNA", "It has no value"], "correct": 0, "explain": "Over 95% of SLE is ANA positive. It is a screen: a positive result never rules in disease."}, {"stem": "Which features are common in SLE but not ACR criteria?", "opts": ["Malar rash and oral ulcers", "Raynaud's and alopecia", "Serositis and nephritis", "Seizures and psychosis"], "correct": 1, "explain": "Raynaud's and alopecia are common but aren't in the 11 ACR criteria."}, {"stem": "Which drug should every SLE patient receive unless contraindicated?", "opts": ["Cyclophosphamide", "Methotrexate", "Hydroxychloroquine", "Belimumab"], "correct": 2, "explain": "The anchor drug. It helps skin and joints, and may protect against major flares. Cyclophosphamide is only for serious major organ disease."}, {"stem": "Which WHO class of lupus nephritis is the worst?", "opts": ["Class 1: minimal change", "Class 2: mesangial", "Class 5: membranous", "Class 4: diffuse proliferative"], "correct": 3, "explain": "Protein and blood in urine, with a rising creatinine, are worrying."}, {"stem": "Why do SLE patients die later in their disease course?", "opts": ["Accelerated atherosclerosis", "Gout", "Osteoarthritis", "Uveitis"], "correct": 0, "explain": "Up to 50-fold more cardiovascular events than matched controls. Infection is another major cause. Address smoking, BP, lipids and diabetes."}, {"stem": "A woman with recurrent DVTs and pregnancy losses has livedo reticularis, low platelets and a prolonged PTT. What is the diagnosis and treatment for thrombosis?", "opts": ["Sjögren's; hydroxychloroquine", "Antiphospholipid syndrome; long-term warfarin", "Scleroderma; ACE inhibitor", "Myositis; high-dose steroids"], "correct": 1, "explain": "APS with thrombosis: long-term warfarin. Recurrent fetal loss: ASA plus heparin. Catastrophic: IV heparin and steroids, consider plasmapheresis or IVIG."}, {"stem": "What does a false-positive VDRL suggest in a young woman with no syphilis?", "opts": ["Antiphospholipid antibodies", "Gout", "Rheumatoid arthritis", "Osteoarthritis"], "correct": 0, "explain": "VDRL relies on a phospholipid, so APS antibodies can make it falsely positive. Half of APS is associated with SLE."}, {"stem": "A woman has dry gritty eyes, dental caries, parotid swelling, positive RF and positive anti-Ro and anti-La. Which malignancy is she at increased risk of?", "opts": ["Ovarian adenocarcinoma", "Hepatocellular carcinoma", "MALT lymphoma", "Melanoma"], "correct": 2, "explain": "Sjögren's has a higher risk of a B cell lymphoma, MALT."}, {"stem": "A patient has proximal weakness, a raised CK, Gottron's papules and a heliotrope rash. Which additional evaluation matters in an older adult?", "opts": ["Screening for malignancy", "Serum uric acid", "HLA-B27", "Joint aspiration"], "correct": 0, "explain": "Dermatomyositis in the elderly may be paraneoplastic. Ovarian, gastric, lung and cervical cancers are more common."}]}]</script>
+<script>
+(function(){
+  "use strict";
+  var MODULES = JSON.parse(document.getElementById('data').textContent);
+  var CIRC = 2 * Math.PI * 58;
+
+  var store = { get:function(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+                set:function(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} } };
+  var results = store.get('caseBankResultsWk11-v1') || {};
+
+  var dashboard = document.getElementById('dashboard');
+  var quizview = document.getElementById('quizview');
+  var summaryview = document.getElementById('summaryview');
+  var groupsEl = document.getElementById('groups');
+
+  var state = { modIdx:-1, qIdx:0, correctCount:0, answers:[], locked:false };
+
+  function letterFor(i){ return String.fromCharCode(65+i); }
+
+  function renderDashboard(){
+    groupsEl.innerHTML = '';
+    var groups = [];
+    MODULES.forEach(function(m){
+      var g = groups.filter(function(x){ return x.name===m.group; })[0];
+      if(!g){ g = { name:m.group, mods:[] }; groups.push(g); }
+      g.mods.push(m);
+    });
+    groups.forEach(function(g){
+      var h = document.createElement('div');
+      h.className = 'group-heading';
+      h.innerHTML = '<h2>'+g.name+'</h2><div class="rule"></div><span class="count">'+g.mods.length+' module'+(g.mods.length>1?'s':'')+'</span>';
+      groupsEl.appendChild(h);
+
+      var grid = document.createElement('div');
+      grid.className = 'grid';
+      g.mods.forEach(function(m){
+        var idx = MODULES.indexOf(m);
+        var r = results[m.id];
+        var card = document.createElement('button');
+        card.className = 'card';
+        var badge = '<span class="badge new">Not started</span>';
+        var scoreLine = '';
+        if(r){
+          var pct = Math.round(100*r.score/r.total);
+          badge = pct>=80 ? '<span class="badge done">Completed</span>' : '<span class="badge retry">Review again</span>';
+          scoreLine = '<span class="score">Best <b>'+r.score+' / '+r.total+'</b> ('+pct+'%)</span>';
+        } else {
+          scoreLine = '<span class="score">'+m.q.length+' questions</span>';
+        }
+        card.innerHTML =
+          '<span class="num">'+String(idx+1).padStart(2,'0')+' / 8</span>'+
+          '<h3>'+m.title+'</h3>'+
+          '<div class="card-foot">'+scoreLine+badge+'</div>';
+        card.addEventListener('click', function(){ startModule(idx); });
+        grid.appendChild(card);
+      });
+      groupsEl.appendChild(grid);
+    });
+  }
+
+  function startModule(idx){
+    state.modIdx = idx; state.qIdx = 0; state.correctCount = 0; state.answers = [];
+    dashboard.hidden = true; summaryview.hidden = true; quizview.hidden = false;
+    var m = MODULES[idx];
+    document.getElementById('quizGroup').textContent = m.group;
+    document.getElementById('quizTitle').textContent = m.title;
+    renderQuestion();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  function renderQuestion(){
+    var m = MODULES[state.modIdx];
+    var q = m.q[state.qIdx];
+    state.locked = false;
+    document.getElementById('progressLabel').textContent = 'Question '+(state.qIdx+1)+' of '+m.q.length;
+    document.getElementById('scoreLabel').textContent = 'Score '+state.correctCount+' / '+state.qIdx;
+    document.getElementById('progressFill').style.width = (100*state.qIdx/m.q.length)+'%';
+    document.getElementById('qTag').textContent = 'Case '+(state.qIdx+1);
+    document.getElementById('qStem').textContent = q.stem;
+
+    var optsEl = document.getElementById('opts');
+    optsEl.innerHTML = '';
+    q.opts.forEach(function(optText, i){
+      var b = document.createElement('button');
+      b.className = 'opt';
+      b.innerHTML = '<span class="letter">'+letterFor(i)+'</span><span>'+optText+'</span>';
+      b.addEventListener('click', function(){ selectOption(i); });
+      optsEl.appendChild(b);
+    });
+
+    document.getElementById('explain').hidden = true;
+    var nextBtn = document.getElementById('nextBtn');
+    nextBtn.disabled = true;
+    nextBtn.textContent = (state.qIdx === m.q.length-1) ? 'See results →' : 'Next question →';
+  }
+
+  function selectOption(i){
+    if(state.locked) return;
+    state.locked = true;
+    var m = MODULES[state.modIdx];
+    var q = m.q[state.qIdx];
+    var correct = (i === q.correct);
+    if(correct) state.correctCount++;
+    state.answers.push({ q:q, chosen:i, correct:correct });
+
+    var opts = document.querySelectorAll('#opts .opt');
+    opts.forEach(function(el, idx){
+      el.disabled = true;
+      if(idx === q.correct) el.classList.add('correct');
+      else if(idx === i) el.classList.add('incorrect');
+      else el.classList.add('dim');
+    });
+
+    var explain = document.getElementById('explain');
+    explain.innerHTML = '<b>'+(correct ? 'Correct. ' : 'Not quite. ')+'</b>'+q.explain;
+    explain.hidden = false;
+
+    document.getElementById('scoreLabel').textContent = 'Score '+state.correctCount+' / '+(state.qIdx+1);
+    document.getElementById('nextBtn').disabled = false;
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    var m = MODULES[state.modIdx];
+    if(state.qIdx < m.q.length-1){
+      state.qIdx++;
+      renderQuestion();
+    } else {
+      finishModule();
+    }
+  });
+
+  function finishModule(){
+    var m = MODULES[state.modIdx];
+    document.getElementById('progressFill').style.width = '100%';
+    quizview.hidden = true; summaryview.hidden = false;
+
+    var total = m.q.length, score = state.correctCount;
+    var pct = Math.round(100*score/total);
+    results[m.id] = { score:score, total:total };
+    var prev = store.get('caseBankResultsWk11-v1') || {};
+    var existing = prev[m.id];
+    if(!existing || existing.score < score) prev[m.id] = { score:score, total:total };
+    else results[m.id] = existing;
+    store.set('caseBankResultsWk11-v1', prev);
+    results = prev;
+
+    var offset = CIRC * (1 - pct/100);
+    var ring = document.getElementById('ringFg');
+    ring.style.strokeDasharray = CIRC;
+    ring.style.strokeDashoffset = CIRC;
+    requestAnimationFrame(function(){
+      ring.style.transition = 'stroke-dashoffset .6s ease';
+      ring.style.strokeDashoffset = offset;
+    });
+    document.getElementById('ringPct').textContent = pct+'%';
+    document.getElementById('sumTitle').textContent = m.title;
+    document.getElementById('sumSub').textContent = score+' of '+total+' correct — '+(pct>=80?'strong grasp of this module.':pct>=60?'solid, worth a second pass.':'flag this module for review.');
+
+    var reviewList = document.getElementById('reviewList');
+    reviewList.innerHTML = '';
+    var misses = state.answers.filter(function(a){ return !a.correct; });
+    if(misses.length){
+      var h = document.createElement('div');
+      h.style.textAlign = 'left';
+      h.style.fontFamily = "'JetBrains Mono',monospace";
+      h.style.fontSize = '.72rem';
+      h.style.color = 'var(--ink-soft)';
+      h.style.textTransform = 'uppercase';
+      h.style.letterSpacing = '.08em';
+      h.style.margin = '0 0 4px';
+      h.textContent = 'Missed questions';
+      reviewList.appendChild(h);
+    }
+    misses.forEach(function(a){
+      var item = document.createElement('div');
+      item.className = 'review-item';
+      item.innerHTML = '<span class="mark miss">&#10007;</span><div><b>'+a.q.stem+'</b><br>Correct answer: '+a.q.opts[a.q.correct]+'</div>';
+      reviewList.appendChild(item);
+    });
+
+    document.getElementById('retryBtn').onclick = function(){ startModule(state.modIdx); };
+  }
+
+  document.getElementById('dashBtn').addEventListener('click', backToDashboard);
+  document.getElementById('backBtn').addEventListener('click', backToDashboard);
+  function backToDashboard(){
+    quizview.hidden = true; summaryview.hidden = true; dashboard.hidden = false;
+    renderDashboard();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  renderDashboard();
+})();
+</script>
