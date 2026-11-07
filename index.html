@@ -232,6 +232,39 @@
 
   // kind: hub | quiz | notes (open as pages); md | docx (open in reader); pdf (opens in tab)
   var WEEKS = [
+    { n: 12, title: "Rheumatology & Neuroscience", items: [
+      { kind: "hub", t: "Rheum & Neuro Study Hub", f: "summaries/week12-study-hub.html", d: "Rheum treatment and labs, fibromyalgia and PMR, then localization, neuroanatomy, neurophysiology, cranial nerves, face, skull, cortex, orbit and vision." },
+      { kind: "quiz", t: "Week 12 Case Bank", f: "quizzes/week12-case-bank.html", d: "84 vignettes across 12 modules." },
+      { kind: "notes", t: "Week 12 Video Notes", f: "module-notes/week12-video-notes.html", d: "Fill-in outlines for 12 videos." },
+      { group: "Video scripts", items: [
+        { kind: "md", t: "Rheumatology Treatment Review", f: "scripts/week12/01-rheumatology-treatment-review.html" },
+        { kind: "md", t: "Rheumatology Investigations Review", f: "scripts/week12/02-rheumatology-investigations-review.html" },
+        { kind: "md", t: "Body Pain (Fibromyalgia and PMR)", f: "scripts/week12/03-body-pain.html" },
+        { kind: "md", t: "Intro to Neurology", f: "scripts/week12/04-intro-to-neurology.html" },
+        { kind: "md", t: "Introduction to Neuroanatomy", f: "scripts/week12/05-intro-to-neuroanatomy.html" },
+        { kind: "md", t: "Introduction to Neurophysiology", f: "scripts/week12/06-intro-to-neurophysiology.html" },
+        { kind: "md", t: "Cranial Nerve Anatomy", f: "scripts/week12/07-cranial-nerve-anatomy.html" },
+        { kind: "md", t: "Facial Anatomy", f: "scripts/week12/08-facial-anatomy.html" },
+        { kind: "md", t: "Cranial Cavity", f: "scripts/week12/09-cranial-cavity.html" },
+        { kind: "md", t: "Neuroanatomy: Cortex", f: "scripts/week12/10-neuroanatomy-cortex.html" },
+        { kind: "md", t: "Orbital Anatomy", f: "scripts/week12/11-orbital-anatomy.html" },
+        { kind: "md", t: "Neurophysiology: Vision", f: "scripts/week12/12-neurophysiology-vision.html" }
+      ]},
+      { group: "NotebookLM videos", unit: "videos", items: [
+        { kind: "video", label: "Video", t: "Rheumatology Treatment Review", f: "https://notebook.google.com/notebook/761253b1-2e32-465b-8f9e-8de5138ca246/artifact/b7ec5197-dcb4-41dd-b14a-c27e1182c72f", dur: "10:32 · Explainer" },
+        { kind: "video", label: "Video", t: "Rheumatology Labs", f: "https://notebook.google.com/notebook/761253b1-2e32-465b-8f9e-8de5138ca246/artifact/4dbbe102-2335-4940-879b-4a0bc581e0be", dur: "8:43 · Explainer" },
+        { kind: "video", label: "Video", t: "Widespread Body Pain", f: "https://notebook.google.com/notebook/761253b1-2e32-465b-8f9e-8de5138ca246/artifact/660d5f8e-e4be-4f76-b028-88f7411d3a04", dur: "9:30 · Explainer" },
+        { kind: "video", label: "Video", t: "Intro to Neurology", f: "https://notebook.google.com/notebook/761253b1-2e32-465b-8f9e-8de5138ca246/artifact/47b5891f-4389-4436-8b05-1b574c62f200", dur: "10:05 · Explainer" },
+        { kind: "video", label: "Video", t: "Tour of Neuroanatomy", f: "https://notebook.google.com/notebook/761253b1-2e32-465b-8f9e-8de5138ca246/artifact/5637d972-efdb-4208-bc84-a3a839fc04fb", dur: "9:50 · Explainer" },
+        { kind: "video", label: "Video", t: "Intro to Neurophysiology", f: "https://notebook.google.com/notebook/761253b1-2e32-465b-8f9e-8de5138ca246/artifact/bcda5442-26c8-4d77-b32f-da27ad95e88e", dur: "8:55 · Explainer" },
+        { kind: "video", label: "Video", t: "Cranial Nerves to Clinic", f: "https://notebook.google.com/notebook/761253b1-2e32-465b-8f9e-8de5138ca246/artifact/1e673452-4e22-464e-86c4-4b22fe022b47", dur: "8:54 · Explainer" },
+        { kind: "video", label: "Video", t: "Facial Anatomy & Lesions", f: "https://notebook.google.com/notebook/761253b1-2e32-465b-8f9e-8de5138ca246/artifact/b0ffe104-486a-4ff6-b7d5-36c3f50460ad", dur: "9:17 · Explainer" },
+        { kind: "video", label: "Video", t: "The Cranial Cavity", f: "https://notebook.google.com/notebook/761253b1-2e32-465b-8f9e-8de5138ca246/artifact/2044fcc4-16d1-4cc3-91df-acb3ffe86d5f", dur: "8:45 · Explainer" },
+        { kind: "video", label: "Video", t: "Neuroanatomy: Cortex", f: "https://notebook.google.com/notebook/761253b1-2e32-465b-8f9e-8de5138ca246/artifact/d352d4dc-54f4-4868-b170-f705165814a9", dur: "9:40 · Explainer" },
+        { kind: "video", label: "Video", t: "Mastering Orbital Anatomy", f: "https://notebook.google.com/notebook/761253b1-2e32-465b-8f9e-8de5138ca246/artifact/46887170-036d-4066-81e0-b8b863dfbd1c", dur: "9:52 · Explainer" },
+        { kind: "video", label: "Video", t: "Vision Neurophysiology", f: "https://notebook.google.com/notebook/761253b1-2e32-465b-8f9e-8de5138ca246/artifact/49632930-73a2-446f-a089-7a6f2fa0deb8", dur: "12:00 · Explainer" }
+      ]}
+    ]},
     { n: 11, title: "Musculoskeletal Medicine", items: [
       { kind: "hub", t: "MSK Study Hub", f: "summaries/week11-study-hub.html", d: "MSK infections, gout and pseudogout, JIA, polyarthritis, spondyloarthritis, OA, vasculitis and CTDs." },
       { kind: "quiz", t: "Week 11 Case Bank", f: "quizzes/week11-case-bank.html", d: "80 vignettes across 8 modules." },

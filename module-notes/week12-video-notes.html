@@ -1,0 +1,938 @@
+<title>Week 12 Video Notes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper: #f2f0e8;
+    --paper-raised: #fbfaf5;
+    --ink: #1e2a2e;
+    --ink-soft: #55625f;
+    --hairline: #d6d1c2;
+    --accent: #2c5f5a;
+    --accent-soft: #dce8e4;
+    --accent-ink: #163634;
+    --amber: #b5792c;
+    --amber-soft: #f3e6d2;
+    --good: #2f6b3e;
+    --good-soft: #dfeee1;
+    --shadow: 0 1px 2px rgba(30,42,46,.06), 0 8px 24px -12px rgba(30,42,46,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #171d1e; --paper-raised: #1f2729; --ink: #e9eae4; --ink-soft: #a5afab;
+      --hairline: #333e3f; --accent: #7bbbb0; --accent-soft: #223634; --accent-ink: #cdeae4;
+      --amber: #e0b06b; --amber-soft: #3a2f1a; --good: #7fc98d; --good-soft: #1e3324;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #171d1e; --paper-raised: #1f2729; --ink: #e9eae4; --ink-soft: #a5afab;
+    --hairline: #333e3f; --accent: #7bbbb0; --accent-soft: #223634; --accent-ink: #cdeae4;
+    --amber: #e0b06b; --amber-soft: #3a2f1a; --good: #7fc98d; --good-soft: #1e3324;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Public Sans', system-ui, sans-serif; -webkit-font-smoothing:antialiased; }
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  h1,h2,h3{ font-family:'Fraunces', Georgia, serif; text-wrap:balance; margin:0; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+  button{ font-family:inherit; cursor:pointer; }
+  textarea{ font-family:inherit; }
+
+  .shell{ max-width:900px; margin:0 auto; padding:0 24px 96px; }
+  .topbar{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:28px 24px 20px; max-width:900px; margin:0 auto; border-bottom:1px solid var(--hairline); }
+  .brand .kicker{ font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:600; }
+  .brand h1{ font-size:1.5rem; font-weight:600; margin-top:2px; }
+  .topstat{ text-align:right; font-family:'JetBrains Mono', monospace; font-size:.78rem; color:var(--ink-soft); }
+
+  .intro{ padding:28px 0 8px; max-width:620px; }
+  .intro p{ margin:8px 0 0; color:var(--ink-soft); line-height:1.55; font-size:.95rem; }
+
+  .group-heading{ display:flex; align-items:center; gap:12px; margin:32px 0 14px; }
+  .group-heading h2{ font-size:1.02rem; font-weight:600; white-space:nowrap; }
+  .group-heading .rule{ height:1px; background:var(--hairline); flex:1; }
+
+  .list{ display:flex; flex-direction:column; gap:10px; }
+  .row{
+    display:flex; align-items:center; gap:14px; text-align:left; width:100%;
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; box-shadow:var(--shadow); transition:border-color .12s ease, transform .12s ease;
+  }
+  .row:hover{ border-color:var(--accent); transform:translateY(-1px); }
+  .row .num{ font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--ink-soft); width:28px; flex-shrink:0; }
+  .row .body{ flex:1; min-width:0; }
+  .row h3{ font-size:1rem; font-weight:500; line-height:1.3; }
+  .row .meta{ font-size:.76rem; color:var(--ink-soft); margin-top:3px; font-family:'JetBrains Mono',monospace; }
+  .row .status{ flex-shrink:0; }
+  .pill{ font-family:'JetBrains Mono',monospace; font-size:.66rem; font-weight:600; padding:3px 9px; border-radius:99px; white-space:nowrap; }
+  .pill.empty{ background:var(--hairline); color:var(--ink-soft); }
+  .pill.started{ background:var(--amber-soft); color:var(--amber); }
+  .pill.done{ background:var(--good-soft); color:var(--good); }
+
+  .detail-header{ display:flex; align-items:center; gap:14px; padding:26px 0 4px; flex-wrap:wrap; }
+  .back-btn{ background:none; border:1px solid var(--hairline); border-radius:8px; padding:7px 12px; font-size:.82rem; color:var(--ink-soft); }
+  .back-btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .detail-title .kicker{ font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; font-weight:600; }
+  .detail-title h2{ font-size:1.3rem; font-weight:600; margin-top:2px; }
+  .runtime{ font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--ink-soft); }
+  .connects{ margin:14px 0 0; padding:10px 14px; background:var(--accent-soft); border-left:3px solid var(--accent); border-radius:6px; font-size:.85rem; color:var(--accent-ink); }
+
+  .obj-card{ margin-top:22px; background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow); }
+  .obj-card h3{ font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); font-weight:600; margin-bottom:10px; }
+  .obj{ display:flex; align-items:flex-start; gap:10px; padding:6px 0; font-size:.9rem; line-height:1.4; }
+  .obj input{ margin-top:3px; flex-shrink:0; width:16px; height:16px; accent-color:var(--accent); }
+  .obj label.checked{ color:var(--ink-soft); text-decoration:line-through; text-decoration-color:var(--hairline); }
+
+  .section-card{ margin-top:16px; background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow); }
+  .section-card .sh{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
+  .section-card h3{ font-size:1.02rem; font-weight:600; }
+  .section-card .tag{ font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--amber); background:var(--amber-soft); padding:2px 8px; border-radius:99px; white-space:nowrap; }
+  .section-card .hint{ font-size:.85rem; color:var(--ink-soft); margin:2px 0 10px; line-height:1.4; }
+  .section-card textarea{
+    width:100%; min-height:76px; resize:vertical; border:1px solid var(--hairline); border-radius:8px;
+    background:var(--paper); color:var(--ink); padding:10px 12px; font-size:.9rem; line-height:1.5;
+  }
+  .section-card textarea:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .section-card textarea::placeholder{ color:var(--ink-soft); opacity:.6; }
+
+  .detail-actions{ display:flex; gap:10px; justify-content:space-between; align-items:center; margin-top:24px; flex-wrap:wrap; }
+  .save-note{ font-size:.76rem; color:var(--ink-soft); font-family:'JetBrains Mono',monospace; }
+  .btn{ border:1px solid var(--hairline); background:var(--paper-raised); color:var(--ink); border-radius:8px; padding:10px 16px; font-size:.86rem; font-weight:500; }
+  .btn.primary{ background:var(--accent); color:var(--paper-raised); border-color:var(--accent); font-weight:600; }
+  .btn:hover{ border-color:var(--accent); }
+
+  [hidden]{ display:none !important; }
+  footer{ max-width:900px; margin:56px auto 0; padding:20px 24px 0; color:var(--ink-soft); font-size:.78rem; border-top:1px solid var(--hairline); }
+
+  @media print{
+    .topbar .topstat, .back-btn, .detail-actions, footer, #dashboard{ display:none !important; }
+    body{ background:#fff; color:#000; }
+    .section-card, .obj-card{ box-shadow:none; border:1px solid #ccc; break-inside:avoid; }
+    textarea{ border:1px solid #999 !important; }
+  }
+  @media (max-width:560px){
+    .topbar{ flex-direction:column; align-items:flex-start; gap:6px; }
+    .topstat{ text-align:left; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">P2 &middot; Week 12 &middot; Rheumatology &amp; Neuroscience</span>
+    <h1>Video Notes</h1>
+  </div>
+  <div class="topstat">12 videos &middot; fill in as you watch</div>
+</div>
+
+<main class="shell">
+
+  <section id="dashboard">
+    <div class="intro">
+      <p>An outline for each Week 12 NotebookLM video, following the order of the script it was made from. Tick off each learning objective as the video covers it, pause at each heading, and jot the point before moving on. Notes save automatically in this browser.</p>
+    </div>
+    <div id="groups"></div>
+  </section>
+
+  <section id="detail" hidden>
+    <div class="detail-header">
+      <button class="back-btn" id="backBtn">&larr; All videos</button>
+      <div class="detail-title">
+        <div class="kicker" id="detKicker"></div>
+        <h2 id="detTitle"></h2>
+      </div>
+      <span class="runtime" id="detRuntime"></span>
+    </div>
+    <div class="connects" id="detConnects" hidden></div>
+
+    <div class="obj-card">
+      <h3>Learning objectives</h3>
+      <div id="objList"></div>
+    </div>
+
+    <div id="sectionList"></div>
+
+    <div class="detail-actions">
+      <span class="save-note" id="saveNote">Notes save automatically</span>
+      <div style="display:flex; gap:10px;">
+        <button class="btn" id="printBtn">Print this outline</button>
+        <button class="btn primary" id="nextBtn">Next video &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Week 12 study material &middot; P2 Rheumatology &amp; Neuroscience &middot; for personal review use</footer>
+
+<script id="data" type="application/json">[
+ {
+  "id": "rheum-treatment",
+  "num": 1,
+  "title": "Rheumatology Treatment Review",
+  "group": "Rheumatology",
+  "connects": "",
+  "objectives": [
+   "Propose a plan for treatment of inflammatory/rheumatologic conditions",
+   "Describe the role of steroids (systemic and intra-articular) in rheumatologic treatment and list the side-effects of chronic steroid use",
+   "List the contraindications for MSK injections and necessary considerations for obtaining informed consent",
+   "Explain the use and potential side effects of acetaminophen, NSAIDs, and the limited role of narcotics in rheumatology",
+   "Outline an approach to treating rheumatologic conditions with disease modifying drugs (DMARDs) and important side effects/toxicities of commonly used DMARDs",
+   "Distinguish biologic drugs from disease modifying drugs and explain the role biologics play in management of rheumatologic disease.",
+   "Compare and contrast the treatment strategies used to manage inflammatory arthropathies in adults vs in children"
+  ],
+  "sections": [
+   {
+    "h": "Steroids: Dose by Condition",
+    "tag": "high / medium / low",
+    "p": "Which conditions need 1 mg/kg; PMR, gout and RA flare doses."
+   },
+   {
+    "h": "Routes and Chronic Side Effects",
+    "tag": "PO, IM, IV, IA",
+    "p": "The 15 side effects; steroid-sparing drugs."
+   },
+   {
+    "h": "Joint Aspiration and Injection",
+    "tag": "C3G",
+    "p": "Consent, complications, relative contraindications."
+   },
+   {
+    "h": "NSAIDs, Acetaminophen, Opioids",
+    "tag": "not disease-modifying",
+    "p": "COX-2 selectivity; NSAID side effects."
+   },
+   {
+    "h": "Approach to RA",
+    "tag": "window of opportunity",
+    "p": "Treat early, aggressively, to target; triple therapy."
+   },
+   {
+    "h": "The Four DMARDs",
+    "tag": "GHMI",
+    "p": "MTX, HCQ, SSZ, leflunomide toxicities and monitoring."
+   },
+   {
+    "h": "Biologics",
+    "tag": "targeted",
+    "p": "Classes, TNF inhibitor side effects and contraindications."
+   },
+   {
+    "h": "Recap"
+   }
+  ],
+  "runtime": "10:32 · Explainer"
+ },
+ {
+  "id": "rheum-investigations",
+  "num": 2,
+  "title": "Rheumatology Investigations Review",
+  "group": "Rheumatology",
+  "connects": "",
+  "objectives": [
+   "Develop a plan for appropriate investigations of a patient with a possible rheumatologic condition",
+   "Describe common rheumatologic blood tests including RF, ANA, ANCAs, ESR, CRP and HLA B27 and identify when they should be ordered and also when ordering them is inappropriate",
+   "Describe the expected results when testing for inflammatory conditions (including RA, SLE, seronegative arthropathies, JIA, GCA/PMR)"
+  ],
+  "sections": [
+   {
+    "h": "No Diagnosis by Blood Test",
+    "tag": "except gout crystals"
+   },
+   {
+    "h": "RF and Anti-CCP",
+    "tag": "IgM vs Fc of IgG",
+    "p": "Specificity; markers of severe RA; refer with what you see."
+   },
+   {
+    "h": "ANA",
+    "tag": "sensitive, not specific",
+    "p": "False positives; when not to order or repeat."
+   },
+   {
+    "h": "Anti-dsDNA, ENA, Complements",
+    "tag": "anti-Ro, Jo1, Scl-70",
+    "p": "Lupus nephritis, Sjögren's, neonatal lupus, ILD."
+   },
+   {
+    "h": "ANCA",
+    "tag": "c/PR3 vs p/MPO",
+    "p": "Cocaine-levamisole; when to order."
+   },
+   {
+    "h": "Expected Results by Disease",
+    "tag": "ESR/CRP, HLA-B27",
+    "p": "RA, SLE, seronegative, JIA, GCA/PMR."
+   },
+   {
+    "h": "Recap"
+   }
+  ],
+  "runtime": "8:43 · Explainer"
+ },
+ {
+  "id": "body-pain",
+  "num": 3,
+  "title": "Body Pain: Fibromyalgia & Polymyalgia Rheumatica",
+  "group": "Rheumatology",
+  "connects": "",
+  "objectives": [
+   "Create a plan to evaluate and treat patients presenting with non-arthritic body pain",
+   "Describe the clinical features and presentation of polymyalgia rheumatica and outline an approach to its management",
+   "Describe the clinical features and presentation of fibromyalgia and outline an approach to its management."
+  ],
+  "sections": [
+   {
+    "h": "Fibromyalgia and Central Sensitization",
+    "tag": "> 3 months, widespread",
+    "p": "Pain phenotypes; clues that pain is centralizing."
+   },
+   {
+    "h": "Diagnosis: ACR 2016",
+    "tag": "WPI + SS",
+    "p": "Not a diagnosis of exclusion; targeted workup."
+   },
+   {
+    "h": "The Science",
+    "tag": "↓ descending inhibition, ↑ facilitation",
+    "p": "NE, 5-HT, substance P, glutamate."
+   },
+   {
+    "h": "Fibromyalgia Management",
+    "tag": "education, exercise, CBT",
+    "p": "Duloxetine, pregabalin, low-dose TCAs; avoid opioids."
+   },
+   {
+    "h": "PMR: The Typical Patient",
+    "tag": "> 50, girdle stiffness",
+    "p": "High ESR/CRP, anemia, thrombocytosis."
+   },
+   {
+    "h": "PMR vs Look-alikes",
+    "tag": "dramatic steroid response",
+    "p": "Fibromyalgia, myositis, inflammatory arthritis, OA."
+   },
+   {
+    "h": "PMR Treatment",
+    "tag": "15–20 mg, slow taper",
+    "p": "GCA overlap; osteoprotection."
+   },
+   {
+    "h": "Recap"
+   }
+  ],
+  "runtime": "9:30 · Explainer"
+ },
+ {
+  "id": "intro-neurology",
+  "num": 4,
+  "title": "Intro to Neurology",
+  "group": "Neuroanatomy & Neurophysiology",
+  "connects": "",
+  "objectives": [
+   "Outline the Neuroscience, Eye and Ear portions of P2",
+   "Define common terms used in neurology",
+   "Discuss the importance of \"localizing the lesion\" and \"differential diagnosis\" of a patient presenting with focal symptoms within the nervous system.",
+   "Describe the general organization of the nervous system, from a microscopic to macroscopic level"
+  ],
+  "sections": [
+   {
+    "h": "The NEE Block and Glossary",
+    "tag": "plegia, paresis, ataxia…",
+    "p": "Dominant hemisphere; MCA stroke pattern."
+   },
+   {
+    "h": "Organization of the Nervous System",
+    "tag": "CNS vs PNS",
+    "p": "Neurons, grey and white matter, lobes, deep structures, cord to L1."
+   },
+   {
+    "h": "Motor Pathway; UMN vs LMN",
+    "tag": "spastic vs atrophic",
+    "p": "Cerebellum and basal ganglia don't cause weakness."
+   },
+   {
+    "h": "Sensory and Visual Pathways",
+    "tag": "thalamus; chiasm"
+   },
+   {
+    "h": "Localizing the Lesion",
+    "tag": "patterns of weakness",
+    "p": "Brain vs cord vs root vs NMJ vs muscle."
+   },
+   {
+    "h": "Differential by Time Course",
+    "tag": "hyperacute → chronic",
+    "p": "VITAMINS C D; DDx of acute aphasia."
+   },
+   {
+    "h": "Practice Cases",
+    "tag": "4 cases"
+   },
+   {
+    "h": "Recap"
+   }
+  ],
+  "runtime": "10:05 · Explainer"
+ },
+ {
+  "id": "intro-neuroanatomy",
+  "num": 5,
+  "title": "Introduction to Neuroanatomy",
+  "group": "Neuroanatomy & Neurophysiology",
+  "connects": "",
+  "objectives": [
+   "Define and correctly use fundamental neuroanatomical terms and concepts.",
+   "Differentiate between structural and functional aspects of the nervous system.",
+   "Identify and label major regions and structures of the brain, spinal cord, and peripheral nervous system.",
+   "Describe the organization of the brain into major divisions (forebrain, midbrain, hindbrain) and their respective functions.",
+   "Identify the lobes of the cerebral cortex and their general functions.",
+   "Describe the primary functions of different cortical areas, such as the motor cortex, somatosensory cortex, and visual cortex.",
+   "Describe the structures and functions of the basal ganglia and cerebellum in motor control and coordination.",
+   "Discuss the role of the basal ganglia in movement disorders.",
+   "Describe common neuroimaging modalities (e.g., MRI, CT) and their applications in visualizing brain structures and abnormalities."
+  ],
+  "sections": [
+   {
+    "h": "Terms, Planes and Divisions",
+    "tag": "coronal, axial, sagittal",
+    "p": "Structural vs functional; forebrain, midbrain, hindbrain."
+   },
+   {
+    "h": "Neuroimaging",
+    "tag": "T1, T2, FLAIR"
+   },
+   {
+    "h": "Cortex and Lobes",
+    "tag": "central sulcus",
+    "p": "Function of each lobe; insula and limbic lobe."
+   },
+   {
+    "h": "Basal Ganglia and Cerebellum",
+    "tag": "movement disorders"
+   },
+   {
+    "h": "Diencephalon",
+    "tag": "thalamus, hypothalamus, pineal"
+   },
+   {
+    "h": "Brainstem and Cranial Nerve Nuclei",
+    "tag": "III-IV / V-VIII / IX-XII",
+    "p": "Pyramids and decussation."
+   },
+   {
+    "h": "Spinal Cord, Ventricles, Vessels",
+    "tag": "dorsal = sensory",
+    "p": "CSF from choroid plexus; BBB; middle meningeal artery."
+   },
+   {
+    "h": "Recap"
+   }
+  ],
+  "runtime": "9:50 · Explainer"
+ },
+ {
+  "id": "intro-neurophysiology",
+  "num": 6,
+  "title": "Introduction to Neurophysiology",
+  "group": "Neuroanatomy & Neurophysiology",
+  "connects": "",
+  "objectives": [
+   "Use basic neurophysiology to predict how disruption of normal physiology can cause symptoms and signs",
+   "Describe the microscopic organization of the nervous system (neurons, axons, dendrites, action potentials, receptors, inhibition, excitation)."
+  ],
+  "sections": [
+   {
+    "h": "The Brain as a Network",
+    "tag": "20% of energy",
+    "p": "fMRI, DTI, why seizures spread."
+   },
+   {
+    "h": "The Neuron and Action Potential",
+    "tag": "−65 → −55 mV",
+    "p": "Axon hillock; myelin and saltatory conduction; MS."
+   },
+   {
+    "h": "Coding Information",
+    "tag": "frequency, labeled lines"
+   },
+   {
+    "h": "Chemical Synapses",
+    "tag": "ionotropic vs metabotropic"
+   },
+   {
+    "h": "Excitation and Inhibition",
+    "tag": "glutamate, GABA, glycine, ACh",
+    "p": "EPSP, IPSP, NMDA plasticity."
+   },
+   {
+    "h": "Neuropharmacology",
+    "tag": "GABA-A",
+    "p": "Benzodiazepines plus alcohol."
+   },
+   {
+    "h": "Circuits, Layers and Aphasias",
+    "tag": "layer 4 in, 3 and 5 out",
+    "p": "Broca vs Wernicke."
+   },
+   {
+    "h": "Recap"
+   }
+  ],
+  "runtime": "8:55 · Explainer"
+ },
+ {
+  "id": "cranial-nerves",
+  "num": 7,
+  "title": "Cranial Nerve Anatomy",
+  "group": "Head & Neck Anatomy",
+  "connects": "",
+  "objectives": [
+   "Describe cranial nerve anatomy and function.",
+   "Predict symptoms of cranial nerve pathology."
+  ],
+  "sections": [
+   {
+    "h": "Overview and Mnemonics",
+    "tag": "sensory, motor, both"
+   },
+   {
+    "h": "CN I–IV and VI",
+    "tag": "SOF, optic canal",
+    "p": "Eye movements and pupil."
+   },
+   {
+    "h": "CN V and VII",
+    "tag": "rotundum, ovale; IAM, stylomastoid",
+    "p": "Face sensation, mastication, facial expression, taste."
+   },
+   {
+    "h": "CN VIII–XII",
+    "tag": "jugular foramen, hypoglossal canal"
+   },
+   {
+    "h": "Central vs Peripheral",
+    "tag": "nucleus = LMN"
+   },
+   {
+    "h": "Symptoms: I–VI",
+    "tag": "anosmia, RAPD, diplopia",
+    "p": "Diplopia is never above the brainstem."
+   },
+   {
+    "h": "Symptoms: VII–XII",
+    "tag": "UMN vs LMN face; tongue deviation"
+   },
+   {
+    "h": "Recap"
+   }
+  ],
+  "runtime": "8:54 · Explainer"
+ },
+ {
+  "id": "facial-anatomy",
+  "num": 8,
+  "title": "Facial Anatomy",
+  "group": "Head & Neck Anatomy",
+  "connects": "",
+  "objectives": [
+   "Identify symptoms/signs due to cranial nerve pathology",
+   "Describe cranial nerve anatomy and function",
+   "Predict symptoms of cranial nerve pathology",
+   "Describe facial abnormalities",
+   "Describe facial anatomical structures",
+   "List the innervation of facial structures"
+  ],
+  "sections": [
+   {
+    "h": "Facial Skeleton and Foramina",
+    "tag": "supra-, infraorbital, mental"
+   },
+   {
+    "h": "Muscles of Facial Expression",
+    "tag": "CN VII",
+    "p": "Orbicularis oculi closes the eye; buccinator."
+   },
+   {
+    "h": "Muscles of Mastication",
+    "tag": "V3",
+    "p": "Masseter and temporalis."
+   },
+   {
+    "h": "Arteries and Veins",
+    "tag": "facial, superficial temporal",
+    "p": "Retromandibular and common facial veins."
+   },
+   {
+    "h": "Parotid Gland and Duct",
+    "tag": "superficial to masseter"
+   },
+   {
+    "h": "Facial Nerve Branches",
+    "tag": "To Zanzibar By Motor Car"
+   },
+   {
+    "h": "Sensory Map",
+    "tag": "V1, V2, V3 + great auricular",
+    "p": "Predicting lesions."
+   },
+   {
+    "h": "Recap"
+   }
+  ],
+  "runtime": "9:17 · Explainer"
+ },
+ {
+  "id": "cranial-cavity",
+  "num": 9,
+  "title": "Cranial Cavity: Skull, Meninges & Blood Supply",
+  "group": "Head & Neck Anatomy",
+  "connects": "",
+  "objectives": [
+   "Identify major bony landmarks within the skull on anatomical specimens and radiology",
+   "Describe the clinical significance of pathology (such as fractures, tumours or infection) within specific skull regions",
+   "Describe the arterial supply to the major brain regions and consequence of ischemia or hemorrhage to brain function",
+   "Describe the intracranial venous system and consequences of venous thrombosis",
+   "Describe the functional significance of the Circle of Willis",
+   "Describe meningeal anatomy and list pathology which can affect the meninges",
+   "Describe CSF pathways in the brain",
+   "Describe and categorize disruption of CSF flow"
+  ],
+  "sections": [
+   {
+    "h": "Skull Bones, Sutures and Pterion",
+    "tag": "22 bones",
+    "p": "Fontanelles and craniosynostosis."
+   },
+   {
+    "h": "Cranial Fossae and Foramina",
+    "tag": "what passes where"
+   },
+   {
+    "h": "Meninges and Spaces",
+    "tag": "epidural, subdural, subarachnoid",
+    "p": "Meningitis signs."
+   },
+   {
+    "h": "Dural Folds and Herniation",
+    "tag": "falx, tentorium",
+    "p": "Uncal herniation."
+   },
+   {
+    "h": "Venous Sinuses and the Cavernous Sinus",
+    "tag": "III, IV, V1, V2, VI + ICA",
+    "p": "Danger area of the face; thrombosis."
+   },
+   {
+    "h": "Arteries and the Circle of Willis",
+    "tag": "ACA, MCA, PCA"
+   },
+   {
+    "h": "The Three Hematomas",
+    "tag": "epidural, subdural, SAH"
+   },
+   {
+    "h": "CSF Pathway and Hydrocephalus",
+    "tag": "choroid plexus → granulations"
+   },
+   {
+    "h": "Recap"
+   }
+  ],
+  "runtime": "8:45 · Explainer"
+ },
+ {
+  "id": "neuroanatomy-cortex",
+  "num": 10,
+  "title": "Neuroanatomy: Cortex",
+  "group": "Neuroanatomy & Neurophysiology",
+  "connects": "",
+  "objectives": [
+   "Understand the distribution of white and gray matter in the central nervous system.",
+   "Know the major areas and structures of the cerebral cortex and be able to describe the operations these structures are involved in.",
+   "Deduce the effects of lesions in various cortical areas",
+   "Identify and describe the structure-function relationships of specific cortical areas including speech/language and learning/memory as they relate to clinical medicine."
+  ],
+  "sections": [
+   {
+    "h": "Grey and White Matter",
+    "tag": "commissural, association, projection",
+    "p": "Corpus callosum, arcuate fasciculus, internal capsule."
+   },
+   {
+    "h": "Primary vs Association Cortex",
+    "tag": "hierarchy",
+    "p": "Brodmann areas."
+   },
+   {
+    "h": "Lobes and Lesions",
+    "tag": "Gerstmann, prosopagnosia"
+   },
+   {
+    "h": "Motor and Sensory Areas",
+    "tag": "4; 1-2-3",
+    "p": "Homunculus and contralaterality."
+   },
+   {
+    "h": "Visual, Auditory and Other Sensory Areas",
+    "tag": "17; 22",
+    "p": "Agnosia."
+   },
+   {
+    "h": "Language",
+    "tag": "Broca 44/45, Wernicke 22/39/40"
+   },
+   {
+    "h": "Limbic System and Papez Circuit",
+    "tag": "HOME",
+    "p": "Hippocampus, amygdala."
+   },
+   {
+    "h": "Memory Disorders",
+    "tag": "H.M., Alzheimer's, Wernicke-Korsakoff"
+   },
+   {
+    "h": "Recap"
+   }
+  ],
+  "runtime": "9:40 · Explainer"
+ },
+ {
+  "id": "orbital-anatomy",
+  "num": 11,
+  "title": "Orbital Anatomy",
+  "group": "Head & Neck Anatomy",
+  "connects": "",
+  "objectives": [
+   "Predict symptoms that can occur with orbital abnormalities",
+   "Describe the orbit bone anatomy and eyelid anatomy",
+   "Describe the globe anatomy and function of its components",
+   "Describe the innervation and vascular supply of the orbit and its components",
+   "Describe the extraocular muscles, their innervation and their function"
+  ],
+  "sections": [
+   {
+    "h": "Bony Orbit and Blowout Fractures",
+    "tag": "thin floor and medial wall"
+   },
+   {
+    "h": "The Globe",
+    "tag": "cornea → retina",
+    "p": "Iris muscles; cataract and glaucoma."
+   },
+   {
+    "h": "Eyelid and Lacrimal Apparatus",
+    "tag": "tarsal glands; tears drain to nose"
+   },
+   {
+    "h": "Extraocular Muscles",
+    "tag": "7 muscles; 23° axis"
+   },
+   {
+    "h": "Nerves of the Orbit",
+    "tag": "II; III, IV, VI; V1",
+    "p": "Palsies and Horner's."
+   },
+   {
+    "h": "Vessels",
+    "tag": "ophthalmic artery, central retinal artery",
+    "p": "Ophthalmic veins to the cavernous sinus."
+   },
+   {
+    "h": "Predicting Symptoms"
+   },
+   {
+    "h": "Recap"
+   }
+  ],
+  "runtime": "9:52 · Explainer"
+ },
+ {
+  "id": "neurophysiology-vision",
+  "num": 12,
+  "title": "Neurophysiology: Vision",
+  "group": "Neuroanatomy & Neurophysiology",
+  "connects": "",
+  "objectives": [
+   "Use basic neurophysiology to predict how disruption of normal physiology can cause symptoms and signs",
+   "Describe eye and vision physiology."
+  ],
+  "sections": [
+   {
+    "h": "Focusing an Image",
+    "tag": "accommodation",
+    "p": "Myopia, hyperopia, presbyopia; light reflex."
+   },
+   {
+    "h": "The Retina",
+    "tag": "5 cell types",
+    "p": "Rods vs cones; fovea and blind spot."
+   },
+   {
+    "h": "Ganglion Cells and Colour",
+    "tag": "P vs M",
+    "p": "Colour blindness; centre–surround."
+   },
+   {
+    "h": "Eye Diseases",
+    "tag": "cataract, glaucoma, macular degeneration"
+   },
+   {
+    "h": "Visual Pathways and Field Defects",
+    "tag": "nerve, chiasm, tract"
+   },
+   {
+    "h": "LGN and V1",
+    "tag": "6 layers; feature detectors",
+    "p": "Hypercolumns."
+   },
+   {
+    "h": "Dorsal and Ventral Streams",
+    "tag": "where vs what",
+    "p": "Agnosia, prosopagnosia, MT, optic ataxia."
+   },
+   {
+    "h": "Recap"
+   }
+  ],
+  "runtime": "12:00 · Explainer"
+ }
+]</script>
+<script>
+(function(){
+  "use strict";
+  var MODULES = JSON.parse(document.getElementById('data').textContent);
+  var store = {
+    get: function(){ try{ return JSON.parse(localStorage.getItem('wk12VideoNotes-v1')) || {}; }catch(e){ return {}; } },
+    set: function(v){ try{ localStorage.setItem('wk12VideoNotes-v1', JSON.stringify(v)); }catch(e){} }
+  };
+  var data = store.get();
+
+  var dashboard = document.getElementById('dashboard');
+  var detail = document.getElementById('detail');
+  var groupsEl = document.getElementById('groups');
+  var currentIdx = -1;
+  var saveTimer = null;
+
+  function moduleState(m){
+    var d = data[m.id] || {};
+    var notesFilled = (m.sections || []).filter(function(s,i){ return d['note'+i] && d['note'+i].trim().length; }).length;
+    var objChecked = (m.objectives || []).filter(function(o,i){ return d['obj'+i]; }).length;
+    if(notesFilled === 0 && objChecked === 0) return 'empty';
+    if(notesFilled === (m.sections||[]).length && objChecked === (m.objectives||[]).length) return 'done';
+    return 'started';
+  }
+
+  function renderDashboard(){
+    groupsEl.innerHTML = '';
+    var groups = [];
+    MODULES.forEach(function(m){
+      var g = groups.filter(function(x){ return x.name===m.group; })[0];
+      if(!g){ g = {name:m.group, mods:[]}; groups.push(g); }
+      g.mods.push(m);
+    });
+    groups.forEach(function(g){
+      var h = document.createElement('div');
+      h.className = 'group-heading';
+      h.innerHTML = '<h2>'+g.name+'</h2><div class="rule"></div>';
+      groupsEl.appendChild(h);
+
+      var list = document.createElement('div');
+      list.className = 'list';
+      g.mods.forEach(function(m){
+        var idx = MODULES.indexOf(m);
+        var st = moduleState(m);
+        var row = document.createElement('button');
+        row.className = 'row';
+        var pillLabel = st==='done' ? 'Notes complete' : st==='started' ? 'In progress' : 'Not started';
+        row.innerHTML =
+          '<span class="num">'+String(m.num).padStart(2,'0')+'</span>'+
+          '<span class="body"><h3>'+m.title+'</h3><span class="meta">'+m.runtime+' · '+m.sections.length+' sections</span></span>'+
+          '<span class="status"><span class="pill '+st+'">'+pillLabel+'</span></span>';
+        row.addEventListener('click', function(){ openModule(idx); });
+        list.appendChild(row);
+      });
+      groupsEl.appendChild(list);
+    });
+  }
+
+  function openModule(idx){
+    currentIdx = idx;
+    var m = MODULES[idx];
+    var d = data[m.id] || (data[m.id] = {});
+    dashboard.hidden = true; detail.hidden = false;
+
+    document.getElementById('detKicker').textContent = 'Video '+m.num+' of 5';
+    document.getElementById('detTitle').textContent = m.title;
+    document.getElementById('detRuntime').textContent = m.runtime;
+    var connEl = document.getElementById('detConnects');
+    if(m.connects){ connEl.hidden = false; connEl.textContent = m.connects; }
+    else { connEl.hidden = true; }
+
+    var objList = document.getElementById('objList');
+    objList.innerHTML = '';
+    m.objectives.forEach(function(o, i){
+      var row = document.createElement('div');
+      row.className = 'obj';
+      var checked = !!d['obj'+i];
+      row.innerHTML = '<input type="checkbox" id="obj_'+i+'" '+(checked?'checked':'')+'><label for="obj_'+i+'"'+(checked?' class="checked"':'')+'>'+o+'</label>';
+      var cb = row.querySelector('input');
+      var lbl = row.querySelector('label');
+      cb.addEventListener('change', function(){
+        d['obj'+i] = cb.checked;
+        lbl.classList.toggle('checked', cb.checked);
+        persist();
+      });
+      objList.appendChild(row);
+    });
+
+    var sectionList = document.getElementById('sectionList');
+    sectionList.innerHTML = '';
+    m.sections.forEach(function(s, i){
+      var card = document.createElement('div');
+      card.className = 'section-card';
+      var tagHtml = s.tag ? '<span class="tag">'+s.tag+'</span>' : '';
+      var hintHtml = s.p ? '<div class="hint">'+s.p+'</div>' : '';
+      card.innerHTML =
+        '<div class="sh"><h3>'+(i+1)+'. '+s.h+'</h3>'+tagHtml+'</div>'+
+        hintHtml +
+        '<textarea placeholder="Notes on this section...">'+(d['note'+i]||'')+'</textarea>';
+      var ta = card.querySelector('textarea');
+      ta.addEventListener('input', function(){
+        d['note'+i] = ta.value;
+        persist();
+      });
+      sectionList.appendChild(card);
+    });
+
+    document.getElementById('nextBtn').textContent = (idx === MODULES.length-1) ? 'Back to all videos' : 'Next video →';
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  function persist(){
+    store.set(data);
+    var note = document.getElementById('saveNote');
+    note.textContent = 'Saved';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ note.textContent = 'Notes save automatically'; }, 1200);
+  }
+
+  document.getElementById('backBtn').addEventListener('click', function(){
+    detail.hidden = true; dashboard.hidden = false;
+    renderDashboard();
+    window.scrollTo({top:0, behavior:'instant'});
+  });
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    if(currentIdx === MODULES.length-1){
+      detail.hidden = true; dashboard.hidden = false;
+      renderDashboard();
+      window.scrollTo({top:0, behavior:'instant'});
+    } else {
+      openModule(currentIdx+1);
+    }
+  });
+  document.getElementById('printBtn').addEventListener('click', function(){ window.print(); });
+
+  renderDashboard();
+})();
+</script>

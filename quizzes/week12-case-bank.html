@@ -1,0 +1,504 @@
+<title>Week 12 Case Bank</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper: #f2f0e8;
+    --paper-raised: #fbfaf5;
+    --ink: #1e2a2e;
+    --ink-soft: #55625f;
+    --hairline: #d6d1c2;
+    --accent: #2c5f5a;
+    --accent-soft: #dce8e4;
+    --accent-ink: #163634;
+    --good: #2f6b3e;
+    --good-soft: #dfeee1;
+    --bad: #a03f37;
+    --bad-soft: #f6e3df;
+    --amber: #b5792c;
+    --amber-soft: #f3e6d2;
+    --shadow: 0 1px 2px rgba(30,42,46,.06), 0 8px 24px -12px rgba(30,42,46,.18);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #171d1e;
+      --paper-raised: #1f2729;
+      --ink: #e9eae4;
+      --ink-soft: #a5afab;
+      --hairline: #333e3f;
+      --accent: #7bbbb0;
+      --accent-soft: #223634;
+      --accent-ink: #cdeae4;
+      --good: #7fc98d;
+      --good-soft: #1e3324;
+      --bad: #e19489;
+      --bad-soft: #3a2320;
+      --amber: #e0b06b;
+      --amber-soft: #3a2f1a;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #171d1e;
+    --paper-raised: #1f2729;
+    --ink: #e9eae4;
+    --ink-soft: #a5afab;
+    --hairline: #333e3f;
+    --accent: #7bbbb0;
+    --accent-soft: #223634;
+    --accent-ink: #cdeae4;
+    --good: #7fc98d;
+    --good-soft: #1e3324;
+    --bad: #e19489;
+    --bad-soft: #3a2320;
+    --amber: #e0b06b;
+    --amber-soft: #3a2f1a;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Public Sans', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+  }
+
+  h1,h2,h3{ font-family:'Fraunces', Georgia, serif; text-wrap:balance; margin:0; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+
+  a{ color:inherit; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  /* ---------- shell ---------- */
+  .shell{ max-width:1040px; margin:0 auto; padding:0 24px 96px; }
+  .topbar{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:16px; padding:28px 24px 20px; max-width:1040px; margin:0 auto;
+    border-bottom:1px solid var(--hairline);
+  }
+  .brand{ display:flex; flex-direction:column; gap:2px; }
+  .brand .kicker{
+    font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--accent); font-weight:600;
+  }
+  .brand h1{ font-size:1.5rem; font-weight:600; }
+  .topstat{ text-align:right; font-family:'JetBrains Mono', monospace; font-size:.78rem; color:var(--ink-soft); }
+  .topstat b{ color:var(--ink); font-weight:600; }
+
+  /* ---------- dashboard ---------- */
+  .intro{ padding:32px 0 8px; max-width:640px; }
+  .intro p{ margin:10px 0 0; color:var(--ink-soft); line-height:1.55; font-size:.97rem; }
+
+  .group-heading{
+    display:flex; align-items:center; gap:12px;
+    margin:36px 0 14px;
+  }
+  .group-heading h2{ font-size:1.05rem; font-weight:600; color:var(--ink); white-space:nowrap; }
+  .group-heading .rule{ height:1px; background:var(--hairline); flex:1; }
+  .group-heading .count{ font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--ink-soft); }
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:14px; }
+
+  .card{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:18px 18px 16px; text-align:left; box-shadow:var(--shadow);
+    display:flex; flex-direction:column; gap:12px; min-height:150px;
+    transition:transform .15s ease, border-color .15s ease;
+    position:relative; overflow:hidden;
+  }
+  .card:hover{ transform:translateY(-2px); border-color:var(--accent); }
+  .card:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .card .num{
+    font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--ink-soft);
+    letter-spacing:.06em;
+  }
+  .card h3{ font-size:1.05rem; font-weight:500; line-height:1.28; flex:1; }
+  .card-foot{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .badge{
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; font-weight:600;
+    padding:3px 8px; border-radius:99px; letter-spacing:.02em;
+  }
+  .badge.new{ background:var(--accent-soft); color:var(--accent-ink); }
+  .badge.done{ background:var(--good-soft); color:var(--good); }
+  .badge.retry{ background:var(--amber-soft); color:var(--amber); }
+  .score{ font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--ink-soft); }
+  .score b{ color:var(--ink); }
+
+  /* ---------- quiz view ---------- */
+  .quiz-header{
+    display:flex; align-items:center; gap:14px; padding:26px 0 6px; flex-wrap:wrap;
+  }
+  .back-btn{
+    background:none; border:1px solid var(--hairline); border-radius:8px;
+    padding:7px 12px; font-size:.82rem; color:var(--ink-soft); display:flex; align-items:center; gap:6px;
+  }
+  .back-btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .quiz-title{ flex:1; min-width:200px; }
+  .quiz-title .kicker{ font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; font-weight:600;}
+  .quiz-title h2{ font-size:1.25rem; font-weight:600; margin-top:2px; }
+
+  .progress-wrap{ padding:14px 0 30px; }
+  .progress-meta{ display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--ink-soft); margin-bottom:6px; }
+  .progress-track{ height:6px; background:var(--hairline); border-radius:99px; overflow:hidden; }
+  .progress-fill{ height:100%; background:var(--accent); border-radius:99px; transition:width .3s ease; }
+
+  .stem-card{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:12px;
+    padding:26px 28px; box-shadow:var(--shadow); margin-bottom:20px;
+  }
+  .stem-card .vignette-tag{
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--ink-soft);
+    text-transform:uppercase; letter-spacing:.08em; margin-bottom:10px; display:block;
+  }
+  .stem{ font-size:1.14rem; line-height:1.55; font-weight:400; }
+
+  .opts{ display:flex; flex-direction:column; gap:10px; }
+  .opt{
+    display:flex; align-items:flex-start; gap:12px; text-align:left;
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; font-size:.98rem; line-height:1.45; color:var(--ink);
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .opt:hover:not(:disabled){ border-color:var(--accent); }
+  .opt:disabled{ cursor:default; }
+  .opt .letter{
+    font-family:'JetBrains Mono',monospace; font-weight:600; font-size:.82rem;
+    width:22px; height:22px; border-radius:6px; background:var(--accent-soft); color:var(--accent-ink);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;
+  }
+  .opt.correct{ background:var(--good-soft); border-color:var(--good); }
+  .opt.correct .letter{ background:var(--good); color:var(--paper-raised); }
+  .opt.incorrect{ background:var(--bad-soft); border-color:var(--bad); }
+  .opt.incorrect .letter{ background:var(--bad); color:var(--paper-raised); }
+  .opt.dim{ opacity:.55; }
+
+  .explain{
+    margin-top:16px; padding:16px 18px; border-radius:10px; background:var(--accent-soft);
+    border-left:3px solid var(--accent); font-size:.92rem; line-height:1.55; color:var(--ink);
+  }
+  .explain b{ color:var(--accent-ink); }
+
+  .quiz-nav{ display:flex; justify-content:flex-end; margin-top:20px; }
+  .next-btn{
+    background:var(--accent); color:var(--paper-raised); border:none; border-radius:8px;
+    padding:11px 22px; font-size:.92rem; font-weight:600; display:flex; align-items:center; gap:8px;
+    box-shadow:var(--shadow);
+  }
+  .next-btn:disabled{ background:var(--hairline); color:var(--ink-soft); box-shadow:none; cursor:not-allowed; }
+  .next-btn:not(:disabled):hover{ filter:brightness(1.06); }
+
+  /* ---------- summary ---------- */
+  .summary{ padding:40px 0; text-align:center; }
+  .summary .ring{
+    width:132px; height:132px; margin:0 auto 20px; position:relative;
+  }
+  .summary .ring svg{ transform:rotate(-90deg); }
+  .summary .ring .pct{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-size:1.7rem; font-weight:600;
+  }
+  .summary h2{ font-size:1.4rem; margin-bottom:6px; }
+  .summary p{ color:var(--ink-soft); margin:0 0 26px; }
+  .summary-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .btn{
+    border:1px solid var(--hairline); background:var(--paper-raised); color:var(--ink);
+    border-radius:8px; padding:10px 18px; font-size:.9rem; font-weight:500;
+  }
+  .btn.primary{ background:var(--accent); color:var(--paper-raised); border-color:var(--accent); font-weight:600; }
+  .btn:hover{ border-color:var(--accent); }
+
+  .review-list{ text-align:left; max-width:640px; margin:30px auto 0; display:flex; flex-direction:column; gap:10px; }
+  .review-item{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px;
+    padding:14px 16px; font-size:.88rem; display:flex; gap:10px; align-items:flex-start;
+  }
+  .review-item .mark{ font-size:.85rem; margin-top:1px; }
+  .review-item .mark.miss{ color:var(--bad); }
+  .review-item .mark.hit{ color:var(--good); }
+  .review-item div{ line-height:1.5; color:var(--ink-soft); }
+  .review-item b{ color:var(--ink); font-weight:500; }
+
+  [hidden]{ display:none !important; }
+
+  footer{
+    max-width:1040px; margin:0 auto; padding:40px 24px 0; color:var(--ink-soft);
+    font-size:.78rem; border-top:1px solid var(--hairline); margin-top:56px; padding-top:20px;
+  }
+
+  @media (max-width:560px){
+    .stem-card{ padding:20px; }
+    .topbar{ flex-direction:column; align-items:flex-start; gap:6px; }
+    .topstat{ text-align:left; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">P2 &middot; Week 12 &middot; Rheumatology &amp; Neuroscience</span>
+    <h1>Case Bank</h1>
+  </div>
+  <div class="topstat" id="topstat">84 questions &middot; 12 modules</div>
+</div>
+
+<main class="shell">
+
+  <section id="dashboard">
+    <div class="intro">
+      <p>Seven clinical-vignette questions per module, built from the Week 12 Elentra slides and learning objectives (rheumatology treatment and investigations, fibromyalgia and PMR, then the neuro foundations: localization, neuroanatomy, neurophysiology, cranial nerves, face, cranial cavity, cortex, orbit and vision). Options are written to similar length, and the correct answer&#39;s position varies &mdash; work the case, don&#39;t read the answer key by eye.</p>
+    </div>
+    <div id="groups"></div>
+  </section>
+
+  <section id="quizview" hidden>
+    <div class="quiz-header">
+      <button class="back-btn" id="backBtn">&larr; All modules</button>
+      <div class="quiz-title">
+        <div class="kicker" id="quizGroup"></div>
+        <h2 id="quizTitle"></h2>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="progressLabel">Question 1 of 10</span>
+        <span id="scoreLabel">Score 0 / 0</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="stem-card">
+      <span class="vignette-tag" id="qTag">Case</span>
+      <div class="stem" id="qStem"></div>
+    </div>
+
+    <div class="opts" id="opts"></div>
+    <div class="explain" id="explain" hidden></div>
+
+    <div class="quiz-nav">
+      <button class="next-btn" id="nextBtn" disabled>Next question &rarr;</button>
+    </div>
+  </section>
+
+  <section id="summaryview" hidden>
+    <div class="summary">
+      <div class="ring">
+        <svg width="132" height="132" viewBox="0 0 132 132">
+          <circle cx="66" cy="66" r="58" fill="none" stroke="var(--hairline)" stroke-width="10"/>
+          <circle id="ringFg" cx="66" cy="66" r="58" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round"/>
+        </svg>
+        <div class="pct" id="ringPct">0%</div>
+      </div>
+      <h2 id="sumTitle"></h2>
+      <p id="sumSub"></p>
+      <div class="summary-actions">
+        <button class="btn primary" id="retryBtn">Retry module</button>
+        <button class="btn" id="dashBtn">Back to modules</button>
+      </div>
+      <div class="review-list" id="reviewList"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Week 12 study material &middot; P2 Rheumatology &amp; Neuroscience &middot; for personal review use</footer>
+
+<script id="data" type="application/json">[{"id": "rheum-treatment", "title": "Rheumatology Treatment Review", "group": "Rheumatology", "q": [{"stem": "A 72-year-old with new headache, jaw claudication and transient blurred vision has an ESR of 95. What steroid plan fits best?", "opts": ["Prednisone 5 mg daily", "Prednisone 15–20 mg daily with a slow taper", "An intra-articular steroid injection", "High-dose steroids (~1 mg/kg), with IV pulse first given the vision symptoms"], "correct": 3, "explain": "GCA threatens vision, so it needs high-dose prednisone. IV methylprednisolone is used first when vision is involved, then high-dose oral."}, {"stem": "A 55-year-old with RA has a flare while starting methotrexate. Which steroid dose matches the slides?", "opts": ["Prednisone 20–40 mg daily, tapered as the DMARD takes effect", "Prednisone 1 mg/kg", "Prednisone 5 mg indefinitely", "No steroids; opioids instead"], "correct": 0, "explain": "An RA flare without major organ involvement gets a medium dose as a bridge while the steroid-sparing DMARD starts working."}, {"stem": "A patient with psoriasis has a swollen knee. The plaques cover the only safe injection site. Why avoid injecting steroid there?", "opts": ["Psoriatic skin is too thick for a needle", "It is fine; there is no concern", "Steroid worsens psoriasis everywhere", "Plaques raise the risk of introducing bacteria and causing a septic joint"], "correct": 3, "explain": "Psoriatic plaques carry heavy bacterial colonization, so injecting through them raises the risk of a septic joint. It's a relative contraindication."}, {"stem": "A 60-year-old's first-ever hot swollen knee is aspirated: cloudy, 65,000 cells, mostly neutrophils. What next?", "opts": ["Inject triamcinolone now", "Start methotrexate", "Treat as possible septic arthritis and consult orthopedics", "Reassure; this is OA"], "correct": 2, "explain": "More than 50,000 cells with a neutrophil predominance raises concern for a septic joint. Don't inject steroid until cultures are negative."}, {"stem": "A woman on methotrexate for RA develops a dry cough, shortness of breath and fever. What adverse effect should you suspect?", "opts": ["Reversible oligospermia", "Retinal toxicity", "Acute pneumonitis", "Hypertension"], "correct": 2, "explain": "Methotrexate (and leflunomide) can cause acute pneumonitis. Other key MTX toxicities: GI upset, hepatotoxicity, myelosuppression, infection, oral ulcers, teratogenicity."}, {"stem": "A patient on methotrexate is prescribed an antibiotic for a UTI. Which class should be avoided?", "opts": ["Penicillins", "Sulfa antibiotics such as TMP-SMX", "Nitrofurantoin", "Cephalosporins"], "correct": 1, "explain": "Sulfa antibiotics with methotrexate raise the risk of cytopenias. Sulfasalazine, by contrast, is fine with MTX."}, {"stem": "Which statement about NSAIDs in early RA is correct?", "opts": ["They help pain and swelling but are not disease-modifying", "They prevent erosions if started early", "They replace the need for DMARDs in mild disease", "Celecoxib is disease-modifying"], "correct": 0, "explain": "NSAIDs ease symptoms but don't prevent disease activity or delay erosions. DMARDs must still start within about 3 months of symptom onset."}]}, {"id": "rheum-investigations", "title": "Rheumatology Investigations Review", "group": "Rheumatology", "q": [{"stem": "A 28-year-old woman with fatigue and diffuse aches, no rash, no synovitis and no organ involvement, has a positive ANA (1:80, speckled). What does this result mean?", "opts": ["She has SLE", "Probably nothing: low-titre positive ANAs are common in healthy women", "She needs anti-dsDNA and ENA right away", "She should repeat the ANA monthly"], "correct": 1, "explain": "About 1/3 of women have a positive ANA. Without features of a CTD, a weakly positive speckled ANA is very likely irrelevant. Don't repeat it."}, {"stem": "A family doctor wants to 'screen' a patient with joint aches by ordering ANA, RF, anti-CCP, ANCA and ENA together. What is the slides' advice?", "opts": ["Order all of them to be thorough", "Only order a test for a disease you actually suspect, and refer describing what you see", "Order ANA alone; it covers everything", "Order complements instead"], "correct": 1, "explain": "Tests should follow a clinical suspicion. Untargeted panels create false positives, anxiety and unnecessary referrals."}, {"stem": "A patient with SLE has a positive ANA. A month later the doctor orders another ANA to 'check it'. Is this useful?", "opts": ["Yes, the titre tracks activity", "No: once positive, repeating it is a waste", "Yes, if it turns negative SLE is cured", "Only if anti-CCP is also ordered"], "correct": 1, "explain": "Once an ANA is positive it shouldn't be repeated. Anti-dsDNA and complements, not ANA, vary with SLE activity."}, {"stem": "A patient with suspected SLE has a negative anti-dsDNA. What can you conclude?", "opts": ["SLE is ruled out", "She must have drug-induced lupus", "Nothing definite: only about half of SLE patients are ever anti-dsDNA positive", "Repeat it weekly"], "correct": 2, "explain": "A negative ANA rules out SLE; a negative anti-dsDNA does not. Anti-dsDNA is higher in lupus nephritis and varies with activity."}, {"stem": "A pregnant woman with Sjögren's syndrome is anti-Ro positive. What does the fetus need?", "opts": ["Nothing", "Monitoring for congenital heart block", "Screening for neural tube defects only", "Prophylactic antibiotics"], "correct": 1, "explain": "Anti-Ro can cross the placenta: these pregnancies are followed for early detection of fetal congenital heart block (rare); the baby may get neonatal lupus (very rare)."}, {"stem": "A patient with dermatomyositis has a positive anti-Jo1. Which complication is most associated?", "opts": ["Lupus nephritis", "Congenital heart block", "Interstitial lung disease", "Uveitis"], "correct": 2, "explain": "Anti-Jo1 marks a high chance of ILD in dermatomyositis; anti-Scl-70 (topoisomerase I) marks scleroderma ILD."}, {"stem": "A 45-year-old has sinusitis, hemoptysis and hematuria. Which antibody result best supports real vasculitis (GPA)?", "opts": ["pANCA alone with no MPO", "Positive anti-CCP", "Positive RF", "cANCA with anti-PR3"], "correct": 3, "explain": "cANCA (PR3) is more likely to mean true vasculitis; pANCA has more false positives. GPA classically involves upper airway, lung and kidney."}]}, {"id": "body-pain", "title": "Body Pain: Fibromyalgia & Polymyalgia Rheumatica", "group": "Rheumatology", "q": [{"stem": "A 70-year-old woman has 3 months of morning shoulder and hip stiffness, fatigue and weight loss. Strength is normal. Hb 103, platelets 489, ESR 73. Most likely diagnosis?", "opts": ["Polymyalgia rheumatica", "Polymyositis", "Fibromyalgia", "Rheumatoid arthritis"], "correct": 0, "explain": "Older patient, girdle pain and stiffness, normal strength, systemic features and high ESR/CRP with anemia and thrombocytosis is classic PMR."}, {"stem": "A patient with suspected PMR also reports new headache and scalp tenderness. What changes?", "opts": ["Nothing; treat PMR as usual", "Lower the prednisone dose", "Start NSAIDs only", "Treat as GCA with high-dose prednisone to protect vision"], "correct": 3, "explain": "About 15% of PMR patients also have GCA, which needs high-dose steroids to reduce the risk of blindness."}, {"stem": "A 40-year-old has 2 years of pain everywhere, unrefreshing sleep, 'brain fog', IBS and TMJ pain. Exam shows no synovitis; CBC, TSH, CK and CRP are normal. What should the family doctor do?", "opts": ["Diagnose fibromyalgia and start multimodal management", "Refer to rheumatology to confirm before diagnosing", "Order an MRI of the whole spine", "Start prednisone"], "correct": 0, "explain": "Family doctors are encouraged to diagnose FM early without specialist confirmation. Treatment is education, exercise, CBT and, if needed, a brain-targeted drug."}, {"stem": "A patient with well-controlled RA has widespread pain and fatigue but no swollen joints and a normal CRP. The rheumatologist suspects fibromyalgia. What is true?", "opts": ["FM can coexist with RA; immune therapy won't help the FM features", "Increase her DMARD to treat the pain", "FM can't be diagnosed because she has RA", "Add opioids"], "correct": 0, "explain": "FM is not a diagnosis of exclusion and is common with rheumatologic disease. Treating FM features with immunologic therapy doesn't improve them."}, {"stem": "A fibromyalgia patient sleeps poorly and wakes unrefreshed. Which drug class targets sleep best?", "opts": ["SNRIs", "Opioids", "Gabapentinoids (pregabalin, gabapentin)", "NSAIDs"], "correct": 2, "explain": "Gabapentinoids and low-dose TCAs help sleep; SNRIs don't."}, {"stem": "Which mechanism best explains fibromyalgia pain?", "opts": ["Muscle inflammation on biopsy", "Autoantibodies against nerve tissue", "Weak descending inhibition (NE, 5-HT) with amplified facilitation (glutamate, substance P)", "Joint erosions"], "correct": 2, "explain": "FM is central sensitization: drugs that raise NE and 5-HT help; CSF substance P and glutamate are high."}, {"stem": "A PMR patient will likely need prednisone above 7.5 mg for more than 3 months. What else should be started?", "opts": ["Calcium, vitamin D and an anti-resorptive drug", "Nothing", "Methotrexate for everyone", "Iron supplements"], "correct": 0, "explain": "Long-term steroids thin bone: give calcium 1,500 mg, vitamin D 1,000–2,000 IU and an anti-resorptive."}]}, {"id": "intro-neurology", "title": "Intro to Neurology", "group": "Neuroanatomy & Neurophysiology", "q": [{"stem": "A 70-year-old suddenly can't move his right arm and the right side of his face droops; his leg is only mildly weak. Where is the lesion?", "opts": ["Right MCA territory", "Cervical spinal cord", "Left MCA territory", "Right ulnar nerve"], "correct": 2, "explain": "Contralateral face and arm > leg weakness is a left MCA pattern (homunculus); face involvement means brain, not cord."}, {"stem": "A 50-year-old has weakness of the right arm and leg, sparing the face, with brisk reflexes. Where is the lesion most likely?", "opts": ["Spinal cord", "Left cortex", "Right peroneal nerve", "Neuromuscular junction"], "correct": 0, "explain": "Hemibody weakness with UMN signs but no facial or cranial nerve involvement localizes to the spinal cord."}, {"stem": "Both legs are weak with brisk reflexes and upgoing toes; the arms are normal. Where is the lesion?", "opts": ["Cervical cord", "Both peroneal nerves", "Brainstem", "Thoracic spinal cord"], "correct": 3, "explain": "Paraparesis with UMN signs = thoracic cord. Quadriparesis = cervical cord."}, {"stem": "A patient has thigh weakness with atrophy, fasciculations and absent knee reflex on one side. Where is the problem?", "opts": ["Lower motor neuron", "Upper motor neuron", "Cerebellum", "Basal ganglia"], "correct": 0, "explain": "Atrophy, fasciculations and lost reflexes are LMN signs: anterior horn cell, root, plexus, nerve, NMJ or muscle."}, {"stem": "A 59-year-old has 6 months of slowness, stiffness, soft speech, reduced arm swing and slow finger tapping. Power and reflexes are normal. Localization and likely diagnosis?", "opts": ["Cerebellum; MS", "Motor cortex; stroke", "Basal ganglia; Parkinson's disease", "Spinal cord; compression"], "correct": 2, "explain": "Slowness, rigidity and soft speech without weakness localize to the basal ganglia. A chronic course suggests degeneration: Parkinson's."}, {"stem": "Symptoms began over seconds and peaked immediately. Which category leads the differential?", "opts": ["Vascular (stroke)", "Degenerative", "Hereditary", "Neoplastic"], "correct": 0, "explain": "Hyperacute onset = stroke, migraine aura or trauma. Tumours are subacute; degenerative and hereditary are chronic."}, {"stem": "A 68-year-old has 3 weeks of falls, clumsy hands, urinary urgency, brisk reflexes in all limbs, upgoing toes and lost vibration at the toes. Where is the lesion?", "opts": ["Peripheral nerves", "Both frontal lobes", "Cervical spinal cord", "Cerebellum"], "correct": 2, "explain": "UMN signs in all four limbs, dorsal column loss and bladder symptoms localize to the cervical cord. A subacute course suggests compression, inflammation or B12 deficiency."}]}, {"id": "intro-neuroanatomy", "title": "Introduction to Neuroanatomy", "group": "Neuroanatomy & Neurophysiology", "q": [{"stem": "A patient has a lesion of the precentral gyrus. Which lobe and function are affected?", "opts": ["Parietal; sensation", "Frontal; voluntary movement", "Temporal; hearing", "Occipital; vision"], "correct": 1, "explain": "The precentral gyrus (frontal lobe, in front of the central sulcus) is primary motor cortex."}, {"stem": "A patient loses taste perception after a small cortical stroke. Which area is most likely involved?", "opts": ["Occipital pole", "Cingulate gyrus", "Insula", "Precentral gyrus"], "correct": 2, "explain": "The insula holds the gustatory cortex and visceral sensation."}, {"stem": "After a fall on the side of the head, a CT shows a lens-shaped bleed. Which vessel, from which parent artery, is classically torn?", "opts": ["Middle meningeal artery, from the external carotid", "Basilar artery, from the vertebrals", "Bridging veins, from the superior sagittal sinus", "Anterior cerebral artery, from the internal carotid"], "correct": 0, "explain": "The middle meningeal artery supplies the dura; rupture causes an epidural hematoma."}, {"stem": "Degeneration of the substantia nigra produces which kind of disorder?", "opts": ["A sensory neuropathy", "A movement disorder such as Parkinson's disease", "Cortical blindness", "Hearing loss"], "correct": 1, "explain": "The substantia nigra works with the basal ganglia; its loss causes parkinsonism."}, {"stem": "Which structure is the relay for all conscious senses except smell?", "opts": ["Hypothalamus", "Thalamus", "Pineal gland", "Cerebellum"], "correct": 1, "explain": "Every input reaching the cortex relays through a thalamic nucleus, except olfaction."}, {"stem": "A lesion of the midbrain would most likely affect which cranial nerves?", "opts": ["V and VII", "III and IV", "IX and X", "XI and XII"], "correct": 1, "explain": "Midbrain: CN III and IV nuclei (and the colliculi)."}, {"stem": "CSF passes from the third to the fourth ventricle through which structure?", "opts": ["Interventricular foramen", "Cerebral aqueduct", "Central canal", "Arachnoid granulation"], "correct": 1, "explain": "The cerebral aqueduct runs through the midbrain from the third to the fourth ventricle."}]}, {"id": "intro-neurophysiology", "title": "Introduction to Neurophysiology", "group": "Neuroanatomy & Neurophysiology", "q": [{"stem": "A 30-year-old with MS has slowed, unreliable nerve conduction. What has been damaged?", "opts": ["Sodium channels in dendrites", "The synaptic cleft", "Myelin, which normally allows saltatory conduction", "The axon hillock"], "correct": 2, "explain": "Demyelination disrupts saltatory conduction, so action potentials travel slowly or fail."}, {"stem": "A patient who takes a benzodiazepine drinks heavily and becomes profoundly sedated. Why?", "opts": ["Alcohol blocks benzodiazepine metabolism only", "Alcohol is a dopamine antagonist", "Both are glutamate agonists", "Both act at the GABA-A receptor and potentiate each other"], "correct": 3, "explain": "Benzodiazepines act more strongly when ethanol is present at the GABA-A receptor; ethanol also antagonizes glutamate receptors."}, {"stem": "How does the nervous system signal that a touch is getting firmer?", "opts": ["Bigger action potentials", "A different neurotransmitter", "A higher frequency of action potentials and more axons recruited", "Slower conduction"], "correct": 2, "explain": "Action potentials are all-or-none, so intensity is coded by firing frequency and the number of axons firing."}, {"stem": "A patient speaks fluently but uses nonsense words, can't understand questions and seems unaware of the problem. Where is the lesion?", "opts": ["Left frontal cortex (Broca's)", "Right occipital cortex", "Left posterior temporal cortex (Wernicke's)", "Cerebellum"], "correct": 2, "explain": "Wernicke's aphasia is a perceptual syndrome from left posterior temporal damage; patients are often unaware."}, {"stem": "A patient understands everything but speaks slowly and with great effort, frustrated by it. Where is the lesion?", "opts": ["Occipital pole", "Left temporal cortex (Wernicke's)", "Corpus callosum", "Left frontal cortex (Broca's area)"], "correct": 3, "explain": "Broca's aphasia is a motor syndrome; comprehension is intact and patients are aware."}, {"stem": "Which transmitter acts on NMDA receptors that underlie synaptic plasticity and learning?", "opts": ["GABA", "Glycine", "Serotonin", "Glutamate"], "correct": 3, "explain": "Glutamate is the main excitatory transmitter; modifiable NMDA receptors are the basis of learning and memory."}, {"stem": "Primary visual cortex is called 'striate' because of which feature?", "opts": ["Thick layer 5 output cells", "Absent layer 1", "A very thick layer 4 receiving thalamic input", "Dense myelin in layer 6"], "correct": 2, "explain": "Layer 4 receives thalamic input and is thickest in primary sensory cortex; V1's thick layer 4 looks striped."}]}, {"id": "cranial-nerves", "title": "Cranial Nerve Anatomy", "group": "Head & Neck Anatomy", "q": [{"stem": "A 60-year-old woke with the whole right side of her face weak: she can't wrinkle her forehead or close her right eye, and the eye rolls up when she tries. Likely diagnosis?", "opts": ["Left MCA stroke", "Right trigeminal neuralgia", "Right Bell's palsy (LMN facial nerve)", "Myasthenia gravis"], "correct": 2, "explain": "Forehead involvement and inability to close the eye (Bell's phenomenon) mean an LMN facial nerve lesion. A stroke spares the forehead."}, {"stem": "A patient has a droopy right mouth after a stroke but can still wrinkle both sides of the forehead. Why is the forehead spared?", "opts": ["The upper face gets input from both hemispheres", "CN VII has no forehead branch", "The trigeminal nerve moves the forehead", "The lesion is in the parotid"], "correct": 0, "explain": "UMN facial weakness spares the forehead because of bilateral cortical input to the upper facial nucleus."}, {"stem": "A 55-year-old has sudden diplopia, a right eye that is 'down and out', ptosis and a dilated pupil, with severe headache. What must be excluded urgently?", "opts": ["Posterior communicating artery aneurysm", "Diabetic third nerve palsy", "Bell's palsy", "Fourth nerve palsy from trauma"], "correct": 0, "explain": "A painful pupil-involving CN III palsy suggests compression by a PCOM aneurysm."}, {"stem": "A patient reports double vision. Which location can be excluded?", "opts": ["Brainstem", "Cerebral cortex above the brainstem", "Neuromuscular junction", "Cranial nerves III, IV or VI"], "correct": 1, "explain": "Diplopia arises from the brainstem, cranial nerves, eye muscles or NMJ — never from brain rostral to the brainstem."}, {"stem": "A patient has numbness of the forehead and an absent corneal reflex on one side, but normal jaw strength. Which division is affected?", "opts": ["V2", "V1", "V3", "CN VII"], "correct": 1, "explain": "V1 supplies the forehead and cornea (corneal reflex afferent). Mastication is V3 motor."}, {"stem": "A patient has hoarseness, dysphagia and a palate that rises asymmetrically, with a reduced gag. Which nerves are involved?", "opts": ["V and VII", "III and IV", "XI and XII", "IX and X"], "correct": 3, "explain": "IX provides the sensory limb of the gag; X moves the palate and larynx."}, {"stem": "To test smell, why use coffee or cloves rather than ammonia?", "opts": ["Ammonia damages the olfactory bulb", "Noxious smells stimulate trigeminal fibres, not olfaction", "Coffee is cheaper", "Ammonia tests CN IX"], "correct": 1, "explain": "Irritants like ammonia or vinegar activate trigeminal endings in the nose and can fool the test."}]}, {"id": "facial-anatomy", "title": "Facial Anatomy", "group": "Head & Neck Anatomy", "q": [{"stem": "After parotid tumour surgery, a patient can't close the eye or wrinkle the forehead on that side but can still chew normally. What was injured?", "opts": ["V3", "The hypoglossal nerve", "Branches of the facial nerve within the parotid", "The great auricular nerve"], "correct": 2, "explain": "CN VII divides into its five branches inside the parotid. Chewing is V3, so it's spared."}, {"stem": "A patient can't close one eye tightly. Which muscle is weak?", "opts": ["Orbicularis oculi", "Levator palpebrae superioris", "Frontalis", "Temporalis"], "correct": 0, "explain": "Orbicularis oculi (CN VII) closes the eye; levator (CN III) opens it."}, {"stem": "A blow to the cheek fractures the orbital floor; the cheek and upper lip become numb. Which nerve is injured?", "opts": ["Infraorbital (V2)", "Supraorbital (V1)", "Mental (V3)", "Buccal branch of VII"], "correct": 0, "explain": "The infraorbital nerve (V2) runs in the orbital floor and exits the infraorbital foramen."}, {"stem": "A dental block leaves the chin and lower lip numb. Which nerve is anesthetized?", "opts": ["Infraorbital", "Mental / inferior alveolar (V3)", "Great auricular", "Zygomatic branch of VII"], "correct": 1, "explain": "The mental nerve (branch of the inferior alveolar, V3) exits the mental foramen to the chin and lower lip."}, {"stem": "A patient's jaw deviates to the left on opening and the left masseter feels weak on clenching. Which nerve is affected?", "opts": ["Left facial nerve", "Left great auricular", "Right hypoglossal", "Left mandibular nerve (V3)"], "correct": 3, "explain": "V3 supplies the muscles of mastication; the jaw deviates toward the weak side."}, {"stem": "A patient can't smile on one side but forehead and eye closure are normal after a cheek laceration. Which facial nerve branch was likely cut?", "opts": ["Temporal", "Buccal", "Zygomatic", "Cervical"], "correct": 1, "explain": "The buccal branch supplies muscles around the mouth and cheek. Temporal and zygomatic supply the forehead and eye."}, {"stem": "Which artery runs diagonally across the face from near the angle of the mandible to the medial eye?", "opts": ["Superficial temporal", "Ophthalmic", "Maxillary", "Facial"], "correct": 3, "explain": "The facial artery, a branch of the external carotid, follows that diagonal path."}]}, {"id": "cranial-cavity", "title": "Cranial Cavity: Skull, Meninges & Blood Supply", "group": "Head & Neck Anatomy", "q": [{"stem": "A 19-year-old is hit on the side of the head, briefly loses consciousness, feels fine for a few hours, then becomes drowsy with a dilated pupil. CT shows a lens-shaped bleed. Diagnosis?", "opts": ["Subdural hematoma", "Subarachnoid hemorrhage", "Epidural hematoma from the middle meningeal artery", "Ischemic stroke"], "correct": 2, "explain": "Pterion fracture tears the middle meningeal artery; LOC, lucid interval, then deterioration with a biconvex bleed."}, {"stem": "An 80-year-old on anticoagulants has weeks of confusion after a minor fall. CT shows a crescent-shaped collection. Which vessels bled?", "opts": ["Middle meningeal artery", "Central retinal artery", "Berry aneurysm", "Bridging veins into the subdural space"], "correct": 3, "explain": "Acceleration–deceleration tears bridging veins; the slow venous bleed may surface weeks later, especially in older people with brain atrophy."}, {"stem": "A 45-year-old has a sudden 'worst headache of my life', vomiting and neck stiffness. CT shows blood in the basal cisterns. Most likely cause?", "opts": ["Ruptured saccular (berry) aneurysm", "Middle meningeal artery tear", "Bridging vein tear", "Venous sinus thrombosis"], "correct": 0, "explain": "Thunderclap headache and blood in the subarachnoid space is SAH, usually from a ruptured berry aneurysm."}, {"stem": "A patient picks a pimple near the nose, then develops fever, a swollen eye, chemosis, and can't move the eye. What spread?", "opts": ["Meningitis via the cribriform plate", "Infection to the cavernous sinus via the facial and ophthalmic veins", "Infection of the parotid", "Sinusitis to the frontal lobe"], "correct": 1, "explain": "The 'danger area' of the face drains via ophthalmic veins to the cavernous sinus. Thrombosis affects III, IV, V1, V2 and VI."}, {"stem": "A rising supratentorial mass causes drowsiness, an ipsilateral fixed dilated pupil and irregular breathing. What is happening?", "opts": ["Tonsillar herniation", "Uncal herniation through the tentorial notch compressing CN III", "Subfalcine herniation only", "Hydrocephalus from aqueductal stenosis"], "correct": 1, "explain": "The uncus herniates through the tentorial notch, compressing the midbrain and CN III. Tonsillar herniation into the foramen magnum follows."}, {"stem": "An infant's head is long and narrow from front to back. Which suture closed early?", "opts": ["Sagittal", "Coronal", "Lambdoid", "Squamous"], "correct": 0, "explain": "Premature fusion of the sagittal suture causes scaphocephaly."}, {"stem": "A patient has a stroke causing contralateral leg weakness more than arm weakness. Which artery is involved?", "opts": ["Middle cerebral", "Posterior cerebral", "Anterior cerebral", "Basilar"], "correct": 2, "explain": "The ACA supplies the medial frontal and parietal lobes, where the leg is represented."}]}, {"id": "neuroanatomy-cortex", "title": "Neuroanatomy: Cortex", "group": "Neuroanatomy & Neurophysiology", "q": [{"stem": "After a left parietal stroke, a patient confuses right and left, can't write and can't do simple arithmetic. Which syndrome is this?", "opts": ["Wernicke's aphasia", "Korsakoff syndrome", "Prosopagnosia", "Gerstmann syndrome"], "correct": 3, "explain": "Left parietal damage: right–left confusion, agraphia, acalculia (and finger agnosia)."}, {"stem": "A man can't recognize his wife's face but knows her instantly by her voice. Where is the lesion?", "opts": ["Precentral gyrus", "Fusiform face area / inferior temporal lobe", "Broca's area", "Cerebellum"], "correct": 1, "explain": "Prosopagnosia comes from damage to the temporal (ventral stream) face area."}, {"stem": "A 50-year-old with a frontal tumour has become impulsive, disinhibited and unable to plan. Which region is affected?", "opts": ["Occipital lobe", "Insula", "Postcentral gyrus", "Prefrontal (anterior association) cortex"], "correct": 3, "explain": "The prefrontal cortex handles executive function, impulse control and personality."}, {"stem": "After bilateral medial temporal surgery, a patient remembers his childhood but can't form any new memories. Which structure was removed?", "opts": ["Amygdala only", "Both hippocampi", "Both mammillary bodies", "Corpus callosum"], "correct": 1, "explain": "Bilateral hippocampal damage causes anterograde amnesia (patient H.M.)."}, {"stem": "A malnourished man with alcohol use disorder is confused, ataxic and has nystagmus. Which deficiency and structure?", "opts": ["B12; dorsal columns", "Thiamine (B1); mammillary bodies", "Folate; hippocampus", "Niacin; basal ganglia"], "correct": 1, "explain": "Wernicke's encephalopathy (thiamine deficiency) with mammillary body necrosis; survivors get Korsakoff amnesia and confabulation."}, {"stem": "A patient has an occipital lesion and no conscious awareness of what is in front of them, though their eyes are normal. What is this?", "opts": ["Glaucoma", "Cortical blindness from V1 damage", "Optic neuritis", "Visual agnosia"], "correct": 1, "explain": "Damage to primary visual cortex (BA 17, calcarine sulcus) removes conscious vision."}, {"stem": "A seizure begins with flashing coloured lights. Which lobe is the likely focus?", "opts": ["Frontal", "Occipital", "Temporal", "Parietal"], "correct": 1, "explain": "Occipital seizures typically start with visual hallucinations."}]}, {"id": "orbital-anatomy", "title": "Orbital Anatomy", "group": "Head & Neck Anatomy", "q": [{"stem": "A hockey player is hit in the eye by a puck. He has diplopia on looking up and a numb cheek. Coronal CT shows a 'teardrop' in the maxillary sinus. Diagnosis?", "opts": ["Medial wall fracture", "Zygomatic arch fracture", "Inferior (floor) blowout fracture", "Retinal detachment"], "correct": 2, "explain": "The thin floor breaks; fat (sometimes inferior rectus) herniates into the maxillary sinus, and the infraorbital nerve is often hurt."}, {"stem": "A patient's right eye rests 'down and out' with ptosis. Which nerve is palsied?", "opts": ["Right CN III", "Right CN IV", "Right CN VI", "Right V1"], "correct": 0, "explain": "Unopposed lateral rectus (VI) and superior oblique (IV) pull the eye down and out; levator loss gives ptosis."}, {"stem": "A patient with raised intracranial pressure can't move the left eye outward and turns his head to avoid double vision. Which nerve?", "opts": ["Left CN III", "Left CN VI", "Left CN IV", "Left CN II"], "correct": 1, "explain": "CN VI has a long course and is easily stretched by raised ICP; the lateral rectus can't abduct."}, {"stem": "After head trauma, a child's eye sits 'up and in' and she tilts her head. Which nerve was injured?", "opts": ["CN III", "CN IV", "CN VI", "CN VII"], "correct": 1, "explain": "Trochlear (CN IV) palsy from trauma: the superior oblique can't depress and abduct the eye."}, {"stem": "A smoker has a small right pupil, mild right ptosis and a dry, flushed right face. What is the lesion?", "opts": ["Interruption of the sympathetic supply (Horner's syndrome)", "CN III palsy", "CN VII palsy", "Glaucoma"], "correct": 0, "explain": "Horner's: miosis, ptosis (superior tarsal muscle), vasodilation and anhidrosis from loss of sympathetics."}, {"stem": "A 70-year-old has sudden painless loss of vision in one eye. Which vessel is most likely occluded?", "opts": ["Central retinal artery", "Superior ophthalmic vein", "Facial artery", "Middle meningeal artery"], "correct": 0, "explain": "The central retinal artery (from the ophthalmic artery) supplies the retina; occlusion causes blindness."}, {"stem": "A patient has a sudden painful red eye, halos and a rock-hard globe. What is the mechanism?", "opts": ["Lens clouding", "Conjunctival infection", "Impaired aqueous drainage raising intraocular pressure (glaucoma)", "Blocked tarsal gland"], "correct": 2, "explain": "Glaucoma: reduced drainage of aqueous humour raises IOP and compresses the retina, risking blindness."}]}, {"id": "neurophysiology-vision", "title": "Neurophysiology: Vision", "group": "Neuroanatomy & Neurophysiology", "q": [{"stem": "A 48-year-old can no longer read the menu without holding it at arm's length. Why?", "opts": ["The ciliary muscle is paralyzed", "The cornea has thickened", "The lens has lost elasticity and stays too flat for near vision", "The retina has detached"], "correct": 2, "explain": "Presbyopia: the ageing lens can't round up for near objects, so reading glasses are needed."}, {"stem": "A man with a headache has lost the outer half of the visual field in both eyes. Where is the lesion?", "opts": ["Optic chiasm (e.g. pituitary tumour)", "Left optic nerve", "Right optic tract", "Left occipital lobe"], "correct": 0, "explain": "Bitemporal hemianopia = chiasm, often from a pituitary adenoma."}, {"stem": "After a right-sided stroke, a patient can't see the left half of the world with either eye. Where is the lesion?", "opts": ["Right optic nerve", "Optic chiasm", "Right optic tract or radiation / occipital cortex", "Left optic tract"], "correct": 2, "explain": "Homonymous hemianopia comes from a lesion behind the chiasm on the opposite side."}, {"stem": "A patient has gradual peripheral vision loss ('tunnel vision') with high intraocular pressure. What is damaged?", "opts": ["Ganglion cell axons at the optic disc", "Lens fibres", "Foveal cones", "V1"], "correct": 0, "explain": "Glaucoma compresses ganglion cell axons, affecting the periphery first."}, {"stem": "An older patient has distorted central vision and straight lines look wavy; peripheral vision is fine. Diagnosis?", "opts": ["Macular degeneration", "Glaucoma", "Cataract", "Optic tract lesion"], "correct": 0, "explain": "Macular degeneration affects foveal vision, distorting the retinal sheet."}, {"stem": "A patient can see an object and even copy it but can't name it until she touches it. Which pathway is damaged?", "opts": ["Dorsal stream (parietal)", "Ventral stream (lateral occipital cortex)", "Optic chiasm", "Area MT"], "correct": 1, "explain": "Visual agnosia from ventral 'what' stream damage; other senses still identify the object."}, {"stem": "A patient recognizes a cup but repeatedly misses when reaching for it in the periphery, with normal strength. Where is the lesion?", "opts": ["Ventral stream", "Optic nerve", "Primary motor cortex", "Dorsal stream (posterior parietal) — optic ataxia"], "correct": 3, "explain": "Optic ataxia is an action deficit of the dorsal 'where' stream."}]}]</script>
+<script>
+(function(){
+  "use strict";
+  var MODULES = JSON.parse(document.getElementById('data').textContent);
+  var CIRC = 2 * Math.PI * 58;
+
+  var store = { get:function(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+                set:function(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} } };
+  var results = store.get('caseBankResultsWk12-v1') || {};
+
+  var dashboard = document.getElementById('dashboard');
+  var quizview = document.getElementById('quizview');
+  var summaryview = document.getElementById('summaryview');
+  var groupsEl = document.getElementById('groups');
+
+  var state = { modIdx:-1, qIdx:0, correctCount:0, answers:[], locked:false };
+
+  function letterFor(i){ return String.fromCharCode(65+i); }
+
+  function renderDashboard(){
+    groupsEl.innerHTML = '';
+    var groups = [];
+    MODULES.forEach(function(m){
+      var g = groups.filter(function(x){ return x.name===m.group; })[0];
+      if(!g){ g = { name:m.group, mods:[] }; groups.push(g); }
+      g.mods.push(m);
+    });
+    groups.forEach(function(g){
+      var h = document.createElement('div');
+      h.className = 'group-heading';
+      h.innerHTML = '<h2>'+g.name+'</h2><div class="rule"></div><span class="count">'+g.mods.length+' module'+(g.mods.length>1?'s':'')+'</span>';
+      groupsEl.appendChild(h);
+
+      var grid = document.createElement('div');
+      grid.className = 'grid';
+      g.mods.forEach(function(m){
+        var idx = MODULES.indexOf(m);
+        var r = results[m.id];
+        var card = document.createElement('button');
+        card.className = 'card';
+        var badge = '<span class="badge new">Not started</span>';
+        var scoreLine = '';
+        if(r){
+          var pct = Math.round(100*r.score/r.total);
+          badge = pct>=80 ? '<span class="badge done">Completed</span>' : '<span class="badge retry">Review again</span>';
+          scoreLine = '<span class="score">Best <b>'+r.score+' / '+r.total+'</b> ('+pct+'%)</span>';
+        } else {
+          scoreLine = '<span class="score">'+m.q.length+' questions</span>';
+        }
+        card.innerHTML =
+          '<span class="num">'+String(idx+1).padStart(2,'0')+' / 12</span>'+
+          '<h3>'+m.title+'</h3>'+
+          '<div class="card-foot">'+scoreLine+badge+'</div>';
+        card.addEventListener('click', function(){ startModule(idx); });
+        grid.appendChild(card);
+      });
+      groupsEl.appendChild(grid);
+    });
+  }
+
+  function startModule(idx){
+    state.modIdx = idx; state.qIdx = 0; state.correctCount = 0; state.answers = [];
+    dashboard.hidden = true; summaryview.hidden = true; quizview.hidden = false;
+    var m = MODULES[idx];
+    document.getElementById('quizGroup').textContent = m.group;
+    document.getElementById('quizTitle').textContent = m.title;
+    renderQuestion();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  function renderQuestion(){
+    var m = MODULES[state.modIdx];
+    var q = m.q[state.qIdx];
+    state.locked = false;
+    document.getElementById('progressLabel').textContent = 'Question '+(state.qIdx+1)+' of '+m.q.length;
+    document.getElementById('scoreLabel').textContent = 'Score '+state.correctCount+' / '+state.qIdx;
+    document.getElementById('progressFill').style.width = (100*state.qIdx/m.q.length)+'%';
+    document.getElementById('qTag').textContent = 'Case '+(state.qIdx+1);
+    document.getElementById('qStem').textContent = q.stem;
+
+    var optsEl = document.getElementById('opts');
+    optsEl.innerHTML = '';
+    q.opts.forEach(function(optText, i){
+      var b = document.createElement('button');
+      b.className = 'opt';
+      b.innerHTML = '<span class="letter">'+letterFor(i)+'</span><span>'+optText+'</span>';
+      b.addEventListener('click', function(){ selectOption(i); });
+      optsEl.appendChild(b);
+    });
+
+    document.getElementById('explain').hidden = true;
+    var nextBtn = document.getElementById('nextBtn');
+    nextBtn.disabled = true;
+    nextBtn.textContent = (state.qIdx === m.q.length-1) ? 'See results →' : 'Next question →';
+  }
+
+  function selectOption(i){
+    if(state.locked) return;
+    state.locked = true;
+    var m = MODULES[state.modIdx];
+    var q = m.q[state.qIdx];
+    var correct = (i === q.correct);
+    if(correct) state.correctCount++;
+    state.answers.push({ q:q, chosen:i, correct:correct });
+
+    var opts = document.querySelectorAll('#opts .opt');
+    opts.forEach(function(el, idx){
+      el.disabled = true;
+      if(idx === q.correct) el.classList.add('correct');
+      else if(idx === i) el.classList.add('incorrect');
+      else el.classList.add('dim');
+    });
+
+    var explain = document.getElementById('explain');
+    explain.innerHTML = '<b>'+(correct ? 'Correct. ' : 'Not quite. ')+'</b>'+q.explain;
+    explain.hidden = false;
+
+    document.getElementById('scoreLabel').textContent = 'Score '+state.correctCount+' / '+(state.qIdx+1);
+    document.getElementById('nextBtn').disabled = false;
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    var m = MODULES[state.modIdx];
+    if(state.qIdx < m.q.length-1){
+      state.qIdx++;
+      renderQuestion();
+    } else {
+      finishModule();
+    }
+  });
+
+  function finishModule(){
+    var m = MODULES[state.modIdx];
+    document.getElementById('progressFill').style.width = '100%';
+    quizview.hidden = true; summaryview.hidden = false;
+
+    var total = m.q.length, score = state.correctCount;
+    var pct = Math.round(100*score/total);
+    results[m.id] = { score:score, total:total };
+    var prev = store.get('caseBankResultsWk12-v1') || {};
+    var existing = prev[m.id];
+    if(!existing || existing.score < score) prev[m.id] = { score:score, total:total };
+    else results[m.id] = existing;
+    store.set('caseBankResultsWk12-v1', prev);
+    results = prev;
+
+    var offset = CIRC * (1 - pct/100);
+    var ring = document.getElementById('ringFg');
+    ring.style.strokeDasharray = CIRC;
+    ring.style.strokeDashoffset = CIRC;
+    requestAnimationFrame(function(){
+      ring.style.transition = 'stroke-dashoffset .6s ease';
+      ring.style.strokeDashoffset = offset;
+    });
+    document.getElementById('ringPct').textContent = pct+'%';
+    document.getElementById('sumTitle').textContent = m.title;
+    document.getElementById('sumSub').textContent = score+' of '+total+' correct — '+(pct>=80?'strong grasp of this module.':pct>=60?'solid, worth a second pass.':'flag this module for review.');
+
+    var reviewList = document.getElementById('reviewList');
+    reviewList.innerHTML = '';
+    var misses = state.answers.filter(function(a){ return !a.correct; });
+    if(misses.length){
+      var h = document.createElement('div');
+      h.style.textAlign = 'left';
+      h.style.fontFamily = "'JetBrains Mono',monospace";
+      h.style.fontSize = '.72rem';
+      h.style.color = 'var(--ink-soft)';
+      h.style.textTransform = 'uppercase';
+      h.style.letterSpacing = '.08em';
+      h.style.margin = '0 0 4px';
+      h.textContent = 'Missed questions';
+      reviewList.appendChild(h);
+    }
+    misses.forEach(function(a){
+      var item = document.createElement('div');
+      item.className = 'review-item';
+      item.innerHTML = '<span class="mark miss">&#10007;</span><div><b>'+a.q.stem+'</b><br>Correct answer: '+a.q.opts[a.q.correct]+'</div>';
+      reviewList.appendChild(item);
+    });
+
+    document.getElementById('retryBtn').onclick = function(){ startModule(state.modIdx); };
+  }
+
+  document.getElementById('dashBtn').addEventListener('click', backToDashboard);
+  document.getElementById('backBtn').addEventListener('click', backToDashboard);
+  function backToDashboard(){
+    quizview.hidden = true; summaryview.hidden = true; dashboard.hidden = false;
+    renderDashboard();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  renderDashboard();
+})();
+</script>

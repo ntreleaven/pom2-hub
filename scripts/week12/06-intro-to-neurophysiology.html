@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 12 — Introduction to Neurophysiology</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Public+Sans:wght@400;600&display=swap">
+<style>
+:root{--paper:#f2f0e8;--raised:#fbfaf5;--ink:#1e2a2e;--soft:#55625f;--line:#d6d1c2;--accent:#2c5f5a}
+@media (prefers-color-scheme:dark){:root{--paper:#171d1e;--raised:#1f2729;--ink:#e9eae4;--soft:#a5afab;--line:#333e3f;--accent:#7bbbb0;color-scheme:dark}}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 'Public Sans',system-ui,sans-serif}
+main{max-width:70ch;margin:0 auto;padding:28px 18px 64px}
+.top{font-size:.85rem;margin-bottom:18px} .top a{color:var(--accent)}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif;line-height:1.25;text-wrap:balance}
+h1{font-size:1.7rem} h2{font-size:1.25rem;margin-top:1.6em} h3{font-size:1.08rem}
+a{color:var(--accent)} hr{border:0;border-top:1px solid var(--line)}
+code{background:var(--raised);padding:1px 4px;border-radius:4px}
+table{border-collapse:collapse;width:100%;font-size:.92rem;margin:1em 0;display:block;overflow-x:auto} th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top} th{color:var(--soft)}
+</style></head><body><main>
+<div class="top"><a href="../../">← PoM 2 Study Hub</a></div>
+<h1>Week 12 — Introduction to Neurophysiology</h1>
+<h3>Video script (NotebookLM source)</h3>
+<p><em>Source: Dr. Brian Corneil, "Introduction to Neurophysiology" (Elentra, 42 min): neurons and action potentials, then synapses and neuropharmacology. Slide PDF: Corneil_IntroNeurophysiology_slides.</em></p>
+<h2>Learning Objectives (from Elentra)</h2>
+<p>Upon completing this module, students will be able to:</p>
+<ul>
+<li>Use basic neurophysiology to predict how disruption of normal physiology can cause symptoms and signs</li>
+<li>Describe the microscopic organization of the nervous system (neurons, axons, dendrites, action potentials, receptors, inhibition, excitation).</li>
+</ul>
+<h2>High-Yield Content</h2>
+<p><strong>The theme:</strong> neurons talk with <strong>all-or-none action potentials</strong> and <strong>chemical synapses</strong>. Break the myelin and signals slow (MS); change a receptor and you have a drug effect; damage a specialized cortical area and you get a specific deficit.</p>
+<h3>1. The brain as a network</h3>
+<ul>
+<li>About <strong>100 billion neurons</strong> and 10× as many glia. Each neuron contacts about <strong>1,000</strong> others; memories live in these connections.</li>
+<li>Neurons sit in a thin, folded sheet of <strong>grey matter</strong>; axon tracts form the <strong>white matter</strong>.</li>
+<li>The brain is <strong>1–3% of body mass but uses ~20% of the body's energy</strong>, so only a small fraction of neurons fire at once.</li>
+<li>Grey matter needs more oxygen, and blood flows to the active areas — the basis of <strong>fMRI</strong>. <strong>Diffusion tensor imaging (DTI)</strong> shows axon tracts.</li>
+<li>Dense interconnection is why <strong>epilepsy</strong> spreads: abnormal activity in one spot can spread into a seizure.</li>
+</ul>
+<h3>2. The neuron</h3>
+<ul>
+<li><strong>Excitable cells</strong> (neurons and muscle) generate and respond to electrical signals.</li>
+<li><strong>Soma</strong> (cell body); <strong>dendrites</strong> collect and integrate input; <strong>axon</strong> sends signals long distances; <strong>synapse</strong> contacts other neurons and is the site of many <strong>drugs and toxins</strong>.</li>
+<li><strong>Resting potential ≈ −65 mV</strong> (inside negative). <strong>Depolarization</strong> = less negative; <strong>hyperpolarization</strong> = more negative.</li>
+<li>An action potential starts at the <strong>axon hillock</strong> when depolarization reaches <strong>threshold (~−55 mV)</strong>, then travels all the way to the terminal. In health it's <strong>all-or-none</strong>.</li>
+<li><strong>Myelin</strong> greatly speeds conduction: <strong>saltatory conduction</strong> jumps from node to node. <strong>Demyelinating diseases such as MS</strong> make conduction slow and unreliable.</li>
+</ul>
+<h3>3. How information is coded</h3>
+<p>Because each spike is all-or-none, the <strong>pattern</strong> of spikes carries the message. For a touch:</p>
+<ul>
+<li><strong>How hard?</strong> → <strong>firing frequency</strong> on one axon, plus how many axons fire (frequency coding)</li>
+<li><strong>How long?</strong> → duration of firing</li>
+<li><strong>Where?</strong> → which axons (each comes from a different body part)</li>
+<li><strong>What kind?</strong> → which receptor the axon connects to (heat, cold, pain, light vs heavy touch)</li>
+</ul>
+<p><strong>Labeled-line coding:</strong> each modality has dedicated pathways, and the brain assigns meaning by pathway (spikes in the optic nerve are "seen").</p>
+<h3>4. Chemical synapses</h3>
+<ol>
+<li>The action potential reaches the terminal → <strong>Ca²⁺-mediated release</strong> of neurotransmitter.</li>
+<li>Transmitter binds <strong>postsynaptic receptors</strong>.</li>
+<li>Transmitter is cleared by <strong>diffusion, reuptake or enzymatic breakdown</strong>.</li>
+</ol>
+<p><strong>Two receptor classes:</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Ionotropic</strong></th>
+<th><strong>Metabotropic</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| Mechanism | Binding <strong>opens an ion channel</strong> | <strong>Second messenger</strong> (e.g. G-protein coupled) |
+| Effect | <strong>Fast and local</strong> | <strong>Slower, widespread, longer-lasting</strong> |
+| Examples | Glutamate (NMDA, AMPA), GABA-A, ACh at the NMJ | <strong>Dopamine, serotonin, norepinephrine</strong> |</p>
+<p><strong>Excitation and inhibition:</strong></p>
+<ul>
+<li><strong>EPSP</strong> = brief depolarization. <strong>Glutamate</strong> is the main <strong>excitatory</strong> transmitter in the brain. <strong>NMDA receptors</strong> are modifiable → <strong>synaptic plasticity</strong>, the basis of learning and memory.</li>
+<li><strong>Acetylcholine</strong> is the excitatory transmitter at the <strong>neuromuscular junction</strong>.</li>
+<li><strong>IPSP</strong> = brief hyperpolarization. <strong>GABA</strong> is the main <strong>inhibitory</strong> transmitter in the brain (target of many sedatives). <strong>Glycine</strong> is the inhibitory transmitter in the <strong>spinal cord</strong>.</li>
+</ul>
+<h3>5. Neuropharmacology</h3>
+<ul>
+<li>Drugs act as receptor <strong>agonists or antagonists</strong>, or change <strong>reuptake or breakdown</strong>.</li>
+<li>More than 50 transmitters in three classes:<ul>
+<li><strong>Amino acids</strong>: GABA, glutamate, glycine</li>
+<li><strong>Amines</strong>: acetylcholine, dopamine, norepinephrine, serotonin</li>
+<li><strong>Peptides</strong>: <strong>substance P</strong> (pain and inflammation), dynorphin (opioid)</li>
+</ul>
+</li>
+<li><strong>GABA-A receptor</strong> (ionotropic, fast hyperpolarization) has many binding sites that influence each other: <strong>benzodiazepines act more strongly when ethanol is present</strong>. Ethanol also <strong>antagonizes glutamate receptors</strong>.</li>
+</ul>
+<h3>6. Circuits and the cortex</h3>
+<ul>
+<li><strong>Divergence</strong>: one neuron reaches many → <strong>motor</strong> control (coordinated actions, reflexes).</li>
+<li><strong>Convergence</strong>: many neurons reach one → <strong>sensory</strong> feature extraction.</li>
+<li><strong>Six cortical layers.</strong> Input arrives in <strong>layer 4</strong> (from the thalamus) — thickest in primary sensory cortex (V1 is "<strong>striate cortex</strong>" because of its thick layer 4). Output leaves from <strong>layers 3 and 5</strong> — thickest in <strong>primary motor cortex</strong>.</li>
+<li><strong>Brodmann</strong> divided cortex into areas by anatomy; each has a specific function (<strong>functional localization</strong>), so lesions can cause very specific deficits.</li>
+</ul>
+<h3>7. Two classic lesions</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Wernicke's aphasia</strong></th>
+<th><strong>Broca's aphasia</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| Site | <strong>Left posterior temporal</strong> cortex | <strong>Left frontal</strong> cortex |
+| Speech | Fluent but <strong>nonsense words</strong> | <strong>Slow, effortful</strong> |
+| Comprehension | <strong>Impaired</strong> | <strong>Intact</strong> |
+| Type | <strong>Perceptual</strong> syndrome | <strong>Motor</strong> syndrome |
+| Awareness | Often <strong>unaware</strong> | <strong>Aware</strong> of the deficit |</p>
+<h3>Predicting symptoms from physiology</h3>
+<ul>
+<li>Demyelination → slowed or blocked conduction → weakness, numbness, visual loss (MS).</li>
+<li>Drugs that boost GABA (benzodiazepines, alcohol) → sedation; together they add up.</li>
+<li>Spreading abnormal cortical activity → seizure.</li>
+</ul>
+</main></body></html>

@@ -1,0 +1,2605 @@
+<title>Week 12 Rheumatology & Neuro Study Hub</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --paper: #f3f5f4;
+    --paper-raised: #ffffff;
+    --ink: #1b2321;
+    --ink-soft: #4b5651;
+    --ink-faint: #7c8a84;
+    --line: #d8ddda;
+    --line-soft: #e7eae8;
+    --amber: #a8641c;
+    --amber-ink: #7a4712;
+    --amber-wash: #f4e6d3;
+    --teal: #1f6e73;
+    --teal-ink: #17565a;
+    --teal-wash: #dcedee;
+    --good: #2f7a4f;
+    --good-wash: #dcf0e2;
+    --bad: #ae3f34;
+    --bad-wash: #f7ded9;
+    --shadow: 0 1px 2px rgba(27,35,33,0.06), 0 6px 20px -8px rgba(27,35,33,0.12);
+    --radius: 3px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12191a;
+      --paper-raised: #182123;
+      --ink: #e9edea;
+      --ink-soft: #b6c0bb;
+      --ink-faint: #7d8b85;
+      --line: #2c3937;
+      --line-soft: #223030;
+      --amber: #e0a860;
+      --amber-ink: #f0c592;
+      --amber-wash: #33291b;
+      --teal: #6fc2c6;
+      --teal-ink: #9adade;
+      --teal-wash: #16302f;
+      --good: #6fbf8f;
+      --good-wash: #1a3327;
+      --bad: #e2897c;
+      --bad-wash: #3a211d;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12191a;
+    --paper-raised: #182123;
+    --ink: #e9edea;
+    --ink-soft: #b6c0bb;
+    --ink-faint: #7d8b85;
+    --line: #2c3937;
+    --line-soft: #223030;
+    --amber: #e0a860;
+    --amber-ink: #f0c592;
+    --amber-wash: #33291b;
+    --teal: #6fc2c6;
+    --teal-ink: #9adade;
+    --teal-wash: #16302f;
+    --good: #6fbf8f;
+    --good-wash: #1a3327;
+    --bad: #e2897c;
+    --bad-wash: #3a211d;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  h1, h2, h3, h4 { font-family: 'Spectral', Georgia, serif; text-wrap: balance; margin: 0; }
+  a { color: var(--teal-ink); }
+  table { border-collapse: collapse; }
+
+  .shell { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 280px;
+    flex: none;
+    border-right: 1px solid var(--line);
+    background: var(--paper-raised);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 22px 18px 30px;
+  }
+  .sidebar-head { margin-bottom: 4px; }
+  .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--teal-ink);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .sidebar-head h1 { font-size: 21px; font-weight: 600; line-height: 1.25; }
+  .sidebar-head .sub { color: var(--ink-faint); font-size: 13px; margin-top: 6px; }
+
+  .progress-block { margin: 18px 0 20px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-soft); margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+  .progress-track { height: 6px; background: var(--line-soft); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--amber); width: 0%; transition: width .4s ease; }
+
+  .navlist { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-soft); padding-top: 10px; }
+  .navlist li { margin: 0; }
+  .navlist a {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    padding: 7px 6px;
+    border-radius: var(--radius);
+  }
+  .navlist a:hover { background: var(--line-soft); color: var(--ink); }
+  .navlist a.active { color: var(--ink); font-weight: 600; }
+  .navlist .num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-faint); flex: none; width: 16px; }
+  .navlist .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--line); flex: none; }
+  .navlist .dot.done { background: var(--good); }
+
+  .sidebar-foot { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--line-soft); font-size: 12px; color: var(--ink-faint); }
+  .sidebar-foot code { font-family: 'IBM Plex Mono', monospace; background: var(--line-soft); padding: 1px 5px; border-radius: 2px; }
+
+  main { flex: 1; min-width: 0; }
+  .topbar {
+    position: sticky; top: 0; z-index: 5;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 40px;
+    display: none;
+  }
+
+  .hero {
+    padding: 54px 48px 40px;
+    border-bottom: 1px solid var(--line);
+    max-width: 900px;
+  }
+  .hero .kicker { margin-bottom: 14px; }
+  .hero h1 { font-size: 40px; font-weight: 600; letter-spacing: -0.01em; }
+  .hero .dek { color: var(--ink-soft); font-size: 16.5px; margin-top: 14px; max-width: 62ch; }
+  .hero-meta { display: flex; gap: 26px; margin-top: 26px; flex-wrap: wrap; }
+  .hero-meta div { font-size: 13px; color: var(--ink-faint); }
+  .hero-meta strong { display: block; font-family: 'Spectral', serif; font-size: 20px; color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .content { padding: 8px 48px 90px; max-width: 900px; }
+
+  section.module {
+    padding: 46px 0;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 20px;
+  }
+  section.module:last-of-type { border-bottom: none; }
+
+  .module-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 6px; }
+  .module-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--amber); padding-top: 6px; flex: none; width: 24px; }
+  .module-head h2 { font-size: 25px; font-weight: 600; }
+  .module-meta { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 22px 40px; }
+  .tag { font-size: 11.5px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.03em; color: var(--ink-faint); border: 1px solid var(--line); padding: 3px 8px; border-radius: 99px; }
+  .tag.mcc { color: var(--teal-ink); border-color: var(--teal); background: var(--teal-wash); }
+
+  .module-body { margin-left: 40px; }
+  .module-body p { color: var(--ink-soft); margin: 0 0 14px; max-width: 68ch; }
+  .module-body h3 { font-size: 15px; font-weight: 600; margin: 22px 0 10px; color: var(--ink); }
+  .module-body ul, .module-body ol { margin: 0 0 14px; padding-left: 20px; color: var(--ink-soft); max-width: 66ch; }
+  .module-body li { margin-bottom: 6px; }
+  .module-body li strong { color: var(--ink); }
+  .callout {
+    background: var(--amber-wash);
+    border-left: 3px solid var(--amber);
+    padding: 12px 16px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 14px;
+    color: var(--ink);
+    margin: 16px 0;
+    max-width: 64ch;
+  }
+  .callout strong { color: var(--amber-ink); }
+
+  .data-table { width: 100%; margin: 10px 0 20px; font-size: 13.5px; overflow-x: auto; display: block; }
+  .data-table table { width: 100%; min-width: 480px; }
+  .data-table th, .data-table td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  .data-table th { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); font-weight: 500; }
+  .module-body p.flag { font-size: 13px; color: var(--ink-faint); font-style: italic; }
+  .data-table td.num { font-variant-numeric: tabular-nums; }
+
+  .quiz {
+    margin-top: 26px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .quiz-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--line-soft);
+    background: var(--line-soft);
+  }
+  .quiz-head span { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+  .quiz-score { font-size: 12.5px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+  .quiz-body { padding: 18px; }
+  .q { margin-bottom: 20px; }
+  .q:last-child { margin-bottom: 0; }
+  .q-stem { font-size: 14.5px; color: var(--ink); margin-bottom: 10px; font-weight: 500; }
+  .q-opts { display: flex; flex-direction: column; gap: 7px; }
+  .opt {
+    text-align: left;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    padding: 9px 12px;
+    border-radius: var(--radius);
+    font-size: 13.5px;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    gap: 9px;
+  }
+  .opt:hover { border-color: var(--teal); }
+  .opt:focus-visible { outline: 2px solid var(--teal); outline-offset: 1px; }
+  .opt .letter { font-family: 'IBM Plex Mono', monospace; color: var(--ink-faint); flex: none; }
+  .opt.correct { background: var(--good-wash); border-color: var(--good); }
+  .opt.incorrect { background: var(--bad-wash); border-color: var(--bad); }
+  .opt[disabled] { cursor: default; }
+  .q-explain {
+    display: none;
+    margin-top: 9px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    background: var(--teal-wash);
+    border-left: 3px solid var(--teal);
+    padding: 9px 12px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .q-explain.shown { display: block; }
+  .q-explain strong { color: var(--teal-ink); }
+
+  .colophon {
+    max-width: 900px;
+    padding: 34px 48px 70px;
+    color: var(--ink-faint);
+    font-size: 12.5px;
+    border-top: 1px solid var(--line);
+  }
+  .colophon a { color: var(--ink-soft); }
+
+  .theme-toggle {
+    position: fixed; bottom: 18px; right: 18px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    color: var(--ink-soft);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10;
+  }
+
+  .mobile-nav-toggle { display: none; }
+
+  @media (max-width: 880px) {
+    .sidebar { position: fixed; left: -300px; top: 0; z-index: 20; transition: left .25s ease; box-shadow: var(--shadow); }
+    .sidebar.open { left: 0; }
+    .topbar { display: flex; align-items: center; gap: 12px; padding: 12px 20px; }
+    .mobile-nav-toggle {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: var(--radius);
+      border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace; font-size: 13px; cursor: pointer;
+    }
+    .topbar strong { font-family: 'Spectral', serif; font-size: 15px; }
+    .hero { padding: 30px 20px 28px; }
+    .hero h1 { font-size: 30px; }
+    .content { padding: 8px 20px 70px; }
+    .module-meta, .module-body { margin-left: 0; }
+    .module-head { gap: 10px; }
+    .colophon { padding: 26px 20px 60px; }
+  }
+</style>
+
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <span class="kicker">PoM2 &middot; Rheumatology &amp; Neuroscience</span>
+      <h1>Week&nbsp;12 &mdash; Rheum Treatment, Body Pain &amp; Neuro Foundations</h1>
+      <div class="sub">End of Rheumatology &middot; Start of Neuroscience, Eye &amp; Ear</div>
+    </div>
+
+    <div class="progress-block">
+      <div class="progress-label"><span>Quiz progress</span><span id="progress-count">0 / 36</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+
+    <ul class="navlist" id="navlist"></ul>
+
+    <div class="sidebar-foot">
+      Built from this week\'s Elentra slides and learning objectives (the same material as the week 12 NotebookLM video scripts). Written for review, not a substitute for the modules &mdash; cross-check anything that doesn\'t match the lecture.
+    </div>
+  </nav>
+
+  <main>
+    <div class="topbar">
+      <button class="mobile-nav-toggle" id="navToggle" aria-label="Toggle module list">&#9776;</button>
+      <strong>Week 12 &mdash; Rheumatology &amp; Neuroscience</strong>
+    </div>
+
+    <header class="hero">
+      <span class="kicker">Study Hub</span>
+      <h1>Rheumatology &amp; Neuroscience</h1>
+      <p class="dek">Twelve modules: the last of rheumatology (treatment, investigations, fibromyalgia and PMR), then the foundations of the neuro block &mdash; localization, neuroanatomy, neurophysiology, the cranial nerves, face, cranial cavity, cortex, orbit and vision.</p>
+      <div class="hero-meta">
+        <div><strong>12</strong>modules</div>
+        <div><strong>36</strong>quiz questions</div>
+        <div><strong>~14h</strong>module time on Elentra</div>
+      </div>
+    </header>
+
+    <div class="content" id="content"></div>
+
+    <footer class="colophon">
+      Sources: Week 12 Elentra digital modules (Drs. Boyd, Pope, Anwar, Shoesmith, Deweyert, Corneil, Martin, Willmore and Barbeau): the slides, notes and each module\'s learning objectives. Items marked with a warning sign aren\'t on the slides. For personal review; cross-check anything that doesn\'t match the modules.</footer>
+  </main>
+</div>
+
+<button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle color theme">&#9788;</button>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var stored = null;
+  try { stored = localStorage.getItem('msk-hub-theme'); } catch(e) {}
+  if (stored) root.setAttribute('data-theme', stored);
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var current = root.getAttribute('data-theme');
+    var next = current === 'dark' ? 'light' : (current === 'light' ? 'dark' : ((window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'light' : 'dark'));
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('msk-hub-theme', next); } catch(e) {}
+  });
+
+  document.getElementById('navToggle').addEventListener('click', function(){
+    document.getElementById('sidebar').classList.toggle('open');
+  });
+})();
+</script>
+
+<script>
+const MODULES = [
+  {
+    "id": "rheum-treatment",
+    "title": "Rheumatology Treatment Review",
+    "instructor": "Elentra module 01",
+    "duration": "~90 min",
+    "tags": [
+      {
+        "label": "Steroids · DMARDs · biologics",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>The big picture:</strong> steroids and NSAIDs calm inflammation fast but do not change the disease. DMARDs and biologics change the disease but take weeks to work. So a typical plan is <strong>steroid "bridge" + start a DMARD</strong>, then adjust to a target.</p>
+<h3>1. Steroids (systemic and intra-articular)</h3>
+<p><strong>What prednisone does:</strong> a non-specific anti-inflammatory. It blocks transcription of pro-inflammatory proteins, decreases neutrophil migration, inhibits cytokines (IL-1, IL-6, TNF-α) and decreases prostaglandins and leukotrienes. It works <strong>rapidly</strong>, so it is most useful in the <strong>acute</strong> setting: less pain, swelling, stiffness and disability.</p>
+<p><strong>Dose depends on the condition</strong> (the adrenals make the equivalent of about 7 mg/day):</p>
+<table>
+<thead>
+<tr>
+<th>Dose</th>
+<th>When</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>High</strong> (~1 mg/kg; IV "pulse" methylprednisolone 1 g daily × 3 days if an emergency) | Life- or organ-threatening disease | <strong>ANCA vasculitis, lupus nephritis, inflammatory myositis, giant cell arteritis</strong> |
+| <strong>Medium</strong> | Acute flares without major organ involvement | RA flare: 20–40 mg with a taper while a DMARD starts. PMR: 15–20 mg, then taper. Acute gout: 25–30 mg × 3 days, taper by 5 mg every 3 days |
+| <strong>Low</strong> (≤5 mg) | Chronic use when nothing else works | |</p>
+<ul>
+<li><strong>PMR</strong> does not need high dose and is self-limited (6 months to 2 years). About <strong>15% have GCA</strong> too, and then <strong>high dose</strong> is needed to prevent blindness.</li>
+<li><strong>Gout</strong> flares are self-limited and don't need high dose. NSAIDs, colchicine or prednisone are all options.</li>
+</ul>
+<p><strong>Routes:</strong></p>
+<ul>
+<li><strong>PO</strong>: easy to taper.</li>
+<li><strong>IM</strong>: lasts 3–4 weeks; useful if adherence is a problem.</li>
+<li><strong>IV</strong>: rapid effect, e.g. GCA with vision involvement, before switching to high-dose oral.</li>
+<li><strong>Intra-articular</strong> ("cortisone injection"): for a few swollen joints or weight-bearing joints. Fewer systemic effects. Used in inflammatory arthritis, OA and rotator cuff tendinitis.</li>
+</ul>
+<p><strong>Side effects of chronic prednisone</strong> (good short term, not long term): increased appetite and weight gain, gastritis, mood change or psychosis, infection, Cushing's, acne, <strong>osteoporosis, avascular necrosis</strong>, hypertension, hyperglycemia, <strong>cataracts and glaucoma</strong>, proximal myopathy, delayed wound healing, thin skin.</p>
+<p><strong>Relative contraindications</strong> (use a steroid-sparing drug instead): diabetes, cardiovascular disease, osteoporosis, recurrent infections, glaucoma/cataracts.</p>
+<h3>2. Joint aspiration and injection</h3>
+<p><strong>Informed consent</strong> for every procedure: explain benefits and complications, and confirm capacity (or a substitute decision maker). Complications to mention:</p>
+<ol>
+<li>Infection (septic joint), very low risk</li>
+<li>Bleeding</li>
+<li>Fat atrophy or skin depigmentation (if too superficial)</li>
+<li>Tendon rupture, very small risk</li>
+<li>Small systemic absorption (worse diabetes or blood pressure control)</li>
+<li>Post-injection flare, which resolves on its own</li>
+</ol>
+<p><strong>Two benefits of arthrocentesis:</strong> diagnostic and therapeutic.</p>
+<ul>
+<li><strong>Diagnostic:</strong> send fluid for only three things, mnemonic <strong>C3G</strong>: <strong>Cell count</strong> (lavender top), <strong>Crystals</strong>, <strong>Culture and Gram stain</strong> (sterile container). Cell count &gt;2,000 = inflammatory; &lt;2,000 = non-inflammatory. <strong>&gt;50,000 with mostly neutrophils</strong> suggests a septic joint, so consult orthopedics.</li>
+<li><strong>Therapeutic:</strong> remove fluid to relieve pain; inject steroid (e.g. triamcinolone) or hyaluronic acid (OA).</li>
+<li><strong>Always aspirate a first acute monoarthritis to rule out infection.</strong></li>
+</ul>
+<p><strong>Relative contraindications to a steroid injection:</strong></p>
+<ol>
+<li>Septic joint (or high suspicion). Get fluid first and wait until the culture is negative.</li>
+<li>Overlying cellulitis or skin infection</li>
+<li>Psoriatic plaques over the site (skin flora raise septic-joint risk)</li>
+<li>Prosthetic joint</li>
+<li>Severe thrombocytopenia or bleeding disorder</li>
+<li>Allergy to the local anesthetic</li>
+</ol>
+<h3>3. NSAIDs, acetaminophen and opioids</h3>
+<ul>
+<li><strong>NSAIDs</strong> reversibly inhibit COX-1 and COX-2 (non-selective) or COX-2 only (<strong>celecoxib</strong>), lowering prostaglandins. Coxibs spare the gut-protective prostaglandins, so <strong>less GI toxicity</strong>.</li>
+<li>Efficacy is similar across NSAIDs; a patient may respond better to one than another.</li>
+<li>Indications: OA, RA, PsA, ankylosing spondylitis, acute gout, CPPD.</li>
+<li><strong>NSAIDs are NOT disease-modifying in RA</strong>: they help pain and swelling but do not prevent erosions.</li>
+<li><strong>Side effects:</strong> hypertension, MI, stroke, gastritis and <strong>PUD</strong>, <strong>renal insufficiency</strong>. Use with caution in cardiovascular, GI and renal disease. Check interactions (anticoagulants). Avoid in the <strong>3rd trimester</strong> (premature closure of the ductus arteriosus). Screen CBC, ALT, creatinine.</li>
+<li><strong>Acetaminophen</strong>: analgesic, <strong>not anti-inflammatory</strong>. For OA, mechanical back pain and regional pain. Up to <strong>3 g/day</strong> (max 2 g/day in cirrhosis). Minimal side effects: no gastritis, constipation, BP or cognitive effect.</li>
+<li><strong>Opioids</strong> have a very limited role. The goal is to treat inflammation, which treats pain. Opioid side effects and misuse risk make other options preferable.</li>
+</ul>
+<h3>4. DMARDs</h3>
+<p><strong>Why treat early:</strong> joint damage happens early in RA. Erosions occur in &gt;90% within 2 years, radiographic progression is fastest in the first 2 years, and 50% are work-disabled at 10 years.</p>
+<p><strong>Principles ("window of opportunity"):</strong> treat <strong>early</strong> (DMARD within <strong>3 months</strong> of symptom onset), <strong>aggressively</strong> and appropriately. <strong>Triple therapy</strong> beats a single agent in early RA. <strong>Treat to target</strong>: the goal is <strong>remission</strong> (no swollen or tender joints); adjust every <strong>3–6 months</strong> if not there.</p>
+<p><strong>Starting a DMARD:</strong> discuss side effects, interactions and contraindications, do baseline blood work, and give a form for <strong>monthly</strong> monitoring.</p>
+<p><strong>Common toxicity mnemonic for MTX, sulfasalazine and leflunomide: GHMI</strong> = <strong>G</strong>I upset, <strong>H</strong>epatotoxicity, <strong>M</strong>yelosuppression, <strong>I</strong>nfection.</p>
+<table>
+<thead>
+<tr>
+<th>DMARD</th>
+<th>Key adverse effects</th>
+<th>Monitoring and notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>Methotrexate</strong> (20–25 mg PO/SC <strong>weekly</strong>; onset 6–8 wk) | GHMI, fatigue, <strong>oral ulcers</strong>, <strong>acute pneumonitis</strong> (dry cough, SOB, fever), <strong>teratogenic</strong> | Baseline hep B/C ± CXR; monthly CBC, ALT, creatinine. <strong>Folic acid 5 mg weekly</strong>. Avoid pregnancy, <strong>alcohol</strong> and <strong>sulfa antibiotics</strong> (sulfasalazine is fine). Dose by eGFR |
+| <strong>Hydroxychloroquine</strong> (onset 6–12 wk) | <strong>Retinal toxicity</strong> (bull's-eye maculopathy, rare), GI upset, rash, photosensitivity, headache. <strong>No myelosuppression</strong> | <strong>Baseline + annual eye exam</strong>; no lab monitoring. <strong>Safe in pregnancy</strong> |
+| <strong>Sulfasalazine</strong> (onset 6–8 wk) | GHMI (aplastic anemia), headache, photosensitive rash, <strong>reversible oligospermia</strong> | Monthly labs. <strong>Screen G6PD</strong>; <strong>no sulfa allergy</strong>. Safe in pregnancy |
+| <strong>Leflunomide</strong> (onset 6–8 wk) | GHMI, <strong>hypertension</strong>, peripheral neuropathy, alopecia, pneumonitis, <strong>teratogenic</strong> | Monthly labs; <strong>check BP</strong>; avoid alcohol and pregnancy; cholestyramine washout |</p>
+<p><strong>Strategy:</strong> start triple therapy (MTX + sulfasalazine + hydroxychloroquine) for 3–6 months and optimize doses. If the response is incomplete: switch MTX from PO to SC, add leflunomide, or <strong>add a biologic</strong>.</p>
+<p><strong>Quick checks:</strong> annual eye exam → hydroxychloroquine. Hypertension → leflunomide. Lung toxicity → methotrexate and leflunomide.</p>
+<h3>5. Biologics</h3>
+<ul>
+<li>Like DMARDs, biologics suppress inflammation and prevent damage. <strong>Unlike</strong> DMARDs (non-specific mechanisms), biologics <strong>target specific molecules or cells</strong>: TNF-α, IL-1, IL-6, T-cell co-stimulation, B cells.</li>
+<li>Classes in RA: <strong>TNF inhibitors</strong> (adalimumab, etanercept, infliximab, golimumab, certolizumab), <strong>IL-6 inhibitor</strong> (tocilizumab), <strong>T-cell co-stimulation blocker</strong> (abatacept), <strong>B-cell depletion</strong> (rituximab). Specific names are not required. Newer options: <strong>JAK inhibitors</strong> (small molecules, e.g. tofacitinib) and biosimilars.</li>
+<li><strong>Expensive</strong> (~$10–20,000/year), so patients usually must <strong>fail DMARDs first</strong>.</li>
+<li>TNF-α drives IL-1, IL-6 and IL-8, which act on chondrocytes and osteoclasts to erode cartilage and bone.</li>
+<li><strong>TNF inhibitor adverse effects:</strong> injection or infusion reactions, <strong>infection including TB</strong>, <strong>demyelination (MS)</strong>, <strong>worsened CHF</strong>, slight malignancy risk (skin, possibly lymphoma), <strong>drug-induced lupus</strong>.</li>
+<li><strong>Contraindications:</strong> active infection, recent or recurrent infection, <strong>CHF class III/IV</strong>, active malignancy, <strong>MS (or family history)</strong>.</li>
+<li><strong>Hold</strong> if fever, infection or antibiotics; flag upcoming surgery (delayed wound healing).</li>
+</ul>
+<h3>6. Adults vs children</h3>
+<p>⚠ Not on this year's slide PDFs: the treatment slides cover adult RA only. For contrast (from Week 11 JIA): children with oligoarticular JIA are often managed with NSAIDs and intra-articular steroid injections first, then methotrexate and biologics if needed; growth and uveitis screening are extra pediatric concerns, and chronic systemic steroids are avoided because of growth effects.</p>
+`,
+    "quiz": [
+      {
+        "stem": "What does the mnemonic C3G stand for when sending synovial fluid?",
+        "opts": [
+          "CBC, CRP, creatinine and glucose",
+          "Cell count, crystals, culture and Gram stain",
+          "Cytology, complement, cultures and glucose",
+          "Cell count, CRP, crystals and gout panel"
+        ],
+        "correct": 1,
+        "explain": "Send synovial fluid for only three things: cell count, crystals, and culture with Gram stain."
+      },
+      {
+        "stem": "Which DMARD needs a baseline and yearly eye exam but no routine blood work?",
+        "opts": [
+          "Hydroxychloroquine",
+          "Leflunomide",
+          "Methotrexate",
+          "Sulfasalazine"
+        ],
+        "correct": 0,
+        "explain": "Hydroxychloroquine can cause retinal toxicity (bull's-eye maculopathy). It does not cause myelosuppression, so no lab monitoring is needed."
+      },
+      {
+        "stem": "Which condition is a contraindication to a TNF inhibitor?",
+        "opts": [
+          "Osteoarthritis",
+          "Psoriasis",
+          "Hypothyroidism",
+          "Class III/IV heart failure"
+        ],
+        "correct": 3,
+        "explain": "TNF inhibitors can worsen CHF. Also avoid with active or recurrent infection, active malignancy and MS (or a family history)."
+      }
+    ]
+  },
+  {
+    "id": "rheum-investigations",
+    "title": "Rheumatology Investigations Review",
+    "instructor": "Elentra module 02",
+    "duration": "~26 min",
+    "tags": [
+      {
+        "label": "Choose wisely",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>The rule of the whole module:</strong> <strong>no rheumatology diagnosis is made by a blood test alone.</strong> There must be clinical features. The one exception: <strong>gout</strong> can be diagnosed by finding <strong>uric acid crystals</strong> in synovial fluid. Order a test only when you suspect the disease it tests for.</p>
+<h3>Rheumatoid arthritis tests</h3>
+<p><strong>Rheumatoid factor (RF):</strong></p>
+<ul>
+<li>An autoantibody, often <strong>IgM</strong>, directed against the <strong>Fc portion of IgG</strong>.</li>
+<li><strong>Not specific for RA.</strong> Also positive in connective tissue diseases, <strong>hepatitis C</strong> and <strong>healthy older people</strong>.</li>
+<li>Many people with RA are RF positive. A positive RF goes with <strong>more severe RA</strong>: erosions on X-ray and extra-articular disease (interstitial lung disease, rheumatoid nodules).</li>
+</ul>
+<p><strong>Anti-CCP (the common ACPA test):</strong></p>
+<ul>
+<li>Antibodies against citrullinated peptides. <strong>Common in RA and fairly specific</strong> (not totally).</li>
+<li>Also marks <strong>more severe, erosive</strong> RA.</li>
+<li>Don't order it unless you suspect RA (it isn't reimbursed in Ontario).</li>
+<li>Better than a test: a <strong>referral that says what you see</strong>, e.g. "I suspect early RA: swelling of wrists, MCPs and PIPs, and MTP stiffness."</li>
+</ul>
+<p><strong>Inflammation labs in RA and other chronic inflammatory disease:</strong> <strong>elevated ESR, elevated CRP, anemia of chronic disease</strong>.</p>
+<h3>Connective tissue disease tests</h3>
+<p><strong>ANA (antinuclear antibody):</strong></p>
+<ul>
+<li>Ordered <strong>far too often</strong>. SLE affects about 1 in 1,000 women, RA about 1 in 100 people, yet ANAs are ordered 10× more than RF.</li>
+<li><strong>About 1/3 of women have a positive ANA</strong>, but it is relevant in at most 1/1,000. Most positives are <strong>false positives</strong>.</li>
+<li><strong>Sensitive, not specific:</strong> a <strong>negative ANA helps rule out SLE</strong>; a <strong>positive ANA does NOT make a diagnosis</strong>.</li>
+<li>Don't repeat a positive ANA. Don't repeat a negative one unless new symptoms suggest a connective tissue disease.</li>
+<li>A <strong>strongly positive</strong> result is more likely to matter than a borderline one. Patterns: speckled and homogeneous are common and less helpful; peripheral/rim, nucleolar and centromere are less common and possibly more helpful.</li>
+</ul>
+<p><strong>Anti-dsDNA:</strong></p>
+<ul>
+<li>Double-stranded DNA is only in the nucleus, so <strong>anti-DNA can't be positive without a positive ANA</strong>.</li>
+<li>Order only if you <strong>suspect SLE and the ANA is positive</strong>.</li>
+<li>Only about <strong>half of SLE patients</strong> are ever anti-DNA positive, so a negative test does not rule out SLE.</li>
+<li><strong>Varies with disease activity</strong> and is higher in <strong>lupus nephritis</strong>.</li>
+<li>Modern kit assays are cheaper but <strong>less specific</strong> than the old method.</li>
+</ul>
+<p><strong>ENA (extractable nuclear antigen panel):</strong></p>
+<ul>
+<li><strong>Don't order if the ANA is negative.</strong> Generally a specialist test.</li>
+<li>If you learn one: <strong>anti-Ro</strong>.<ul>
+<li>SLE with photosensitive rash</li>
+<li><strong>Anti-Ro + anti-La: Sjögren's syndrome</strong></li>
+<li>Anti-Ro-positive pregnant patients are followed for <strong>fetal congenital heart block</strong> (rare); babies may get <strong>neonatal lupus</strong> (very rare)</li>
+</ul>
+</li>
+<li>Lung disease antibodies: <strong>anti-Jo1</strong> (ILD in dermatomyositis) and <strong>anti-Scl-70 / topoisomerase I</strong> (scleroderma ILD).</li>
+</ul>
+<p><strong>Complements:</strong> usually a specialist test. <strong>Low in active SLE</strong>, e.g. renal lupus, and vary with activity.</p>
+<h3>Vasculitis tests</h3>
+<p><strong>ANCA (anti-neutrophil cytoplasmic antibody):</strong> order only when you really suspect <strong>vasculitis</strong>.</p>
+<ul>
+<li>Patterns: <strong>cANCA</strong> (cytoplasmic; antibody to <strong>PR3</strong>) and <strong>pANCA</strong> (perinuclear; antibody to <strong>MPO</strong>).</li>
+<li><strong>cANCA is more likely to mean real vasculitis</strong>; pANCA has more false positives.</li>
+<li>Different ANCAs go with different vasculitides (GPA, EGPA).</li>
+<li><strong>pANCA and cANCA both positive</strong> → think <strong>cocaine-induced vasculitis</strong> (from levamisole cut into cocaine).</li>
+<li>Levels may vary with disease activity, but not reliably.</li>
+</ul>
+<h3>Tests named in the objectives but not in the lesson text</h3>
+<p>⚠ Not on this module's lesson text (covered in Week 11 lectures):</p>
+<ul>
+<li><strong>ESR and CRP</strong>: non-specific inflammation markers. Typically high in <strong>GCA/PMR</strong> (ESR often very high) and active RA; usually normal in OA and fibromyalgia.</li>
+<li><strong>HLA-B27</strong>: supports a <strong>seronegative spondyloarthropathy</strong> (ankylosing spondylitis, reactive arthritis) with the right clinical picture; common in healthy people, so not a screening test.</li>
+<li><strong>JIA</strong>: ANA in oligoarticular JIA flags <strong>uveitis risk</strong> (screen eyes), not the diagnosis; RF is usually negative.</li>
+<li><strong>Seronegative arthropathies</strong>: RF and anti-CCP negative by definition.</li>
+</ul>
+`,
+    "quiz": [
+      {
+        "stem": "A negative ANA is most useful because it…",
+        "opts": [
+          "Confirms rheumatoid arthritis",
+          "Rules out vasculitis",
+          "Helps rule out SLE",
+          "Means the patient has fibromyalgia"
+        ],
+        "correct": 2,
+        "explain": "ANA is sensitive but not specific: a negative result helps rule out SLE; a positive one doesn't make a diagnosis."
+      },
+      {
+        "stem": "Rheumatoid factor is an antibody, often IgM, directed against what?",
+        "opts": [
+          "Double-stranded DNA",
+          "Citrullinated peptides",
+          "The Fc portion of IgG",
+          "Neutrophil cytoplasm"
+        ],
+        "correct": 2,
+        "explain": "RF targets the Fc portion of IgG. It is also positive in CTDs, hepatitis C and healthy older people."
+      },
+      {
+        "stem": "Both pANCA and cANCA are positive. Which cause should you think of?",
+        "opts": [
+          "Sjögren's syndrome",
+          "Cocaine-induced (levamisole) vasculitis",
+          "Fibromyalgia",
+          "Gout"
+        ],
+        "correct": 1,
+        "explain": "Dual pANCA and cANCA positivity suggests cocaine-induced vasculitis from levamisole."
+      }
+    ]
+  },
+  {
+    "id": "body-pain",
+    "title": "Body Pain: Fibromyalgia & Polymyalgia Rheumatica",
+    "instructor": "Elentra module 03",
+    "duration": "~40 min",
+    "tags": [
+      {
+        "label": "Normal vs high ESR",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Two patients who "hurt all over":</strong> fibromyalgia has <strong>normal inflammatory markers</strong> and pain everywhere; PMR is an <strong>older patient with shoulder and hip girdle stiffness, high ESR/CRP, and a dramatic response to prednisone</strong>.</p>
+<h3>Fibromyalgia: what it is</h3>
+<ul>
+<li><strong>Widespread pain</strong> (multiple body areas) for <strong>more than 3 months</strong>, with <strong>other somatic symptoms</strong>.</li>
+<li>Mechanism: <strong>central sensitization</strong> — the pain is "centralized". Any mix of peripheral (nociceptive), neuropathic and central pain can coexist in one person.</li>
+</ul>
+<p><strong>Clues that pain is centralizing:</strong></p>
+<ul>
+<li>Diffuse or multifocal, waxes and wanes, often migratory</li>
+<li>Sounds "neuropathic"; touch or tight clothing hurts</li>
+<li>Pain in other body regions earlier in life</li>
+<li>Comorbid CNS symptoms: <strong>fatigue, poor sleep, memory problems, mood</strong></li>
+<li>Global sensory hyper-responsiveness: light, noise, odours; a "pan-positive" review of systems</li>
+</ul>
+<h3>Fibromyalgia: diagnosis</h3>
+<ul>
+<li><strong>ACR 1990 criteria</strong> — be aware, then forget: ≥3 months of pain above and below the waist, both sides and axial, plus <strong>11 of 18 tender points</strong> (4 kg pressure).</li>
+<li><strong>ACR 2010/2016 criteria — know these.</strong> Tender points are replaced by a <strong>widespread pain index (WPI, 0–19 areas)</strong> and a <strong>symptom severity score (SS, 0–12</strong>: fatigue, unrefreshing sleep, cognitive symptoms, other somatic symptoms). FM if all of:<ol>
+<li><strong>WPI ≥7 and SS ≥5</strong>, <strong>or WPI 4–6 and SS ≥9</strong></li>
+<li><strong>Generalized pain</strong>: at least <strong>4 of 5 regions</strong> (jaw, chest and abdomen don't count)</li>
+<li>Symptoms at a similar level for <strong>at least 3 months</strong></li>
+<li>The diagnosis is <strong>valid regardless of other diagnoses</strong></li>
+</ol>
+</li>
+<li>WPI + SS together = the <strong>polysymptomatic distress scale</strong>; FM typically scores <strong>&gt;12</strong>.</li>
+</ul>
+<p><strong>What the clinic visit sounds like:</strong></p>
+<ul>
+<li>Central pain: "I hurt everywhere", "it hurts to be hugged", light, noise and smells bother me</li>
+<li>Symptom severity: fatigue cutting activities, "fog" and forgetting, <strong>unrefreshing sleep</strong>, a "yo-yo" pattern of overdoing it then crashing</li>
+<li>Somatic symptoms: headaches, <strong>TMJ pain</strong>, <strong>IBS</strong>, <strong>irritable bladder</strong>, non-cardiac chest pain, morning stiffness with no swollen joints</li>
+</ul>
+<p><strong>Comorbidity and triggers:</strong> more common with any rheumatologic disease, IBD, psychiatric disease, MS, war or disasters, weeks of acute pain (MVA, trauma) and infections (hepatitis B/C, HIV, Lyme, EBV).</p>
+<p><strong>Fibromyalgia is NOT a diagnosis of exclusion.</strong> It's common to have FM <strong>plus</strong> something else. Nociceptive pain can centralize over time. Immunologic drugs for RA, SLE or Sjögren's <strong>don't</strong> improve the FM features.</p>
+<p><strong>What to rule out (targeted, common sense):</strong></p>
+<ul>
+<li>Muscle pain → <strong>CK</strong></li>
+<li>Neuropathic complaints → metabolic workup</li>
+<li>Joint complaints → examine for swelling</li>
+<li>Fatigue → <strong>CBC, ferritin, TSH, CRP, ALT, creatinine, albumin</strong>, sleep study</li>
+</ul>
+<h3>Fibromyalgia: the science</h3>
+<ul>
+<li><strong>Descending inhibitory pathway (NE, 5-HT, opioids) is attenuated.</strong> Diffuse noxious inhibitory control is absent or weak. CSF shows less NE and 5-HT metabolites. <strong>Any drug that raises NE and 5-HT improves FM pain.</strong></li>
+<li><strong>Facilitatory pathway (glutamate via NMDA, substance P) is upregulated.</strong> Temporal summation is exaggerated; CSF substance P and glutamate are high.</li>
+</ul>
+<h3>Fibromyalgia: management</h3>
+<ul>
+<li><strong>Family doctors</strong> should diagnose FM early, without specialist confirmation.</li>
+<li><strong>Non-drug first:</strong><ol>
+<li><strong>Education</strong></li>
+<li><strong>Exercise</strong> (weight bearing or not, tai chi, yoga, warm pool)</li>
+<li><strong>CBT</strong>: sleep hygiene, <strong>pacing</strong> ("don't overdo it"), mindfulness</li>
+<li><strong>Treat nociceptive inputs</strong>: PT for back pain, joint injections for OA, treat RA, IBD, endometriosis</li>
+<li>Treat <strong>sleep apnea</strong></li>
+<li>Treat <strong>psychiatric illness</strong></li>
+</ol>
+</li>
+<li><strong>Drugs that target the brain:</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Examples</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>SNRI</strong> | <strong>Duloxetine (best evidence)</strong>, venlafaxine | Works with or without depression; <strong>not helpful for sleep</strong> |
+| <strong>Gabapentinoids</strong> | Pregabalin, gabapentin | <strong>Helps sleep</strong> |
+| <strong>Low-dose TCAs</strong> | Amitriptyline, nortriptyline, cyclobenzaprine | Improve pain, fatigue and sleep; <strong>no effect on mood</strong> at low dose |</p>
+<ul>
+<li><strong>Tricks:</strong> emphasize non-drug therapy; one drug at a time, lowest dose, titrate slowly, see the patient regularly, set expectations, consider combinations.</li>
+<li><strong>Avoid opioids:</strong> non-opioid users did better on sleep, disability and pain interference, with no difference in pain severity.</li>
+<li><strong>Expectations:</strong> about <strong>50% of patients get a 30% improvement</strong> in pain. Pregabalin: NNT 9 for 30% relief; NNH 17 to stop for side effects (somnolence, dizziness, weight gain, nausea).</li>
+<li><strong>Take-home:</strong> FM is real, common, chronic, managed by family doctors, and treatment is <strong>multimodal and targets the brain</strong>.</li>
+</ul>
+<h3>Polymyalgia rheumatica (PMR)</h3>
+<p><strong>Typical case:</strong> a 70-year-old woman with 3 months of worsening <strong>morning pain and stiffness in the shoulders</strong>, fatigue, poor appetite and 10 lb weight loss. <strong>Normal exam.</strong> Labs: <strong>anemia</strong> (Hb 103), <strong>thrombocytosis</strong> (489), normal WBC, <strong>ESR 73, CRP 65</strong>.</p>
+<p><strong>Features:</strong></p>
+<ul>
+<li><strong>Age &gt;50</strong>; more common in women and people of Northern European descent</li>
+<li><strong>Insidious</strong> pain and stiffness of <strong>shoulder and hip girdles</strong>, with <strong>profound morning stiffness</strong> and fatigue</li>
+<li>Systemic: weight loss, <strong>high ESR/CRP</strong>, anemia, thrombocytosis</li>
+<li><strong>Nothing wrong with the muscles</strong>: no weakness, normal muscle histology. Imaging shows inflammation of the <strong>joints, bursae and tendons</strong> around the shoulder and hip. Cause unknown.</li>
+</ul>
+<p><strong>How PMR differs from look-alikes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Distinguishing feature</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| Fibromyalgia | <strong>Normal inflammatory markers</strong>; stiffness everywhere, proximal and distal |
+| Myositis | <strong>Proximal weakness</strong>, usually no pain |
+| Inflammatory arthritis | <strong>Distal</strong> joints; reduced passive and active ROM |
+| OA | Minimal stiffness; worse with activity |
+| Cancer, infection | Asymmetric; warmth, swelling, other symptoms |</p>
+<p><strong>None of these improve as fast with steroids as PMR</strong>: expect about <strong>90% better in 48 hours</strong> (the case patient was nearly normal in 12 hours).</p>
+<p><strong>Treatment:</strong></p>
+<ul>
+<li><strong>Prednisone 15–20 mg/day</strong>, held until the patient is well and the markers normalize, then a slow wean.</li>
+<li>Dr. Anwar's wean: 15 mg × 1 month → 12.5 mg × 1 month → 10 mg × 1 month → then <strong>1 mg per month</strong>; total about <strong>16–18 months</strong>. (Dr. Boyd's treatment module gives 15–20 mg, a quicker taper to 10 mg, then 1 mg every 4 weeks — same idea.)</li>
+<li>Average steroid course is about <strong>2 years</strong>; some need low dose longer; <strong>relapses are common</strong>.</li>
+<li>Always reassess for other causes of pain. <strong>Never treat a high ESR/CRP alone.</strong></li>
+<li><strong>PMR with GCA symptoms</strong> needs <strong>high-dose</strong> steroids (see the treatment module).</li>
+</ul>
+<p><strong>Osteoprotection:</strong> anyone expected to take <strong>&gt;7.5 mg prednisone for &gt;3 months</strong>: <strong>calcium 1,500 mg/day</strong>, <strong>vitamin D 1,000–2,000 IU/day</strong>, and an <strong>anti-resorptive</strong> drug.</p>
+`,
+    "quiz": [
+      {
+        "stem": "Which fibromyalgia drug has the best evidence but does not help sleep?",
+        "opts": [
+          "Pregabalin",
+          "Duloxetine",
+          "Amitriptyline",
+          "Oxycodone"
+        ],
+        "correct": 1,
+        "explain": "Duloxetine (an SNRI) has the best evidence and works with or without depression, but doesn't help sleep. Gabapentinoids help sleep."
+      },
+      {
+        "stem": "What is the usual starting prednisone dose for PMR?",
+        "opts": [
+          "5 mg daily",
+          "1 mg/kg daily",
+          "15–20 mg daily",
+          "IV methylprednisolone 1 g"
+        ],
+        "correct": 2,
+        "explain": "PMR responds dramatically to 15–20 mg/day. High dose is only needed if GCA is also present."
+      },
+      {
+        "stem": "Which feature separates fibromyalgia from PMR?",
+        "opts": [
+          "Age over 50",
+          "Fatigue",
+          "Morning stiffness",
+          "Normal inflammatory markers"
+        ],
+        "correct": 3,
+        "explain": "Fibromyalgia has normal ESR/CRP and stiffness everywhere; PMR has raised markers and proximal girdle stiffness."
+      }
+    ]
+  },
+  {
+    "id": "intro-neurology",
+    "title": "Intro to Neurology",
+    "instructor": "Elentra module 04",
+    "duration": "~95 min",
+    "tags": [
+      {
+        "label": "Localize, then DDx",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Neurology is a logic puzzle:</strong> describe the problem → <strong>localize the lesion</strong> → build a <strong>differential</strong> from the time course → plan investigations and treatment. About <strong>10% of family-medicine visits</strong> are for a neurologic symptom.</p>
+<h3>1. The Neuroscience, Eye and Ear block</h3>
+<ul>
+<li>First 1.5 weeks: <strong>neuroanatomy and neurophysiology</strong></li>
+<li>Weeks 1.5–4: <strong>clinical neurology and neurosurgery</strong></li>
+<li>Week 4: <strong>eye and ear</strong></li>
+<li>Tip: a lot is covered quickly, so <strong>learn your neuroanatomy well</strong> and prepare ahead.</li>
+</ul>
+<h3>2. Neuro glossary</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>Plegia</strong> | Paralysis — essentially no voluntary movement |
+| <strong>Paresis</strong> | Weakness |
+| <strong>Dysarthria</strong> | Trouble with <strong>articulation</strong> |
+| <strong>Aphasia</strong> | Trouble <strong>producing or understanding language</strong> |
+| <strong>Dysphagia</strong> | Trouble swallowing |
+| <strong>Ataxia</strong> | Trouble with motor <strong>coordination</strong> |
+| <strong>Dysmetria</strong> | Trouble reaching a specific target |
+| <strong>Obtunded</strong> | Reduced awareness; can't be fully roused |
+| <strong>Dominant hemisphere</strong> | Where language lives — <strong>left</strong> in almost all right-handers; still mostly left in left-handers (~27% right) |
+| <strong>MCA stroke</strong> | <strong>Face and arm &gt; leg</strong> contralateral weakness (because of the homunculus) |</p>
+<p>Also know the planes: <strong>sagittal, axial, coronal</strong>.</p>
+<h3>3. Organization of the nervous system</h3>
+<p><strong>Microscopic:</strong> a neuron has a <strong>cell body</strong> (nucleus), <strong>dendrites</strong> and an <strong>axon</strong>. Action potentials travel down the axon to the <strong>synapse</strong>. <strong>Myelin</strong> insulates the axon.</p>
+<p><strong>Macroscopic:</strong></p>
+<ul>
+<li><strong>CNS</strong> = brain and spinal cord.</li>
+<li><strong>PNS</strong> = cranial nerves, roots, plexus, nerves, <strong>neuromuscular junction, muscle</strong>, sensory receptors.</li>
+<li><strong>Grey matter</strong> = cell bodies (cortex, folded into gyri; basal ganglia and thalamus; brainstem nuclei). <strong>White matter</strong> = myelinated <strong>axon tracts</strong>.</li>
+</ul>
+<p><strong>Lobes:</strong></p>
+<ul>
+<li><strong>Frontal</strong>: motor, <strong>speech production</strong>, executive function</li>
+<li><strong>Parietal</strong>: sensation, attention in time and space</li>
+<li><strong>Occipital</strong>: vision</li>
+<li><strong>Temporal</strong>: auditory processing, <strong>language understanding</strong>, memory</li>
+</ul>
+<p><strong>Deep structures:</strong></p>
+<ul>
+<li><strong>Basal ganglia</strong>: integrate cortical activity into one movement; <strong>speed</strong> of movement</li>
+<li><strong>Thalamus</strong>: relay centre; most sensory input passes through it</li>
+<li><strong>Limbic system</strong> (hippocampus, amygdala, cingulate): emotion and memory</li>
+<li><strong>Cerebellum</strong>: <strong>coordination</strong> — limbs, gait, speech, swallowing</li>
+<li><strong>Brainstem</strong> (midbrain, pons, medulla): <strong>all cranial nerve nuclei</strong> plus the sensory and motor tracts</li>
+</ul>
+<p><strong>Spinal cord:</strong> cervical C1–C8, thoracic T1–T12, lumbosacral. The cord <strong>ends at about L1</strong>; below that is the <strong>cauda equina</strong>. So lesions <strong>at or above L1 give a UMN pattern; below L1, an LMN pattern</strong>. White matter holds ascending sensory and descending motor tracts; grey matter holds cell bodies.</p>
+<h3>4. Pathways</h3>
+<p><strong>Motor:</strong> motor cortex (contralateral to the movement) → white matter → brainstem → <strong>decussates in the medulla</strong> → spinal cord → <strong>anterior horn cell</strong> → root → nerve → NMJ → muscle.</p>
+<p><strong>UMN vs LMN — know this table:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Upper motor neuron (brain, cord)</th>
+<th>Lower motor neuron (AHC, root, plexus, nerve, NMJ, muscle)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>Spasticity</strong> | <strong>Atrophy</strong> |
+| <strong>Hyperreflexia</strong> | Reflexes <strong>reduced or absent</strong> |
+| <strong>Babinski (extensor plantar)</strong> | Plantar flexor or absent |
+| No significant atrophy | Normal tone (or low) |
+| No fasciculations | <strong>Fasciculations</strong> may be present |</p>
+<ul>
+<li><strong>Cerebellum</strong> and <strong>basal ganglia</strong> feed back to the motor cortex. Lesions there do <strong>not cause weakness</strong>.<ul>
+<li>Cerebellum → <strong>incoordination</strong></li>
+<li>Basal ganglia → <strong>parkinsonism</strong> (slow, hard to start, rigid) or <strong>excess movement</strong> (chorea, dystonia, athetosis, hemiballismus)</li>
+</ul>
+</li>
+</ul>
+<p><strong>Sensory:</strong> nerve → root → cord → brainstem → <strong>thalamus</strong> → white matter → primary sensory cortex. (Nice to know: the <strong>dorsal columns</strong> carry vibration and proprioception and cross in the <strong>medulla</strong>; the <strong>spinothalamic tract</strong> carries pain and temperature and crosses <strong>at entry</strong> to the cord.)</p>
+<p><strong>Visual:</strong> the image is inverted on the retina → optic nerves → <strong>optic chiasm</strong>, where each <strong>hemifield</strong> goes to the opposite optic tract → eventually the <strong>occipital pole</strong>.</p>
+<h3>5. Localizing the lesion</h3>
+<ol>
+<li><strong>CNS or PNS?</strong> UMN signs → CNS. LMN signs → PNS.</li>
+<li><strong>Refine:</strong> cortical signs (language, neglect)? Sensation affected or spared? Painful or painless? Distribution? Bladder?</li>
+<li><strong>Why bother?</strong> To know <strong>what to image</strong>. Don't order a CT head for a spinal cord problem.</li>
+</ol>
+<p><strong>Patterns of weakness:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Likely site</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| Hemibody <strong>with</strong> face or cranial nerves | <strong>Brain</strong> |
+| Hemibody, <strong>no</strong> face or CN | <strong>Spinal cord</strong> |
+| Quadriparesis | <strong>Cervical cord</strong> |
+| Paraparesis | <strong>Thoracic cord</strong> or lumbar roots |
+| One myotome | <strong>Root</strong> |
+| <strong>Eyes and swallowing</strong> | <strong>NMJ</strong> |
+| Generalized <strong>proximal</strong> weakness | <strong>Muscle</strong> |</p>
+<p><strong>Language:</strong> dominant hemisphere. <strong>Expressive</strong> = inferior <strong>frontal</strong> lobe; <strong>receptive</strong> = posterior <strong>temporal</strong> lobe.</p>
+<h3>6. Differential by time course</h3>
+<table>
+<thead>
+<tr>
+<th>Onset</th>
+<th>Think</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>Hyperacute</strong> (seconds–minutes) | <strong>Stroke</strong>, migraine aura (resolves in minutes), trauma |
+| <strong>Acute</strong> (hours–days) | Inflammation, infection |
+| <strong>Subacute</strong> (days–weeks) | Inflammation, infection, <strong>tumour</strong>, toxic |
+| <strong>Chronic</strong> (months–years) | <strong>Degenerative</strong>, hereditary |</p>
+<p>Full checklist: <strong>VITAMINS C D</strong> — vascular, infectious, trauma, autoimmune, metabolic/medication, inflammatory/iatrogenic, neoplastic, seizure/psychogenic, congenital, degenerative.</p>
+<p><strong>DDx of acute aphasia:</strong> ischemic stroke, intracranial hemorrhage, migraine, post-ictal <strong>Todd's</strong> paresis, metabolic upset (e.g. hypoglycemia) on an old lesion, psychogenic.</p>
+<h3>7. Practice cases</h3>
+<ul>
+<li><strong>Sudden flashes in the right visual field of both eyes</strong> in a 44-year-old → left occipital cortex / visual pathway behind the chiasm (a right homonymous field problem). Hyperacute: migraine aura vs stroke.</li>
+<li><strong>75-year-old with 2 months of worsening word-finding, wrong words, then nonsense; slight right facial droop</strong> → left (dominant) hemisphere language areas. Subacute progression: <strong>tumour</strong> high on the list.</li>
+<li><strong>68-year-old with 3 weeks of falls, clumsy hands, urinary urgency; brisk reflexes in arms and legs, upgoing toes, poor vibration at the toes</strong> → <strong>cervical spinal cord</strong> (UMN in all four limbs plus dorsal columns and bladder). Subacute: compression, inflammation, B12.</li>
+<li><strong>59-year-old with 6 months of slowness and stiffness; reduced blinking, soft speech, rigidity, slow tapping, reduced arm swing, normal power and reflexes</strong> → <strong>basal ganglia</strong>. Chronic: degenerative — <strong>Parkinson's disease</strong>.</li>
+</ul>
+`,
+    "quiz": [
+      {
+        "stem": "Which finding points to an upper motor neuron lesion?",
+        "opts": [
+          "Fasciculations",
+          "Extensor plantar (Babinski) response",
+          "Muscle atrophy",
+          "Absent reflexes"
+        ],
+        "correct": 1,
+        "explain": "UMN: spasticity, hyperreflexia, Babinski, no atrophy or fasciculations."
+      },
+      {
+        "stem": "Weakness of eye movements and swallowing points to which site?",
+        "opts": [
+          "Muscle",
+          "Neuromuscular junction",
+          "Thoracic cord",
+          "Cortex"
+        ],
+        "correct": 1,
+        "explain": "Eyes and swallowing = NMJ; generalized proximal weakness = muscle."
+      },
+      {
+        "stem": "Ataxia means…",
+        "opts": [
+          "Difficulty with articulation",
+          "Difficulty with swallowing",
+          "Paralysis",
+          "Difficulty with motor coordination"
+        ],
+        "correct": 3,
+        "explain": "Ataxia is incoordination. Dysarthria is articulation; dysphagia is swallowing."
+      }
+    ]
+  },
+  {
+    "id": "intro-neuroanatomy",
+    "title": "Introduction to Neuroanatomy",
+    "instructor": "Elentra module 05",
+    "duration": "~100 min",
+    "tags": [
+      {
+        "label": "Rule of 4",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Why it matters:</strong> knowing where things are lets you localize a lesion from signs and symptoms — and knowing the meninges and their spaces explains epidural, subdural and subarachnoid bleeds.</p>
+<h3>1. Terms and divisions</h3>
+<p><strong>Structural division:</strong></p>
+<ul>
+<li><strong>CNS</strong> = brain + spinal cord, in the skull and vertebral canal, protected by <strong>meninges and CSF</strong>.</li>
+<li><strong>PNS</strong> = spinal nerves, cranial nerves, ganglia, sympathetic and parasympathetic nerves.</li>
+<li><strong>Grey matter</strong> = cell bodies. <strong>White matter</strong> = axons, no cell bodies.</li>
+<li>In the brain, grey matter is also on the outside as a <strong>cortex</strong> (cerebrum and cerebellum). Other grey matter clusters are <strong>nuclei</strong>.</li>
+</ul>
+<p><strong>Functional division:</strong> <strong>sensory input</strong> (afferent, to the CNS) → <strong>integration</strong> → <strong>motor output</strong> (efferent, to muscles and glands). A pain withdrawal reflex doesn't need the brain; planning does.</p>
+<p><strong>Directions:</strong> rostral–caudal, dorsal–ventral, superior–inferior, anterior–posterior.
+<strong>Planes:</strong> <strong>coronal</strong> (dorsal to ventral), <strong>axial/horizontal</strong> (parallel to the horizon), <strong>sagittal</strong> (front to back).</p>
+<p><strong>Brain divisions:</strong></p>
+<ul>
+<li><strong>Forebrain</strong>: telencephalon (cerebral hemispheres + deep nuclei) and <strong>diencephalon</strong> (thalamus, hypothalamus, subthalamus, epithalamus)</li>
+<li><strong>Midbrain</strong></li>
+<li><strong>Hindbrain</strong>: pons, medulla and cerebellum</li>
+<li><strong>Brainstem</strong> = midbrain + pons + medulla</li>
+</ul>
+<h3>2. Neuroimaging</h3>
+<table>
+<thead>
+<tr>
+<th>Modality</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>X-ray</strong> | <strong>Bone</strong> only; nervous tissue invisible |
+| <strong>CT</strong> | Sectional, ~2 mm; lesions differ in density from brain |
+| <strong>MRI T1</strong> | Brain tissue vs fluid; some grey–white difference |
+| <strong>MRI T2</strong> | <strong>CSF bright</strong>; less grey–white contrast |
+| <strong>FLAIR</strong> | <strong>CSF dark</strong>; best for <strong>white matter abnormalities</strong> |</p>
+<h3>3. Cerebral cortex and lobes</h3>
+<ul>
+<li>The cerebrum is about <strong>80%</strong> of brain mass.</li>
+<li><strong>Longitudinal fissure</strong> splits right and left; <strong>transverse fissure</strong> separates cerebrum from cerebellum. <strong>Sulci</strong> are grooves, <strong>gyri</strong> are ridges.</li>
+<li><strong>Central sulcus</strong> separates <strong>frontal from parietal</strong>. <strong>Lateral sulcus</strong> sits above the temporal lobe. <strong>Parieto-occipital sulcus</strong> separates parietal from occipital.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Lobe</th>
+<th>Functions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>Frontal</strong> (anterior cranial fossa) | Voluntary and planned movement (<strong>primary motor cortex</strong>), eye movement, <strong>speech production</strong> |
+| <strong>Parietal</strong> | <strong>Somatosensory</strong> processing, spatial awareness, understanding speech |
+| <strong>Temporal</strong> (middle cranial fossa) | <strong>Auditory</strong> and olfactory cortex; recognizing objects, words, faces |
+| <strong>Occipital</strong> | <strong>Visual cortex</strong> |
+| <strong>Insula</strong> | Visceral sensation, <strong>taste (gustatory cortex)</strong> |
+| <strong>Limbic lobe</strong> (medial: cingulate and parahippocampal gyri) | Memory and emotion |</p>
+<p><strong>White matter tracts</strong> connect cortex to cortex, brainstem and cord. The <strong>corpus callosum</strong> links the two hemispheres.</p>
+<h3>4. Basal ganglia and cerebellum</h3>
+<ul>
+<li><strong>Basal ganglia</strong> = deep forebrain nuclei (<strong>caudate, putamen</strong> = striatum; with the <strong>substantia nigra</strong> of the midbrain) that <strong>integrate cortical activity into one motor output</strong>. They regulate movement intensity, rhythmic repetitive tasks and habit learning.</li>
+<li><strong>Basal ganglia disease</strong> → movement disorders: too little movement (<strong>Parkinson's</strong> — substantia nigra) or too much (chorea, e.g. Huntington's — caudate).</li>
+<li><strong>Basal forebrain nuclei</strong> make <strong>acetylcholine</strong> (arousal, learning, memory); their degeneration is linked to <strong>Alzheimer's</strong>.</li>
+<li><strong>Cerebellum</strong> (posterior to the brainstem) coordinates movement. It connects to the brainstem through the <strong>superior, middle and inferior cerebellar peduncles</strong>.</li>
+</ul>
+<h3>5. Diencephalon</h3>
+<ul>
+<li><strong>Thalamus</strong>: relay for <strong>all conscious senses except smell</strong>. Everything reaching the cortex relays through a thalamic nucleus. Also links to the limbic system and basal ganglia.</li>
+<li><strong>Hypothalamus</strong>: main visceral control centre — autonomic function, temperature, hunger and thirst, sleep, emotion, and the <strong>endocrine system</strong>.</li>
+<li><strong>Epithalamus</strong>: <strong>pineal gland</strong> → <strong>melatonin</strong>.</li>
+</ul>
+<h3>6. Brainstem</h3>
+<p><strong>Rostral to caudal: midbrain → pons → medulla.</strong> It carries the tracts between cerebrum and cord, innervates the face and neck (<strong>10 of 12 cranial nerves</strong> attach here) and runs survival reflexes.</p>
+<p><strong>"Rule of 4" for cranial nerve nuclei:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>CN nuclei</th>
+<th>Key features</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>Midbrain</strong> | <strong>III, IV</strong> | Cerebral peduncles; <strong>superior colliculi</strong> (visual reflexes) and <strong>inferior colliculi</strong> (auditory reflexes) |
+| <strong>Pons</strong> | <strong>V, VI, VII, VIII</strong> | Pontine nuclei relay cerebrum ↔ cerebellum |
+| <strong>Medulla</strong> | <strong>IX, X, XI, XII</strong> (XI nucleus is in the upper cervical cord) | Cardiac, vasomotor, respiratory centres; <strong>pyramids</strong> with <strong>decussation</strong> (each hemisphere controls the opposite body); olives |</p>
+<p>Cranial nerves I–XII: olfactory, optic, oculomotor, trochlear, trigeminal, abducens, facial, vestibulocochlear, glossopharyngeal, vagus, spinal accessory, hypoglossal.</p>
+<h3>7. Spinal cord</h3>
+<ul>
+<li><strong>Dorsal grey horn = sensory</strong>; <strong>ventral grey horn = motor</strong>.</li>
+<li>Dorsal rootlets (sensory) and ventral rootlets (motor) → dorsal and ventral roots → <strong>spinal nerve</strong> → dorsal and ventral rami.</li>
+</ul>
+<h3>8. Ventricles and CSF</h3>
+<ul>
+<li><strong>Two C-shaped lateral ventricles</strong> (anterior, posterior and inferior horns) → <strong>third ventricle</strong> (in the diencephalon) → <strong>cerebral aqueduct</strong> (through the midbrain) → <strong>fourth ventricle</strong> (between brainstem and cerebellum) → openings into the subarachnoid space.</li>
+<li>CSF is made by <strong>ependymal cells of the choroid plexus</strong>.</li>
+</ul>
+<h3>9. Vessels and barriers</h3>
+<ul>
+<li><strong>Blood–brain barrier</strong>: tight junctions, basement membrane, <strong>astrocyte foot processes</strong>, pericytes. Lipid-soluble substances cross by diffusion; others need active transport.</li>
+<li><strong>Middle meningeal artery</strong> (from the external carotid) supplies the dura; <strong>rupture → epidural hematoma</strong>.</li>
+<li><strong>Dural venous sinuses</strong>: superior sagittal, inferior sagittal, straight, transverse, sigmoid.</li>
+</ul>
+<h3>Practice questions (from the notes)</h3>
+<ol>
+<li>Central sulcus separates → <strong>frontal and parietal</strong></li>
+<li>BBB maintained by → <strong>astrocytes</strong></li>
+<li>Best for white matter lesions → <strong>FLAIR MRI</strong></li>
+<li>Insula contains → <strong>gustatory cortex</strong></li>
+<li>Midbrain cranial nerves → <strong>III and IV</strong></li>
+<li>Dorsal grey horn → <strong>sensory</strong></li>
+</ol>
+`,
+    "quiz": [
+      {
+        "stem": "Which MRI sequence best shows white matter lesions?",
+        "opts": [
+          "FLAIR",
+          "T2",
+          "T1",
+          "Plain X-ray"
+        ],
+        "correct": 0,
+        "explain": "FLAIR suppresses CSF signal, making white matter abnormalities stand out."
+      },
+      {
+        "stem": "Which cranial nerve nuclei lie in the pons?",
+        "opts": [
+          "III, IV",
+          "IX, X, XI, XII",
+          "V, VI, VII, VIII",
+          "I, II"
+        ],
+        "correct": 2,
+        "explain": "Rule of 4: midbrain III–IV, pons V–VIII, medulla IX–XII."
+      },
+      {
+        "stem": "Which cells form the blood–brain barrier with their foot processes?",
+        "opts": [
+          "Microglia",
+          "Ependymal cells",
+          "Astrocytes",
+          "Oligodendrocytes"
+        ],
+        "correct": 2,
+        "explain": "Astrocyte foot processes, tight junctions, basement membrane and pericytes make up the BBB."
+      }
+    ]
+  },
+  {
+    "id": "intro-neurophysiology",
+    "title": "Introduction to Neurophysiology",
+    "instructor": "Elentra module 06",
+    "duration": "~42 min",
+    "tags": [
+      {
+        "label": "Synapses & drugs",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>The theme:</strong> neurons talk with <strong>all-or-none action potentials</strong> and <strong>chemical synapses</strong>. Break the myelin and signals slow (MS); change a receptor and you have a drug effect; damage a specialized cortical area and you get a specific deficit.</p>
+<h3>1. The brain as a network</h3>
+<ul>
+<li>About <strong>100 billion neurons</strong> and 10× as many glia. Each neuron contacts about <strong>1,000</strong> others; memories live in these connections.</li>
+<li>Neurons sit in a thin, folded sheet of <strong>grey matter</strong>; axon tracts form the <strong>white matter</strong>.</li>
+<li>The brain is <strong>1–3% of body mass but uses ~20% of the body's energy</strong>, so only a small fraction of neurons fire at once.</li>
+<li>Grey matter needs more oxygen, and blood flows to the active areas — the basis of <strong>fMRI</strong>. <strong>Diffusion tensor imaging (DTI)</strong> shows axon tracts.</li>
+<li>Dense interconnection is why <strong>epilepsy</strong> spreads: abnormal activity in one spot can spread into a seizure.</li>
+</ul>
+<h3>2. The neuron</h3>
+<ul>
+<li><strong>Excitable cells</strong> (neurons and muscle) generate and respond to electrical signals.</li>
+<li><strong>Soma</strong> (cell body); <strong>dendrites</strong> collect and integrate input; <strong>axon</strong> sends signals long distances; <strong>synapse</strong> contacts other neurons and is the site of many <strong>drugs and toxins</strong>.</li>
+<li><strong>Resting potential ≈ −65 mV</strong> (inside negative). <strong>Depolarization</strong> = less negative; <strong>hyperpolarization</strong> = more negative.</li>
+<li>An action potential starts at the <strong>axon hillock</strong> when depolarization reaches <strong>threshold (~−55 mV)</strong>, then travels all the way to the terminal. In health it's <strong>all-or-none</strong>.</li>
+<li><strong>Myelin</strong> greatly speeds conduction: <strong>saltatory conduction</strong> jumps from node to node. <strong>Demyelinating diseases such as MS</strong> make conduction slow and unreliable.</li>
+</ul>
+<h3>3. How information is coded</h3>
+<p>Because each spike is all-or-none, the <strong>pattern</strong> of spikes carries the message. For a touch:</p>
+<ul>
+<li><strong>How hard?</strong> → <strong>firing frequency</strong> on one axon, plus how many axons fire (frequency coding)</li>
+<li><strong>How long?</strong> → duration of firing</li>
+<li><strong>Where?</strong> → which axons (each comes from a different body part)</li>
+<li><strong>What kind?</strong> → which receptor the axon connects to (heat, cold, pain, light vs heavy touch)</li>
+</ul>
+<p><strong>Labeled-line coding:</strong> each modality has dedicated pathways, and the brain assigns meaning by pathway (spikes in the optic nerve are "seen").</p>
+<h3>4. Chemical synapses</h3>
+<ol>
+<li>The action potential reaches the terminal → <strong>Ca²⁺-mediated release</strong> of neurotransmitter.</li>
+<li>Transmitter binds <strong>postsynaptic receptors</strong>.</li>
+<li>Transmitter is cleared by <strong>diffusion, reuptake or enzymatic breakdown</strong>.</li>
+</ol>
+<p><strong>Two receptor classes:</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Ionotropic</strong></th>
+<th><strong>Metabotropic</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| Mechanism | Binding <strong>opens an ion channel</strong> | <strong>Second messenger</strong> (e.g. G-protein coupled) |
+| Effect | <strong>Fast and local</strong> | <strong>Slower, widespread, longer-lasting</strong> |
+| Examples | Glutamate (NMDA, AMPA), GABA-A, ACh at the NMJ | <strong>Dopamine, serotonin, norepinephrine</strong> |</p>
+<p><strong>Excitation and inhibition:</strong></p>
+<ul>
+<li><strong>EPSP</strong> = brief depolarization. <strong>Glutamate</strong> is the main <strong>excitatory</strong> transmitter in the brain. <strong>NMDA receptors</strong> are modifiable → <strong>synaptic plasticity</strong>, the basis of learning and memory.</li>
+<li><strong>Acetylcholine</strong> is the excitatory transmitter at the <strong>neuromuscular junction</strong>.</li>
+<li><strong>IPSP</strong> = brief hyperpolarization. <strong>GABA</strong> is the main <strong>inhibitory</strong> transmitter in the brain (target of many sedatives). <strong>Glycine</strong> is the inhibitory transmitter in the <strong>spinal cord</strong>.</li>
+</ul>
+<h3>5. Neuropharmacology</h3>
+<ul>
+<li>Drugs act as receptor <strong>agonists or antagonists</strong>, or change <strong>reuptake or breakdown</strong>.</li>
+<li>More than 50 transmitters in three classes:<ul>
+<li><strong>Amino acids</strong>: GABA, glutamate, glycine</li>
+<li><strong>Amines</strong>: acetylcholine, dopamine, norepinephrine, serotonin</li>
+<li><strong>Peptides</strong>: <strong>substance P</strong> (pain and inflammation), dynorphin (opioid)</li>
+</ul>
+</li>
+<li><strong>GABA-A receptor</strong> (ionotropic, fast hyperpolarization) has many binding sites that influence each other: <strong>benzodiazepines act more strongly when ethanol is present</strong>. Ethanol also <strong>antagonizes glutamate receptors</strong>.</li>
+</ul>
+<h3>6. Circuits and the cortex</h3>
+<ul>
+<li><strong>Divergence</strong>: one neuron reaches many → <strong>motor</strong> control (coordinated actions, reflexes).</li>
+<li><strong>Convergence</strong>: many neurons reach one → <strong>sensory</strong> feature extraction.</li>
+<li><strong>Six cortical layers.</strong> Input arrives in <strong>layer 4</strong> (from the thalamus) — thickest in primary sensory cortex (V1 is "<strong>striate cortex</strong>" because of its thick layer 4). Output leaves from <strong>layers 3 and 5</strong> — thickest in <strong>primary motor cortex</strong>.</li>
+<li><strong>Brodmann</strong> divided cortex into areas by anatomy; each has a specific function (<strong>functional localization</strong>), so lesions can cause very specific deficits.</li>
+</ul>
+<h3>7. Two classic lesions</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Wernicke's aphasia</strong></th>
+<th><strong>Broca's aphasia</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| Site | <strong>Left posterior temporal</strong> cortex | <strong>Left frontal</strong> cortex |
+| Speech | Fluent but <strong>nonsense words</strong> | <strong>Slow, effortful</strong> |
+| Comprehension | <strong>Impaired</strong> | <strong>Intact</strong> |
+| Type | <strong>Perceptual</strong> syndrome | <strong>Motor</strong> syndrome |
+| Awareness | Often <strong>unaware</strong> | <strong>Aware</strong> of the deficit |</p>
+<h3>Predicting symptoms from physiology</h3>
+<ul>
+<li>Demyelination → slowed or blocked conduction → weakness, numbness, visual loss (MS).</li>
+<li>Drugs that boost GABA (benzodiazepines, alcohol) → sedation; together they add up.</li>
+<li>Spreading abnormal cortical activity → seizure.</li>
+</ul>
+`,
+    "quiz": [
+      {
+        "stem": "What is the main inhibitory neurotransmitter in the spinal cord?",
+        "opts": [
+          "Glycine",
+          "GABA",
+          "Glutamate",
+          "Dopamine"
+        ],
+        "correct": 0,
+        "explain": "GABA is the main inhibitory transmitter in the brain; glycine in the spinal cord."
+      },
+      {
+        "stem": "Which receptor type gives fast, local effects by opening an ion channel?",
+        "opts": [
+          "Metabotropic",
+          "Ionotropic",
+          "G-protein coupled",
+          "Nuclear"
+        ],
+        "correct": 1,
+        "explain": "Ionotropic receptors open channels directly; metabotropic act via second messengers."
+      },
+      {
+        "stem": "Where is an action potential initiated?",
+        "opts": [
+          "Axon hillock",
+          "Dendrite",
+          "Synaptic cleft",
+          "Node of Ranvier only"
+        ],
+        "correct": 0,
+        "explain": "At the axon hillock, once depolarization reaches threshold (~−55 mV)."
+      }
+    ]
+  },
+  {
+    "id": "cranial-nerves",
+    "title": "Cranial Nerve Anatomy",
+    "instructor": "Elentra module 07",
+    "duration": "~72 min",
+    "tags": [
+      {
+        "label": "LR6 SO4",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>The cranial nerves</strong> are 12 pairs of nerve bundles that leave the cranial cavity, numbered rostral to caudal. Some are sensory, some motor, some both. <strong>Mnemonic for type:</strong> "Some Say Marry Money But My Brother Says Big Brains Matter More" (S = sensory, M = motor, B = both).</p>
+<h3>1. Anatomy and function, nerve by nerve</h3>
+<table>
+<thead>
+<tr>
+<th>CN</th>
+<th>Exit from skull</th>
+<th>Fibres</th>
+<th>Main function</th>
+<th>Test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>I Olfactory</strong> | <strong>Cribriform plate</strong> foramina → olfactory bulb → tract | Special sensory | <strong>Smell</strong> | Smell, one nostril at a time |
+| <strong>II Optic</strong> | <strong>Optic canal</strong> | Special sensory | <strong>Vision</strong> | Acuity, fields, <strong>pupillary light reflex</strong>, fundoscopy |
+| <strong>III Oculomotor</strong> | <strong>Superior orbital fissure</strong> (runs in the lateral wall of the cavernous sinus) | Motor + <strong>parasympathetic</strong> | <strong>Levator palpebrae</strong>, superior, medial and inferior rectus, inferior oblique; <strong>pupil constriction</strong> and <strong>accommodation</strong> (ciliary muscle) | Eye movements, light reflex |
+| <strong>IV Trochlear</strong> | Superior orbital fissure | Motor | <strong>Superior oblique</strong> only (longest intracranial course; leaves the <strong>back</strong> of the midbrain) | Eye movement |
+| <strong>V Trigeminal</strong> | <strong>V1 superior orbital fissure; V2 foramen rotundum; V3 foramen ovale</strong> | Both | Sensation to the face; <strong>V3 motor to muscles of mastication</strong> | Touch in V1, V2, V3; <strong>corneal reflex (V1)</strong>; jaw muscles (V3) |
+| <strong>VI Abducens</strong> | Superior orbital fissure (runs through the <strong>middle</strong> of the cavernous sinus; longest intradural course) | Motor | <strong>Lateral rectus</strong> only | Eye movement |
+| <strong>VII Facial</strong> | <strong>Internal acoustic meatus</strong> → facial canal → <strong>stylomastoid foramen</strong> | Both + parasympathetic | <strong>Muscles of facial expression</strong>, stapedius; <strong>taste anterior 2/3 of tongue</strong>; tears and submandibular/sublingual saliva | Facial expressions, taste, corneal reflex (motor side) |
+| <strong>VIII Vestibulocochlear</strong> | Internal acoustic meatus (doesn't leave the skull) | Special sensory | <strong>Hearing</strong> (cochlear) and <strong>balance</strong> (vestibular) | Hearing |
+| <strong>IX Glossopharyngeal</strong> | <strong>Jugular foramen</strong> | Both + parasympathetic | Stylopharyngeus; sensation of pharynx; <strong>carotid sinus and body</strong>; <strong>taste posterior 1/3</strong>; <strong>parotid</strong> | <strong>Gag reflex</strong> (sensory side) |
+| <strong>X Vagus</strong> | Jugular foramen | Both + parasympathetic | Palate, pharynx and <strong>larynx</strong> muscles; sensation of lower pharynx and larynx; <strong>parasympathetic to thoracic and abdominal viscera</strong> | Say "<strong>ahh</strong>", gag, voice |
+| <strong>XI Spinal accessory</strong> | Rises from upper cervical cord, in via foramen magnum, out via <strong>jugular foramen</strong> | Motor | <strong>Trapezius and SCM</strong> | Shrug, head turn |
+| <strong>XII Hypoglossal</strong> | <strong>Hypoglossal canal</strong> | Motor | <strong>Tongue</strong> | Tongue movement |</p>
+<p><strong>Trigeminal sensory map:</strong></p>
+<ul>
+<li><strong>V1 ophthalmic</strong>: forehead, scalp, upper eyelid, nose, <strong>cornea</strong>, upper nasal mucosa and sinuses. Also carries <strong>sympathetics to the pupil dilator</strong>.</li>
+<li><strong>V2 maxillary</strong>: lower eyelid to upper lip, maxillary teeth, maxillary sinus, palate.</li>
+<li><strong>V3 mandibular</strong>: lower lip and chin, cheek, part of ear and temple, mandibular teeth, TMJ, <strong>anterior 2/3 of tongue (touch and temperature)</strong>. Motor to the muscles of mastication, mylohyoid, anterior digastric, tensor veli palatini, tensor tympani.</li>
+</ul>
+<p><strong>Eye movement summary:</strong> <strong>LR6 SO4</strong>, the rest <strong>III</strong>. Lateral rectus looks out; superior oblique looks down and in.</p>
+<p><strong>Taste:</strong> anterior 2/3 = <strong>VII</strong> (chorda tympani, riding with the lingual nerve of V3); posterior 1/3 = <strong>IX</strong>; root of tongue = <strong>X</strong>.</p>
+<h3>2. Central vs peripheral cranial nerve problems</h3>
+<p>The voluntary pathway: <strong>cortex → subcortical white matter → brainstem → CN nucleus → cranial nerve</strong>. Everything up to the nucleus is <strong>CNS (UMN)</strong>; the nucleus and nerve are <strong>PNS (LMN)</strong>. Sorting this out tells you where to look.</p>
+<h3>3. Symptoms of cranial nerve pathology</h3>
+<p><strong>CN I</strong> (rarely tested):</p>
+<ul>
+<li>Symptom: <strong>reduced smell</strong>.</li>
+<li>Causes: <strong>Kallmann syndrome</strong> (congenital), trauma, <strong>inferior frontal tumour</strong>, <strong>post-viral (e.g. COVID-19)</strong>.</li>
+<li>Use a familiar smell (cloves, coffee); <strong>avoid noxious smells</strong> like ammonia, which stimulate trigeminal fibres instead.</li>
+</ul>
+<p><strong>CN II:</strong></p>
+<ul>
+<li>Symptom: reduced vision or trouble focusing.</li>
+<li>Causes: <strong>optic neuritis</strong>, ischemic optic neuropathy, <strong>compression by tumour</strong>.</li>
+<li>Tests: acuity, fields, fundoscopy (<strong>papilledema</strong>), pupils, <strong>RAPD by the swinging flashlight test</strong>.</li>
+</ul>
+<p><strong>CN III, IV, VI:</strong></p>
+<ul>
+<li>Symptom: <strong>diplopia</strong> from misaligned eyes.</li>
+<li>Nerve causes: <strong>diabetic third nerve palsy</strong>, orbital inflammation, <strong>cavernous sinus infection</strong>, <strong>third nerve compression by a PCOM aneurysm</strong>, <strong>trauma → fourth nerve palsy</strong>.</li>
+<li>Brainstem causes: midbrain or pontine stroke.</li>
+<li><strong>Key rule:</strong> diplopia means <strong>brainstem, cranial nerve, eye muscle or NMJ</strong> — <strong>never</strong> a lesion rostral to the brainstem.</li>
+<li>Tests: eye movements in an "H", ask about diplopia, <strong>check the pupil</strong>, look for <strong>ptosis</strong>.</li>
+</ul>
+<p><strong>CN V:</strong></p>
+<ul>
+<li>Symptom: reduced sensation over the face or one division; may have neuropathic pain.</li>
+<li>Peripheral causes: compression or inflammation (cavernous sinus, <strong>schwannoma</strong>); <strong>trigeminal neuralgia</strong> (a vessel pulsing against the nerve).</li>
+<li>Central causes: brainstem stroke or <strong>MS</strong>; thalamic or cortical lesions.</li>
+<li>Tests: touch or pinprick in V1–V3, corneal reflex, jaw strength. <strong>Weak mastication only happens with peripheral lesions.</strong></li>
+</ul>
+<p><strong>CN VII — know UMN vs LMN facial weakness:</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>UMN</strong> (stroke, brainstem; above the VII nucleus)</th>
+<th><strong>LMN</strong> (VII nucleus or nerve)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>Forehead spared</strong> | <strong>Forehead involved</strong> (lost wrinkles) |
+| Can close the eye (weakly) | <strong>Can't close the eye</strong> — globe rolls up (<strong>Bell's phenomenon</strong>) |
+| Causes: cortical/subcortical stroke, brainstem lesion | Causes: <strong>Bell's palsy</strong> (idiopathic), <strong>parotid tumour</strong> |</p>
+<p>The forehead is spared in UMN lesions because the upper face gets input from <strong>both</strong> hemispheres. Test the <strong>5 branches</strong> and taste on the anterior 2/3.</p>
+<p><strong>CN VIII:</strong></p>
+<ul>
+<li>Symptoms: <strong>hearing loss and/or vertigo</strong>.</li>
+<li>Causes: end-organ disease (middle ear, semicircular canals), <strong>vestibular neuritis</strong>, brainstem stroke.</li>
+<li>Tests: hearing, <strong>nystagmus</strong>, Romberg.</li>
+</ul>
+<p><strong>CN IX and X:</strong></p>
+<ul>
+<li>Symptoms: <strong>dysarthria, hoarseness, dysphagia</strong>, autonomic dysfunction.</li>
+<li>LMN: nucleus, nerve, brainstem or skull base. UMN: cortical control of speech or swallowing.</li>
+<li>Tests: voice, <strong>palate elevation</strong>, <strong>gag reflex</strong>.</li>
+</ul>
+<p><strong>CN XI:</strong> rarely important. Trapezius → shrug. <strong>SCM turns the head away</strong> from its own side.</p>
+<p><strong>CN XII:</strong></p>
+<ul>
+<li>Symptoms: lisp, trouble moving food in the mouth.</li>
+<li>LMN causes: skull base tumour, <strong>ALS</strong> (look for <strong>fasciculations</strong> and atrophy). UMN causes: stroke, brain tumour.</li>
+<li><strong>The tongue deviates toward the weak side</strong> on protrusion.</li>
+</ul>
+<h3>4. Branch details from the schematics (nice to know)</h3>
+<ul>
+<li><strong>Vagus:</strong> superior laryngeal → <strong>external</strong> (cricothyroid) and <strong>internal</strong> (sensation above the vocal cords); <strong>recurrent laryngeal</strong> → other laryngeal muscles and sensation below the cords.</li>
+<li><strong>Hypoglossal:</strong> all tongue muscles <strong>except palatoglossus</strong> (vagus).</li>
+<li><strong>Facial nerve</strong> parasympathetics: <strong>greater petrosal</strong> → pterygopalatine ganglion → lacrimal gland; <strong>chorda tympani</strong> → submandibular ganglion → submandibular and sublingual glands.</li>
+<li><strong>Glossopharyngeal</strong> parasympathetics: <strong>lesser petrosal</strong> → <strong>otic ganglion</strong> → <strong>parotid</strong>.</li>
+</ul>
+`,
+    "quiz": [
+      {
+        "stem": "Which nerve innervates the lateral rectus?",
+        "opts": [
+          "CN III",
+          "CN IV",
+          "CN VI",
+          "CN V"
+        ],
+        "correct": 2,
+        "explain": "LR6 SO4: lateral rectus is CN VI, superior oblique CN IV, the rest CN III."
+      },
+      {
+        "stem": "Through which foramen does V2 leave the skull?",
+        "opts": [
+          "Foramen ovale",
+          "Superior orbital fissure",
+          "Foramen rotundum",
+          "Jugular foramen"
+        ],
+        "correct": 2,
+        "explain": "V1 superior orbital fissure, V2 foramen rotundum, V3 foramen ovale."
+      },
+      {
+        "stem": "On protrusion, the tongue deviates toward which side with a hypoglossal palsy?",
+        "opts": [
+          "It doesn't deviate",
+          "Away from the weak side",
+          "Toward the weak side",
+          "Upward"
+        ],
+        "correct": 2,
+        "explain": "The intact genioglossus pushes the tongue toward the weak side."
+      }
+    ]
+  },
+  {
+    "id": "facial-anatomy",
+    "title": "Facial Anatomy",
+    "instructor": "Elentra module 08",
+    "duration": "~55 min",
+    "tags": [
+      {
+        "label": "VII moves, V feels",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>The one rule to carry out of this module:</strong> the face has <strong>two motor nerves and one main sensory nerve</strong>. <strong>CN VII moves the face; CN V3 chews; CN V (V1, V2, V3) feels.</strong> Almost every facial-nerve question is a version of that.</p>
+<h3>1. Facial skeleton and foramina</h3>
+<ul>
+<li>The <strong>viscerocranium</strong> (facial skeleton) holds the jaws and nose and helps form the orbit.</li>
+<li>Main facial bones: <strong>nasal, maxilla, zygomatic, mandible</strong>. The <strong>frontal</strong> bone forms the forehead but isn't technically a facial bone.</li>
+<li>Three foramina carry nerves and vessels onto the face, lined up vertically:<ul>
+<li><strong>Supraorbital foramen/notch</strong> → supraorbital nerve (V1)</li>
+<li><strong>Infraorbital foramen</strong> → infraorbital nerve (V2)</li>
+<li><strong>Mental foramen</strong> → mental nerve (V3)</li>
+</ul>
+</li>
+</ul>
+<h3>2. Muscles of facial expression (CN VII)</h3>
+<p>These develop as a sheet over the face, scalp and neck, then split into <strong>sphincters and dilators</strong> around the eyes, nose and mouth.</p>
+<table>
+<thead>
+<tr>
+<th>Muscle</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>Frontalis</strong> | Raises the eyebrows |
+| Occipitalis | Moves the scalp |
+| <strong>Orbicularis oculi</strong> | <strong>Closes the eye</strong> |
+| <strong>Orbicularis oris</strong> | Closes the mouth |
+| Zygomaticus major | Pulls the mouth into a smile |
+| <strong>Buccinator</strong> | A facial expression muscle, but important in <strong>chewing</strong> (keeps food between the teeth) |
+| Platysma | Helps depress the mandible |</p>
+<h3>3. Muscles of mastication (CN V3)</h3>
+<p>They act on the <strong>temporomandibular joint (TMJ)</strong>. The two seen on the face:</p>
+<ul>
+<li><strong>Masseter</strong>: strongly <strong>closes</strong> the jaw and <strong>protrudes</strong> it.</li>
+<li><strong>Temporalis</strong>: strongly <strong>closes</strong> the jaw and <strong>retracts</strong> it.</li>
+</ul>
+<p>Slide question: "What nerve innervates the muscles of mastication?" → <strong>the mandibular division of the trigeminal (V3)</strong>, not the facial nerve.</p>
+<h3>4. Vessels</h3>
+<p><strong>Arteries</strong> mostly come from the <strong>external carotid</strong>:</p>
+<ul>
+<li><strong>Facial artery</strong>: runs diagonally from near the angle of the mandible to the medial corner of the eye.</li>
+<li><strong>Superficial temporal artery</strong>: the continuation of the external carotid, running up onto the lateral scalp.</li>
+</ul>
+<p><strong>Veins</strong> (highly variable):</p>
+<ul>
+<li><strong>Maxillary + superficial temporal veins → retromandibular vein</strong>, which splits into anterior and posterior divisions.</li>
+<li><strong>Posterior division + posterior auricular → external jugular</strong>.</li>
+<li><strong>Anterior division + facial vein → common facial vein → internal jugular</strong>.</li>
+</ul>
+<h3>5. Parotid gland and duct</h3>
+<ul>
+<li>One of three paired salivary glands; makes saliva for digestion.</li>
+<li>Lies <strong>superficial to masseter</strong>, in front of the ear, wrapped in <strong>investing fascia</strong>.</li>
+<li><strong>Parotid duct</strong> runs <strong>superficial to masseter</strong>, then <strong>pierces buccinator</strong> to open into the mouth.</li>
+<li>The <strong>facial nerve passes through the parotid</strong> — which is why a <strong>parotid tumour</strong> can cause an LMN facial palsy.</li>
+</ul>
+<h3>6. Nerves of the face</h3>
+<p><strong>Motor:</strong></p>
+<ul>
+<li><strong>Facial nerve (CN VII)</strong> → muscles of facial expression. It <strong>enters the parotid and divides into 5 terminal branches</strong>: <strong>Temporal, Zygomatic, Buccal, Mandibular, Cervical</strong> ("<strong>To Zanzibar By Motor Car</strong>").</li>
+<li><strong>Trigeminal V3</strong> → muscles of mastication.</li>
+</ul>
+<p><strong>Sensory — mostly trigeminal:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Division</th>
+<th>Skin supplied</th>
+<th>Named branches on the slide</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>V1 ophthalmic</strong> | <strong>Forehead, upper eyelid, most of the nose</strong> | Frontal nerve (supraorbital, supratrochlear) |
+| <strong>V2 maxillary</strong> | <strong>Midface, lower eyelid, upper lip</strong>, lateral to the orbit | <strong>Infraorbital nerve</strong> |
+| <strong>V3 mandibular</strong> | Most of the skin <strong>over the mandible</strong>, in front of the ear, lateral scalp | <strong>Mental</strong>, auriculotemporal |
+| <strong>Great auricular (C2, C3)</strong> | <strong>Skin over the angle of the mandible</strong> | — the one part of the face <strong>not</strong> supplied by V |</p>
+<h3>7. Predicting symptoms (linking to the cranial nerve module)</h3>
+<ul>
+<li><strong>Can't close the eye, forehead flat, mouth droops on one side</strong> → <strong>LMN facial nerve</strong> lesion (e.g. Bell's palsy, parotid tumour). An <strong>UMN</strong> lesion (stroke) <strong>spares the forehead</strong>.</li>
+<li><strong>Weakness of one branch only</strong> (e.g. can't smile on one side after parotid surgery) → injury to that <strong>branch</strong> within or beyond the parotid.</li>
+<li><strong>Numb forehead and upper lid; absent corneal reflex</strong> → <strong>V1</strong>. <strong>Numb cheek and upper lip</strong> → <strong>V2</strong> (e.g. an infraorbital fracture). <strong>Numb chin and lower lip</strong> → <strong>V3</strong> (mental nerve).</li>
+<li><strong>Weak jaw closing, jaw deviates toward the weak side</strong> → <strong>V3 motor</strong>.</li>
+<li><strong>Numbness at the angle of the jaw</strong> → <strong>great auricular</strong> (cervical plexus), not trigeminal.</li>
+</ul>
+<h3>8. Facial abnormalities</h3>
+<p>⚠ Not on this year's slide PDF beyond the structures above. Use the anatomy to reason about common ones: <strong>facial asymmetry from CN VII palsy</strong>, <strong>swelling of the parotid</strong> (mumps, stones, tumour), <strong>trigeminal neuralgia</strong> (shooting pain in a V division), and <strong>fractures through the foramina</strong> causing numbness in that division.</p>
+`,
+    "quiz": [
+      {
+        "stem": "Which nerve supplies the muscles of mastication?",
+        "opts": [
+          "Facial nerve (VII)",
+          "Hypoglossal (XII)",
+          "Mandibular division of trigeminal (V3)",
+          "Maxillary division (V2)"
+        ],
+        "correct": 2,
+        "explain": "V3 supplies masseter, temporalis and the pterygoids; VII supplies facial expression."
+      },
+      {
+        "stem": "Skin over the angle of the mandible is supplied by…",
+        "opts": [
+          "V3",
+          "V2",
+          "Facial nerve",
+          "Great auricular nerve (C2, C3)"
+        ],
+        "correct": 3,
+        "explain": "The great auricular nerve from the cervical plexus is the exception to trigeminal supply of the face."
+      },
+      {
+        "stem": "The parotid duct pierces which muscle to enter the mouth?",
+        "opts": [
+          "Masseter",
+          "Platysma",
+          "Orbicularis oris",
+          "Buccinator"
+        ],
+        "correct": 3,
+        "explain": "It runs superficial to masseter, then pierces buccinator."
+      }
+    ]
+  },
+  {
+    "id": "cranial-cavity",
+    "title": "Cranial Cavity: Skull, Meninges & Blood Supply",
+    "instructor": "Elentra module 09",
+    "duration": "~116 min",
+    "tags": [
+      {
+        "label": "Lens vs crescent",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Three big ideas:</strong> the <strong>pterion</strong> is thin bone over the <strong>middle meningeal artery</strong>; the <strong>meningeal spaces</strong> explain the three intracranial bleeds; the <strong>cavernous sinus</strong> collects face infections and holds CN III, IV, V1, V2, VI and the internal carotid.</p>
+<h3>1. Osteology</h3>
+<p><strong>Skull = 22 bones</strong> (plus 3 pairs of ear ossicles):</p>
+<ul>
+<li><strong>Neurocranium (8)</strong>: frontal, ethmoid, sphenoid, occipital, <strong>2 parietal, 2 temporal</strong>. Flat plates for protection.</li>
+<li><strong>Viscerocranium (14)</strong>: maxillae, zygomatic, nasal, lacrimal, palatine, inferior nasal conchae (pairs), vomer, mandible. Frame the sensory organs.</li>
+</ul>
+<p><strong>Sutures and landmarks:</strong></p>
+<ul>
+<li><strong>Coronal</strong> (frontal–parietal), <strong>sagittal</strong> (between parietals), <strong>lambdoid</strong> (parietal–occipital), <strong>squamous</strong> (parietal–temporal).</li>
+<li><strong>Bregma</strong> = coronal + sagittal. <strong>Lambda</strong> = sagittal + lambdoid.</li>
+<li><strong>Pterion</strong> = H-shaped junction of <strong>frontal, parietal, sphenoid and temporal</strong> bones. <strong>Clinical: a fracture here can tear the middle meningeal artery → epidural hematoma.</strong></li>
+</ul>
+<p><strong>Newborn skull:</strong></p>
+<ul>
+<li><strong>Fontanelles</strong> are membranous gaps that allow <strong>moulding</strong> in the birth canal and brain growth. <strong>Anterior</strong> (at bregma) and <strong>posterior</strong> (at lambda), plus sphenoid and mastoid. Most close by <strong>8–12 months</strong>.</li>
+<li>Palpating them assesses <strong>hydration, intracranial pressure</strong> and bone growth.</li>
+<li><strong>Craniosynostosis</strong> = <strong>premature closure of a suture</strong> → abnormal head shape. Sagittal → long narrow head (<strong>scaphocephaly</strong>); coronal and metopic can also fuse. May raise ICP, cause developmental delay or seizures.</li>
+</ul>
+<p><strong>Bones to know:</strong></p>
+<ul>
+<li><strong>Temporal</strong>: squamous, mastoid, tympanic and <strong>petrous</strong> parts (petrous holds the inner ear).</li>
+<li><strong>Sphenoid</strong>: body with <strong>sella turcica</strong>, lesser wing, greater wing; <strong>optic canal, superior orbital fissure, foramen rotundum, ovale, spinosum</strong>.</li>
+<li><strong>Ethmoid</strong>: <strong>crista galli</strong>, <strong>cribriform plate</strong> (olfactory foramina), ethmoidal air cells.</li>
+<li><strong>Maxilla</strong>: <strong>infraorbital foramen</strong> (V2).</li>
+<li><strong>Paranasal sinuses</strong>: frontal, ethmoidal, sphenoidal, maxillary.</li>
+</ul>
+<p><strong>Calvarial fractures (notes):</strong> linear (most common), depressed (fragment pushes into brain), comminuted, and contrecoup (opposite side from the blow).</p>
+<h3>2. Cranial fossae and foramina</h3>
+<table>
+<thead>
+<tr>
+<th>Fossa</th>
+<th>Holds</th>
+<th>Key openings</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>Anterior</strong> | Frontal lobes | <strong>Cribriform plate</strong> |
+| <strong>Middle</strong> | Temporal lobes; <strong>pituitary in the hypophyseal fossa (sella turcica)</strong> | Optic canal, superior orbital fissure, rotundum, ovale, spinosum, lacerum, carotid canal |
+| <strong>Posterior</strong> | Cerebellum, brainstem | Internal acoustic meatus, jugular foramen, hypoglossal canal, <strong>foramen magnum</strong> |</p>
+<table>
+<thead>
+<tr>
+<th>Foramen</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| Cribriform plate | <strong>CN I</strong> |
+| Optic canal | <strong>CN II</strong> + ophthalmic artery |
+| <strong>Superior orbital fissure</strong> | <strong>CN III, IV, V1, VI</strong> |
+| Foramen <strong>rotundum</strong> | <strong>V2</strong> |
+| Foramen <strong>ovale</strong> | <strong>V3</strong> |
+| Foramen <strong>spinosum</strong> | <strong>Middle meningeal artery</strong> |
+| Carotid canal / foramen lacerum | <strong>Internal carotid artery</strong> |
+| Internal acoustic meatus | <strong>CN VII, VIII</strong> |
+| <strong>Jugular foramen</strong> | Internal jugular vein, <strong>CN IX, X, XI</strong> |
+| Hypoglossal canal | <strong>CN XII</strong> |
+| Foramen magnum | Brainstem/spinal cord, <strong>vertebral arteries</strong> |</p>
+<h3>3. Meninges and spaces</h3>
+<ul>
+<li><strong>Dura mater</strong> ("tough mother"): outer <strong>periosteal</strong> + inner <strong>meningeal</strong> layer. The meningeal layer folds in to form dural reflections.</li>
+<li><strong>Arachnoid</strong> ("spider-like"): thin, doesn't enter sulci; forms <strong>arachnoid granulations</strong>.</li>
+<li><strong>Pia</strong> ("faithful"): clings to the brain and <strong>enters the sulci</strong>.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Space</th>
+<th>Between</th>
+<th>Real or potential?</th>
+<th>Bleed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>Epidural</strong> | Skull and dura | Potential | <strong>Arterial</strong> (middle meningeal) |
+| <strong>Subdural</strong> | Dura and arachnoid | Potential | <strong>Venous</strong> (bridging veins) |
+| <strong>Subarachnoid</strong> | Arachnoid and pia | <strong>Real</strong> — CSF, cerebral arteries and veins | Arterial (aneurysm) |</p>
+<p><strong>Meningitis</strong> = inflammation of the meninges. Headache, fever, drowsiness; can progress to sepsis, coma and death. Signs: <strong>Kernig's</strong> (straight-leg raise hurts), <strong>Brudzinski's</strong> (neck flexion lifts the legs), <strong>nuchal rigidity</strong>. Confirm with <strong>lumbar puncture</strong> (CSF sample, below the end of the cord).</p>
+<p><strong>Dura blood supply and nerves:</strong> mostly the <strong>middle meningeal artery</strong> (from the maxillary artery of the external carotid, through <strong>foramen spinosum</strong>). Sensation: <strong>trigeminal</strong> above the tentorium, <strong>C2–C3</strong> below. Pulling on dural vessels → referred <strong>headache</strong>.</p>
+<h3>4. Dural folds and herniation</h3>
+<ul>
+<li><strong>Falx cerebri</strong>: between the cerebral hemispheres (crista galli to internal occipital protuberance).</li>
+<li><strong>Tentorium cerebelli</strong>: between cerebrum and cerebellum. Its <strong>tentorial notch</strong> lets the brainstem through and divides <strong>supra- and infratentorial</strong> compartments.</li>
+<li><strong>Falx cerebelli</strong>: partly between the cerebellar hemispheres.</li>
+<li><strong>Diaphragma sellae</strong>: roof over the <strong>pituitary</strong>, with an opening for the infundibulum.</li>
+<li><strong>Clinical (notes):</strong> space-occupying lesions are mostly <strong>infratentorial in children, supratentorial in adults</strong>. Raised ICP → <strong>uncal herniation</strong> through the tentorial notch: <strong>decreased consciousness</strong>, <strong>ipsilateral fixed dilated pupil (CN III)</strong>, irregular breathing. Then <strong>tonsillar herniation</strong> into the foramen magnum compresses the medulla → death.</li>
+</ul>
+<h3>5. Venous sinuses (between the two dura layers)</h3>
+<ul>
+<li><strong>Superior sagittal</strong> (with <strong>arachnoid granulations</strong> draining CSF), <strong>inferior sagittal</strong>, <strong>straight</strong>, <strong>confluence</strong>, <strong>transverse</strong>, <strong>sigmoid</strong> → <strong>internal jugular vein</strong> (via the jugular foramen); <strong>cavernous</strong>, <strong>superior and inferior petrosal</strong>.</li>
+<li><strong>Cavernous sinus</strong>: either side of the sella. <strong>CN III, IV, V1, V2 in the lateral wall; internal carotid and CN VI run through the middle.</strong> It receives the <strong>ophthalmic veins</strong>, which connect to the <strong>facial vein</strong> — so infection in the <strong>"danger area" of the face</strong> can spread in.</li>
+<li><strong>Cavernous sinus syndrome:</strong> orbital or facial pain, <strong>orbital swelling and chemosis</strong>, fever, <strong>oculomotor and trigeminal neuropathy</strong>. Most often from <strong>cavernous sinus thrombosis</strong>; also carotid aneurysm, carotid-cavernous fistula, meningioma, pituitary tumour. (<strong>CN VI</strong> is often affected first because it's free in the sinus.)</li>
+<li><strong>Emissary veins</strong> have no valves → scalp infection can spread inward.</li>
+</ul>
+<h3>6. Arterial supply</h3>
+<ul>
+<li><strong>Internal carotids</strong> enter via the <strong>carotid canal</strong>, run through the cavernous sinus, give the <strong>ophthalmic artery</strong>, and end as the <strong>anterior and middle cerebral arteries</strong>.</li>
+<li><strong>Vertebrals</strong> (first branch of the subclavian) climb through the <strong>transverse foramina</strong>, enter via the <strong>foramen magnum</strong>, and join to form the <strong>basilar artery</strong>, which ends as the <strong>posterior cerebral arteries</strong>.</li>
+<li><strong>Circle of Willis</strong> (around the pituitary stalk and optic chiasm): anterior communicating, anterior cerebrals, internal carotids, <strong>posterior communicating</strong>, posterior cerebrals. The <strong>MCA is not part of the circle</strong>. It gives <strong>collateral flow</strong> that compensates for <strong>gradual</strong> occlusion; <strong>sudden</strong> occlusion or aneurysm rupture still causes deficits.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Artery</th>
+<th>Territory</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>ACA</strong> | <strong>Medial</strong> frontal and parietal lobes (leg area), corpus callosum |
+| <strong>MCA</strong> | <strong>Lateral</strong> frontal, parietal and temporal lobes (face and arm, language) |
+| <strong>PCA</strong> | <strong>Occipital</strong> lobe and inferior temporal lobe |</p>
+<ul>
+<li><strong>Stroke:</strong> <strong>ischemic</strong> (thrombotic or embolic) or <strong>hemorrhagic</strong>. Symptoms are sudden and match the territory.</li>
+<li><strong>CN III</strong> lies between the superior cerebellar and posterior cerebral arteries — an aneurysm there (or of the <strong>PCOM</strong>) compresses it.</li>
+<li>Local history: <strong>Dr. Charles Drake</strong> (London, Ontario) pioneered aneurysm surgery.</li>
+</ul>
+<h3>7. The three hematomas</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Epidural</strong></th>
+<th><strong>Subdural</strong></th>
+<th><strong>Subarachnoid</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| Vessel | <strong>Middle meningeal artery</strong> (pterion fracture) | <strong>Bridging veins</strong> | <strong>Cerebral artery — berry/saccular aneurysm</strong> |
+| Mechanism | Blow to the side of the head | <strong>Acceleration–deceleration</strong>; older people (brain atrophy) | Often no trauma |
+| Course | <strong>Brief LOC → lucid interval →</strong> coma, herniation | Slow; symptoms may appear <strong>weeks later</strong> | <strong>Thunderclap "worst headache"</strong>, vomiting, LOC, <strong>neck stiffness</strong>, visual changes; <strong>blood in CSF</strong> |
+| CT shape | <strong>Lens (biconvex)</strong> | <strong>Crescent</strong> | Blood in sulci and cisterns |</p>
+<h3>8. CSF pathway</h3>
+<p><strong>Choroid plexus</strong> (lateral, third and fourth ventricles) makes CSF → <strong>lateral ventricles → interventricular foramina → third ventricle → cerebral aqueduct → fourth ventricle → median and lateral apertures → subarachnoid space → arachnoid granulations → superior sagittal sinus</strong>.</p>
+<h3>9. Disruption of CSF flow</h3>
+<p>⚠ Hydrocephalus categories are not spelled out on this year's slides. From the pathway above: a <strong>block inside the ventricles</strong> (e.g. aqueductal stenosis, posterior fossa tumour) gives <strong>obstructive (non-communicating) hydrocephalus</strong>, with dilated ventricles upstream; failure of <strong>absorption at the arachnoid granulations</strong> (e.g. after meningitis or subarachnoid hemorrhage) gives <strong>communicating hydrocephalus</strong>. In infants the open fontanelles bulge and the head grows; in adults, signs are raised ICP (headache, vomiting, papilledema, reduced consciousness).</p>
+`,
+    "quiz": [
+      {
+        "stem": "Which four bones meet at the pterion?",
+        "opts": [
+          "Parietal, occipital, temporal, sphenoid",
+          "Frontal, ethmoid, nasal, maxilla",
+          "Frontal, parietal, sphenoid, temporal",
+          "Occipital, temporal, mastoid, parietal"
+        ],
+        "correct": 2,
+        "explain": "The H-shaped pterion overlies the middle meningeal artery."
+      },
+      {
+        "stem": "Which structure runs through the middle of the cavernous sinus (not in its wall)?",
+        "opts": [
+          "CN VI",
+          "CN IV",
+          "CN III",
+          "V1"
+        ],
+        "correct": 0,
+        "explain": "CN VI and the internal carotid run through the sinus; III, IV, V1, V2 lie in the lateral wall."
+      },
+      {
+        "stem": "A crescent-shaped bleed that crosses suture lines is most likely…",
+        "opts": [
+          "Epidural",
+          "Intraventricular",
+          "Subarachnoid",
+          "Subdural"
+        ],
+        "correct": 3,
+        "explain": "Subdural = venous, crescent-shaped. Epidural = arterial, lens-shaped."
+      }
+    ]
+  },
+  {
+    "id": "neuroanatomy-cortex",
+    "title": "Neuroanatomy: Cortex",
+    "instructor": "Elentra module 10",
+    "duration": "~70 min",
+    "tags": [
+      {
+        "label": "Lesion → deficit",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Why it matters:</strong> knowing which cortical area does what — and which artery feeds it — lets you predict exactly what a stroke, tumour or injury will do.</p>
+<h3>1. Grey and white matter</h3>
+<ul>
+<li><strong>Grey matter</strong> = neuron cell bodies: the <strong>cortex</strong> on the outside of the cerebrum and cerebellum, plus deep <strong>nuclei</strong>.</li>
+<li><strong>White matter</strong> = <strong>myelinated axons</strong>, deep to the cortex, bundled into tracts:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Fibre type</th>
+<th>Connects</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>Commissural</strong> | Left ↔ right hemisphere | <strong>Corpus callosum</strong> (largest) |
+| <strong>Association</strong> | Areas within <strong>one</strong> hemisphere | <strong>Arcuate fasciculus</strong> (Broca ↔ Wernicke), superior longitudinal fasciculus |
+| <strong>Projection</strong> | Cortex ↔ brainstem and cord (vertical) | <strong>Corona radiata → internal capsule</strong> (between the thalamus and basal ganglia) → crus cerebri; corticospinal tract |</p>
+<h3>2. How the cortex is organized</h3>
+<ul>
+<li><strong>Primary areas</strong> receive input (via the thalamus) or send motor output, with little interpretation: primary motor, somatosensory, visual, auditory.</li>
+<li><strong>Association areas</strong> sit next to primary areas and interpret: unimodal (e.g. visual association) or <strong>multimodal</strong>.</li>
+<li><strong>Hierarchy:</strong> primary sensory cortex (awareness) → sensory association (meaning) → multimodal association (integration with memory, plan) → motor cortex (action).</li>
+<li><strong>Brodmann areas</strong> number cortical regions by microscopic structure.</li>
+</ul>
+<h3>3. Lobes and their lesions</h3>
+<table>
+<thead>
+<tr>
+<th>Lobe</th>
+<th>Functions</th>
+<th>Lesion effects</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>Frontal</strong> | Executive function, planning, working memory; <strong>primary motor cortex</strong>; speech production | <strong>Personality change</strong>, poor judgment and impulse control, disorganization |
+| <strong>Parietal</strong> | Somatosensation; spatial sense; dorsal visual stream; parts of language | <strong>Left: Gerstmann syndrome</strong> — <strong>right–left confusion, agraphia, acalculia</strong> (+ finger agnosia); aphasia; agnosia |
+| <strong>Temporal</strong> | Hearing; memory (<strong>hippocampus</strong>); language comprehension; emotion | <strong>Receptive aphasia</strong>; <strong>prosopagnosia</strong> (can't recognize faces) |
+| <strong>Occipital</strong> | Vision (<strong>primary visual cortex at the calcarine sulcus</strong>) | <strong>Occipital seizures start with visual hallucinations</strong> (flickering or coloured lights) |
+| <strong>Insula</strong> | Taste, visceral sensation, vestibular awareness, self-awareness | |</p>
+<h3>4. Key cortical areas</h3>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Brodmann</th>
+<th>Where</th>
+<th>Does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>Primary motor</strong> | <strong>4</strong> | <strong>Precentral gyrus</strong> | Contralateral voluntary movement; corticospinal output; large face and hand areas |
+| Premotor | 6 | In front of the precentral gyrus | Plans complex movements |
+| Supplementary motor | | Medial | Motor planning |
+| <strong>Frontal eye field</strong> | | In front of premotor | <strong>Voluntary eye movements</strong> |
+| <strong>Primary somatosensory</strong> | <strong>1, 2, 3</strong> | <strong>Postcentral gyrus</strong> | Touch, pressure, vibration, pain, temperature, proprioception — contralateral |
+| Somatosensory association | 5 | Behind it | Interprets sensation |
+| <strong>Primary visual</strong> | <strong>17</strong> | <strong>Calcarine sulcus</strong> | Input from retina → LGN → optic radiations. Damage → <strong>cortical blindness</strong> |
+| Visual association | 18 | Around V1 | Meaning: <strong>dorsal "where"</strong> stream (to parietal) and <strong>ventral "what"</strong> stream (to temporal) |
+| <strong>Primary auditory</strong> | <strong>22</strong> | Temporal lobe, inside the lateral sulcus | Awareness of sound |
+| <strong>Broca's</strong> | <strong>44, 45</strong> | Inferior frontal, dominant side | <strong>Speech production</strong> |
+| <strong>Wernicke's</strong> | <strong>22, 39, 40</strong> | Posterior temporal–parietal, dominant side | <strong>Language comprehension</strong> |
+| Gustatory | | Insula / roof of the lateral sulcus | Taste |
+| Olfactory | | Medial (uncus) | Smell |</p>
+<p><strong>Somatotopy:</strong> the motor and sensory <strong>homunculi</strong> — leg medial (near the midline), face and hand lateral. Cortex size matches sensitivity (lips, fingertips). <strong>Contralateral</strong>: the right hemisphere serves the left body.</p>
+<p><strong>Damage to a sensory association area → agnosia</strong> (sensation intact but can't recognize).</p>
+<h3>5. Language</h3>
+<ul>
+<li><strong>Broca's aphasia</strong> (frontal): slow, <strong>non-fluent, effortful</strong> speech; <strong>comprehension intact</strong>; aware of the deficit.</li>
+<li><strong>Wernicke's aphasia</strong> (temporo-parietal): <strong>fluent but meaningless</strong>; <strong>poor comprehension</strong>; often unaware.</li>
+<li>The two are linked by the <strong>arcuate fasciculus</strong> (association fibres).</li>
+<li>The <strong>right-hemisphere</strong> homologue of Broca's handles the <strong>emotional tone</strong> of speech.</li>
+</ul>
+<h3>6. Multimodal association areas</h3>
+<ul>
+<li><strong>Prefrontal (anterior) association area</strong>: <strong>executive function</strong> — reasoning, judgment, impulse control, long-term planning, social skills, empathy. Closely linked to the limbic system and mood. One of the <strong>last areas to mature</strong>. Tumours or injury here → <strong>personality change</strong>.</li>
+<li><strong>Parietal association</strong>: orienting attention, spatial awareness of the body; linked to the prefrontal cortex.</li>
+<li><strong>Temporal association</strong>: links a face or object to its <strong>meaning and identity</strong>.</li>
+</ul>
+<h3>7. Limbic system</h3>
+<p><strong>Functions (HOME):</strong> <strong>H</strong>omeostasis (hypothalamus — autonomic and endocrine), <strong>O</strong>lfaction, <strong>M</strong>emory (hippocampus), <strong>E</strong>motion and drives (amygdala).</p>
+<ul>
+<li><strong>Limbic lobe</strong>: a ring of cortex on the medial surface — <strong>cingulate gyrus, parahippocampal gyrus, uncus</strong>.</li>
+<li><strong>Hippocampus</strong>: deep in the temporal lobe, forming the <strong>floor of the inferior horn of the lateral ventricle</strong>. Converts <strong>short-term → long-term memory</strong>; "place cells" for spatial memory.</li>
+<li><strong>Amygdala</strong>: anteromedial to the hippocampus. <strong>Emotion, especially fear and aggression</strong>. Stimulation → fear, rage. (Lateral lesions → overeating; medial lesions → anorexia, hypersexuality.)</li>
+<li><strong>Memory types:</strong> declarative (explicit) = episodic (events) + semantic (facts); non-declarative = skills, habits, emotional memory.</li>
+</ul>
+<p><strong>Papez circuit:</strong> <strong>hippocampus → fornix → mammillary bodies → mammillothalamic tract → anterior thalamic nucleus → internal capsule → cingulate gyrus → cingulum → (entorhinal cortex) → hippocampus.</strong> Links memory and emotion.</p>
+<h3>8. Clinical memory disorders</h3>
+<ul>
+<li><strong>Bilateral hippocampal damage → anterograde amnesia</strong>: no new memories (patient <strong>H.M.</strong> after bilateral medial temporal resection for epilepsy). Bilateral <strong>fornix</strong> damage does the same.</li>
+<li><strong>Alzheimer's disease</strong>: degeneration in the Papez circuit → can't learn new information; word- and name-finding trouble.</li>
+<li><strong>Transient global amnesia</strong>: rare, temporary episodic memory loss from medial temporal dysfunction.</li>
+<li><strong>Wernicke–Korsakoff (thiamine/B1 deficiency, usually alcohol)</strong>: <strong>bilateral mammillary body necrosis</strong>.<ul>
+<li>Acute <strong>Wernicke</strong> triad: <strong>ataxia, eye-movement abnormalities</strong> (nystagmus to ophthalmoplegia), <strong>confusion</strong>; can progress to coma.</li>
+<li>Survivors (<strong>Korsakoff</strong>): anterograde and retrograde amnesia, poor judgment, <strong>confabulation</strong>.</li>
+</ul>
+</li>
+</ul>
+<h3>Practice (from the notes)</h3>
+<ul>
+<li>The visual association area is in the <strong>occipital</strong> lobe.</li>
+</ul>
+`,
+    "quiz": [
+      {
+        "stem": "Which fibres connect Broca's and Wernicke's areas?",
+        "opts": [
+          "Arcuate fasciculus",
+          "Corpus callosum",
+          "Internal capsule",
+          "Fornix"
+        ],
+        "correct": 0,
+        "explain": "The arcuate fasciculus is an association tract within one hemisphere."
+      },
+      {
+        "stem": "Primary somatosensory cortex lies in which gyrus?",
+        "opts": [
+          "Postcentral",
+          "Precentral",
+          "Cingulate",
+          "Superior temporal"
+        ],
+        "correct": 0,
+        "explain": "Postcentral gyrus (BA 1, 2, 3) in the parietal lobe."
+      },
+      {
+        "stem": "What is the correct order of the Papez circuit after the hippocampus?",
+        "opts": [
+          "Cingulum → corpus callosum → insula",
+          "Amygdala → hypothalamus → pituitary",
+          "Fornix → mammillary bodies → anterior thalamus → cingulate",
+          "Thalamus → internal capsule → motor cortex"
+        ],
+        "correct": 2,
+        "explain": "Hippocampus → fornix → mammillary bodies → mammillothalamic tract → anterior thalamic nucleus → cingulate → back to the hippocampus."
+      }
+    ]
+  },
+  {
+    "id": "orbital-anatomy",
+    "title": "Orbital Anatomy",
+    "instructor": "Elentra module 11",
+    "duration": "~61 min",
+    "tags": [
+      {
+        "label": "Down & out vs up & in",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>Four "main points" slides frame this module:</strong> the orbit is thin medially and inferiorly; seven extraocular muscles move the eye along an axis that differs from the orbit's; CN II sees, CN III/IV/VI move, V1 feels; and the ophthalmic veins connect the face to the cavernous sinus.</p>
+<h3>1. Bony orbit and fractures</h3>
+<ul>
+<li><strong>Seven bones</strong>: frontal, sphenoid (greater and lesser wings), zygomatic, maxilla, ethmoid, lacrimal, palatine.</li>
+<li>The eye is held mostly by <strong>orbital fat</strong>, with help from the muscles.</li>
+<li><strong>Medial and inferior walls are very thin.</strong></li>
+<li><strong>Blowout fracture</strong>: indirect trauma (e.g. a ball or elbow to the eye) raises orbital pressure and breaks a weak wall. In an <strong>inferior (floor) blowout</strong>, orbital fat herniates into the <strong>maxillary sinus</strong> — the "<strong>teardrop sign</strong>" on coronal CT.</li>
+</ul>
+<h3>2. The eyeball</h3>
+<ul>
+<li>Outer: <strong>sclera</strong> (white) and clear <strong>cornea</strong> in front.</li>
+<li>Middle: <strong>choroid</strong> (vascular), <strong>ciliary body</strong>, <strong>iris</strong>.</li>
+<li>Inner: <strong>retina</strong> — light-sensitive; sends signals to the brain via the <strong>optic nerve</strong>.</li>
+<li><strong>Lens</strong> hangs from <strong>suspensory ligaments</strong>. The <strong>ciliary body changes lens shape for accommodation</strong>.</li>
+<li><strong>Anterior and posterior chambers</strong> hold <strong>aqueous humour</strong>, which drains via <strong>Schlemm's canal</strong>. Behind the lens is the <strong>vitreous body</strong>.</li>
+</ul>
+<p><strong>Iris muscles:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Muscle</th>
+<th>Arrangement</th>
+<th>Nerve</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>Dilator pupillae</strong> | Radial | <strong>Sympathetic</strong> (superior cervical ganglion) | Dilates in dim light |
+| <strong>Sphincter pupillae</strong> | Circular | <strong>Parasympathetic</strong> via <strong>CN III</strong> | Constricts in bright light |</p>
+<p><strong>Conditions:</strong></p>
+<ul>
+<li><strong>Pink eye</strong> — conjunctival infection</li>
+<li><strong>Cataract</strong> — loss of lens transparency</li>
+<li><strong>Glaucoma</strong> — <strong>reduced aqueous drainage → high intraocular pressure → compressed retina → blindness</strong></li>
+</ul>
+<h3>3. Eyelid, conjunctiva and lacrimal apparatus</h3>
+<ul>
+<li><strong>Conjunctiva</strong>: transparent mucous membrane, <strong>palpebral</strong> (lines the lid) and <strong>bulbar</strong> (covers the eye); vessels show as "bloodshot eyes". Secretes mucus.</li>
+<li><strong>Tarsal plate</strong> stiffens the lid; <strong>tarsal glands</strong> make an <strong>oily layer</strong> that keeps tears on the cornea.</li>
+<li><strong>Lacrimal gland</strong> (upper lateral orbit) makes tears; <strong>blinking spreads them</strong> across the cornea. Drainage: <strong>puncta → canaliculi → lacrimal sac → nasolacrimal duct → nasal cavity</strong>.</li>
+<li><strong>Lacrimal gland control: parasympathetic from CN VII, carried by V1 branches</strong> (lacrimal nerve).</li>
+<li><strong>Stye</strong> = infected or blocked tarsal gland. <strong>Corneal ulcer</strong> = corneal irritation, can come from <strong>too little tear fluid</strong>.</li>
+</ul>
+<h3>4. Extraocular muscles</h3>
+<p><strong>Seven muscles:</strong> levator palpebrae superioris (lifts the lid), four recti (superior, inferior, medial, lateral) and two obliques (superior, inferior).</p>
+<p><strong>Movements:</strong> elevation (up), depression (down), <strong>adduction</strong> (toward the nose), <strong>abduction</strong> (away), plus internal and external rotation.</p>
+<p><strong>The tricky part:</strong> the <strong>orbit's axis points laterally (~23°)</strong>, but the <strong>eye looks straight ahead</strong>. So the superior and inferior recti pull slightly medially, and the obliques pull from behind and medially.</p>
+<table>
+<thead>
+<tr>
+<th>Muscle</th>
+<th>Action (as on the slides)</th>
+<th>Nerve</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>Superior rectus</strong> | Up and <strong>medially</strong> | III |
+| <strong>Inferior rectus</strong> | Down and <strong>medially</strong> | III |
+| <strong>Medial rectus</strong> | Medially | III |
+| <strong>Lateral rectus</strong> | <strong>Laterally</strong> | <strong>VI</strong> |
+| <strong>Superior oblique</strong> (through the <strong>trochlea</strong>) | <strong>Down and laterally</strong> | <strong>IV</strong> |
+| <strong>Inferior oblique</strong> (from the <strong>medial</strong> orbital floor) | <strong>Up and laterally</strong> | III |
+| <strong>Levator palpebrae superioris</strong> | <strong>Raises the eyelid</strong> | III (+ sympathetic superior tarsal muscle) |</p>
+<p><strong>Clinical testing ("H" pattern):</strong> test each muscle in the position where it acts alone — e.g. look <strong>down and in</strong> to test the <strong>superior oblique</strong>.</p>
+<h3>5. Nerves of the orbit</h3>
+<ul>
+<li><strong>Sight</strong>: <strong>optic nerve (CN II)</strong> in a dural sheath, through the <strong>optic canal</strong>.</li>
+<li><strong>Motor</strong>: <strong>III, IV, VI</strong> through the <strong>superior orbital fissure</strong>. (<strong>LR6 SO4</strong>, the rest III.)</li>
+<li><strong>Sensory</strong>: <strong>ophthalmic division of trigeminal (V1)</strong> — frontal, lacrimal and nasociliary branches.</li>
+</ul>
+<p><strong>Nerve palsies — the key "predict the symptom" slides:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Palsy</th>
+<th>Eye position</th>
+<th>Other signs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>CN VI (abducens)</strong> | <strong>Can't abduct</strong>; eye turns in | <strong>Injured by raised intracranial pressure</strong> (long course); <strong>head turns</strong> to avoid diplopia |
+| <strong>CN III (oculomotor)</strong> | <strong>"Down and out"</strong> | <strong>Ptosis</strong>; may have a <strong>dilated pupil</strong> |
+| <strong>CN IV (trochlear)</strong> | <strong>"Up and in"</strong> (eye drifts up) | <strong>Head tilt</strong> away from the lesion; commonly from <strong>trauma</strong> |</p>
+<p><strong>Horner's syndrome</strong> — interruption of the <strong>sympathetic</strong> supply (e.g. superior cervical ganglion):</p>
+<ul>
+<li><strong>Miosis</strong> (unopposed parasympathetic)</li>
+<li><strong>Mild ptosis</strong> (loss of the sympathetic part of the levator — superior tarsal muscle)</li>
+<li><strong>Red skin</strong> (vasodilation) and <strong>anhidrosis</strong> (no sweating) on that side</li>
+</ul>
+<h3>6. Vessels of the orbit</h3>
+<ul>
+<li><strong>Ophthalmic artery</strong> (first branch of the <strong>internal carotid</strong>) supplies the eye and orbit. Its <strong>central retinal artery</strong> runs in the optic nerve to the retina — visible at the <strong>optic disc</strong> on fundoscopy, with the <strong>fovea and macula</strong> temporal to it.</li>
+<li><strong>Occlusion of the central retinal artery → blindness</strong> in that eye.</li>
+<li><strong>Superior and inferior ophthalmic veins</strong> drain to the <strong>cavernous sinus</strong>, and connect with the <strong>facial vein</strong> and <strong>pterygoid plexus</strong>.</li>
+<li>So <strong>bacteria from the face can reach the cavernous sinus</strong>, and cavernous sinus infection can affect the orbit's motor and sensory nerves (<strong>III, IV, V1, V2, VI</strong>, plus the internal carotid).</li>
+</ul>
+<h3>7. Predicting symptoms from orbital abnormalities</h3>
+<ul>
+<li><strong>Floor fracture</strong> → fat (and sometimes inferior rectus) trapped in the maxillary sinus → <strong>trouble looking up, diplopia</strong>, numb cheek (infraorbital nerve, V2).</li>
+<li><strong>Ptosis + down-and-out eye + big pupil</strong> → <strong>CN III</strong> (think <strong>PCOM aneurysm</strong> if the pupil is involved).</li>
+<li><strong>Ptosis + small pupil</strong> → <strong>Horner's</strong>.</li>
+<li><strong>Painful red eye with high pressure</strong> → <strong>glaucoma</strong>; <strong>cloudy lens</strong> → <strong>cataract</strong>.</li>
+<li><strong>Sudden painless monocular blindness</strong> → <strong>central retinal artery occlusion</strong>.</li>
+<li><strong>Facial infection then fever, swollen eye and ophthalmoplegia</strong> → <strong>cavernous sinus thrombosis</strong>.</li>
+</ul>
+`,
+    "quiz": [
+      {
+        "stem": "Which muscle raises the upper eyelid?",
+        "opts": [
+          "Levator palpebrae superioris",
+          "Orbicularis oculi",
+          "Superior rectus",
+          "Inferior oblique"
+        ],
+        "correct": 0,
+        "explain": "Levator palpebrae superioris (CN III), helped by the sympathetic superior tarsal muscle."
+      },
+      {
+        "stem": "What is the action of the superior oblique (as taught on the slides)?",
+        "opts": [
+          "Up and laterally",
+          "Straight up",
+          "Down and medially",
+          "Down and laterally"
+        ],
+        "correct": 3,
+        "explain": "Superior oblique (CN IV) moves the eye down and laterally."
+      },
+      {
+        "stem": "Which nerve supplies the sphincter pupillae?",
+        "opts": [
+          "Sympathetics from the superior cervical ganglion",
+          "Parasympathetics carried by CN III",
+          "CN VI",
+          "V1"
+        ],
+        "correct": 1,
+        "explain": "Parasympathetic fibres via CN III constrict the pupil; sympathetics dilate it."
+      }
+    ]
+  },
+  {
+    "id": "neurophysiology-vision",
+    "title": "Neurophysiology: Vision",
+    "instructor": "Elentra module 12",
+    "duration": "~97 min",
+    "tags": [
+      {
+        "label": "Predict the field defect",
+        "cls": "mcc"
+      }
+    ],
+    "body": `
+<p><strong>The thread through the module:</strong> light is focused by the lens and pupil → detected by rods and cones → processed first in the retina → split at the chiasm by hemifield → relayed by the LGN → analyzed in V1 → sent along a dorsal "where" and a ventral "what" stream. A lesion at each level gives a <strong>predictable, specific</strong> deficit.</p>
+<h3>1. The eye: getting an image onto the retina</h3>
+<ul>
+<li>Photoreceptors respond to light of <strong>400–700 nm</strong>, a tiny slice of the electromagnetic spectrum.</li>
+<li>Light passes through the <strong>cornea, pupil and lens</strong>. Focus depends on <strong>lens shape</strong> and <strong>pupil diameter</strong>.</li>
+<li><strong>Accommodation:</strong> ciliary muscles <strong>relax → lens flat → distance</strong>; ciliary muscles <strong>contract → lens round → near</strong>.</li>
+<li><strong>Myopia</strong> (sees near, not far) → <strong>concave</strong> lenses. <strong>Hyperopia</strong> (sees far, not near) → <strong>convex</strong> lenses.</li>
+<li><strong>Presbyopia:</strong> with age the lens loses elasticity and stays too flat for near → <strong>reading glasses</strong> (myopes need <strong>bifocals</strong>).</li>
+<li><strong>Pupillary light reflex:</strong> bright light <strong>constricts</strong> the pupil so photoreceptors don't saturate. Light in <strong>one eye constricts both pupils</strong> — a test of CN II and III. A smaller pupil also <strong>increases depth of focus</strong>.</li>
+</ul>
+<h3>2. The retina</h3>
+<p><strong>Five cell types:</strong></p>
+<ul>
+<li><strong>Vertical flow:</strong> <strong>photoreceptors</strong> (rods and cones) → <strong>bipolar cells</strong> → <strong>ganglion cells</strong>. Ganglion cell axons form the optic nerve, and <strong>only ganglion cells fire action potentials</strong>.</li>
+<li><strong>Lateral (integrating) flow:</strong> <strong>horizontal</strong> and <strong>amacrine</strong> cells.</li>
+<li>Light passes <strong>through</strong> the overlying cells to reach the photoreceptors.</li>
+</ul>
+<p><strong>Rods vs cones:</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Rods</strong></th>
+<th><strong>Cones</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| Where | <strong>Peripheral</strong> retina (~120 million per eye) | Concentrated in the <strong>fovea (cones only)</strong> |
+| Sensitivity | <strong>High</strong> (bigger outer segment) — <strong>night vision</strong> | Lower |
+| Colour | No | <strong>Yes — 3 types (trichromatic)</strong> |
+| Acuity | Low (big receptive fields) | <strong>High</strong> |</p>
+<ul>
+<li><strong>Blind spot</strong> at the <strong>optic disc</strong> (no photoreceptors), <strong>nasal</strong> to the fovea in the retina → in the <strong>temporal</strong> visual field. The brain "fills in".</li>
+<li>Why the <strong>fovea</strong> is sharpest: it's a <strong>pit</strong> (overlying cells pushed aside, less scatter), and each foveal ganglion cell gets input from <strong>few</strong> photoreceptors → <strong>small receptive fields</strong> (~0.03° vs ~3° in the periphery). This comes from <strong>convergence</strong>.</li>
+<li>The fovea covers only the <strong>central 2°</strong> of the field but uses <strong>~50% of the optic nerve</strong>. In very dim light the fovea is basically blind (look slightly away from a dim star to see it).</li>
+<li><strong>Tests:</strong> a <strong>letter chart</strong> tests foveal <strong>acuity</strong>; a <strong>visual field test</strong> finds <strong>scotomas</strong> (blind areas).</li>
+</ul>
+<p><strong>Ganglion cell types:</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>P (parvocellular)</strong></th>
+<th><strong>M (magnocellular)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| ~90%; small, slow | 5–10%; large, fast |
+| Small receptive fields; <strong>colour</strong> (from cones) | Large fields; no colour; mostly from <strong>rods</strong>; <strong>flicker and motion</strong> |
+| → LGN layers <strong>3–6</strong> → <strong>ventral "what" stream</strong> | → LGN layers <strong>1–2</strong> (and midbrain) → <strong>dorsal "where" stream</strong> |</p>
+<p><strong>Colour blindness:</strong> about <strong>8% of males</strong> (2% lack red or green pigment = dichromats; 6% anomalous trichromats) vs <strong>~0.5% of females</strong> — <strong>X-linked</strong>.</p>
+<p><strong>Centre–surround receptive fields</strong> (made by bipolar, horizontal and amacrine cells): <strong>on-centre</strong> cells signal "brighter than the background", <strong>off-centre</strong> cells "darker". They <strong>accentuate edges</strong> and give <strong>constancy</strong> (the brain cares about relative contrast, not absolute light).</p>
+<p><strong>Three eye diseases:</strong></p>
+<ul>
+<li><strong>Cataract</strong> — clouded lens</li>
+<li><strong>Glaucoma</strong> — high intraocular pressure compresses ganglion cell axons → <strong>peripheral loss first ("tunnel vision")</strong></li>
+<li><strong>Macular degeneration</strong> — deposits or abnormal vessels under the retina → <strong>central (foveal) vision</strong> distorted or lost</li>
+</ul>
+<h3>3. Visual pathways and field defects</h3>
+<ul>
+<li><strong>Optic nerve</strong> (~1 million ganglion cell axons) → <strong>optic chiasm</strong> → <strong>optic tract</strong> → <strong>lateral geniculate nucleus (LGN)</strong> of the thalamus → <strong>optic radiation</strong> → <strong>V1</strong> around the <strong>calcarine sulcus</strong>.</li>
+<li><strong>Nasal retinal fibres cross at the chiasm.</strong> Nasal retina sees the <strong>temporal</strong> field. So the <strong>left visual field goes to the right hemisphere</strong> (right eye temporal retina + left eye nasal retina).</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Lesion</th>
+<th>Field defect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| <strong>Optic nerve</strong> | <strong>Blindness in that eye</strong> |
+| <strong>Optic chiasm</strong> (crossing fibres; e.g. pituitary tumour) | <strong>Bitemporal hemianopia</strong> |
+| <strong>Optic tract</strong> (right) | <strong>Left homonymous hemianopia</strong> |</p>
+<ul>
+<li>About <strong>90%</strong> of optic tract axons go to the <strong>LGN</strong>; about <strong>10%</strong> go to the <strong>midbrain</strong> — <strong>superior colliculus</strong> (orienting) and <strong>Edinger–Westphal nucleus</strong> (pupillary light reflex).</li>
+<li>The <strong>LGN has 6 monocular layers</strong>: 1–2 magnocellular, 3–6 parvocellular. Each LGN neuron gets input from <strong>only one eye</strong>.</li>
+</ul>
+<h3>4. V1 (primary visual cortex)</h3>
+<ul>
+<li>Also called <strong>striate cortex</strong> or <strong>area 17</strong> (stripy from heavy LGN input to <strong>layer 4</strong>). Mostly on the <strong>medial</strong> occipital surface around the calcarine fissure.</li>
+<li><strong>Retinotopy:</strong> an orderly map of the retina. <strong>~50% of V1 processes the fovea.</strong></li>
+<li><strong>Feature detectors</strong> (Hubel and Wiesel, Nobel 1981), built by <strong>convergence</strong>:<ul>
+<li><strong>Simple cells</strong>: stationary lines of a preferred <strong>orientation</strong></li>
+<li><strong>Complex cells</strong>: orientation <strong>and direction</strong> of motion</li>
+<li><strong>Hypercomplex (end-stopped) cells</strong>: moving lines of a specific <strong>length</strong></li>
+</ul>
+</li>
+<li><strong>Hypercolumns</strong> (1 mm × 1 mm) each analyze one small patch of retina:<ul>
+<li>Input from each eye enters <strong>layer 4</strong> (still monocular); <strong>binocular</strong> cells above and below give <strong>depth (stereopsis)</strong></li>
+<li><strong>Blobs</strong> in the centre hold colour-sensitive double-opponent cells</li>
+<li><strong>Orientation</strong> columns radiate around the blobs like a pinwheel</li>
+</ul>
+</li>
+</ul>
+<h3>5. Beyond V1: two streams</h3>
+<ul>
+<li>V1 → V2 → V3 → more than three dozen extrastriate areas, each with its own map and specialty (motion, colour, faces).</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Dorsal stream</strong></th>
+<th><strong>Ventral stream</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>| Goes to | <strong>Posterior parietal</strong> cortex | <strong>Inferior temporal</strong> lobe |
+| Job | <strong>"Where" / action</strong> — spatial location, motion | <strong>"What" / perception</strong> — recognizing objects |
+| Input | Mostly <strong>M</strong> cells | Mostly <strong>P</strong> cells |
+| Lesion examples | <strong>Area MT → can't perceive motion</strong> (the world becomes snapshots). <strong>Parietal → optic ataxia</strong> (sees an object but can't reach it accurately in the periphery) | <strong>Lateral occipital cortex → visual agnosia</strong> (sees and can copy an object but can't name it by sight; fine by touch or sound). <strong>Fusiform face area → prosopagnosia</strong> (can't recognize faces, even their own; recognizes people by voice or gait) |</p>
+<ul>
+<li>Seeing a flock of birds needs both: dorsal for <strong>direction of motion</strong>, ventral for <strong>fine features</strong>.</li>
+</ul>
+<h3>Predicting symptoms</h3>
+<ul>
+<li><strong>Can't read up close after 45</strong> → presbyopia.</li>
+<li><strong>Peripheral field loss, raised eye pressure</strong> → glaucoma. <strong>Central blur and distortion</strong> → macular degeneration.</li>
+<li><strong>Bitemporal field loss + headache</strong> → chiasmal compression (pituitary tumour).</li>
+<li><strong>Same-side field loss in both eyes</strong> → optic tract, radiation or occipital lesion on the <strong>opposite</strong> side.</li>
+<li><strong>Can see but can't name objects or faces</strong> → ventral stream (temporal) lesion. <strong>Can't reach accurately or see motion</strong> → dorsal stream (parietal/MT) lesion.</li>
+</ul>
+`,
+    "quiz": [
+      {
+        "stem": "Which retinal cells are the only ones that fire action potentials?",
+        "opts": [
+          "Rods",
+          "Ganglion cells",
+          "Bipolar cells",
+          "Horizontal cells"
+        ],
+        "correct": 1,
+        "explain": "Ganglion cells are the output neurons; their axons form the optic nerve."
+      },
+      {
+        "stem": "A lesion of the optic chiasm classically causes…",
+        "opts": [
+          "Monocular blindness",
+          "Bitemporal hemianopia",
+          "Homonymous hemianopia",
+          "Central scotoma"
+        ],
+        "correct": 1,
+        "explain": "Crossing nasal fibres carry the temporal fields of both eyes."
+      },
+      {
+        "stem": "To correct myopia you need…",
+        "opts": [
+          "Convex lenses",
+          "Bifocals only",
+          "Concave lenses",
+          "No lenses"
+        ],
+        "correct": 2,
+        "explain": "Myopes see near, not far: concave lenses. Hyperopia uses convex lenses."
+      }
+    ]
+  }
+];
+</script>
+<script>
+(function(){
+  var navlist = document.getElementById('navlist');
+  var content = document.getElementById('content');
+  var totalQ = 0;
+  MODULES.forEach(function(m){ totalQ += m.quiz.length; });
+  document.getElementById('progress-count').textContent = '0 / ' + totalQ;
+
+  var STORE_KEY = 'neuro-hub-wk12-answers-v1';
+  var answered = {};
+  try {
+    var raw = localStorage.getItem(STORE_KEY);
+    if (raw) answered = JSON.parse(raw);
+  } catch(e) {}
+
+  function saveAnswered(){
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(answered)); } catch(e) {}
+  }
+
+  function correctCount(){
+    var n = 0;
+    Object.keys(answered).forEach(function(k){ if (answered[k] === 'correct') n++; });
+    return n;
+  }
+
+  function updateProgress(){
+    var c = correctCount();
+    document.getElementById('progress-count').textContent = c + ' / ' + totalQ;
+    document.getElementById('progress-fill').style.width = (totalQ ? (100 * c / totalQ) : 0) + '%';
+  }
+
+  function moduleAnsweredCount(m){
+    var n = 0;
+    m.quiz.forEach(function(q, i){
+      var key = m.id + '-' + i;
+      if (answered[key]) n++;
+    });
+    return n;
+  }
+
+  function markDot(m){
+    var dot = document.querySelector('.navlist a[href="#' + m.id + '"] .dot');
+    if (!dot) return;
+    var done = moduleAnsweredCount(m) === m.quiz.length && m.quiz.length > 0;
+    dot.classList.toggle('done', done);
+  }
+
+  // Build nav
+  MODULES.forEach(function(m, idx){
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + m.id;
+    a.innerHTML = '<span class="num">' + String(idx+1).padStart(2,'0') + '</span><span class="dot"></span><span>' + m.title + '</span>';
+    li.appendChild(a);
+    navlist.appendChild(li);
+  });
+
+  function renderQuiz(m){
+    var wrap = document.createElement('div');
+    wrap.className = 'quiz';
+
+    var head = document.createElement('div');
+    head.className = 'quiz-head';
+    head.innerHTML = '<span>Check yourself</span><span class="quiz-score" id="score-' + m.id + '"></span>';
+    wrap.appendChild(head);
+
+    var scoreEl = head.querySelector('.quiz-score');
+
+    var body = document.createElement('div');
+    body.className = 'quiz-body';
+
+    function updateModuleScore(){
+      var n = moduleAnsweredCount(m);
+      scoreEl.textContent = n + ' / ' + m.quiz.length + ' answered';
+    }
+
+    m.quiz.forEach(function(q, i){
+      var key = m.id + '-' + i;
+      var qd = document.createElement('div');
+      qd.className = 'q';
+      var stem = document.createElement('div');
+      stem.className = 'q-stem';
+      stem.textContent = (i+1) + '. ' + q.stem;
+      qd.appendChild(stem);
+
+      var opts = document.createElement('div');
+      opts.className = 'q-opts';
+
+      var explain = document.createElement('div');
+      explain.className = 'q-explain';
+      explain.innerHTML = '<strong>' + (q.explain.split(' ')[0]) + '</strong> ' + q.explain;
+
+      var alreadyAnswered = !!answered[key];
+
+      q.opts.forEach(function(optText, oi){
+        var btn = document.createElement('button');
+        btn.className = 'opt';
+        btn.innerHTML = '<span class="letter">' + String.fromCharCode(65+oi) + '</span><span>' + optText + '</span>';
+        if (alreadyAnswered) {
+          btn.disabled = true;
+          if (oi === q.correct) btn.classList.add('correct');
+          if (answered[key] === 'incorrect-' + oi) btn.classList.add('incorrect');
+        }
+        btn.addEventListener('click', function(){
+          if (btn.disabled) return;
+          var allOpts = opts.querySelectorAll('.opt');
+          allOpts.forEach(function(o){ o.disabled = true; });
+          if (oi === q.correct) {
+            btn.classList.add('correct');
+            answered[key] = 'correct';
+          } else {
+            btn.classList.add('incorrect');
+            allOpts[q.correct].classList.add('correct');
+            answered[key] = 'incorrect-' + oi;
+          }
+          explain.classList.add('shown');
+          saveAnswered();
+          updateProgress();
+          updateModuleScore();
+          markDot(m);
+        });
+        opts.appendChild(btn);
+      });
+
+      qd.appendChild(opts);
+      qd.appendChild(explain);
+      if (alreadyAnswered) explain.classList.add('shown');
+      body.appendChild(qd);
+    });
+
+    wrap.appendChild(body);
+    updateModuleScore();
+    return wrap;
+  }
+
+  MODULES.forEach(function(m, idx){
+    var sec = document.createElement('section');
+    sec.className = 'module';
+    sec.id = m.id;
+
+    var head = document.createElement('div');
+    head.className = 'module-head';
+    head.innerHTML = '<span class="module-num">' + String(idx+1).padStart(2,'0') + '</span><h2>' + m.title + '</h2>';
+    sec.appendChild(head);
+
+    var meta = document.createElement('div');
+    meta.className = 'module-meta';
+    var tagsHtml = '<span class="tag">' + m.instructor + '</span><span class="tag">' + m.duration + '</span>';
+    (m.tags || []).forEach(function(t){ tagsHtml += '<span class="tag ' + t.cls + '">' + t.label + '</span>'; });
+    meta.innerHTML = tagsHtml;
+    sec.appendChild(meta);
+
+    var bodyDiv = document.createElement('div');
+    bodyDiv.className = 'module-body';
+    bodyDiv.innerHTML = m.body;
+    sec.appendChild(bodyDiv);
+
+    var quizWrap = document.createElement('div');
+    quizWrap.className = 'module-body';
+    quizWrap.appendChild(renderQuiz(m));
+    sec.appendChild(quizWrap);
+
+    content.appendChild(sec);
+    markDot(m);
+  });
+
+  updateProgress();
+
+  // Active-link tracking on scroll
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.module'));
+  var links = Array.prototype.slice.call(document.querySelectorAll('.navlist a'));
+  function onScroll(){
+    var pos = window.scrollY + 120;
+    var current = sections[0];
+    sections.forEach(function(s){ if (s.offsetTop <= pos) current = s; });
+    links.forEach(function(l){ l.classList.toggle('active', l.getAttribute('href') === '#' + current.id); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Close mobile nav on link click
+  links.forEach(function(l){
+    l.addEventListener('click', function(){
+      document.getElementById('sidebar').classList.remove('open');
+    });
+  });
+})();
+</script>
